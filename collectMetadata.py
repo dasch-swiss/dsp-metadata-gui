@@ -141,9 +141,11 @@ class DataHandling:
         TODO: Ensure that this works even with multiple persons/organizations.
         """
         for prop in dataset.get_all_properties():
+            if prop.datatype == Datatype.PROJECT:  # Never update project
+                print(f'{prop.name}:  + {prop.value}')
+                continue
             container = self.containers[prop]
             prop.value = container.get_value()
-            print(f'{prop.name}:  + {prop.value}')
 
 
 ########## Here starts UI stuff ##############
@@ -503,7 +505,9 @@ class PropertyRow():
                 # parent.first_time = True  # don't validate date first time
                 # parent.SetFocus()
                 inner_sizer = wx.BoxSizer()
-                date = wx.StaticText(parent, label=prop.value, size=(100, -1))
+                date = wx.StaticText(parent, size=(100, -1))
+                if prop.value:
+                    date.SetLabel(prop.value)
                 pick_date_button = wx.Button(parent, label="Pick Date")
                 pick_date_button.Bind(wx.EVT_BUTTON, lambda event: parent.pick_date(event, date, self.prop))
                 inner_sizer.Add(date)
@@ -512,6 +516,10 @@ class PropertyRow():
                 self.data_widget = date
                 # print("Datum: ")
                 # print(date.date)
+        elif prop.datatype == Datatype.PROJECT:
+            txt = wx.StaticText(parent, label=str(prop.value))
+            self.data_widget = txt
+            sizer.Add(txt, pos=(index, 1))
 
         btn = wx.Button(parent, label="?")
         btn.Bind(wx.EVT_BUTTON, lambda event: parent.show_help(event, prop.description, prop.example))
@@ -680,11 +688,7 @@ class HelpPopup(wx.PopupTransientWindow):
         wx.PopupTransientWindow.__init__(self, parent)
         panel = wx.Panel(self)
 
-        st = wx.StaticText(panel, -1,
-                           "Description:\n" + 
-                           message + "\n\n" +
-                           "Example:\n" +
-                           sample)
+        st = wx.StaticText(panel, -1, "Description:\n" + message + "\n\n" + "Example:\n" + sample)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(st, 0, wx.ALL, 5)

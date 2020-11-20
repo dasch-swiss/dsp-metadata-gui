@@ -111,7 +111,7 @@ class MetaDataSet:
         self.path = path
         self.files = []
         self.project = Project(name)
-        self.dataset = Dataset(name)
+        self.dataset = Dataset(name, self.project)
         self.dataset.project.value = self.project
         self.persons = [Person()]
         self.organizations = [Organization()]
@@ -273,7 +273,7 @@ class Dataset():
     Corresponds to `dsp-repo:Dataset` in the ontology.
     """
 
-    def __init__(self, name):
+    def __init__(self, name, project):
         self.title = Property("Title",
                               "Title of the dataset",
                               "Dataset-Title",
@@ -340,7 +340,8 @@ class Dataset():
                                 "The project to which the data set belongs",
                                 "",
                                 Datatype.PROJECT,
-                                Cardinality.ONE)
+                                Cardinality.ONE,
+                                value=project)
         self.attribution = Property("Qualified Attribution",
                                     "Persons/Organization involved in the creation of the dataset",
                                     '<person> + "editor"',
