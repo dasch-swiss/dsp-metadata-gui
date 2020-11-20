@@ -12,6 +12,7 @@ from metaDataHelpers import CalendarDlg
 #
 # - more properties, classes
 # - call method when something changed in a field; then, call specific validation
+# - allow for multiple datasets
 #
 #############################################
 
@@ -96,9 +97,6 @@ class DataHandling:
             # LATER: in principal, we could append the data instead of replacing it
             # (for loading multiple data sets and combining them)
             # would have to make sure the indices are correct and no doubles are being added
-            # for pr in self.projects:
-            #     print("Loading projects: ")
-            #     print(pr)
 
     def save_data(self):
         """
@@ -108,8 +106,6 @@ class DataHandling:
         """
         # LATER: could let the user decide where to store the data.
         print("Saving data...")
-        # for p in self.projects:
-        #     print(p)
         with open(self.data_storage, 'wb') as file:
             pickle.dump(self.projects, file)
 
@@ -142,7 +138,6 @@ class DataHandling:
         """
         for prop in dataset.get_all_properties():
             if prop.datatype == Datatype.PROJECT:  # Never update project
-                print(f'{prop.name}:  + {prop.value}')
                 continue
             container = self.containers[prop]
             prop.value = container.get_value()
@@ -514,8 +509,6 @@ class PropertyRow():
                 inner_sizer.Add(pick_date_button)
                 sizer.Add(inner_sizer, pos=(index, 1))
                 self.data_widget = date
-                # print("Datum: ")
-                # print(date.date)
         elif prop.datatype == Datatype.PROJECT:
             txt = wx.StaticText(parent, label=str(prop.value))
             self.data_widget = txt
@@ -551,12 +544,7 @@ class PropertyRow():
         elif datatype == Datatype.DATE:
             if cardinality == Cardinality.ONE \
                     or cardinality == Cardinality.ZERO_OR_ONE:
-                print(f'Date: {self.data_widget.GetLabel()}')
                 return self.data_widget.GetLabel()
-
-    def remove_entry(self, textcontrol):
-        print("Do the remove")
-
         # TODO: Funder
         # TODO: Grant
         # TODO: Address
@@ -565,8 +553,11 @@ class PropertyRow():
         # TODO: Organization
         # TODO: Person/Organization
         # TODO: Type of Data
-        # TODO: partOf/project
         return "Couldn't find my value... sorry"
+
+    # def remove_entry(self, textcontrol):
+    #     print("Do the remove")
+    # TODO: remove? never used?
 
 
 class DataTab(wx.ScrolledWindow):
@@ -607,8 +598,6 @@ class DataTab(wx.ScrolledWindow):
             outer_sizer.AddSpacer(20)
         outer_sizer.Add(sizer)
         self.SetSizer(outer_sizer)
-        # print("index i: ")
-        # print(i)
 
         self.SetScrollbars(0, 16, 60, 15)
 
