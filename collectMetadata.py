@@ -13,6 +13,7 @@ from metaDataHelpers import CalendarDlg
 # - more properties, classes
 # - call method when something changed in a field; then, call specific validation
 # - allow for multiple datasets
+# - implement multiple of dataset/person/org/etc.
 #
 #############################################
 
@@ -141,6 +142,16 @@ class DataHandling:
                 continue
             container = self.containers[prop]
             prop.value = container.get_value()
+
+    def refresh_ui(self, dataset):
+        """
+        Refresh all values in the UI according to the saved values.
+
+        Note: Calling this method discards all unsaved changes.
+        """
+        for prop in dataset.get_all_properties():
+            container = self.containers[prop]
+            container.set_value(prop.value)
 
 
 ########## Here starts UI stuff ##############
@@ -555,6 +566,44 @@ class PropertyRow():
         # TODO: Type of Data
         return "Couldn't find my value... sorry"
 
+    def set_value(self, val):
+        """
+        Returns the new property value that has been entered to the UI
+        """
+        datatype = self.prop.datatype
+        cardinality = self.prop.cardinality
+        # String or String/URL etc.
+        if datatype == Datatype.STRING \
+                or datatype == Datatype.STRING_OR_URL \
+                or datatype == Datatype.URL \
+                or datatype == Datatype.IRI \
+                or datatype == Datatype.PLACE:
+            if cardinality == Cardinality.ONE \
+                    or cardinality == Cardinality.ZERO_OR_ONE:
+                self.data_widget.SetValue(val)
+            if cardinality == Cardinality.ONE_TO_TWO \
+                    or cardinality == Cardinality.ZERO_TO_TWO:
+                self.data_widget[0].SetValue(val[0])
+                self.data_widget[1].SetValue(val[1])
+            if cardinality == Cardinality.ONE_TO_UNBOUND \
+                    or cardinality == Cardinality.UNBOUND:
+                self.data_widget.SetItems(val)
+        elif datatype == Datatype.DATE:
+            if cardinality == Cardinality.ONE \
+                    or cardinality == Cardinality.ZERO_OR_ONE:
+                self.data_widget.SetLabel(val)
+        elif datatype == Datatype.PROJECT:
+            self.data_widget.SetLabel(str(val))
+        # TODO: Funder
+        # TODO: Grant
+        # TODO: Address
+        # TODO: DMP
+        # TODO: Person
+        # TODO: Organization
+        # TODO: Person/Organization
+        # TODO: Type of Data
+        print("Couldn't set value.")
+
     # def remove_entry(self, textcontrol):
     #     print("Do the remove")
     # TODO: remove? never used?
@@ -761,6 +810,7 @@ class TabbedWindow(wx.Frame):
         data_handler.update_all(self.dataset)
         data_handler.validate_graph(self.dataset)
         data_handler.save_data()
+        data_handler.refresh_ui(self.dataset)
 
     def close(self):
         self.parent.Enable()
