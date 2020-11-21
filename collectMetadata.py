@@ -52,6 +52,7 @@ class DataHandling:
     """
 
     def __init__(self):
+        self.current_window = None
         self.projects = []
         self.containers = {}
         self.data_storage = os.path.expanduser("~") + "/DaSCH/config/repos.data"
@@ -175,15 +176,17 @@ class ProjectFrame(wx.Frame):
         menu_bar = wx.MenuBar()
         file_menu = wx.Menu()
         open_folder_menu_item = file_menu.Append(
-            wx.ID_ANY, 'Open Folder',
+            wx.ID_NEW, 'New Folder',
             'Open a folder with project files'
         )
-        menu_bar.Append(file_menu, '&File')
         self.Bind(
             event=wx.EVT_MENU,
             handler=self.on_open_folder,
             source=open_folder_menu_item,
         )
+        save_menu_item = file_menu.Append(wx.ID_SAVE, "&Save")
+        self.Bind(wx.EVT_MENU, self.on_save, source=save_menu_item)
+        menu_bar.Append(file_menu, '&File')
         self.SetMenuBar(menu_bar)
 
     def on_open_folder(self, event):
@@ -196,6 +199,12 @@ class ProjectFrame(wx.Frame):
             # index = self.panel.index
             self.panel.add_new_project(dlg.GetPath())
         dlg.Destroy()
+
+    def on_save(self, event):
+        if data_handler.current_window:
+            data_handler.current_window.save()
+        else:
+            data_handler.save_data()
 
 
 class ProjectPanel(wx.Panel):
@@ -292,6 +301,7 @@ class ProjectPanel(wx.Panel):
         if selection >= 0:
             repo = data_handler.projects[selection]
             dlg = TabbedWindow(self, repo)
+            data_handler.current_window = dlg
             dlg.Show()
             self.Disable()
 
@@ -815,6 +825,7 @@ class TabbedWindow(wx.Frame):
     def close(self):
         self.parent.Enable()
         self.parent.load_view()
+        data_handler.current_window = None
         self.Destroy()
 
 
