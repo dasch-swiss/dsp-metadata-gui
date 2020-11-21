@@ -153,6 +153,7 @@ class DataHandling:
         for prop in dataset.get_all_properties():
             container = self.containers[prop]
             container.set_value(prop.value)
+        # TODO: find a way to update dropdowns when e.g. person was modified
 
 
 ########## Here starts UI stuff ##############
@@ -427,17 +428,18 @@ class PropertyRow():
 
     Args:
         parent (wx.ScrolledWindow): The scrolled panel in which the row is to be placed.
-        dataset (Any): The Dataset that is to be displayed
+        data_class (Project|Dataset|List[Person]|etc.): The Class that is to be displayed
         prop (Property): The property to be displayed
         sizer (wx.Sizer): The sizer that organizes the layout of the parent component
         index (int): the row in the sizer grid
     """
 
-    def __init__(self, parent, dataset, prop, sizer, index):
+    def __init__(self, parent, data_class, prop, sizer, index):
         self.prop = prop
         name_label = wx.StaticText(parent, label=prop.name + ": ")
         sizer.Add(name_label, pos=(index, 0))
 
+        metadataset = data_class.get_metadataset()
         # String or String/URL etc.
         if prop.datatype == Datatype.STRING \
                 or prop.datatype == Datatype.STRING_OR_URL \
@@ -539,6 +541,36 @@ class PropertyRow():
             txt = wx.StaticText(parent, label=str(prop.value))
             self.data_widget = txt
             sizer.Add(txt, pos=(index, 1))
+        elif prop.datatype == Datatype.PERSON_OR_ORGANIZATION or \
+                prop.datatype == Datatype.PERSON or \
+                prop.datatype == Datatype.ORGANIZATION:
+            if prop.cardinality == Cardinality.ZERO_OR_ONE:
+                pass
+                # TODO: add
+            if prop.cardinality == Cardinality.ONE_TO_UNBOUND:
+                inner_sizer = wx.BoxSizer()
+                box = wx.ListBox(parent, size=(250, -1))
+                box.AppendItems(prop.value)
+                self.data_widget = box
+                inner_sizer.Add(box)
+                control_sizer = wx.BoxSizer(wx.VERTICAL)
+                if prop.datatype == Datatype.PERSON:
+                    options = metadataset.persons
+                elif prop.datatype == Datatype.ORGANIZATION:
+                    options = metadataset.organizations
+                elif prop.datatype == Datatype.PERSON_OR_ORGANIZATION:
+                    options = metadataset.persons + metadataset.organizations
+                options_strs = ["Select to add"] + [str(o) for o in options]
+                choice = wx.Choice(parent, choices=options_strs, size=(250, -1))
+                choice.SetToolTip("Add a Person or Organization")
+                choice.Bind(wx.EVT_CHOICE, lambda e: parent.add_to_list(e, box, choice, choice.GetStringSelection()))
+                control_sizer.Add(choice, flag=wx.EXPAND)
+                remove_button = wx.Button(parent, label="Del Selected")
+                remove_button.Bind(wx.EVT_BUTTON,
+                                   lambda event: parent.remove_from_list(event, box))
+                control_sizer.Add(remove_button)
+                inner_sizer.Add(control_sizer)
+                sizer.Add(inner_sizer, pos=(index, 1))
 
         btn = wx.Button(parent, label="?")
         btn.Bind(wx.EVT_BUTTON, lambda event: parent.show_help(event, prop.description, prop.example))
@@ -571,6 +603,14 @@ class PropertyRow():
             if cardinality == Cardinality.ONE \
                     or cardinality == Cardinality.ZERO_OR_ONE:
                 return self.data_widget.GetLabel()
+        elif datatype == Datatype.PERSON_OR_ORGANIZATION or \
+                datatype == Datatype.PERSON or \
+                datatype == Datatype.ORGANIZATION:
+            if cardinality == Cardinality.ZERO_OR_ONE:
+                # TODO: add
+                pass
+            if cardinality == Cardinality.ONE_TO_UNBOUND:
+                return self.data_widget.GetStrings()
         # TODO: Funder
         # TODO: Grant
         # TODO: Address
@@ -583,7 +623,7 @@ class PropertyRow():
 
     def set_value(self, val):
         """
-        Returns the new property value that has been entered to the UI
+        # TODO: doc
         """
         datatype = self.prop.datatype
         cardinality = self.prop.cardinality
@@ -609,6 +649,14 @@ class PropertyRow():
                 self.data_widget.SetLabel(val)
         elif datatype == Datatype.PROJECT:
             self.data_widget.SetLabel(str(val))
+        elif datatype == Datatype.PERSON_OR_ORGANIZATION or \
+                datatype == Datatype.PERSON or \
+                datatype == Datatype.ORGANIZATION:
+            if cardinality == Cardinality.ZERO_OR_ONE:
+                # TODO: add
+                pass
+            if cardinality == Cardinality.ONE_TO_UNBOUND:
+                self.data_widget.AddItems([str(v) for v in val])
         # TODO: Funder
         # TODO: Grant
         # TODO: Address
@@ -629,6 +677,7 @@ class DataTab(wx.ScrolledWindow):
     def __init__(self, parent, dataset, title, multiple=False):
         wx.Panel.__init__(self, parent, style=wx.EXPAND)
 
+        self.parent = parent
         self.dataset = dataset
         self.multiple = multiple
         outer_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -685,18 +734,25 @@ class DataTab(wx.ScrolledWindow):
             self.start_date.convert_to_wx_date()
         evt.Skip()
 
-    def add_to_list(self, event, content_list, textcontrol, addable):
+    def add_to_list(self, event, content_list, widget, addable):
         """
         add an object to a listbox.
         """
         if not addable:  # is None
             return
         if str(addable).isspace() or \
+                addable == "Select to add" or \
                 str(addable) in content_list.GetStrings():
-            textcontrol.Remove(0, len(textcontrol.GetLineText(0)))
+            self.reset_widget(widget)
             return
         content_list.Append(str(addable))
-        textcontrol.Remove(0, len(textcontrol.GetLineText(0)))
+        self.reset_widget(widget)
+
+    def reset_widget(self, widget):
+        if isinstance(widget, wx.StaticText):
+            widget.Remove(0, len(widget.GetLineText(0)))
+        elif isinstance(widget, wx.Choice):
+            widget.SetSelection(0)
 
     def remove_from_list(self, event, content_list):
         """
@@ -771,7 +827,7 @@ class TabbedWindow(wx.Frame):
         # Create the tab windows
         tab1 = TabOne(nb, self.dataset)
         tab2 = DataTab(nb, self.dataset.project, "Project")
-        tab3 = DataTab(nb, self.dataset.dataset, "Dataset")
+        tab3 = DataTab(nb, self.dataset.dataset, "Dataset")  # TODO: should probably be multiple too
         tab4 = DataTab(nb, self.dataset.persons, "Person", multiple=True)
         tab5 = DataTab(nb, self.dataset.organizations, "Organization", multiple=True)
         # tab6 = DataTab(nb, None, "Data Management Plan")
@@ -832,6 +888,12 @@ class TabbedWindow(wx.Frame):
         self.parent.load_view()
         data_handler.current_window = None
         self.Destroy()
+
+    def get_persons(self):
+        return self.dataset.persons
+
+    def get_organizations(self):
+        return self.dataset.organizations
 
 
 if __name__ == '__main__':

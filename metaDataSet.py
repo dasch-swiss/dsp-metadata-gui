@@ -110,11 +110,11 @@ class MetaDataSet:
         self.name = name
         self.path = path
         self.files = []
-        self.project = Project(name)
-        self.dataset = Dataset(name, self.project)
+        self.project = Project(name, self)
+        self.dataset = Dataset(name, self.project, self)
         self.dataset.project.value = self.project
-        self.persons = [Person()]
-        self.organizations = [Organization()]
+        self.persons = [Person(self)]
+        self.organizations = [Organization(self)]
 
     def __str__(self):
         return str({
@@ -149,7 +149,8 @@ class Project():
     Corresponds to `dsp-repo:Project` in our ontology.
     """
 
-    def __init__(self, name):
+    def __init__(self, name, meta):
+        self.meta = meta
         self.name = Property("Name",
                              "The name of the Project",
                              "Test Project",
@@ -265,6 +266,9 @@ class Project():
     def __str__(self):
         return f"dsp-repo:Project <{self.name}>"
 
+    def get_metadataset(self):
+        return self.meta
+
 
 class Dataset():
     """
@@ -273,7 +277,8 @@ class Dataset():
     Corresponds to `dsp-repo:Dataset` in the ontology.
     """
 
-    def __init__(self, name, project):
+    def __init__(self, name, project, meta):
+        self.meta = meta
         self.title = Property("Title",
                               "Title of the dataset",
                               "Dataset-Title",
@@ -387,6 +392,9 @@ class Dataset():
     def __str__(self):
         return f"dsp-repo:Dataset <{self.title}>"
 
+    def get_metadataset(self):
+        return self.meta
+
 
 class Person():
     """
@@ -395,7 +403,8 @@ class Person():
     Corresponds to `dsp-repo:Person` in the ontology.
     """
 
-    def __init__(self):
+    def __init__(self, meta):
+        self.meta = meta
         self.sameAs = Property("Alternative URL",
                                "Alternative URL, pointing to an authority file (ORCID, VIAF, GND, ...)",
                                "https://orcid.org/000-000-000-000",
@@ -459,6 +468,9 @@ class Person():
     def __str__(self):
         return f"dsp-repo:Person <{self.givenName} {self.familyName}>"
 
+    def get_metadataset(self):
+        return self.meta
+
 
 class Organization():
     """
@@ -467,7 +479,8 @@ class Organization():
     Corresponds to `dsp-repo:Organization` in the ontology.
     """
 
-    def __init__(self):
+    def __init__(self, meta):
+        self.meta = meta
 
         self.name = Property("Legal Name",
                              "Legal name of the organization",
@@ -503,6 +516,9 @@ class Organization():
 
     def __str__(self):
         return f"dsp-repo:Organization <{self.name}>"
+
+    def get_metadataset(self):
+        return self.meta
 
 
 # TODO: dsp-repo:Grant (?)
