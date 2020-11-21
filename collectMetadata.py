@@ -14,6 +14,7 @@ from metaDataHelpers import CalendarDlg
 # - call method when something changed in a field; then, call specific validation
 # - allow for multiple datasets
 # - implement multiple of dataset/person/org/etc.
+# - abstract class for data classes in metaDataSet
 #
 #############################################
 
