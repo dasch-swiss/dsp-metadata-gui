@@ -187,6 +187,12 @@ class ProjectFrame(wx.Frame):
         save_menu_item = file_menu.Append(wx.ID_SAVE, "&Save")
         self.Bind(wx.EVT_MENU, self.on_save, source=save_menu_item)
         menu_bar.Append(file_menu, '&File')
+        options_menu = wx.Menu()
+        # LATER: add `save on tab change` option
+        menu_bar.Append(options_menu, '&Options')
+        options_help = wx.Menu()
+        # LATER: add `Show Help` option
+        menu_bar.Append(options_help, '&Help')
         self.SetMenuBar(menu_bar)
 
     def on_open_folder(self, event):
