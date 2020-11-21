@@ -370,7 +370,6 @@ class TabOne(wx.Panel):
         file_list = wx.ListBox(self, size=(550, -1))
         for f in dataset.files:
             file_list.Append(f)
-            # TODO: Test if that works already (as soon as we can add files)
         data_sizer.Add(file_list)
         button_sizer = wx.BoxSizer(wx.VERTICAL)
         btn_add = wx.Button(self, label="Add File(s)")
