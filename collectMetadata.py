@@ -551,7 +551,8 @@ class PropertyRow():
             if prop.cardinality == Cardinality.ONE_TO_UNBOUND:
                 inner_sizer = wx.BoxSizer()
                 box = wx.ListBox(parent, size=(250, -1))
-                box.AppendItems(prop.value)
+                if prop.value:
+                    box.AppendItems(prop.value)
                 self.data_widget = box
                 inner_sizer.Add(box)
                 control_sizer = wx.BoxSizer(wx.VERTICAL)
