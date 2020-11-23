@@ -1,4 +1,6 @@
 from enum import Enum
+import pyshacl
+from rdflib import Graph, URIRef, RDF, Literal, Namespace
 
 """
 The Classes defined here aim to represent a metadata-set, closely following the metadata ontology.
@@ -11,6 +13,10 @@ The Classes defined here aim to represent a metadata-set, closely following the 
 # - implement convert dataset to rdf functionality
 #
 #####################
+
+ontology_url = "https://raw.githubusercontent.com/dasch-swiss/dsp-ontologies/main/dsp-repository/v1/dsp-repository.shacl.ttl"
+
+dsp_repo = Namespace("http://ns.dasch.swiss/repository#")
 
 
 class Cardinality(Enum):
@@ -108,6 +114,7 @@ class MetaDataSet:
     def __init__(self, index: int, name: str, path: str):
         self.index = index
         self.name = name
+        self.short_name = "test"  # FIXME: make dynamic
         self.path = path
         self.files = []
         self.project = Project(name, self)
@@ -139,7 +146,33 @@ class MetaDataSet:
             res.extend(o.get_properties())
         return res
 
-    # TODO: add a "convert_to_rdf()" method or something like this
+    def validate_graph(self):
+        graph = self.generate_rdf_graph()
+        conforms, results_graph, results_text = pyshacl.validate(graph, shacl_graph=ontology_url)
+        print(f"Validation result: {conforms}")
+        return False
+
+    def generate_rdf_graph(self):
+        graph = Graph(base=dsp_repo)
+        graph.bind("dsp-repo", dsp_repo)
+        project_classname = self.short_name + "-project"
+        project = URIRef(dsp_repo[project_classname])
+        project_type = URIRef("http://ns.dasch.swiss/repository#Project")
+        # TODO: should be done in Project class
+        graph.add((project, RDF.type, project_type))
+        for prop in self.project.get_properties():
+            graph.add((project, prop.predicate, prop.rdf_value))
+        # TODO: add for rest of data too
+        print("\n------------------\n")
+        print(graph.serialize(format='nt').decode("utf-8"))
+        print("\n------------------\n")
+        print(graph.serialize(format='turtle').decode("utf-8"))
+        print("\n------------------\n")
+        print(graph.serialize(format='xml').decode("utf-8"))
+        print("\n------------------\n")
+        print(graph.serialize(format='json-ld').decode("utf-8"))
+        print("\n------------------\n")
+        return graph
 
 
 class Project():
@@ -169,7 +202,8 @@ class Project():
                                  Cardinality.ONE_TO_UNBOUND)
 
         self.discipline = Property("Discipline",
-                                   "Discipline and research fields from UNESCO nomenclature: https://skos.um.es/unesco6/?l=en or from http://www.snf.ch/SiteCollectionDocuments/allg_disziplinenliste.pdf",
+                                   """Discipline and research fields from UNESCO nomenclature: https://skos.um.es/unesco6/?l=en \
+                                   or from http://www.snf.ch/SiteCollectionDocuments/allg_disziplinenliste.pdf""",
                                    "http://skos.um.es/unesco6/11",
                                    Datatype.STRING_OR_URL,
                                    Cardinality.ONE_TO_UNBOUND)
@@ -539,7 +573,8 @@ class Property():
     # cardinality = None
 
     def __init__(self, name: str, description: str, example: str, datatype: Datatype.STRING,
-                 cardinality=Cardinality.UNBOUND, value=None, value_options=None):
+                 cardinality=Cardinality.UNBOUND, value=None, value_options=None, 
+                 predicate=dsp_repo.whatever):
         self.name = name
         self.description = description
         self.example = example
@@ -547,6 +582,13 @@ class Property():
         self.cardinality = cardinality
         self.value = value
         self.value_options = value_options
+        self.predicate = predicate
+        # TODO: implement real predicates
+
+    @property
+    def rdf_value(self):
+        return Literal(str(self.value))
+        # TODO: implement real logic
 
     def __str__(self):
         if self.value:

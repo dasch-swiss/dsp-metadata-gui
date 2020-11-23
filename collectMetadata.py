@@ -119,6 +119,8 @@ class DataHandling:
         # TODO: implement data procession.
         # Probably just calls processing on the selected data set
         print(f'Should be processing Dataset: {index}')
+        self.validate_graph(self.projects[index])
+        # TODO: do more
 
     def validate_graph(self, dataset):
         """
@@ -128,7 +130,13 @@ class DataHandling:
         but rather generates the RDF graph, which then gets validated.
         """
         print("should be validating the data")
-        # TODO: validate: call validation. and give indication, if there is a problem
+        validation_result = dataset.validate_graph()
+        if validation_result:
+            # TODO: give positive feedback to user
+            pass
+        else:
+            # TODO: inform user that validation has failed
+            pass
 
     def update_all(self, dataset):
         """
@@ -391,6 +399,8 @@ class TabOne(wx.Panel):
         sizer.Add(path_help, pos=(2, 2))
         sizer.AddGrowableCol(1)
         self.SetSizer(sizer)
+
+        # TODO: add some sort of "kürzel" that can be used for naming rdf classes
 
     def show_help(self, evt, message, sample):
         win = HelpPopup(self, message, sample)
