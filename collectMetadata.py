@@ -668,7 +668,7 @@ class PropertyRow():
                 # TODO: add
                 pass
             if cardinality == Cardinality.ONE_TO_UNBOUND:
-                self.data_widget.AddItems([str(v) for v in val])
+                self.data_widget.SetItems([str(v) for v in val])
         # TODO: Funder
         # TODO: Grant
         # TODO: Address
@@ -677,7 +677,7 @@ class PropertyRow():
         # TODO: Organization
         # TODO: Person/Organization
         # TODO: Type of Data
-        print("Couldn't set value.")
+        # print("Couldn't set value.")
 
     # def remove_entry(self, textcontrol):
     #     print("Do the remove")
