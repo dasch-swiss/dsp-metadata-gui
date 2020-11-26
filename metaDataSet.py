@@ -114,7 +114,6 @@ class MetaDataSet:
     def __init__(self, index: int, name: str, path: str):
         self.index = index
         self.name = name
-        self.short_name = "test"  # FIXME: make dynamic
         self.path = path
         self.files = []
         self.project = Project(name, self)
@@ -155,13 +154,8 @@ class MetaDataSet:
     def generate_rdf_graph(self):
         graph = Graph(base=dsp_repo)
         graph.bind("dsp-repo", dsp_repo)
-        project_classname = self.short_name + "-project"
-        project = URIRef(dsp_repo[project_classname])
-        project_type = URIRef("http://ns.dasch.swiss/repository#Project")
-        # TODO: should be done in Project class
-        graph.add((project, RDF.type, project_type))
-        for prop in self.project.get_properties():
-            graph.add((project, prop.predicate, prop.rdf_value))
+        project_classname = f"{self.project.shortcode}-project"
+        self.project.add_rdf_to_graph(graph, project_classname)
         # TODO: add for rest of data too
         print("\n------------------\n")
         print(graph.serialize(format='nt').decode("utf-8"))
@@ -302,6 +296,14 @@ class Project():
 
     def get_metadataset(self):
         return self.meta
+
+    def add_rdf_to_graph(self, graph: Graph, classname: str):
+        project = URIRef(dsp_repo[classname])
+        project_type = URIRef("http://ns.dasch.swiss/repository#Project")
+        # TODO: should be done in Project class
+        graph.add((project, RDF.type, project_type))
+        for prop in self.get_properties():
+            graph.add((project, prop.predicate, prop.rdf_value))
 
 
 class Dataset():
@@ -573,7 +575,7 @@ class Property():
     # cardinality = None
 
     def __init__(self, name: str, description: str, example: str, datatype: Datatype.STRING,
-                 cardinality=Cardinality.UNBOUND, value=None, value_options=None, 
+                 cardinality=Cardinality.UNBOUND, value=None, value_options=None,
                  predicate=dsp_repo.whatever):
         self.name = name
         self.description = description
