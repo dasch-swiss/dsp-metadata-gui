@@ -148,7 +148,8 @@ class MetaDataSet:
 
     def validate_graph(self):
         graph = self.generate_rdf_graph()
-        conforms, results_graph, results_text = pyshacl.validate(graph, shacl_graph=ontology_url)
+        conforms, results_graph, results_text = pyshacl.validate(
+            graph, shacl_graph=ontology_url)
         print(f"Validation result: {conforms}")
         return False
 
@@ -157,7 +158,8 @@ class MetaDataSet:
         graph.bind("dsp-repo", dsp_repo)
         project_classname = f"{self.project.shortcode}-project"
         self.project.add_rdf_to_graph(graph, project_classname, "Project")
-        dataset_classname = f"{self.project.shortcode}-dataset"  # TODO: should allow multiple
+        # TODO: should allow multiple
+        dataset_classname = f"{self.project.shortcode}-dataset"
         self.dataset.add_rdf_to_graph(graph, dataset_classname, "Dataset")
         for i, person in enumerate(self.persons):
             clsname = f"{self.project.shortcode}-person-{str(i + 1).zfill(3)}"
@@ -206,93 +208,112 @@ class Project(DataClass):
                              "Test Project",
                              Datatype.STRING,
                              Cardinality.ONE,
-                             name)
+                             name,
+                             predicate=dsp_repo.hasName)
+
         self.description = Property("Description",
                                     "Description of the Project",
                                     "This is a test project. All properties have been used to test these. You will just describe your project briefly.",
                                     Datatype.STRING,
-                                    Cardinality.ONE)
+                                    Cardinality.ONE,
+                                    predicate=dsp_repo.hasDescription)
+
         self.keywords = Property("Keywords",
                                  "Keywords and tags",
                                  "mathematics, science, history of science, history of mathematics. Use the plus sign to have a new field for each key word.",
                                  Datatype.STRING,
-                                 Cardinality.ONE_TO_UNBOUND)
+                                 Cardinality.ONE_TO_UNBOUND,
+                                 predicate=dsp_repo.hasKeywords)
 
         self.discipline = Property("Discipline",
                                    """Discipline and research fields from UNESCO nomenclature: https://skos.um.es/unesco6/?l=en \
                                    or from http://www.snf.ch/SiteCollectionDocuments/allg_disziplinenliste.pdf""",
                                    "http://skos.um.es/unesco6/11",
                                    Datatype.STRING_OR_URL,
-                                   Cardinality.ONE_TO_UNBOUND)
+                                   Cardinality.ONE_TO_UNBOUND,
+                                   predicate=dsp_repo.hasDiscipline)
 
         self.startDate = Property("Start Date",
                                   "The date when the project started, e. g. when funding was granted.",
                                   "2000-07-26T21:32:52",
                                   Datatype.DATE,
-                                  Cardinality.ONE)
+                                  Cardinality.ONE,
+                                  predicate=dsp_repo.hasStartDate)
 
         self.endDate = Property("End Date",
                                 "The date when the project was finished, e. g. when the last changes to the project data where completed.",
                                 "2000-07-26T21:32:52",
                                 Datatype.DATE,
-                                Cardinality.ONE)
+                                Cardinality.ONE,
+                                predicate=dsp_repo.hasEndDate)
 
         self.temporalCoverage = Property("Temporal coverage",
                                          "Temporal coverage of the project from http://perio.do/en/ or https://chronontology.dainst.org/",
                                          "http://chronontology.dainst.org/period/Ef9SyESSafJ1",
                                          Datatype.STRING_OR_URL,
-                                         Cardinality.ONE_TO_UNBOUND)
+                                         Cardinality.ONE_TO_UNBOUND,
+                                         predicate=dsp_repo.hasTemporalCoverage)
 
-        self.spacialCoverage = Property("Spacial coverage",
+        self.spatialCoverage = Property("Spatial coverage",
                                         "Spatial coverage of the project from Geonames URL: https://www.geonames.org/ or from Pleiades URL: https://pleiades.stoa.org/places",
                                         "https://www.geonames.org/6255148/europe.html",
                                         Datatype.PLACE,
-                                        Cardinality.ONE_TO_UNBOUND)
+                                        Cardinality.ONE_TO_UNBOUND,
+                                        predicate=dsp_repo.hasSpatialCoverage)
 
         self.funder = Property("Funder",
                                "Funding person or institution of the project",
                                "",
                                Datatype.PERSON_OR_ORGANIZATION,
-                               Cardinality.ONE_TO_UNBOUND)
+                               Cardinality.ONE_TO_UNBOUND,
+                               predicate=dsp_repo.hasFunder)
 
         self.grant = Property("Grant",
                               "Grant of the project",
                               "",
-                              Datatype.GRANT)
+                              Datatype.GRANT,
+                              predicate=dsp_repo.hasGrant)
 
         self.url = Property("URL",
                             "Landing page or Website of the project. We recommend DSP Landing Page. Optionally, a second URL can be added too.",
                             "https://test.dasch.swiss/",
                             Datatype.URL,
-                            Cardinality.ONE_TO_TWO)
+                            Cardinality.ONE_TO_TWO,
+                            predicate=dsp_repo.hasURL)
 
         self.shortcode = Property("Shortcode",
                                   "Internal shortcode of the project",
                                   "0000",
                                   Datatype.STRING,
-                                  Cardinality.ONE)
+                                  Cardinality.ONE,
+                                  value="0000",
+                                  predicate=dsp_repo.hasShortCode)
 
         self.alternateName = Property("Alternate Name",
                                       "Alternative name of the project, e.g. in case of an overly long official name",
                                       "Another Title",
-                                      Datatype.STRING)
+                                      Datatype.STRING,
+                                      predicate=dsp_repo.hasAlternateName)
 
         self.dataManagementPlan = Property("Data Management Plan",
                                            "Data Management Plan of the project",
                                            "",
                                            Datatype.DATA_MANAGEMENT_PLAN,
-                                           Cardinality.ZERO_OR_ONE)
+                                           Cardinality.ZERO_OR_ONE,
+                                           predicate=dsp_repo.hasDataManagementPlan)
 
         self.publication = Property("Publications",
                                     "Publications produced during the lifetime of the project",
                                     "Doe, J. (2000). A Publication.",
-                                    Datatype.STRING)
+                                    Datatype.STRING,
+                                    predicate=dsp_repo.hasPublication)
 
         self.contactPoint = Property("Contact Point",
                                      "Contact information",
                                      "",
                                      Datatype.PERSON_OR_ORGANIZATION,
-                                     Cardinality.ZERO_OR_ONE)
+                                     Cardinality.ZERO_OR_ONE,
+                                     predicate=dsp_repo.hasContactPoint)
 
     def get_properties(self):
         return [
@@ -303,7 +324,7 @@ class Project(DataClass):
             self.startDate,
             self.endDate,
             self.temporalCoverage,
-            self.spacialCoverage,
+            self.spatialCoverage,
             self.funder,
             self.grant,
             self.url,
@@ -332,89 +353,123 @@ class Dataset(DataClass):
                               "Dataset-Title",
                               Datatype.STRING,
                               Cardinality.ONE,
-                              value=f"Dataset of {name}")
+                              value=f"Dataset of {name}",
+                              predicate=dsp_repo.hasTitle)
+
         self.alternativeTitle = Property("Alternative title",
                                          "Alternative title of the dataset",
                                          "Another Dataset-Title",
                                          Datatype.STRING,
-                                         Cardinality.ONE)
+                                         Cardinality.ONE,
+                                         predicate=dsp_repo.hasAlternativeTitle)
+
         self.abstract = Property("Abstract",
                                  "Description of the dataset",
                                  "This is merely an exemplary dataset",
                                  Datatype.STRING_OR_URL,
-                                 Cardinality.ONE_TO_UNBOUND)
+                                 Cardinality.ONE_TO_UNBOUND,
+                                 predicate=dsp_repo.hasAbstract)
+
         self.sameAs = Property("Alternative URL",
                                "Alternative URL to the dataset, if applicable",
                                "https://test.dasch.swiss/",
                                Datatype.URL,
-                               Cardinality.UNBOUND)
+                               Cardinality.UNBOUND,
+                               predicate=dsp_repo.sameAs)
+
         self.typeOfData = Property("Type of data",
                                    "Type of data related to the dataset: xml, text, image, movie, audio",
                                    "xml",
                                    Datatype.CONTROLLED_VOCABULARY,
                                    Cardinality.ONE_TO_UNBOUND,
-                                   value_options=["xml", "text", "image", "movie", "audio"])
+                                   value_options=["xml", "text",
+                                                  "image", "movie", "audio"],
+                                   predicate=dsp_repo.hasTypeOfData)
+
         self.documentation = Property("Documentation",
                                       "Additional documentation",
                                       '"http://www.example.org/documentation.md" or "Work in Progress"',
                                       Datatype.STRING_OR_URL,
-                                      Cardinality.UNBOUND)
+                                      Cardinality.UNBOUND,
+                                      predicate=dsp_repo.hasDocumentation)
+
         self.license = Property("License",
                                 "The license terms of the dataset",
                                 "https://creativecommons.org/licenses/by/3.0",
                                 Datatype.URL,
-                                Cardinality.ONE_TO_UNBOUND)
+                                Cardinality.ONE_TO_UNBOUND,
+                                predicate=dsp_repo.hasLicense)
+
         self.accessConditions = Property("Conditions of Access",
                                          "Access conditions of the data",
                                          "Open Access",
                                          Datatype.STRING,
-                                         Cardinality.ONE)
+                                         Cardinality.ONE,
+                                         predicate=dsp_repo.hasConditionsOfAccess)
+
         self.howToCite = Property("How to cite",
                                   "How to cite the data",
                                   "Testprojekt (test), 2002, https://test.dasch.swiss",
                                   Datatype.STRING,
-                                  Cardinality.ONE)
+                                  Cardinality.ONE,
+                                  predicate=dsp_repo.hasHowToCite)
+
         self.status = Property("Dataset status",
                                "Current status of a dataset (testing phase, ongoing, finished)",
                                "The dataset is work in progress",
                                Datatype.STRING,
-                               Cardinality.ONE)
+                               Cardinality.ONE,
+                               predicate=dsp_repo.hasStatus)
+
         self.datePublished = Property("Date published",
                                       "Date of publication",
                                       "2000-08-01",
                                       Datatype.DATE,
-                                      Cardinality.ZERO_OR_ONE)
+                                      Cardinality.ZERO_OR_ONE,
+                                      predicate=dsp_repo.hasDatePublished)
+
         self.language = Property("Language",
                                  "Language(s) of the dataset",
                                  "Hetite",
                                  Datatype.STRING,
-                                 Cardinality.ONE_TO_UNBOUND)
+                                 Cardinality.ONE_TO_UNBOUND,
+                                 predicate=dsp_repo.hasLanguage)
+
         self.project = Property("is Part of",
                                 "The project to which the data set belongs",
                                 "",
                                 Datatype.PROJECT,
                                 Cardinality.ONE,
-                                value=project)
+                                value=project,
+                                predicate=dsp_repo.isPartOf)
+
         self.attribution = Property("Qualified Attribution",
                                     "Persons/Organization involved in the creation of the dataset",
                                     '<person> + "editor"',
                                     Datatype.ATTRIBUTION,
-                                    Cardinality.ONE_TO_UNBOUND)
+                                    Cardinality.ONE_TO_UNBOUND,
+                                    predicate=dsp_repo.hasQualifiedAttribution)
+
         self.dateCreated = Property("Date created",
                                     "Creation of the dataset",
                                     "2000-08-01",
                                     Datatype.DATE,
-                                    Cardinality.ZERO_OR_ONE)
+                                    Cardinality.ZERO_OR_ONE,
+                                    predicate=dsp_repo.hasDateCreated)
+
         self.dateModified = Property("Date modified",
                                      "Last modification of the dataset",
                                      "2000-08-01",
                                      Datatype.DATE,
-                                     Cardinality.ZERO_OR_ONE)
+                                     Cardinality.ZERO_OR_ONE,
+                                     predicate=dsp_repo.hasDateModified)
+
         self.distribution = Property("Distribution",
                                      "A downloadable form of this dataset, at a specific location, in a specific format",
                                      "https://test.dasch.swiss",
                                      Datatype.URL,
-                                     Cardinality.ZERO_OR_ONE)
+                                     Cardinality.ZERO_OR_ONE,
+                                     predicate=dsp_repo.hasDistribution)
 
     def get_properties(self):
         return [
@@ -457,49 +512,50 @@ class Person(DataClass):
                                "Alternative URL, pointing to an authority file (ORCID, VIAF, GND, ...)",
                                "https://orcid.org/000-000-000-000",
                                Datatype.URL,
-                               Cardinality.UNBOUND)
+                               Cardinality.UNBOUND,
+                               predicate=dsp_repo.sameAs)
 
         self.givenName = Property("Given name",
                                   "Given name of the person",
                                   "John",
                                   Datatype.STRING,
-                                  Cardinality.ONE_TO_UNBOUND)
+                                  Cardinality.ONE_TO_UNBOUND,
+                                  predicate=dsp_repo.hasGivenName)
 
         self.familyName = Property("Family name",
                                    "Family name of the person",
                                    "Doe",
                                    Datatype.STRING,
-                                   Cardinality.ONE_TO_UNBOUND)
+                                   Cardinality.ONE_TO_UNBOUND,
+                                   predicate=dsp_repo.hasFamilyName)
 
         self.email = Property("E-mail",
                               "E-mail address of the person",
                               "john.doe@dasch.swiss",
                               Datatype.IRI,
-                              Cardinality.ZERO_TO_TWO)
+                              Cardinality.ZERO_TO_TWO,
+                              predicate=dsp_repo.hasEmail)
 
         self.address = Property("Address",
                                 "Postal address of the person",
                                 "",
                                 Datatype.ADDRESS,
-                                Cardinality.UNBOUND)
+                                Cardinality.UNBOUND,
+                                predicate=dsp_repo.hasAddress)
 
         self.memberOf = Property("Member of",
                                  "Affiliation of the person",
                                  "",
                                  Datatype.ORGANIZATION,
-                                 Cardinality.ONE_TO_UNBOUND)
+                                 Cardinality.ONE_TO_UNBOUND,
+                                 predicate=dsp_repo.isMemberOf)
 
         self.jobTitle = Property("Job title",
                                  "Position/Job title of the person",
                                  "Dr.",
                                  Datatype.STRING,
-                                 Cardinality.ONE_TO_UNBOUND)
-
-        self.role = Property("Role",
-                             "Role of the person within the project/dataset",
-                             "Editor",
-                             Datatype.STRING,
-                             Cardinality.ONE_TO_UNBOUND)
+                                 Cardinality.ONE_TO_UNBOUND,
+                                 predicate=dsp_repo.hasJobTitle)
 
     def get_properties(self):
         return [
@@ -509,8 +565,7 @@ class Person(DataClass):
             self.email,
             self.address,
             self.memberOf,
-            self.jobTitle,
-            self.role
+            self.jobTitle
         ]
 
     def __str__(self):
@@ -534,25 +589,29 @@ class Organization(DataClass):
                              "Legal name of the organization",
                              "DaSCH",
                              Datatype.STRING,
-                             Cardinality.ONE_TO_UNBOUND)
+                             Cardinality.ONE_TO_UNBOUND,
+                             predicate=dsp_repo.hasName)
 
         self.email = Property("E-mail",
                               "E-mail address of the organization",
                               "info@dasch.swiss",
                               Datatype.IRI,
-                              Cardinality.ZERO_OR_ONE)
+                              Cardinality.ZERO_OR_ONE,
+                              predicate=dsp_repo.hasEmail)
 
         self.address = Property("Address",
                                 "Postal address of the organization",
                                 "",
                                 Datatype.ADDRESS,
-                                Cardinality.UNBOUND)
+                                Cardinality.UNBOUND,
+                                predicate=dsp_repo.hasAddress)
 
         self.url = Property("URL",
                             "URL of the organization",
                             "https://dasch.swiss",
                             Datatype.URL,
-                            Cardinality.ZERO_OR_ONE)
+                            Cardinality.ZERO_OR_ONE,
+                            predicate=dsp_repo.hasURL)
 
     def get_properties(self):
         return [
