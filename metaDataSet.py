@@ -1,7 +1,7 @@
 from enum import Enum
 from abc import ABC
 import pyshacl
-from rdflib import Graph, URIRef, RDF, Literal, Namespace
+from rdflib import Graph, URIRef, RDF, Literal, Namespace, BNode
 
 """
 The Classes defined here aim to represent a metadata-set, closely following the metadata ontology.
@@ -167,17 +167,17 @@ class MetaDataSet:
         for i, org in enumerate(self.organizations):
             clsname = f"{self.project.shortcode}-organization-{str(i + 1).zfill(3)}"
             org.add_rdf_to_graph(graph, clsname, "Organization")
-
-        # TODO: add for rest of data too
-        print("\n------------------\n")
-        print(graph.serialize(format='nt').decode("utf-8"))
+        # TODO: delegate more to property
+        # TODO: avoid empty triples
+        # print("\n------------------\n")
+        # print(graph.serialize(format='nt').decode("utf-8"))
         print("\n------------------\n")
         print(graph.serialize(format='turtle').decode("utf-8"))
         print("\n------------------\n")
-        print(graph.serialize(format='xml').decode("utf-8"))
-        print("\n------------------\n")
-        print(graph.serialize(format='json-ld').decode("utf-8"))
-        print("\n------------------\n")
+        # print(graph.serialize(format='xml').decode("utf-8"))
+        # print("\n------------------\n")
+        # print(graph.serialize(format='json-ld').decode("utf-8"))
+        # print("\n------------------\n")
         return graph
 
 
@@ -191,7 +191,9 @@ class DataClass(ABC):
         # TODO: should be done in Project class
         graph.add((iri, RDF.type, type))
         for prop in self.get_properties():
-            graph.add((iri, prop.predicate, prop.rdf_value))
+            # graph.add((iri, prop.predicate, prop.rdf_value))
+            # graph.add(prop.get_triple(iri))
+            graph += prop.get_triple(iri)
 
 
 class Project(DataClass):
@@ -656,12 +658,31 @@ class Property():
         self.value = value
         self.value_options = value_options
         self.predicate = predicate
-        # TODO: implement real predicates
 
-    @property
-    def rdf_value(self):
-        return Literal(str(self.value))
-        # TODO: implement real logic
+    # @property
+    # def rdf_value(self):
+    #     if self.datatype == Datatype.STRING:
+    #         return Literal(self.value)
+    #     elif self.datatype == Datatype.URL:
+    #         g = Graph()
+    #         url = BNode()
+            
+    #         return B
+
+    #     return Literal(str(self.value))
+    #     # TODO: implement real logic
+
+    def get_triple(self, subject):
+        g = Graph()
+        if self.datatype == Datatype.STRING:
+            if isinstance(self.value, str):
+                g.add((subject, self.predicate, Literal(self.value)))
+            elif isinstance(self.value, list):
+                for v in self.value:
+                    g.add((subject, self.predicate, Literal(v)))
+        # TODO: more types
+        # return (subject, self.predicate, self.rdf_value)
+        return g
 
     def __str__(self):
         if self.value:
