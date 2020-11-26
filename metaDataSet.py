@@ -159,6 +159,13 @@ class MetaDataSet:
         self.project.add_rdf_to_graph(graph, project_classname, "Project")
         dataset_classname = f"{self.project.shortcode}-dataset"  # TODO: should allow multiple
         self.dataset.add_rdf_to_graph(graph, dataset_classname, "Dataset")
+        for i, person in enumerate(self.persons):
+            clsname = f"{self.project.shortcode}-person-{str(i + 1).zfill(3)}"
+            person.add_rdf_to_graph(graph, clsname, "Person")
+        for i, org in enumerate(self.organizations):
+            clsname = f"{self.project.shortcode}-organization-{str(i + 1).zfill(3)}"
+            org.add_rdf_to_graph(graph, clsname, "Organization")
+
         # TODO: add for rest of data too
         print("\n------------------\n")
         print(graph.serialize(format='nt').decode("utf-8"))
