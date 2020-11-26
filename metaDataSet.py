@@ -1,4 +1,5 @@
 from enum import Enum
+from abc import ABC
 import pyshacl
 from rdflib import Graph, URIRef, RDF, Literal, Namespace
 
@@ -155,7 +156,9 @@ class MetaDataSet:
         graph = Graph(base=dsp_repo)
         graph.bind("dsp-repo", dsp_repo)
         project_classname = f"{self.project.shortcode}-project"
-        self.project.add_rdf_to_graph(graph, project_classname)
+        self.project.add_rdf_to_graph(graph, project_classname, "Project")
+        dataset_classname = f"{self.project.shortcode}-dataset"  # TODO: should allow multiple
+        self.dataset.add_rdf_to_graph(graph, dataset_classname, "Dataset")
         # TODO: add for rest of data too
         print("\n------------------\n")
         print(graph.serialize(format='nt').decode("utf-8"))
@@ -169,7 +172,20 @@ class MetaDataSet:
         return graph
 
 
-class Project():
+class DataClass(ABC):
+    def get_metadataset(self):
+        return self.meta
+
+    def add_rdf_to_graph(self, graph: Graph, classname: str, typename: str):
+        iri = URIRef(dsp_repo[classname])
+        type = dsp_repo[typename]
+        # TODO: should be done in Project class
+        graph.add((iri, RDF.type, type))
+        for prop in self.get_properties():
+            graph.add((iri, prop.predicate, prop.rdf_value))
+
+
+class Project(DataClass):
     """
     Project shape.
 
@@ -294,19 +310,8 @@ class Project():
     def __str__(self):
         return f"dsp-repo:Project <{self.name}>"
 
-    def get_metadataset(self):
-        return self.meta
 
-    def add_rdf_to_graph(self, graph: Graph, classname: str):
-        project = URIRef(dsp_repo[classname])
-        project_type = URIRef("http://ns.dasch.swiss/repository#Project")
-        # TODO: should be done in Project class
-        graph.add((project, RDF.type, project_type))
-        for prop in self.get_properties():
-            graph.add((project, prop.predicate, prop.rdf_value))
-
-
-class Dataset():
+class Dataset(DataClass):
     """
     Dataset Shape.
 
@@ -432,7 +437,7 @@ class Dataset():
         return self.meta
 
 
-class Person():
+class Person(DataClass):
     """
     Person Shape.
 
@@ -508,7 +513,7 @@ class Person():
         return self.meta
 
 
-class Organization():
+class Organization(DataClass):
     """
     Organization Shape.
 
