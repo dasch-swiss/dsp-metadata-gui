@@ -697,6 +697,8 @@ class Property():
             # Handle datatypes
             if datatype == Datatype.STRING:
                 g.add((subject, self.predicate, Literal(v, datatype=XSD.string)))
+            elif datatype == Datatype.DATE:
+                g.add((subject, self.predicate, Literal(v, datatype=XSD.date)))
             elif datatype == Datatype.URL:
                 blank = BNode()
                 g.add((subject, self.predicate, blank))
@@ -706,8 +708,18 @@ class Property():
                 g.add((b2, RDF.type, SDO.PropertyValue))
                 g.add((b2, SDO.propertyID, Literal(Property.get_url_property_id(v))))
                 g.add((blank, SDO.url, Literal(v)))
-            if datatype == Datatype.DATE:
-                g.add((subject, self.predicate, Literal(v, datatype=XSD.date)))
+            elif datatype == Datatype.PLACE:
+                b0 = BNode()
+                g.add((subject, self.predicate, b0))
+                g.add((b0, RDF.type, SDO.Place))
+                b1 = BNode()
+                g.add((b0, SDO.url, b1))
+                g.add((b1, RDF.type, SDO.URL))
+                b2 = BNode()
+                g.add((b1, SDO.propertyID, b2))
+                g.add((b2, RDF.type, SDO.PropertyValue))
+                g.add((b2, SDO.propertyID, Literal("Geonames")))
+                g.add((b2, SDO.url, Literal(v)))
             else:
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
         # TODO: more types
