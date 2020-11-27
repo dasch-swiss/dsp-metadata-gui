@@ -1,7 +1,11 @@
 from enum import Enum
 from abc import ABC
+from urllib.parse import urlparse
+import re
 import pyshacl
+import validators
 from rdflib import Graph, URIRef, RDF, Literal, Namespace, BNode
+from rdflib.namespace import SDO, XSD
 
 """
 The Classes defined here aim to represent a metadata-set, closely following the metadata ontology.
@@ -156,6 +160,8 @@ class MetaDataSet:
     def generate_rdf_graph(self):
         graph = Graph(base=dsp_repo)
         graph.bind("dsp-repo", dsp_repo)
+        graph.bind("schema", SDO)
+        graph.bind("xsd", XSD)
         project_classname = f"{self.project.shortcode}-project"
         self.project.add_rdf_to_graph(graph, project_classname, "Project")
         # TODO: should allow multiple
@@ -659,29 +665,52 @@ class Property():
         self.value_options = value_options
         self.predicate = predicate
 
-    # @property
-    # def rdf_value(self):
-    #     if self.datatype == Datatype.STRING:
-    #         return Literal(self.value)
-    #     elif self.datatype == Datatype.URL:
-    #         g = Graph()
-    #         url = BNode()
-            
-    #         return B
-
-    #     return Literal(str(self.value))
-    #     # TODO: implement real logic
+    def get_url_property_id(url: str):
+        if re.search('skos\\.um\\.es', url):
+            return "SKOS UNESCO Nomenclature"
+        loc = urlparse(url).netloc
+        if len(loc.split('.')) > 2:
+            return '.'.join(loc.split('.')[1:])
+        return loc
 
     def get_triple(self, subject):
         g = Graph()
-        if self.datatype == Datatype.STRING:
-            if isinstance(self.value, str):
-                g.add((subject, self.predicate, Literal(self.value)))
-            elif isinstance(self.value, list):
-                for v in self.value:
-                    g.add((subject, self.predicate, Literal(v)))
+        # Ensure the data can be looped
+        vals = self.value
+        if not isinstance(vals, list):
+            vals = [vals]
+        for v in vals:
+            if not v:
+                continue
+            if isinstance(v, str) and v.isspace():
+                continue
+            # resolve datatype ambiguity
+            datatype = self.datatype
+            if datatype == Datatype.STRING_OR_URL:
+                if v and validators.url(str(v)):
+                    datatype = Datatype.URL
+                elif v and v.startswith('www.'):
+                    v = "http://" + v
+                    datatype = Datatype.URL
+                else:
+                    datatype = Datatype.STRING
+            # Handle datatypes
+            if datatype == Datatype.STRING:
+                g.add((subject, self.predicate, Literal(v, datatype=XSD.string)))
+            elif datatype == Datatype.URL:
+                blank = BNode()
+                g.add((subject, self.predicate, blank))
+                g.add((blank, RDF.type, SDO.URL))
+                b2 = BNode()
+                g.add((blank, SDO.propertyID, b2))
+                g.add((b2, RDF.type, SDO.PropertyValue))
+                g.add((b2, SDO.propertyID, Literal(Property.get_url_property_id(v))))
+                g.add((blank, SDO.url, Literal(v)))
+            if datatype == Datatype.DATE:
+                g.add((subject, self.predicate, Literal(v, datatype=XSD.date)))
+            else:
+                print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
         # TODO: more types
-        # return (subject, self.predicate, self.rdf_value)
         return g
 
     def __str__(self):
