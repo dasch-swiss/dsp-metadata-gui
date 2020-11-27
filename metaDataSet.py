@@ -694,6 +694,12 @@ class Property():
                     datatype = Datatype.URL
                 else:
                     datatype = Datatype.STRING
+            if datatype == Datatype.PERSON_OR_ORGANIZATION:
+                print(type(v))  # FIXME: should be Person/Organization, not string
+                if isinstance(v, Person):
+                    datatype = Datatype.PERSON
+                else:
+                    datatype = Datatype.ORGANIZATION
             # Handle datatypes
             if datatype == Datatype.STRING:
                 g.add((subject, self.predicate, Literal(v, datatype=XSD.string)))
@@ -720,9 +726,20 @@ class Property():
                 g.add((b2, RDF.type, SDO.PropertyValue))
                 g.add((b2, SDO.propertyID, Literal("Geonames")))
                 g.add((b2, SDO.url, Literal(v)))
+            elif datatype == Datatype.PERSON:
+                g.add((subject, self.predicate, Literal(v)))
+                # TODO: make this actual link, once this is object, not string
+            elif datatype == Datatype.ORGANIZATION:
+                g.add((subject, self.predicate, Literal(v)))
+                # TODO: make this actual link, once this is object, not string
             else:
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
-        # TODO: more types
+            # TODO: Grant
+            # TODO: DMP
+            # TODO: controlled vocab
+            # TODO: Project
+            # TODO: Attribution
+            # TODO: Address
         return g
 
     def __str__(self):
