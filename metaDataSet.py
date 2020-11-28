@@ -15,7 +15,7 @@ The Classes defined here aim to represent a metadata-set, closely following the 
 #
 # - implement on the fly input validation
 # - implement overall data validation
-# - implement convert dataset to rdf functionality
+# - don't add person/org/etc. to graph, unless they're referenced somewhere
 #
 #####################
 
@@ -179,8 +179,6 @@ class MetaDataSet:
             person.add_rdf_to_graph(graph, "Person")
         for i, org in enumerate(self.organizations):
             org.add_rdf_to_graph(graph, "Organization")
-        # TODO: delegate more to property
-        # TODO: avoid empty triples
         # print("\n------------------\n")
         # print(graph.serialize(format='nt').decode("utf-8"))
         print("\n------------------\n")
@@ -715,7 +713,7 @@ class Property():
                 else:
                     datatype = Datatype.ORGANIZATION
             # Handle datatypes
-            if datatype == Datatype.STRING:
+            if datatype == Datatype.STRING or datatype == Datatype.CONTROLLED_VOCABULARY:
                 g.add((subject, self.predicate, Literal(v, datatype=XSD.string)))
             elif datatype == Datatype.DATE:
                 g.add((subject, self.predicate, Literal(v, datatype=XSD.date)))
@@ -753,8 +751,6 @@ class Property():
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
             # TODO: Grant
             # TODO: DMP
-            # TODO: controlled vocab
-            # TODO: Project
             # TODO: Attribution
             # TODO: Address
         return g
