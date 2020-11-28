@@ -126,6 +126,16 @@ class MetaDataSet:
         self.dataset.project.value = self.project
         self.persons = [Person(self)]
         self.organizations = [Organization(self)]
+        self.update_iris()
+
+    def update_iris(self):
+        # TODO: this method needs to be called whenever a person/org/dataset is added/removed
+        self.project.iri_suffix = "-project"
+        self.dataset.iri_suffix = "-dataset"  # TODO: allow multiple
+        for i, person in enumerate(self.persons):
+            person.iri_suffix = f"-person-{str(i + 1).zfill(3)}"
+        for i, org in enumerate(self.organizations):
+            org.iri_suffix = f"-organization-{str(i + 1).zfill(3)}"
 
     def __str__(self):
         return str({
@@ -162,17 +172,13 @@ class MetaDataSet:
         graph.bind("dsp-repo", dsp_repo)
         graph.bind("schema", SDO)
         graph.bind("xsd", XSD)
-        project_classname = f"{self.project.shortcode}-project"
-        self.project.add_rdf_to_graph(graph, project_classname, "Project")
+        self.project.add_rdf_to_graph(graph, "Project")
         # TODO: should allow multiple
-        dataset_classname = f"{self.project.shortcode}-dataset"
-        self.dataset.add_rdf_to_graph(graph, dataset_classname, "Dataset")
+        self.dataset.add_rdf_to_graph(graph, "Dataset")
         for i, person in enumerate(self.persons):
-            clsname = f"{self.project.shortcode}-person-{str(i + 1).zfill(3)}"
-            person.add_rdf_to_graph(graph, clsname, "Person")
+            person.add_rdf_to_graph(graph, "Person")
         for i, org in enumerate(self.organizations):
-            clsname = f"{self.project.shortcode}-organization-{str(i + 1).zfill(3)}"
-            org.add_rdf_to_graph(graph, clsname, "Organization")
+            org.add_rdf_to_graph(graph, "Organization")
         # TODO: delegate more to property
         # TODO: avoid empty triples
         # print("\n------------------\n")
@@ -188,11 +194,11 @@ class MetaDataSet:
 
 
 class DataClass(ABC):
-    def get_metadataset(self):
+    def get_metadataset(self) -> MetaDataSet:
         return self.meta
 
-    def add_rdf_to_graph(self, graph: Graph, classname: str, typename: str):
-        iri = URIRef(dsp_repo[classname])
+    def add_rdf_to_graph(self, graph: Graph, typename: str):
+        iri = self.get_rdf_iri()
         type = dsp_repo[typename]
         # TODO: should be done in Project class
         graph.add((iri, RDF.type, type))
@@ -200,6 +206,14 @@ class DataClass(ABC):
             # graph.add((iri, prop.predicate, prop.rdf_value))
             # graph.add(prop.get_triple(iri))
             graph += prop.get_triple(iri)
+
+    # TODO: ensure that this gets updated whenever the shortcode changes
+    def get_rdf_iri(self):
+        shortcode = self.get_metadataset().project.shortcode.value
+        if not shortcode:
+            shortcode = "xxxx"
+        classname = shortcode + self.iri_suffix
+        return URIRef(dsp_repo[classname])
 
 
 class Project(DataClass):
@@ -731,6 +745,9 @@ class Property():
                 # TODO: make this actual link, once this is object, not string
             elif datatype == Datatype.ORGANIZATION:
                 g.add((subject, self.predicate, Literal(v)))
+                # TODO: make this actual link, once this is object, not string
+            elif datatype == Datatype.PROJECT:
+                g.add((subject, self.predicate, v.get_rdf_iri()))
                 # TODO: make this actual link, once this is object, not string
             else:
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
