@@ -494,6 +494,7 @@ class PropertyRow():
                     or prop.cardinality == Cardinality.UNBOUND:  # String or similar, 1-n, 0-2 or 0-n
                 inner_sizer = wx.BoxSizer()
                 textcontrol = wx.TextCtrl(parent, size=(200, -1))
+                textcontrol.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
                 inner_sizer.Add(textcontrol)
                 inner_sizer.AddSpacer(5)
                 button_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -503,6 +504,7 @@ class PropertyRow():
                                                               content_list,
                                                               textcontrol,
                                                               textcontrol.GetValue()))
+                # plus_button.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
                 button_sizer.Add(plus_button, flag=wx.EXPAND)
 
                 remove_button = wx.Button(parent, label="Del Selected")
@@ -524,15 +526,6 @@ class PropertyRow():
         elif prop.datatype == Datatype.DATE:
             if prop.cardinality == Cardinality.ONE \
                     or prop.cardinality == Cardinality.ZERO_OR_ONE:
-                # input_format = '%d-%m-%Y'
-                # display_format = '%d-%m-%Y'
-                # date = DateCtrl(parent, size=(130, -1), pos=(150, 80),
-                #                 input_format=input_format, display_format=display_format,
-                #                 title=prop.name, default_to_today=False, allow_null=False,
-                #                 initial_date=prop.value)
-                # sizer.Add(date, pos=(index, 1))
-                # parent.first_time = True  # don't validate date first time
-                # parent.SetFocus()
                 inner_sizer = wx.BoxSizer()
                 date = wx.StaticText(parent, size=(100, -1))
                 if prop.value:
@@ -682,6 +675,24 @@ class PropertyRow():
         datatype = self.prop.datatype
         # Do we need this: Maybe yes
         cardinality = self.prop.cardinality
+        if datatype == Datatype.STRING:
+            print("Datatype is STRING")
+        if datatype == Datatype.STRING_OR_URL:
+            print("Datatype is STRING_OR_URL")
+        if datatype == Datatype.URL:
+            print("Datatype is URL")
+        if datatype == Datatype.IRI:
+            print("Datatype is IRI")
+        if datatype == Datatype.PLACE:
+            print("Datatype is PLACE")
+        if datatype == Datatype.DATE:
+            print("Datatype is DATE")
+        if datatype == Datatype.PROJECT:
+            print("Datatype is PROJECT")
+        if datatype == Datatype.PERSON:
+            print("Datatype is PERSON")
+        if datatype == Datatype.PERSON_OR_ORGANIZATION:
+            print("Datatype is PERSON_OR_ORGANIZATION")
         print("Huu, I lost my focus")
         print(datatype)
         # Leave it for now...
