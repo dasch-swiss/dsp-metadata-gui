@@ -462,15 +462,18 @@ class PropertyRow():
                 textcontrol = wx.TextCtrl(parent, size=(550, -1))
                 if prop.value:
                     textcontrol.SetValue(prop.value)
+                textcontrol.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
                 sizer.Add(textcontrol, pos=(index, 1))
                 self.data_widget = textcontrol
             elif prop.cardinality == Cardinality.ONE_TO_TWO:  # String or similar, 1-2
                 inner_sizer = wx.BoxSizer(wx.VERTICAL)
                 textcontrol1 = wx.TextCtrl(parent, size=(550, -1))
+                textcontrol1.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
                 inner_sizer.Add(textcontrol1)
                 inner_sizer.AddSpacer(5)
                 textcontrol2 = wx.TextCtrl(parent, size=(550, -1))
                 textcontrol2.SetHint('Second value is optional')
+                textcontrol2.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
                 inner_sizer.Add(textcontrol2)
                 if prop.value:
                     if len(prop.value) > 0 and prop.value[0]:
@@ -483,10 +486,12 @@ class PropertyRow():
                 inner_sizer = wx.BoxSizer(wx.VERTICAL)
                 textcontrol1 = wx.TextCtrl(parent, size=(550, -1))
                 textcontrol1.SetHint('Optional')
+                textcontrol1.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
                 inner_sizer.Add(textcontrol1)
                 inner_sizer.AddSpacer(5)
                 textcontrol2 = wx.TextCtrl(parent, size=(550, -1))
                 textcontrol2.SetHint('Optional')
+                textcontrol2.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
                 inner_sizer.Add(textcontrol2)
                 if prop.value:
                     if len(prop.value) > 0 and prop.value[0]:
@@ -499,6 +504,7 @@ class PropertyRow():
                     or prop.cardinality == Cardinality.UNBOUND:  # String or similar, 1-n, 0-2 or 0-n
                 inner_sizer = wx.BoxSizer()
                 textcontrol = wx.TextCtrl(parent, size=(200, -1))
+                textcontrol.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
                 inner_sizer.Add(textcontrol)
                 inner_sizer.AddSpacer(5)
                 button_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -508,6 +514,7 @@ class PropertyRow():
                                                               content_list,
                                                               textcontrol,
                                                               textcontrol.GetValue()))
+                # plus_button.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
                 button_sizer.Add(plus_button, flag=wx.EXPAND)
 
                 remove_button = wx.Button(parent, label="Del Selected")
@@ -529,15 +536,6 @@ class PropertyRow():
         elif prop.datatype == Datatype.DATE:
             if prop.cardinality == Cardinality.ONE \
                     or prop.cardinality == Cardinality.ZERO_OR_ONE:
-                # input_format = '%d-%m-%Y'
-                # display_format = '%d-%m-%Y'
-                # date = DateCtrl(parent, size=(130, -1), pos=(150, 80),
-                #                 input_format=input_format, display_format=display_format,
-                #                 title=prop.name, default_to_today=False, allow_null=False,
-                #                 initial_date=prop.value)
-                # sizer.Add(date, pos=(index, 1))
-                # parent.first_time = True  # don't validate date first time
-                # parent.SetFocus()
                 inner_sizer = wx.BoxSizer()
                 date = wx.StaticText(parent, size=(100, -1))
                 if prop.value:
@@ -683,6 +681,35 @@ class PropertyRow():
     #     print("Do the remove")
     # TODO: remove? never used?
 
+    def onKillFocus(self, event):
+        datatype = self.prop.datatype
+        # Do we need this: Maybe yes
+        cardinality = self.prop.cardinality
+        if datatype == Datatype.STRING:
+            print("Datatype is STRING")
+        if datatype == Datatype.STRING_OR_URL:
+            print("Datatype is STRING_OR_URL")
+        if datatype == Datatype.URL:
+            print("Datatype is URL")
+        if datatype == Datatype.IRI:
+            print("Datatype is IRI")
+        if datatype == Datatype.PLACE:
+            print("Datatype is PLACE")
+        if datatype == Datatype.DATE:
+            print("Datatype is DATE")
+        if datatype == Datatype.PROJECT:
+            print("Datatype is PROJECT")
+        if datatype == Datatype.PERSON:
+            print("Datatype is PERSON")
+        if datatype == Datatype.PERSON_OR_ORGANIZATION:
+            print("Datatype is PERSON_OR_ORGANIZATION")
+        print("Huu, I lost my focus")
+        print(datatype)
+        # Leave it for now...
+        print(cardinality)
+        print(self.get_value())
+        event.Skip()
+
 
 class DataTab(wx.ScrolledWindow):
 
@@ -725,19 +752,6 @@ class DataTab(wx.ScrolledWindow):
         self.SetSizer(outer_sizer)
 
         self.SetScrollbars(0, 16, 60, 15)
-
-        # save_button = wx.Button(self, label='Save')
-        # # save_button.Bind(wx.EVT_BUTTON, self.on_save)
-        # saveclose_button = wx.Button(self, label='Save and Close')
-        # # saveclose_button.Bind(wx.EVT_BUTTON, self.on_saveclose)
-        # cancel_button = wx.Button(self, label='Cancel')
-        # # cancel_button.Bind(wx.EVT_BUTTON, self.on_close)
-        # button_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        # button_sizer.Add(save_button, 0, wx.ALL, 5)
-        # button_sizer.Add(saveclose_button, 0, wx.ALL, 5)
-        # button_sizer.Add(cancel_button, 0, wx.ALL, 5)
-        # sizer.Add(button_sizer, pos=(0, i+1), span=(1, 3), flag=wx.ALL | wx.BOTTOM, border=5)
-        # self.SetSizer(sizer)
 
     def on_t_got_focus(self, evt):
         if self.first_time:
