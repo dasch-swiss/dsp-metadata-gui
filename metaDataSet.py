@@ -1,5 +1,5 @@
 from enum import Enum
-from abc import ABC
+from abc import ABC, abstractmethod
 from urllib.parse import urlparse
 import re
 import pyshacl
@@ -35,7 +35,16 @@ class Cardinality(Enum):
     ONE_TO_TWO = 4
     ZERO_TO_TWO = 5
 
-    def get_optionality_string(card):
+    def get_optionality_string(card) -> str:
+        """
+        Returns wether or not a cardinality is optional.
+
+        Args:
+            card (Cardinality): the cardinality in question
+
+        Returns:
+            str: "Mandatory" or "Optional", depending on the cardinality
+        """
         if card == Cardinality.ONE \
                 or card == Cardinality.ONE_TO_TWO \
                 or card == Cardinality.ONE_TO_UNBOUND:
@@ -80,6 +89,9 @@ class MetaDataSet:
     - path: the full path of the folder that was selected.
     - files: a list of relevant files in the folder
     - project: a `metaDataSet.Project` representation of the actual metadata (as specified by the ontology).
+    - dataset: # TODO: make multiple
+    - persons: a list of `metaDataSet.Person`
+    - organizations: a list of `metaDataSet.Organization`
 
     At a later stage, this class should be able to return a representation of its data in form of an RDF graph.
     """
@@ -129,6 +141,12 @@ class MetaDataSet:
         self.update_iris()
 
     def update_iris(self):
+        """
+        Updates the IRIs of all DataClass fields.
+
+        This method should be called whenever something is added/removed
+        to the lists holding DataClass instances (persons, etc.).
+        """
         # TODO: this method needs to be called whenever a person/org/dataset is added/removed
         self.project.iri_suffix = "-project"
         self.dataset.iri_suffix = "-dataset"  # TODO: allow multiple
@@ -151,7 +169,10 @@ class MetaDataSet:
             ]
         })
 
-    def get_all_properties(self):
+    def get_all_properties(self) -> list:
+        """
+        Returns a list of all properties held by fields of this class. (person, dataset, etc.)
+        """
         res = self.project.get_properties()
         res.extend(self.dataset.get_properties())
         for p in self.persons:
@@ -161,13 +182,22 @@ class MetaDataSet:
         return res
 
     def validate_graph(self):
+        """
+        Validates the graph of the entire data against the SHACL ontology.
+        """
         graph = self.generate_rdf_graph()
         conforms, results_graph, results_text = pyshacl.validate(
             graph, shacl_graph=ontology_url)
         print(f"Validation result: {conforms}")
-        return False
+        return conforms
 
-    def generate_rdf_graph(self):
+    def generate_rdf_graph(self) -> Graph:
+        """
+        Generates the RFD graph of the entire dataset.
+
+        Returns:
+            Graph: The RDF graph
+        """
         graph = Graph(base=dsp_repo)
         graph.bind("dsp-repo", dsp_repo)
         graph.bind("schema", SDO)
@@ -192,10 +222,26 @@ class MetaDataSet:
 
 
 class DataClass(ABC):
+    """
+    Abstract parent class of all classes holding data.
+    """
     def get_metadataset(self) -> MetaDataSet:
+        """
+        Returns the `MetaDataSet` to which this class belongs
+
+        Returns:
+            MetaDataSet: The owner MetaDataSet
+        """
         return self.meta
 
     def add_rdf_to_graph(self, graph: Graph, typename: str):
+        """
+        Adds the RDF representation of this class to a graph
+
+        Args:
+            graph (Graph): the `rdflib.Graph` to which the triples should be added
+            typename (str): the type name of this class
+        """
         iri = self.get_rdf_iri()
         type = dsp_repo[typename]
         # TODO: should be done in Project class
@@ -203,15 +249,30 @@ class DataClass(ABC):
         for prop in self.get_properties():
             # graph.add((iri, prop.predicate, prop.rdf_value))
             # graph.add(prop.get_triple(iri))
-            graph += prop.get_triple(iri)
+            graph += prop.get_triples(iri)
 
     # TODO: ensure that this gets updated whenever the shortcode changes
-    def get_rdf_iri(self):
+    def get_rdf_iri(self) -> URIRef:
+        """
+        Return the iri of the object.
+
+        This can be called to use the object as subject of an RDF triple.
+
+        Returns:
+            URIRef: the IRI
+        """
         shortcode = self.get_metadataset().project.shortcode.value
         if not shortcode:
             shortcode = "xxxx"
         classname = shortcode + self.iri_suffix
         return URIRef(dsp_repo[classname])
+
+    @abstractmethod
+    def get_properties(self) -> list:
+        """
+        Return a list of all `Property` fields of this class
+        """
+        raise NotImplementedError
 
 
 class Project(DataClass):
@@ -219,9 +280,12 @@ class Project(DataClass):
     Project shape.
 
     Corresponds to `dsp-repo:Project` in our ontology.
-    """
 
-    def __init__(self, name, meta):
+    Args:
+        name (str): The name of the project
+        meta (MetaDataSet): the owning `MetaDataSet`
+    """
+    def __init__(self, name: str, meta: MetaDataSet):
         self.meta = meta
         self.name = Property("Name",
                              "The name of the Project",
@@ -677,15 +741,38 @@ class Property():
         self.value_options = value_options
         self.predicate = predicate
 
-    def get_url_property_id(url: str):
+    def get_url_property_id(url: str) -> str:
+        """
+        This method tries to guess the propetyID for a URL.
+
+        For certain pre-defined cases, a reasonable propertyID is chosen;
+        otherwise, the net location is being extracted, if possible.
+
+        Args:
+            url (str): a URL
+
+        Returns:
+            str: a propertyID
+        """
         if re.search('skos\\.um\\.es', url):
             return "SKOS UNESCO Nomenclature"
         loc = urlparse(url).netloc
         if len(loc.split('.')) > 2:
             return '.'.join(loc.split('.')[1:])
-        return loc
+        if loc:
+            return loc
+        return url[:12]
 
-    def get_triple(self, subject):
+    def get_triples(self, subject: URIRef) -> Graph:
+        """
+        Returns a Graph containing the triples that represent this property, in respect to a given subject.
+
+        Args:
+            subject (URIRef): the subject to which the property is object
+
+        Returns:
+            Graph: a graph containing one or multiple triples that represent the property
+        """
         g = Graph()
         # Ensure the data can be looped
         vals = self.value
