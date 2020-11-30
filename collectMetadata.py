@@ -14,7 +14,7 @@ from metaDataHelpers import CalendarDlg
 # - call method when something changed in a field; then, call specific validation
 # - allow for multiple datasets
 # - implement multiple of dataset/person/org/etc.
-# - abstract class for data classes in metaDataSet
+# - Add some sort of 'import from RDF' functionality
 #
 #############################################
 
@@ -116,11 +116,9 @@ class DataHandling:
         """
         ToDo: implement this class.
         """
-        # TODO: implement data procession.
-        # Probably just calls processing on the selected data set
+        # TODO: how do process_data and vaidate_graph really divide labour?
         print(f'Should be processing Dataset: {index}')
         self.validate_graph(self.projects[index])
-        # TODO: do more
 
     def validate_graph(self, dataset):
         """
@@ -255,11 +253,6 @@ class ProjectPanel(wx.Panel):
         new_folder_button.Bind(wx.EVT_BUTTON, parent.on_open_folder)
         main_sizer.Add(new_folder_button, 0, wx.ALL | wx.CENTER, 5)
 
-        # Something is not yet working...
-        # edit_button = wx.Button(self, label='Add Folder')
-        # edit_button.Bind(wx.EVT_BUTTON, self.on_open_folder)
-        # main_sizer.Add(edit_button, 0, wx.ALL | wx.CENTER, 5)
-
         edit_tabs_button = wx.Button(self, label='Edit in Tabs')
         edit_tabs_button.Bind(wx.EVT_BUTTON, self.on_edit_tabbed)
         main_sizer.Add(edit_tabs_button, 0, wx.ALL | wx.CENTER, 5)
@@ -289,15 +282,14 @@ class ProjectPanel(wx.Panel):
         """
         Display all loaded repos in the list.
         """
-
         for project in data_handler.projects:
             self.list_ctrl.InsertItem(project.index, project.path)
             self.list_ctrl.SetItem(project.index, 1, project.name)
             self.list_ctrl.SetItem(project.index, 2, str(project.files))
-            # LATER: make this look pretty? depends on what we do with files
 
     def create_header(self):
-        """ Here we create the header for once and always...
+        """
+        Here we create the header for once and always...
         """
         # Construct a header
         self.list_ctrl.InsertColumn(0, 'Folder', width=340)
@@ -312,8 +304,9 @@ class ProjectPanel(wx.Panel):
         self.display_repos()
 
     def on_edit_tabbed(self, event):
-        """ This function calls the EditBaseDialog and hands over pFiles, a list.
-                """
+        """
+        This function calls the EditBaseDialog and hands over pFiles, a list.
+        """
         selection = self.list_ctrl.GetFocusedItem()
         if selection >= 0:
             repo = data_handler.projects[selection]
@@ -340,7 +333,6 @@ class ProjectPanel(wx.Panel):
             dir_list.remove('.DS_Store')
 
         data_handler.add_project(folder_path)
-        # self.display_repos()
         self.load_view()
 
 
@@ -389,7 +381,6 @@ class TabOne(wx.Panel):
         btn_del.Bind(wx.EVT_BUTTON, lambda event: self.remove_file(dataset, file_list))
         button_sizer.Add(btn_add, flag=wx.EXPAND)
         button_sizer.Add(btn_del, flag=wx.EXPAND)
-        # TODO: Add functionality to buttons
         data_sizer.Add(button_sizer)
         sizer.Add(data_sizer, pos=(2, 1))
         path_help = wx.Button(self, label="?")
@@ -400,8 +391,6 @@ class TabOne(wx.Panel):
         sizer.Add(path_help, pos=(2, 2))
         sizer.AddGrowableCol(1)
         self.SetSizer(sizer)
-
-        # TODO: add some sort of "kürzel" that can be used for naming rdf classes
 
     def show_help(self, evt, message, sample):
         win = HelpPopup(self, message, sample)
@@ -728,7 +717,6 @@ class DataTab(wx.ScrolledWindow):
             if multiple:
                 ds = dataset[0]
             for i, prop in enumerate(ds.get_properties()):
-                # self.add_widgets(dataset, prop, sizer, i)
                 row = PropertyRow(self, ds, prop, sizer, i, metadataset)
                 data_handler.associate_container(prop, row)
 
