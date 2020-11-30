@@ -549,9 +549,9 @@ class PropertyRow():
                 # TODO: add
             if prop.cardinality == Cardinality.ONE_TO_UNBOUND:
                 inner_sizer = wx.BoxSizer()
-                box = wx.ListBox(parent, size=(250, -1))
+                box = wx.ListBox(parent, size=(400, -1))
                 if prop.value:
-                    box.AppendItems(prop.value)
+                    box.AppendItems([str(v) for v in prop.value])
                 self.data_widget = box
                 inner_sizer.Add(box)
                 control_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -562,7 +562,7 @@ class PropertyRow():
                 elif prop.datatype == Datatype.PERSON_OR_ORGANIZATION:
                     options = metadataset.persons + metadataset.organizations
                 options_strs = ["Select to add"] + [str(o) for o in options]
-                choice = wx.Choice(parent, choices=options_strs, size=(250, -1))
+                choice = wx.Choice(parent, choices=options_strs, size=(150, -1))
                 choice.SetToolTip("Add a Person or Organization")
                 choice.Bind(wx.EVT_CHOICE, lambda e: parent.add_to_list(e, box, choice, choice.GetStringSelection()))
                 control_sizer.Add(choice, flag=wx.EXPAND)
@@ -609,9 +609,12 @@ class PropertyRow():
                 datatype == Datatype.ORGANIZATION:
             if cardinality == Cardinality.ZERO_OR_ONE:
                 # TODO: add
-                pass
+                return None
             if cardinality == Cardinality.ONE_TO_UNBOUND:
-                return self.data_widget.GetStrings()
+                strs = self.data_widget.GetStrings()
+                objs = [self.metadataset.get_by_iri(s) for s in strs]
+                # print(objs)
+                return objs
         # TODO: Funder
         # TODO: Grant
         # TODO: Address

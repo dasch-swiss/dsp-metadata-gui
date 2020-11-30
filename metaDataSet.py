@@ -220,6 +220,18 @@ class MetaDataSet:
         # print("\n------------------\n")
         return graph
 
+    def get_by_iri(self, iri: str):
+        if str(self.project) == iri:
+            return self.project
+        if str(self.dataset) == iri:  # TODO: should be multiple
+            return self.dataset
+        for o in self.persons:
+            if str(o) == iri:
+                return o
+        for o in self.organizations:
+            if str(o) == iri:
+                return o
+
 
 class DataClass(ABC):
     """
@@ -653,7 +665,8 @@ class Person(DataClass):
         ]
 
     def __str__(self):
-        return f"dsp-repo:Person <{self.givenName} {self.familyName}>"
+        return str(self.get_rdf_iri())
+        # return f"dsp-repo:Person <{self.givenName} {self.familyName}>"
 
     def get_metadataset(self):
         return self.meta
@@ -706,7 +719,8 @@ class Organization(DataClass):
         ]
 
     def __str__(self):
-        return f"dsp-repo:Organization <{self.name}>"
+        return str(self.get_rdf_iri())
+        # return f"dsp-repo:Organization <{self.name}>"
 
     def get_metadataset(self):
         return self.meta
@@ -794,7 +808,6 @@ class Property():
                 else:
                     datatype = Datatype.STRING
             if datatype == Datatype.PERSON_OR_ORGANIZATION:
-                print(type(v))  # FIXME: should be Person/Organization, not string
                 if isinstance(v, Person):
                     datatype = Datatype.PERSON
                 else:
@@ -826,10 +839,10 @@ class Property():
                 g.add((b2, SDO.propertyID, Literal("Geonames")))
                 g.add((b2, SDO.url, Literal(v)))
             elif datatype == Datatype.PERSON:
-                g.add((subject, self.predicate, Literal(v)))
+                g.add((subject, self.predicate, v.get_rdf_iri()))
                 # TODO: make this actual link, once this is object, not string
             elif datatype == Datatype.ORGANIZATION:
-                g.add((subject, self.predicate, Literal(v)))
+                g.add((subject, self.predicate, v.get_rdf_iri()))
                 # TODO: make this actual link, once this is object, not string
             elif datatype == Datatype.PROJECT:
                 g.add((subject, self.predicate, v.get_rdf_iri()))
