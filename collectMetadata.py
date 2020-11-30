@@ -679,40 +679,36 @@ class PropertyRow():
         # TODO: Type of Data
         # print("Couldn't set value.")
 
-    # def remove_entry(self, textcontrol):
-    #     print("Do the remove")
-    # TODO: remove? never used?
-
     def onKillFocus(self, event):
         data_handler.update_all(self.metadataset)
         return
-        datatype = self.prop.datatype
-        # Do we need this: Maybe yes
-        cardinality = self.prop.cardinality
-        if datatype == Datatype.STRING:
-            print("Datatype is STRING")
-        if datatype == Datatype.STRING_OR_URL:
-            print("Datatype is STRING_OR_URL")
-        if datatype == Datatype.URL:
-            print("Datatype is URL")
-        if datatype == Datatype.IRI:
-            print("Datatype is IRI")
-        if datatype == Datatype.PLACE:
-            print("Datatype is PLACE")
-        if datatype == Datatype.DATE:
-            print("Datatype is DATE")
-        if datatype == Datatype.PROJECT:
-            print("Datatype is PROJECT")
-        if datatype == Datatype.PERSON:
-            print("Datatype is PERSON")
-        if datatype == Datatype.PERSON_OR_ORGANIZATION:
-            print("Datatype is PERSON_OR_ORGANIZATION")
-        print("Huu, I lost my focus")
-        print(datatype)
-        # Leave it for now...
-        print(cardinality)
-        print(self.get_value())
-        event.Skip()
+        # datatype = self.prop.datatype
+        # # Do we need this: Maybe yes
+        # cardinality = self.prop.cardinality
+        # if datatype == Datatype.STRING:
+        #     print("Datatype is STRING")
+        # if datatype == Datatype.STRING_OR_URL:
+        #     print("Datatype is STRING_OR_URL")
+        # if datatype == Datatype.URL:
+        #     print("Datatype is URL")
+        # if datatype == Datatype.IRI:
+        #     print("Datatype is IRI")
+        # if datatype == Datatype.PLACE:
+        #     print("Datatype is PLACE")
+        # if datatype == Datatype.DATE:
+        #     print("Datatype is DATE")
+        # if datatype == Datatype.PROJECT:
+        #     print("Datatype is PROJECT")
+        # if datatype == Datatype.PERSON:
+        #     print("Datatype is PERSON")
+        # if datatype == Datatype.PERSON_OR_ORGANIZATION:
+        #     print("Datatype is PERSON_OR_ORGANIZATION")
+        # print("Huu, I lost my focus")
+        # print(datatype)
+        # # Leave it for now...
+        # print(cardinality)
+        # print(self.get_value())
+        # event.Skip()
 
 
 class DataTab(wx.ScrolledWindow):
@@ -808,22 +804,10 @@ class DataTab(wx.ScrolledWindow):
         win.Popup()
 
     def pick_date(self, evt, label: wx.StaticText, prop):
-        # date = "xxxx-xx-xx"
-        # TODO: open date picker dialog here, to assign actual value to date
-        # label.SetLabel(date)
         with CalendarDlg(self, prop.name, label.GetLabel()) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 label.SetLabel(dlg.cal.Date.FormatISODate())
                 data_handler.update_all(self.metadataset)
-
-        # dlg = CalendarDlg(self)
-        # dlg.CentreOnScreen()
-        # if dlg.ShowModal() == wx.ID_OK:
-        #     self.date = dlg.cal.Date
-        #     self.Value = self.date.Format(self.display_format)
-        #     self.current_format = self.DISPLAY_FORMAT
-        #     self.nav = True  # force navigation to next control
-        # dlg.Destroy()
 
 
 class HelpPopup(wx.PopupTransientWindow):
