@@ -13,6 +13,7 @@ The Classes defined here aim to represent a metadata-set, closely following the 
 
 ##### TODO-List #####
 #
+# - Class `Grant`
 # - implement on the fly input validation
 # - implement overall data validation
 # - don't add person/org/etc. to graph, unless they're referenced somewhere
@@ -844,6 +845,21 @@ class Property():
                 g.add((subject, self.predicate, v.get_rdf_iri()))
             elif datatype == Datatype.PROJECT:
                 g.add((subject, self.predicate, v.get_rdf_iri()))
+            elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
+                # print(type(v))
+                # print(type(v[0]))
+                # print(type(v[1]))
+                if v[0] or v[1]:
+                    dmp = URIRef('DMP')  # FIXME: should be something proper
+                    g.add((subject, self.predicate, dmp))
+                    g.add((dmp, RDF.type, dsp_repo.DataManagementPlan))
+                    if v[0]:
+                        g.add((dmp, dsp_repo.isAvailable, Literal(v[0], datatype=XSD.boolean)))
+                    if v[1]:
+                        b1 = BNode()
+                        g.add((dmp, dsp_repo.hasURL, b1))
+                        g.add((b1, RDF.type, SDO.URL))
+                        g.add((b1, SDO.url, Literal(v[1])))
             else:
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
             # TODO: Grant

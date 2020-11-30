@@ -345,7 +345,7 @@ class TabOne(wx.Panel):
         wx.Panel.__init__(self, parent)
         self.dataset = dataset
 
-        ##### Project name as caption
+        # Project name as caption
         sizer = wx.GridBagSizer(10, 10)
         project_label = wx.StaticText(self, label="Current Project:")
         project_name = wx.StaticText(self, label=self.dataset.name)
@@ -353,7 +353,7 @@ class TabOne(wx.Panel):
         sizer.Add(project_label, pos=(0, 0))
         sizer.Add(project_name, pos=(0, 1))
 
-        ##### Path to folder
+        # Path to folder
         path_label = wx.StaticText(self, label="Path (Readonly): ")
         sizer.Add(path_label, pos=(1, 0))
         path_field = wx.TextCtrl(self, style=wx.TE_READONLY, size=(550, -1))
@@ -366,7 +366,7 @@ class TabOne(wx.Panel):
                                                                    "/some/path/to/folder"))
         sizer.Add(path_help, pos=(1, 2))
 
-        ##### Files
+        # Files
         files_label = wx.StaticText(self, label="Files: ")
         sizer.Add(files_label, pos=(2, 0))
         data_sizer = wx.BoxSizer()
@@ -578,11 +578,24 @@ class PropertyRow():
                 choice.Bind(wx.EVT_CHOICE, lambda e: parent.add_to_list(e, box, choice, choice.GetStringSelection()))
                 control_sizer.Add(choice, flag=wx.EXPAND)
                 remove_button = wx.Button(parent, label="Del Selected")
-                remove_button.Bind(wx.EVT_BUTTON,
-                                   lambda event: parent.remove_from_list(event, box))
+                remove_button.Bind(wx.EVT_BUTTON, lambda event: parent.remove_from_list(event, box))
                 control_sizer.Add(remove_button)
                 inner_sizer.Add(control_sizer)
                 sizer.Add(inner_sizer, pos=(index, 1))
+        elif prop.datatype == Datatype.DATA_MANAGEMENT_PLAN:
+            inner_sizer = wx.BoxSizer(wx.VERTICAL)
+            cb = wx.CheckBox(parent, label='is available')
+            cb.Bind(wx.EVT_CHECKBOX, lambda e: data_handler.update_all(self.metadataset))
+            inner_sizer.Add(cb)
+            text = wx.TextCtrl(parent, size=(550, -1))
+            text.SetHint('Optional URL')
+            text.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
+            inner_sizer.Add(text)
+            if prop.value:
+                cb.SetValue(prop.value[0])
+                text.SetLabel(prop.value[1])
+            sizer.Add(inner_sizer, pos=(index, 1))
+            self.data_widget = [cb, text]
 
         btn = wx.Button(parent, label="?")
         btn.Bind(wx.EVT_BUTTON, lambda event: parent.show_help(event, prop.description, prop.example))
@@ -619,19 +632,22 @@ class PropertyRow():
                 datatype == Datatype.PERSON or \
                 datatype == Datatype.ORGANIZATION:
             if cardinality == Cardinality.ZERO_OR_ONE:
-                return self.metadataset.get_by_iri(self.data_widget.GetString(self.data_widget.GetSelection()))
+                selection = self.data_widget.GetSelection()
+                if selection < 0:
+                    selection = 0
+                string = self.data_widget.GetString(selection)
+                return self.metadataset.get_by_iri(string)
             if cardinality == Cardinality.ONE_TO_UNBOUND:
                 strs = self.data_widget.GetStrings()
                 objs = [self.metadataset.get_by_iri(s) for s in strs]
-                # print(objs)
                 return objs
-        # TODO: Funder
+        elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
+            return (
+                self.data_widget[0].GetValue(),
+                self.data_widget[1].GetValue(),
+            )
         # TODO: Grant
         # TODO: Address
-        # TODO: DMP
-        # TODO: Person
-        # TODO: Organization
-        # TODO: Person/Organization
         # TODO: Type of Data
         return "Couldn't find my value... sorry"
 
@@ -670,13 +686,11 @@ class PropertyRow():
                 self.data_widget.SetSelection(self.data_widget.FindString(str(val)))
             if cardinality == Cardinality.ONE_TO_UNBOUND:
                 self.data_widget.SetItems([str(v) for v in val])
-        # TODO: Funder
+        elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
+            self.data_widget[0].SetValue(val[0])
+            self.data_widget[1].SetValue(val[1])
         # TODO: Grant
         # TODO: Address
-        # TODO: DMP
-        # TODO: Person
-        # TODO: Organization
-        # TODO: Person/Organization
         # TODO: Type of Data
         # print("Couldn't set value.")
 
