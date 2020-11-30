@@ -840,13 +840,10 @@ class Property():
                 g.add((b2, SDO.url, Literal(v)))
             elif datatype == Datatype.PERSON:
                 g.add((subject, self.predicate, v.get_rdf_iri()))
-                # TODO: make this actual link, once this is object, not string
             elif datatype == Datatype.ORGANIZATION:
                 g.add((subject, self.predicate, v.get_rdf_iri()))
-                # TODO: make this actual link, once this is object, not string
             elif datatype == Datatype.PROJECT:
                 g.add((subject, self.predicate, v.get_rdf_iri()))
-                # TODO: make this actual link, once this is object, not string
             else:
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
             # TODO: Grant

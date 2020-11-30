@@ -545,8 +545,19 @@ class PropertyRow():
                 prop.datatype == Datatype.PERSON or \
                 prop.datatype == Datatype.ORGANIZATION:
             if prop.cardinality == Cardinality.ZERO_OR_ONE:
-                pass
-                # TODO: add
+                if prop.datatype == Datatype.PERSON:
+                    options = metadataset.persons
+                elif prop.datatype == Datatype.ORGANIZATION:
+                    options = metadataset.organizations
+                elif prop.datatype == Datatype.PERSON_OR_ORGANIZATION:
+                    options = metadataset.persons + metadataset.organizations
+                options_strs = ["Select to add"] + [str(o) for o in options]
+                choice = wx.Choice(parent, choices=options_strs, size=(450, -1))
+                if metadataset.get_by_iri(str(prop.value)):
+                    choice.SetSelection(choice.FindString(str(prop.value)))
+                choice.SetToolTip("Add a Person or Organization")
+                self.data_widget = choice
+                sizer.Add(choice, pos=(index, 1))
             if prop.cardinality == Cardinality.ONE_TO_UNBOUND:
                 inner_sizer = wx.BoxSizer()
                 box = wx.ListBox(parent, size=(400, -1))
@@ -608,8 +619,7 @@ class PropertyRow():
                 datatype == Datatype.PERSON or \
                 datatype == Datatype.ORGANIZATION:
             if cardinality == Cardinality.ZERO_OR_ONE:
-                # TODO: add
-                return None
+                return self.metadataset.get_by_iri(self.data_widget.GetString(self.data_widget.GetSelection()))
             if cardinality == Cardinality.ONE_TO_UNBOUND:
                 strs = self.data_widget.GetStrings()
                 objs = [self.metadataset.get_by_iri(s) for s in strs]
@@ -657,8 +667,7 @@ class PropertyRow():
                 datatype == Datatype.PERSON or \
                 datatype == Datatype.ORGANIZATION:
             if cardinality == Cardinality.ZERO_OR_ONE:
-                # TODO: add
-                pass
+                self.data_widget.SetSelection(self.data_widget.FindString(str(val)))
             if cardinality == Cardinality.ONE_TO_UNBOUND:
                 self.data_widget.SetItems([str(v) for v in val])
         # TODO: Funder
