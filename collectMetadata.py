@@ -147,6 +147,7 @@ class DataHandling:
 
         TODO: Ensure that this works even with multiple persons/organizations.
         """
+        print('update data')
         for prop in dataset.get_all_properties():
             if prop.datatype == Datatype.PROJECT:  # Never update project
                 continue
@@ -445,8 +446,9 @@ class PropertyRow():
         index (int): the row in the sizer grid
     """
 
-    def __init__(self, parent, data_class, prop, sizer, index):
+    def __init__(self, parent, data_class, prop, sizer, index, metadataset):
         self.prop = prop
+        self.metadataset = metadataset
         name_label = wx.StaticText(parent, label=prop.name + ": ")
         sizer.Add(name_label, pos=(index, 0))
 
@@ -504,7 +506,7 @@ class PropertyRow():
                     or prop.cardinality == Cardinality.UNBOUND:  # String or similar, 1-n, 0-2 or 0-n
                 inner_sizer = wx.BoxSizer()
                 textcontrol = wx.TextCtrl(parent, size=(200, -1))
-                textcontrol.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
+                # textcontrol.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
                 inner_sizer.Add(textcontrol)
                 inner_sizer.AddSpacer(5)
                 button_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -682,6 +684,8 @@ class PropertyRow():
     # TODO: remove? never used?
 
     def onKillFocus(self, event):
+        data_handler.update_all(self.metadataset)
+        return
         datatype = self.prop.datatype
         # Do we need this: Maybe yes
         cardinality = self.prop.cardinality
@@ -713,12 +717,13 @@ class PropertyRow():
 
 class DataTab(wx.ScrolledWindow):
 
-    def __init__(self, parent, dataset, title, multiple=False):
+    def __init__(self, parent, metadataset, dataset, title, multiple=False):
         wx.Panel.__init__(self, parent, style=wx.EXPAND)
 
         self.parent = parent
         self.dataset = dataset
         self.multiple = multiple
+        self.metadataset = metadataset
         outer_sizer = wx.BoxSizer(wx.VERTICAL)
         sizer = wx.GridBagSizer(10, 10)
 
@@ -728,7 +733,7 @@ class DataTab(wx.ScrolledWindow):
                 ds = dataset[0]
             for i, prop in enumerate(ds.get_properties()):
                 # self.add_widgets(dataset, prop, sizer, i)
-                row = PropertyRow(self, ds, prop, sizer, i)
+                row = PropertyRow(self, ds, prop, sizer, i, metadataset)
                 data_handler.associate_container(prop, row)
 
         if multiple:
@@ -773,10 +778,12 @@ class DataTab(wx.ScrolledWindow):
             return
         content_list.Append(str(addable))
         self.reset_widget(widget)
+        data_handler.update_all(self.metadataset)
 
     def reset_widget(self, widget):
-        if isinstance(widget, wx.StaticText):
-            widget.Remove(0, len(widget.GetLineText(0)))
+        if isinstance(widget, wx.StaticText) or \
+                isinstance(widget, wx.TextCtrl):
+            widget.SetValue('')
         elif isinstance(widget, wx.Choice):
             widget.SetSelection(0)
 
@@ -807,6 +814,7 @@ class DataTab(wx.ScrolledWindow):
         with CalendarDlg(self, prop.name, label.GetLabel()) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 label.SetLabel(dlg.cal.Date.FormatISODate())
+                data_handler.update_all(self.metadataset)
 
         # dlg = CalendarDlg(self)
         # dlg.CentreOnScreen()
@@ -852,10 +860,10 @@ class TabbedWindow(wx.Frame):
 
         # Create the tab windows
         tab1 = TabOne(nb, self.dataset)
-        tab2 = DataTab(nb, self.dataset.project, "Project")
-        tab3 = DataTab(nb, self.dataset.dataset, "Dataset")  # TODO: should probably be multiple too
-        tab4 = DataTab(nb, self.dataset.persons, "Person", multiple=True)
-        tab5 = DataTab(nb, self.dataset.organizations, "Organization", multiple=True)
+        tab2 = DataTab(nb, self.dataset, self.dataset.project, "Project")
+        tab3 = DataTab(nb, self.dataset, self.dataset.dataset, "Dataset")  # TODO: should probably be multiple too
+        tab4 = DataTab(nb, self.dataset, self.dataset.persons, "Person", multiple=True)
+        tab5 = DataTab(nb, self.dataset, self.dataset.organizations, "Organization", multiple=True)
         # tab6 = DataTab(nb, None, "Data Management Plan")
 
         # Add the windows to tabs and name them.
