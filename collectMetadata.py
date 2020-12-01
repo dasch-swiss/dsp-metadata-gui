@@ -399,14 +399,6 @@ class TabOne(wx.Panel):
             dataset.files.remove(string_selected)
             file_list.Delete(selection)
 
-    def update_data(self):
-        pass
-        # TODO implement
-
-    def refresh_ui(self):
-        pass
-        # TODO implement
-
 
 class PropertyRow():
     """
@@ -870,7 +862,7 @@ class TabbedWindow(wx.Frame):
         nb.AddPage(tab5, "Organization")
         # nb.AddPage(tab6, "Data Management Plan")
 
-        data_handler.tabs = [tab1, tab2, tab3, tab4, tab5]
+        data_handler.tabs = [tab2, tab3, tab4, tab5]
 
         nb_sizer = wx.BoxSizer()
         nb_sizer.Add(nb, 1, wx.ALL | wx.EXPAND)
