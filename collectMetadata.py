@@ -791,7 +791,7 @@ class DataTab(wx.ScrolledWindow):
         data_handler.refresh_ui()
 
     def change_selection(self, event):
-        print("changed selection")
+        self.multiple_selection = event.GetEventObject().GetSelection()
         data_handler.update_all()
         data_handler.refresh_ui()
         # TODO: do I need more here?
