@@ -126,7 +126,7 @@ class DataHandling:
             # TODO: inform user that validation has failed
             pass
 
-    def update_all(self, dataset):
+    def update_all(self):
         """
         Update date from GUI.
 
@@ -137,8 +137,9 @@ class DataHandling:
         """
         for tab in self.tabs:
             tab.update_data()
+        self.refresh_ui()
 
-    def refresh_ui(self, dataset):
+    def refresh_ui(self):
         """
         Refresh all values in the UI according to the saved values.
 
@@ -555,6 +556,7 @@ class PropertyRow():
                 choice = wx.Choice(parent, choices=options_strs, size=(150, -1))
                 choice.SetToolTip("Add a Person or Organization")
                 choice.Bind(wx.EVT_CHOICE, lambda e: parent.add_to_list(e, box, choice, choice.GetStringSelection()))
+                self.choice_widget = choice
                 control_sizer.Add(choice, flag=wx.EXPAND)
                 remove_button = wx.Button(parent, label="Del Selected")
                 remove_button.Bind(wx.EVT_BUTTON, lambda event: parent.remove_from_list(event, box))
@@ -564,7 +566,7 @@ class PropertyRow():
         elif prop.datatype == Datatype.DATA_MANAGEMENT_PLAN:
             inner_sizer = wx.BoxSizer(wx.VERTICAL)
             cb = wx.CheckBox(parent, label='is available')
-            cb.Bind(wx.EVT_CHECKBOX, lambda e: data_handler.update_all(self.metadataset))
+            cb.Bind(wx.EVT_CHECKBOX, lambda e: data_handler.update_all())
             inner_sizer.Add(cb)
             text = wx.TextCtrl(parent, size=(550, -1))
             text.SetHint('Optional URL')
@@ -638,8 +640,18 @@ class PropertyRow():
     def refresh_ui(self):
         self.set_value(self.prop.value)
         if self.choice_widget:
-            pass
-            # TODO: implement
+            if self.prop.datatype == Datatype.PERSON_OR_ORGANIZATION or \
+                    self.prop.datatype == Datatype.PERSON or \
+                    self.prop.datatype == Datatype.ORGANIZATION:
+                options = []
+                if self.prop.datatype == Datatype.PERSON:
+                    options = self.metadataset.persons
+                elif self.prop.datatype == Datatype.ORGANIZATION:
+                    options = self.metadataset.organizations
+                elif self.prop.datatype == Datatype.PERSON_OR_ORGANIZATION:
+                    options = self.metadataset.persons + self.metadataset.organizations
+                options_strs = ["Select to add"] + [str(o) for o in options]
+                self.choice_widget.SetItems(options_strs)
 
     def set_value(self, val):
         """
@@ -685,8 +697,7 @@ class PropertyRow():
         # print("Couldn't set value.")
 
     def onKillFocus(self, event):
-        data_handler.update_all(self.metadataset)
-        return
+        data_handler.update_all()
 
 
 class DataTab(wx.ScrolledWindow):
@@ -750,19 +761,19 @@ class DataTab(wx.ScrolledWindow):
         elif title == "Organization":
             self.metadataset.add_organization()
         # TODO: more?
-        data_handler.refresh_ui(self.metadataset)
+        data_handler.refresh_ui()
 
     def remove_object(self, event, listbox):
         selection = listbox.GetSelection()
         if selection >= 0:
             listbox.Delete(selection)
-        data_handler.update_all(self.metadataset)
-        data_handler.refresh_ui(self.metadataset)
+        data_handler.update_all()
+        data_handler.refresh_ui()
 
     def change_selection(self, event):
         print("changed selection")
-        data_handler.update_all(self.metadataset)
-        data_handler.refresh_ui(self.metadataset)
+        data_handler.update_all()
+        data_handler.refresh_ui()
         # TODO: do I need more here?
 
     def add_to_list(self, event, content_list, widget, addable):
@@ -778,7 +789,7 @@ class DataTab(wx.ScrolledWindow):
             return
         content_list.Append(str(addable))
         self.reset_widget(widget)
-        data_handler.update_all(self.metadataset)
+        data_handler.update_all()
 
     def reset_widget(self, widget):
         if isinstance(widget, wx.StaticText) or \
@@ -795,7 +806,7 @@ class DataTab(wx.ScrolledWindow):
         selection = content_list.GetSelection()
         if selection >= 0:
             content_list.Delete(selection)
-        data_handler.update_all(self.metadataset)
+        data_handler.update_all()
 
     def show_help(self, evt, message, sample):
         """
@@ -812,7 +823,7 @@ class DataTab(wx.ScrolledWindow):
         with CalendarDlg(self, prop.name, label.GetLabel()) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 label.SetLabel(dlg.cal.Date.FormatISODate())
-                data_handler.update_all(self.metadataset)
+                data_handler.update_all()
 
 
 class HelpPopup(wx.PopupTransientWindow):
@@ -888,8 +899,7 @@ class TabbedWindow(wx.Frame):
         sizer.Fit(self)
 
     def on_tab_change(self, event):
-        data_handler.update_all(self.dataset)
-        pass
+        data_handler.update_all()
 
     def on_save(self, event):
         self.save()
@@ -902,10 +912,10 @@ class TabbedWindow(wx.Frame):
         self.close()
 
     def save(self):
-        data_handler.update_all(self.dataset)
+        data_handler.update_all()
         data_handler.validate_graph(self.dataset)
         data_handler.save_data()
-        data_handler.refresh_ui(self.dataset)
+        data_handler.refresh_ui()
 
     def close(self):
         self.parent.Enable()

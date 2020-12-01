@@ -221,7 +221,7 @@ class MetaDataSet:
         # print("\n------------------\n")
         return graph
 
-    def get_by_string(self, s: str):  # TODO: rename to by string
+    def get_by_string(self, s: str):
         if str(self.project) == s:
             return self.project
         if str(self.dataset) == s:  # TODO: should be multiple
@@ -886,7 +886,6 @@ class Property():
             else:
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
             # TODO: Grant
-            # TODO: DMP
             # TODO: Attribution
             # TODO: Address
         return g
