@@ -703,7 +703,6 @@ class PropertyRow():
             self.data_widget[1].SetValue(val[1])
             self.data_widget[2].SetValue(val[2])
         # TODO: Grant
-        # TODO: Address
         # TODO: Type of Data
         # print("Couldn't set value.")
 

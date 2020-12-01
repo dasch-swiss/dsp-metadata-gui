@@ -869,9 +869,6 @@ class Property():
             elif datatype == Datatype.PROJECT:
                 g.add((subject, self.predicate, v.get_rdf_iri()))
             elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
-                # print(type(v))
-                # print(type(v[0]))
-                # print(type(v[1]))
                 if v[0] or v[1]:
                     dmp = URIRef('DMP')  # FIXME: should be something proper
                     g.add((subject, self.predicate, dmp))
@@ -883,11 +880,18 @@ class Property():
                         g.add((dmp, dsp_repo.hasURL, b1))
                         g.add((b1, RDF.type, SDO.URL))
                         g.add((b1, SDO.url, Literal(v[1])))
+            elif datatype == Datatype.ADDRESS:
+                b0 = BNode()
+                g.add((subject, self.predicate, b0))
+                g.add((b0, RDF.type, SDO.PostalAddress))
+                g.add((b0, SDO.streetAddress, Literal(v[0], datatype=XSD.string)))
+                g.add((b0, SDO.postalCode, Literal(v[1], datatype=XSD.string)))
+                g.add((b0, SDO.addressLocality, Literal(v[2], datatype=XSD.string)))
+
             else:
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
             # TODO: Grant
             # TODO: Attribution
-            # TODO: Address
         return g
 
     def __str__(self):
