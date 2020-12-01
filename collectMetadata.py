@@ -576,7 +576,7 @@ class PropertyRow():
                     options = metadataset.persons + metadataset.organizations
                 options_strs = ["Select to add"] + [str(o) for o in options]
                 choice = wx.Choice(parent, choices=options_strs, size=(450, -1))
-                if metadataset.get_by_iri(str(prop.value)):
+                if metadataset.get_by_string(str(prop.value)):
                     choice.SetSelection(choice.FindString(str(prop.value)))
                 choice.SetToolTip("Add a Person or Organization")
                 self.data_widget = choice
@@ -662,10 +662,10 @@ class PropertyRow():
                 if selection < 0:
                     selection = 0
                 string = self.data_widget.GetString(selection)
-                return self.metadataset.get_by_iri(string)
+                return self.metadataset.get_by_string(string)
             if cardinality == Cardinality.ONE_TO_UNBOUND:
                 strs = self.data_widget.GetStrings()
-                objs = [self.metadataset.get_by_iri(s) for s in strs]
+                objs = [self.metadataset.get_by_string(s) for s in strs]
                 return objs
         elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
             return (
@@ -809,7 +809,7 @@ class DataTab(wx.ScrolledWindow):
         self.SetScrollbars(0, 16, 60, 15)
 
     def update_data(self):
-        print("updating tab")
+        # print("updating tab")
         for row in self.rows:
             row.update_data()
 

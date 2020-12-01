@@ -221,16 +221,17 @@ class MetaDataSet:
         # print("\n------------------\n")
         return graph
 
-    def get_by_iri(self, iri: str):
-        if str(self.project) == iri:
+    def get_by_string(self, s: str):  # TODO: rename to by string
+        if str(self.project) == s:
             return self.project
-        if str(self.dataset) == iri:  # TODO: should be multiple
+        if str(self.dataset) == s:  # TODO: should be multiple
             return self.dataset
+        id_str = s.split(':')[0]
         for o in self.persons:
-            if str(o) == iri:
+            if str(o).startswith(id_str):
                 return o
         for o in self.organizations:
-            if str(o) == iri:
+            if str(o).startswith(id_str):
                 return o
 
     def add_person(self):
@@ -443,7 +444,7 @@ class Project(DataClass):
         ]
 
     def __str__(self):
-        return f"dsp-repo:Project <{self.name}>"
+        return str(self.get_rdf_iri())
 
 
 class Dataset(DataClass):
@@ -600,7 +601,7 @@ class Dataset(DataClass):
         ]
 
     def __str__(self):
-        return f"dsp-repo:Dataset <{self.title}>"
+        return str(self.get_rdf_iri())
 
     def get_metadataset(self):
         return self.meta
@@ -751,7 +752,6 @@ class Organization(DataClass):
 
 
 # TODO: dsp-repo:Grant (?)
-# TODO: dsp-repo:DataManagementPlan
 # TODO: schema:PostalAddress
 
 
