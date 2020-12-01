@@ -2,8 +2,6 @@ import wx
 import os
 import pickle
 
-# from typing import List, Any
-# import xml.etree.ElementTree as ET
 from metaDataSet import MetaDataSet, Cardinality, Datatype
 from metaDataHelpers import CalendarDlg
 
@@ -56,7 +54,6 @@ class DataHandling:
         self.current_window = None
         self.projects = []
         self.tabs = []
-        # self.containers = {}
         self.data_storage = os.path.expanduser("~") + "/DaSCH/config/repos.data"
         # LATER: path could be made customizable
         self.load_data()
@@ -78,14 +75,6 @@ class DataHandling:
         dataset = MetaDataSet(index, folder_name, folder_path)
         self.projects.append(dataset)
         self.save_data()
-
-    # def associate_container(self, prop, container):
-    #     """
-    #     Stores a pair of `metaDataSet.Property` and `PropertyRow` in the Handler's container dict.
-
-    #     This allows to update a property value according to it's associated UI component.
-    #     """
-    #     self.containers[prop] = container
 
     def load_data(self):
         """
@@ -146,18 +135,8 @@ class DataHandling:
 
         TODO: Ensure that this works even with multiple persons/organizations.
         """
-        # print('update data')
-        # print(f"should be doing tabs {self.tabs}")
         for tab in self.tabs:
             tab.update_data()
-        # for prop in dataset.get_all_properties():
-        #     if prop.datatype == Datatype.PROJECT:  # Never update project
-        #         continue
-        #     container = self.containers.get(prop)
-        #     if container:
-        #         prop.value = container.get_value()
-        #     else:
-        #         print(f"Problem with updating {prop}")
 
     def refresh_ui(self, dataset):
         """
@@ -165,16 +144,8 @@ class DataHandling:
 
         Note: Calling this method discards all unsaved changes.
         """
-        # print('refresh UI')
         for tab in self.tabs:
             tab.refresh_ui()
-        # for prop in dataset.get_all_properties():
-        #     container = self.containers.get(prop)
-        #     if container:
-        #         container.set_value(prop.value)
-        #     else:
-        #         print(f"Problem with refreshing {prop}")
-        # TODO: find a way to update dropdowns when e.g. person was modified
 
 
 ########## Here starts UI stuff ##############
@@ -222,9 +193,6 @@ class ProjectFrame(wx.Frame):
         dlg = wx.DirDialog(self, title,
                            style=wx.DD_DEFAULT_STYLE)
         if dlg.ShowModal() == wx.ID_OK:
-            # Here the update function is called. This function is strictly restricted to new folders.
-            # New data will be appended to the available structure. Add an index
-            # index = self.panel.index
             self.panel.add_new_project(dlg.GetPath())
         dlg.Destroy()
 
@@ -464,7 +432,6 @@ class PropertyRow():
         name_label = wx.StaticText(parent, label=prop.name + ": ")
         sizer.Add(name_label, pos=(index, 0))
 
-        # metadataset = data_class.get_metadataset()
         # String or String/URL etc.
         if prop.datatype == Datatype.STRING \
                 or prop.datatype == Datatype.STRING_OR_URL \
@@ -518,7 +485,6 @@ class PropertyRow():
                     or prop.cardinality == Cardinality.UNBOUND:  # String or similar, 1-n, 0-2 or 0-n
                 inner_sizer = wx.BoxSizer()
                 textcontrol = wx.TextCtrl(parent, size=(200, -1))
-                # textcontrol.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
                 inner_sizer.Add(textcontrol)
                 inner_sizer.AddSpacer(5)
                 button_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -528,7 +494,6 @@ class PropertyRow():
                                                               content_list,
                                                               textcontrol,
                                                               textcontrol.GetValue()))
-                # plus_button.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
                 button_sizer.Add(plus_button, flag=wx.EXPAND)
 
                 remove_button = wx.Button(parent, label="Del Selected")
@@ -537,7 +502,6 @@ class PropertyRow():
                                                                          content_list))
                 button_sizer.Add(remove_button)
                 inner_sizer.Add(button_sizer)
-
                 inner_sizer.AddSpacer(5)
                 content_list = wx.ListBox(parent, size=(250, -1))
                 if prop.value:
@@ -731,33 +695,6 @@ class PropertyRow():
     def onKillFocus(self, event):
         data_handler.update_all(self.metadataset)
         return
-        # datatype = self.prop.datatype
-        # # Do we need this: Maybe yes
-        # cardinality = self.prop.cardinality
-        # if datatype == Datatype.STRING:
-        #     print("Datatype is STRING")
-        # if datatype == Datatype.STRING_OR_URL:
-        #     print("Datatype is STRING_OR_URL")
-        # if datatype == Datatype.URL:
-        #     print("Datatype is URL")
-        # if datatype == Datatype.IRI:
-        #     print("Datatype is IRI")
-        # if datatype == Datatype.PLACE:
-        #     print("Datatype is PLACE")
-        # if datatype == Datatype.DATE:
-        #     print("Datatype is DATE")
-        # if datatype == Datatype.PROJECT:
-        #     print("Datatype is PROJECT")
-        # if datatype == Datatype.PERSON:
-        #     print("Datatype is PERSON")
-        # if datatype == Datatype.PERSON_OR_ORGANIZATION:
-        #     print("Datatype is PERSON_OR_ORGANIZATION")
-        # print("Huu, I lost my focus")
-        # print(datatype)
-        # # Leave it for now...
-        # print(cardinality)
-        # print(self.get_value())
-        # event.Skip()
 
 
 class DataTab(wx.ScrolledWindow):
@@ -781,7 +718,6 @@ class DataTab(wx.ScrolledWindow):
                 self.active_dataset = ds
             for i, prop in enumerate(ds.get_properties()):
                 row = PropertyRow(self, ds, prop, sizer, i, metadataset)
-                # data_handler.associate_container(prop, row)
                 self.rows.append(row)
 
         if multiple:
@@ -809,7 +745,6 @@ class DataTab(wx.ScrolledWindow):
         self.SetScrollbars(0, 16, 60, 15)
 
     def update_data(self):
-        # print("updating tab")
         for row in self.rows:
             row.update_data()
 
@@ -837,13 +772,6 @@ class DataTab(wx.ScrolledWindow):
         data_handler.update_all(self.metadataset)
         data_handler.refresh_ui(self.metadataset)
         # TODO: do I need more here?
-
-    # def on_t_got_focus(self, evt):
-    #     if self.first_time:
-    #         self.first_time = False
-    #     else:
-    #         self.start_date.convert_to_wx_date()
-    #     evt.Skip()
 
     def add_to_list(self, event, content_list, widget, addable):
         """
@@ -922,7 +850,6 @@ class TabbedWindow(wx.Frame):
 
         # Create a panel and notebook (tabs holder)
         panel = self.panel
-        # panel = wx.Panel(self)
         nb = wx.Notebook(panel)
         nb.SetMinSize((950, 500))
         nb.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.on_tab_change)
