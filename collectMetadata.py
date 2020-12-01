@@ -749,16 +749,19 @@ class DataTab(wx.ScrolledWindow):
         if multiple:
             dataset_sizer = wx.BoxSizer()
             dataset_listbox = wx.ListBox(self, size=(700, -1))
-            # TODO: add logic for selecting something in the listbox
             for ds in dataset:
                 dataset_listbox.Append(str(ds))
-            # TODO: option to add new item
+            dataset_listbox.Bind(wx.EVT_LISTBOX, lambda e: self.change_selection(e))
             dataset_listbox.Select(0)
             dataset_sizer.Add(dataset_listbox)
             dataset_sizer.AddSpacer(5)
             button_sizer = wx.BoxSizer(wx.VERTICAL)
-            button_sizer.Add(wx.Button(self, label="Add New"), flag=wx.EXPAND)
-            button_sizer.Add(wx.Button(self, label="Remove Selected"))
+            button_add = wx.Button(self, label="Add New")
+            button_add.Bind(wx.EVT_BUTTON, lambda e: self.add_object(e))
+            button_sizer.Add(button_add, flag=wx.EXPAND)
+            button_remove = wx.Button(self, label="Remove Selected")
+            button_remove.Bind(wx.EVT_BUTTON, lambda e: self.remove_object(e))
+            button_sizer.Add(button_remove)
             # TODO: add functionality to buttons
             dataset_sizer.Add(button_sizer)
             outer_sizer.Add(dataset_sizer)
@@ -767,6 +770,18 @@ class DataTab(wx.ScrolledWindow):
         self.SetSizer(outer_sizer)
 
         self.SetScrollbars(0, 16, 60, 15)
+
+    def add_object(self, event):
+        print("hit add button")
+        # TODO: implement
+
+    def remove_object(self, event):
+        print("hit add button")
+        # TODO: implement
+
+    def change_selection(self, event):
+        print("changed selection")
+        # TODO: implement changing object
 
     def on_t_got_focus(self, evt):
         if self.first_time:
@@ -805,6 +820,7 @@ class DataTab(wx.ScrolledWindow):
         selection = content_list.GetSelection()
         if selection >= 0:
             content_list.Delete(selection)
+        data_handler.update_all(self.metadataset)
 
     def show_help(self, evt, message, sample):
         """
