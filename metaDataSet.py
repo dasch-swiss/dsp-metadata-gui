@@ -666,8 +666,16 @@ class Person(DataClass):
         ]
 
     def __str__(self):
-        return str(self.get_rdf_iri())
+        # return str(self.get_rdf_iri())
         # return f"dsp-repo:Person <{self.givenName} {self.familyName}>"
+        classname = str(self.get_rdf_iri()).split('#')[1]
+        n1 = "<first name missing>"
+        if self.givenName.value:
+            n1 = self.givenName.value[0]
+        n2 = "<family name missing>"
+        if self.familyName.value:
+            n2 = self.familyName.value
+        return f"{classname}: {n1} {n2}"
 
     def get_metadataset(self):
         return self.meta
@@ -720,8 +728,13 @@ class Organization(DataClass):
         ]
 
     def __str__(self):
-        return str(self.get_rdf_iri())
+        # return str(self.get_rdf_iri())
         # return f"dsp-repo:Organization <{self.name}>"
+        classname = str(self.get_rdf_iri()).split('#')[1]
+        n1 = "<name missing>"
+        if self.name.value:
+            n1 = self.name.value
+        return f"{classname}: {n1}"
 
     def get_metadataset(self):
         return self.meta
