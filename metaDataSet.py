@@ -244,6 +244,13 @@ class MetaDataSet:
         self.organizations.append(new)
         self.update_iris()
 
+    def remove(self, obj):
+        # TODO: dataset
+        if obj in self.persons:
+            self.persons.remove(obj)
+        if obj in self.organizations:
+            self.organizations.remove(obj)
+
 
 class DataClass(ABC):
     """

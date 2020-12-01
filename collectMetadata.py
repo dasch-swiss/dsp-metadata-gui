@@ -740,6 +740,8 @@ class DataTab(wx.ScrolledWindow):
                 dataset_listbox.Append(str(ds))
             dataset_listbox.Bind(wx.EVT_LISTBOX, lambda e: self.change_selection(e))
             dataset_listbox.Select(0)
+            self.multiple_selection = 0
+            self.multiple_listbox = dataset_listbox
             dataset_sizer.Add(dataset_listbox)
             dataset_sizer.AddSpacer(5)
             button_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -762,6 +764,11 @@ class DataTab(wx.ScrolledWindow):
             row.update_data()
 
     def refresh_ui(self):
+        if self.multiple:
+            self.multiple_listbox.SetItems([str(ds) for ds in self.dataset])
+            if self.multiple_selection < 0:
+                self.multiple_selection = len(self.multiple_listbox.GetItems()) - 1
+            self.multiple_listbox.SetSelection(self.multiple_selection)
         for row in self.rows:
             row.refresh_ui()
 
@@ -771,12 +778,15 @@ class DataTab(wx.ScrolledWindow):
         elif title == "Organization":
             self.metadataset.add_organization()
         # TODO: more?
+        self.multiple_selection = -1
         data_handler.refresh_ui()
 
     def remove_object(self, event, listbox):
         selection = listbox.GetSelection()
         if selection >= 0:
-            listbox.Delete(selection)
+            s = listbox.GetStringSelection()
+            self.metadataset.remove(self.metadataset.get_by_string(s))
+            self.multiple_selection = selection - 1
         data_handler.update_all()
         data_handler.refresh_ui()
 
