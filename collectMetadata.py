@@ -783,18 +783,20 @@ class DataTab(wx.ScrolledWindow):
         elif title == "Organization":
             self.metadataset.add_organization()
         # TODO: more?
-        # TODO: refresh GUI here
+        data_handler.refresh_ui(self.metadataset)
 
     def remove_object(self, event, listbox):
         selection = listbox.GetSelection()
         if selection >= 0:
             listbox.Delete(selection)
         data_handler.update_all(self.metadataset)
-        # TODO: implement
+        data_handler.refresh_ui(self.metadataset)
 
     def change_selection(self, event):
         print("changed selection")
-        # TODO: implement changing object
+        data_handler.update_all(self.metadataset)
+        data_handler.refresh_ui(self.metadataset)
+        # TODO: do I need more here?
 
     def on_t_got_focus(self, evt):
         if self.first_time:
