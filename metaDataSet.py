@@ -415,6 +415,8 @@ class Project(DataClass):
     def get_properties(self):
         return [
             self.name,
+            self.shortcode,
+            self.url,
             self.description,
             self.keywords,
             self.discipline,
@@ -424,8 +426,6 @@ class Project(DataClass):
             self.spatialCoverage,
             self.funder,
             self.grant,
-            self.url,
-            self.shortcode,
             self.alternateName,
             self.dataManagementPlan,
             self.publication,
@@ -457,7 +457,7 @@ class Dataset(DataClass):
                                          "Alternative title of the dataset",
                                          "Another Dataset-Title",
                                          Datatype.STRING,
-                                         Cardinality.ONE,
+                                         Cardinality.ZERO_OR_ONE,
                                          predicate=dsp_repo.hasAlternativeTitle)
 
         self.abstract = Property("Abstract",
@@ -570,23 +570,23 @@ class Dataset(DataClass):
 
     def get_properties(self):
         return [
-            self.sameAs,
-            self.title,
-            self.alternativeTitle,
-            self.abstract,
-            self.typeOfData,
-            self.documentation,
-            self.license,
-            self.accessConditions,
-            self.howToCite,
-            self.status,
-            self.datePublished,
-            self.language,
             self.project,
+            self.title,
+            self.abstract,
+            self.language,
+            self.typeOfData,
             self.attribution,
+            self.license,
+            self.howToCite,
+            self.accessConditions,
+            self.status,
+            self.sameAs,
+            self.alternativeTitle,
+            self.documentation,
+            self.datePublished,
             self.dateCreated,
             self.dateModified,
-            self.distribution
+            self.distribution,
         ]
 
     def __str__(self):
@@ -715,8 +715,8 @@ class Organization(DataClass):
         return [
             self.name,
             self.email,
+            self.url,
             self.address,
-            self.url
         ]
 
     def __str__(self):
