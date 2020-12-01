@@ -553,6 +553,29 @@ class PropertyRow():
             inner_sizer.Add(text)
             sizer.Add(inner_sizer, pos=(index, 1))
             self.data_widget = [cb, text]
+        elif prop.datatype == Datatype.ADDRESS:
+            inner_sizer = wx.BoxSizer(wx.VERTICAL)
+            text1 = wx.TextCtrl(parent, size=(550, -1))
+            text1.SetHint('Street')
+            text1.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
+            inner_sizer.Add(text1)
+            text2 = wx.TextCtrl(parent, size=(100, -1))
+            text2.SetHint('Postal Code')
+            text2.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
+            inner_sizer2 = wx.BoxSizer()
+            inner_sizer2.Add(text2)
+            inner_sizer2.AddSpacer(5)
+            text3 = wx.TextCtrl(parent, size=(445, -1))
+            text3.SetHint('Locality')
+            text3.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
+            inner_sizer2.Add(text3)
+            inner_sizer.AddSpacer(5)
+            inner_sizer.Add(inner_sizer2)
+            sizer.Add(inner_sizer, pos=(index, 1))
+            self.data_widget = [text1, text2, text3]
+
+        # TODO: Grant
+        # TODO: Type of Data
 
         btn = wx.Button(parent, label="?")
         btn.Bind(wx.EVT_BUTTON, lambda event: parent.show_help(event, prop.description, prop.example))
@@ -609,8 +632,13 @@ class PropertyRow():
             )
         elif datatype == Datatype.PROJECT:
             return self.metadataset.project
+        elif datatype == Datatype.ADDRESS:
+            return (
+                self.data_widget[0].GetValue(),
+                self.data_widget[1].GetValue(),
+                self.data_widget[2].GetValue(),
+            )
         # TODO: Grant
-        # TODO: Address
         # TODO: Type of Data
         return "Couldn't find my value... sorry"
 
@@ -634,6 +662,8 @@ class PropertyRow():
         """
         # TODO: doc
         """
+        if not val:
+            return
         datatype = self.prop.datatype
         cardinality = self.prop.cardinality
         # String or String/URL etc.
@@ -668,6 +698,10 @@ class PropertyRow():
         elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
             self.data_widget[0].SetValue(val[0])
             self.data_widget[1].SetValue(val[1])
+        elif datatype == Datatype.ADDRESS:
+            self.data_widget[0].SetValue(val[0])
+            self.data_widget[1].SetValue(val[1])
+            self.data_widget[2].SetValue(val[2])
         # TODO: Grant
         # TODO: Address
         # TODO: Type of Data
