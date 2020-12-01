@@ -434,8 +434,6 @@ class PropertyRow():
             if prop.cardinality == Cardinality.ONE \
                     or prop.cardinality == Cardinality.ZERO_OR_ONE:  # String or similar, exactly 1 or 0-1
                 textcontrol = wx.TextCtrl(parent, size=(550, -1))
-                if prop.value:
-                    textcontrol.SetValue(prop.value)
                 textcontrol.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
                 sizer.Add(textcontrol, pos=(index, 1))
                 self.data_widget = textcontrol
@@ -449,11 +447,6 @@ class PropertyRow():
                 textcontrol2.SetHint('Second value is optional')
                 textcontrol2.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
                 inner_sizer.Add(textcontrol2)
-                if prop.value:
-                    if len(prop.value) > 0 and prop.value[0]:
-                        textcontrol1.SetValue(prop.value[0])
-                    if len(prop.value) > 1 and prop.value[1]:
-                        textcontrol2.SetValue(prop.value[1])
                 sizer.Add(inner_sizer, pos=(index, 1))
                 self.data_widget = [textcontrol1, textcontrol2]
             elif prop.cardinality == Cardinality.ZERO_TO_TWO:  # String or similar, 0-2
@@ -467,11 +460,6 @@ class PropertyRow():
                 textcontrol2.SetHint('Optional')
                 textcontrol2.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
                 inner_sizer.Add(textcontrol2)
-                if prop.value:
-                    if len(prop.value) > 0 and prop.value[0]:
-                        textcontrol1.SetValue(prop.value[0])
-                    if len(prop.value) > 1 and prop.value[1]:
-                        textcontrol2.SetValue(prop.value[1])
                 sizer.Add(inner_sizer, pos=(index, 1))
                 self.data_widget = [textcontrol1, textcontrol2]
             elif prop.cardinality == Cardinality.ONE_TO_UNBOUND \
@@ -497,9 +485,6 @@ class PropertyRow():
                 inner_sizer.Add(button_sizer)
                 inner_sizer.AddSpacer(5)
                 content_list = wx.ListBox(parent, size=(250, -1))
-                if prop.value:
-                    for val in prop.value:
-                        content_list.Append(val)
                 inner_sizer.Add(content_list)
                 sizer.Add(inner_sizer, pos=(index, 1))
                 self.data_widget = content_list
@@ -509,8 +494,6 @@ class PropertyRow():
                     or prop.cardinality == Cardinality.ZERO_OR_ONE:
                 inner_sizer = wx.BoxSizer()
                 date = wx.StaticText(parent, size=(100, -1))
-                if prop.value:
-                    date.SetLabel(prop.value)
                 pick_date_button = wx.Button(parent, label="Pick Date")
                 pick_date_button.Bind(wx.EVT_BUTTON, lambda event: parent.pick_date(event, date, self.prop))
                 inner_sizer.Add(date)
@@ -533,16 +516,12 @@ class PropertyRow():
                     options = metadataset.persons + metadataset.organizations
                 options_strs = ["Select to add"] + [str(o) for o in options]
                 choice = wx.Choice(parent, choices=options_strs, size=(450, -1))
-                if metadataset.get_by_string(str(prop.value)):
-                    choice.SetSelection(choice.FindString(str(prop.value)))
                 choice.SetToolTip("Add a Person or Organization")
                 self.data_widget = choice
                 sizer.Add(choice, pos=(index, 1))
             if prop.cardinality == Cardinality.ONE_TO_UNBOUND:
                 inner_sizer = wx.BoxSizer()
                 box = wx.ListBox(parent, size=(400, -1))
-                if prop.value:
-                    box.AppendItems([str(v) for v in prop.value])
                 self.data_widget = box
                 inner_sizer.Add(box)
                 control_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -572,9 +551,6 @@ class PropertyRow():
             text.SetHint('Optional URL')
             text.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
             inner_sizer.Add(text)
-            if prop.value:
-                cb.SetValue(prop.value[0])
-                text.SetLabel(prop.value[1])
             sizer.Add(inner_sizer, pos=(index, 1))
             self.data_widget = [cb, text]
 
@@ -583,6 +559,7 @@ class PropertyRow():
         sizer.Add(btn, pos=(index, 2))
         opt = wx.StaticText(parent, label=Cardinality.get_optionality_string(prop.cardinality))
         sizer.Add(opt, pos=(index, 3))
+        self.refresh_ui()
 
     def update_data(self):
         self.prop.value = self.get_value()
