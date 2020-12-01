@@ -656,13 +656,13 @@ class Person(DataClass):
 
     def get_properties(self):
         return [
-            self.sameAs,
-            self.givenName,
             self.familyName,
-            self.email,
-            self.address,
+            self.givenName,
             self.memberOf,
-            self.jobTitle
+            self.jobTitle,
+            self.email,
+            self.sameAs,
+            self.address,
         ]
 
     def __str__(self):
