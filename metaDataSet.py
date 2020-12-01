@@ -233,6 +233,16 @@ class MetaDataSet:
             if str(o) == iri:
                 return o
 
+    def add_person(self):
+        new = Person(self)
+        self.persons.append(new)
+        self.update_iris()
+
+    def add_organization(self):
+        new = Organization(self)
+        self.organizations.append(new)
+        self.update_iris()
+
 
 class DataClass(ABC):
     """

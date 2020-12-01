@@ -149,8 +149,11 @@ class DataHandling:
         for prop in dataset.get_all_properties():
             if prop.datatype == Datatype.PROJECT:  # Never update project
                 continue
-            container = self.containers[prop]
-            prop.value = container.get_value()
+            container = self.containers.get(prop)
+            if container:
+                prop.value = container.get_value()
+            else:
+                print(f"Problem with updating {prop}")
 
     def refresh_ui(self, dataset):
         """
@@ -159,8 +162,11 @@ class DataHandling:
         Note: Calling this method discards all unsaved changes.
         """
         for prop in dataset.get_all_properties():
-            container = self.containers[prop]
-            container.set_value(prop.value)
+            container = self.containers.get(prop)
+            if container:
+                container.set_value(prop.value)
+            else:
+                print(f"Problem with refreshing {prop}")
         # TODO: find a way to update dropdowns when e.g. person was modified
 
 
@@ -757,10 +763,10 @@ class DataTab(wx.ScrolledWindow):
             dataset_sizer.AddSpacer(5)
             button_sizer = wx.BoxSizer(wx.VERTICAL)
             button_add = wx.Button(self, label="Add New")
-            button_add.Bind(wx.EVT_BUTTON, lambda e: self.add_object(e))
+            button_add.Bind(wx.EVT_BUTTON, lambda e: self.add_object(e, dataset_listbox, title))
             button_sizer.Add(button_add, flag=wx.EXPAND)
             button_remove = wx.Button(self, label="Remove Selected")
-            button_remove.Bind(wx.EVT_BUTTON, lambda e: self.remove_object(e))
+            button_remove.Bind(wx.EVT_BUTTON, lambda e: self.remove_object(e, dataset_listbox))
             button_sizer.Add(button_remove)
             # TODO: add functionality to buttons
             dataset_sizer.Add(button_sizer)
@@ -771,12 +777,19 @@ class DataTab(wx.ScrolledWindow):
 
         self.SetScrollbars(0, 16, 60, 15)
 
-    def add_object(self, event):
-        print("hit add button")
-        # TODO: implement
+    def add_object(self, event, listbox, title):
+        if title == "Person":
+            self.metadataset.add_person()
+        elif title == "Organization":
+            self.metadataset.add_organization()
+        # TODO: more?
+        # TODO: refresh GUI here
 
-    def remove_object(self, event):
-        print("hit add button")
+    def remove_object(self, event, listbox):
+        selection = listbox.GetSelection()
+        if selection >= 0:
+            listbox.Delete(selection)
+        data_handler.update_all(self.metadataset)
         # TODO: implement
 
     def change_selection(self, event):
