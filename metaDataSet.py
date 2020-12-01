@@ -623,7 +623,7 @@ class Person(DataClass):
                                    "Family name of the person",
                                    "Doe",
                                    Datatype.STRING,
-                                   Cardinality.ONE_TO_UNBOUND,
+                                   Cardinality.ONE,
                                    predicate=dsp_repo.hasFamilyName)
 
         self.email = Property("E-mail",
