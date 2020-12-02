@@ -149,6 +149,7 @@ class MetaDataSet:
         to the lists holding DataClass instances (persons, etc.).
         """
         # TODO: this method needs to be called whenever a person/org/dataset is added/removed
+        # TODO: ensure updating the IRIs doesn't mess up identifying objects by string
         self.project.iri_suffix = "-project"
         self.dataset.iri_suffix = "-dataset"  # TODO: allow multiple
         for i, person in enumerate(self.persons):
@@ -304,6 +305,11 @@ class DataClass(ABC):
         Return a list of all `Property` fields of this class
         """
         raise NotImplementedError
+
+    def get_prop_by_name(self, name):
+        for p in self.get_properties():
+            if p.name == name:
+                return p
 
 
 class Project(DataClass):

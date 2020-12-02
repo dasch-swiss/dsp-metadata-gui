@@ -417,11 +417,12 @@ class PropertyRow():
         index (int): the row in the sizer grid
     """
 
-    def __init__(self, parent, data_class, prop, sizer, index, metadataset):
-        self.prop = prop
+    def __init__(self, parent, prop, sizer, index, metadataset):
+        self.prop_name = prop.name
         self.metadataset = metadataset
         self.data_widget = None
         self.choice_widget = None
+        self.parent = parent
         name_label = wx.StaticText(parent, label=prop.name + ": ")
         sizer.Add(name_label, pos=(index, 0))
 
@@ -584,6 +585,14 @@ class PropertyRow():
         sizer.Add(opt, pos=(index, 3))
         self.refresh_ui()
 
+    @property
+    def data_class(self):
+        return self.parent.active_dataset
+
+    @property
+    def prop(self):
+        return self.data_class.get_prop_by_name(self.prop_name)
+
     def update_data(self):
         self.prop.value = self.get_value()
 
@@ -717,20 +726,19 @@ class DataTab(wx.ScrolledWindow):
 
         self.parent = parent
         self.dataset = dataset
-        self.active_dataset = dataset
         self.multiple = multiple
         self.metadataset = metadataset
         self.rows = []
+        self.multiple_selection = 0
         outer_sizer = wx.BoxSizer(wx.VERTICAL)
         sizer = wx.GridBagSizer(10, 10)
 
         if dataset:
             ds = dataset
             if multiple:
-                ds = dataset[0]
-                self.active_dataset = ds
+                ds = self.active_dataset
             for i, prop in enumerate(ds.get_properties()):
-                row = PropertyRow(self, ds, prop, sizer, i, metadataset)
+                row = PropertyRow(self, prop, sizer, i, metadataset)
                 self.rows.append(row)
 
         if multiple:
@@ -740,7 +748,6 @@ class DataTab(wx.ScrolledWindow):
                 dataset_listbox.Append(str(ds))
             dataset_listbox.Bind(wx.EVT_LISTBOX, lambda e: self.change_selection(e))
             dataset_listbox.Select(0)
-            self.multiple_selection = 0
             self.multiple_listbox = dataset_listbox
             dataset_sizer.Add(dataset_listbox)
             dataset_sizer.AddSpacer(5)
@@ -758,6 +765,13 @@ class DataTab(wx.ScrolledWindow):
         self.SetSizer(outer_sizer)
 
         self.SetScrollbars(0, 16, 60, 15)
+
+    @property
+    def active_dataset(self):
+        if self.multiple:
+            return self.dataset[self.multiple_selection]
+        else:
+            return self.dataset
 
     def update_data(self):
         for row in self.rows:
@@ -791,8 +805,9 @@ class DataTab(wx.ScrolledWindow):
         data_handler.refresh_ui()
 
     def change_selection(self, event):
-        self.multiple_selection = event.GetEventObject().GetSelection()
+        sel = event.GetEventObject().GetSelection()
         data_handler.update_all()
+        self.multiple_selection = sel
         data_handler.refresh_ui()
         # TODO: do I need more here?
 
