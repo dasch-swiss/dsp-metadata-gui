@@ -888,6 +888,8 @@ class Property():
                         g.add((b1, RDF.type, SDO.URL))
                         g.add((b1, SDO.url, Literal(v[1])))
             elif datatype == Datatype.ADDRESS:
+                if not v[0] and not v[1] and not v[2]:
+                    return g
                 b0 = BNode()
                 g.add((subject, self.predicate, b0))
                 g.add((b0, RDF.type, SDO.PostalAddress))
