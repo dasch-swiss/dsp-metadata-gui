@@ -671,10 +671,19 @@ class PropertyRow():
         """
         # TODO: doc
         """
-        if not val:
-            return
         datatype = self.prop.datatype
         cardinality = self.prop.cardinality
+        undefined = False
+        if not val:
+            undefined = True
+            if cardinality == Cardinality.ONE \
+                    or cardinality == Cardinality.ZERO_OR_ONE:
+                val = ""
+            elif cardinality == Cardinality.ONE_TO_TWO \
+                    or cardinality == Cardinality.ZERO_TO_TWO:
+                val = ("", "",)
+            else:
+                val = []
         # String or String/URL etc.
         if datatype == Datatype.STRING \
                 or datatype == Datatype.STRING_OR_URL \
@@ -705,9 +714,13 @@ class PropertyRow():
             if cardinality == Cardinality.ONE_TO_UNBOUND:
                 self.data_widget.SetItems([str(v) for v in val])
         elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
+            if undefined:
+                val = ("", "",)
             self.data_widget[0].SetValue(val[0])
             self.data_widget[1].SetValue(val[1])
         elif datatype == Datatype.ADDRESS:
+            if undefined:
+                val = ("", "", "",)
             self.data_widget[0].SetValue(val[0])
             self.data_widget[1].SetValue(val[1])
             self.data_widget[2].SetValue(val[2])
