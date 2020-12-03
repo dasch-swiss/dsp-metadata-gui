@@ -10,8 +10,6 @@ from metaDataHelpers import CalendarDlg
 #
 # - more properties, classes
 # - call method when something changed in a field; then, call specific validation
-# - allow for multiple datasets
-# - implement multiple of dataset/person/org/etc.
 # - Add some sort of 'import from RDF' functionality
 #
 #############################################
@@ -132,8 +130,6 @@ class DataHandling:
 
         Calling this function iterates over each Property in the dataset
         and updates it with the value found in its corresponding GUI component.
-
-        TODO: Ensure that this works even with multiple persons/organizations.
         """
         for tab in self.tabs:
             tab.update_data()
@@ -715,7 +711,7 @@ class PropertyRow():
                 self.data_widget.SetItems([str(v) for v in val])
         elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
             if undefined:
-                val = ("", "",)
+                val = (False, "",)
             self.data_widget[0].SetValue(val[0])
             self.data_widget[1].SetValue(val[1])
         elif datatype == Datatype.ADDRESS:
@@ -802,6 +798,8 @@ class DataTab(wx.ScrolledWindow):
     def add_object(self, event, listbox, title):
         if title == "Person":
             self.metadataset.add_person()
+        if title == "Dataset":
+            self.metadataset.add_dataset()
         elif title == "Organization":
             self.metadataset.add_organization()
         # TODO: more?
@@ -810,7 +808,7 @@ class DataTab(wx.ScrolledWindow):
 
     def remove_object(self, event, listbox):
         selection = listbox.GetSelection()
-        if selection >= 0:
+        if selection >= 0 and listbox.GetCount() > 1:
             s = listbox.GetStringSelection()
             self.metadataset.remove(self.metadataset.get_by_string(s))
             self.multiple_selection = selection - 1
@@ -822,7 +820,6 @@ class DataTab(wx.ScrolledWindow):
         data_handler.update_all()
         self.multiple_selection = sel
         data_handler.refresh_ui()
-        # TODO: do I need more here?
 
     def add_to_list(self, event, content_list, widget, addable):
         """
@@ -908,7 +905,7 @@ class TabbedWindow(wx.Frame):
         # Create the tab windows
         tab1 = TabOne(nb, self.dataset)
         tab2 = DataTab(nb, self.dataset, self.dataset.project, "Project")
-        tab3 = DataTab(nb, self.dataset, self.dataset.dataset, "Dataset")  # TODO: should probably be multiple too
+        tab3 = DataTab(nb, self.dataset, self.dataset.dataset, "Dataset", multiple=True)
         tab4 = DataTab(nb, self.dataset, self.dataset.persons, "Person", multiple=True)
         tab5 = DataTab(nb, self.dataset, self.dataset.organizations, "Organization", multiple=True)
         # tab6 = DataTab(nb, None, "Data Management Plan")

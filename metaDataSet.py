@@ -90,7 +90,7 @@ class MetaDataSet:
     - path: the full path of the folder that was selected.
     - files: a list of relevant files in the folder
     - project: a `metaDataSet.Project` representation of the actual metadata (as specified by the ontology).
-    - dataset: # TODO: make multiple
+    - dataset: a list of `metaDataSet.Dataset`
     - persons: a list of `metaDataSet.Person`
     - organizations: a list of `metaDataSet.Organization`
 
@@ -135,8 +135,7 @@ class MetaDataSet:
         self.path = path
         self.files = []
         self.project = Project(name, self)
-        self.dataset = Dataset(name, self.project, self)
-        self.dataset.project.value = self.project
+        self.dataset = [Dataset(name, self.project, self)]
         self.persons = [Person(self)]
         self.organizations = [Organization(self)]
         self.update_iris()
@@ -151,7 +150,8 @@ class MetaDataSet:
         # TODO: this method needs to be called whenever a person/org/dataset is added/removed
         # TODO: ensure updating the IRIs doesn't mess up identifying objects by string
         self.project.iri_suffix = "-project"
-        self.dataset.iri_suffix = "-dataset"  # TODO: allow multiple
+        for i, ds in enumerate(self.dataset):
+            ds.iri_suffix = f"-dataset-{str(i + 1).zfill(3)}"
         for i, person in enumerate(self.persons):
             person.iri_suffix = f"-person-{str(i + 1).zfill(3)}"
         for i, org in enumerate(self.organizations):
@@ -205,8 +205,8 @@ class MetaDataSet:
         graph.bind("schema", SDO)
         graph.bind("xsd", XSD)
         self.project.add_rdf_to_graph(graph, "Project")
-        # TODO: should allow multiple
-        self.dataset.add_rdf_to_graph(graph, "Dataset")
+        for i, person in enumerate(self.dataset):
+            person.add_rdf_to_graph(graph, "Dataset")
         for i, person in enumerate(self.persons):
             person.add_rdf_to_graph(graph, "Person")
         for i, org in enumerate(self.organizations):
@@ -225,15 +225,21 @@ class MetaDataSet:
     def get_by_string(self, s: str):
         if str(self.project) == s:
             return self.project
-        if str(self.dataset) == s:  # TODO: should be multiple
-            return self.dataset
         id_str = s.split(':')[0]
+        for o in self.dataset:
+            if str(o).startswith(id_str):
+                return o
         for o in self.persons:
             if str(o).startswith(id_str):
                 return o
         for o in self.organizations:
             if str(o).startswith(id_str):
                 return o
+
+    def add_dataset(self):
+        new = Dataset(self.name, self.project, self)
+        self.dataset.append(new)
+        self.update_iris()
 
     def add_person(self):
         new = Person(self)
@@ -246,7 +252,8 @@ class MetaDataSet:
         self.update_iris()
 
     def remove(self, obj):
-        # TODO: dataset
+        if obj in self.dataset:
+            self.dataset.remove(obj)
         if obj in self.persons:
             self.persons.remove(obj)
         if obj in self.organizations:
@@ -614,7 +621,11 @@ class Dataset(DataClass):
         ]
 
     def __str__(self):
-        return str(self.get_rdf_iri())
+        classname = str(self.get_rdf_iri()).split('#')[1]
+        n1 = "<title missing>"
+        if self.title.value:
+            n1 = self.title.value
+        return f"{classname}: {n1}"
 
     def get_metadataset(self):
         return self.meta
