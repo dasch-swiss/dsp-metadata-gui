@@ -503,7 +503,8 @@ class PropertyRow():
             sizer.Add(txt, pos=(index, 1))
         elif prop.datatype == Datatype.PERSON_OR_ORGANIZATION or \
                 prop.datatype == Datatype.PERSON or \
-                prop.datatype == Datatype.ORGANIZATION:
+                prop.datatype == Datatype.ORGANIZATION or \
+                prop.datatype == Datatype.CONTROLLED_VOCABULARY:
             if prop.cardinality == Cardinality.ZERO_OR_ONE:
                 if prop.datatype == Datatype.PERSON:
                     options = metadataset.persons
@@ -528,6 +529,8 @@ class PropertyRow():
                     options = metadataset.organizations
                 elif prop.datatype == Datatype.PERSON_OR_ORGANIZATION:
                     options = metadataset.persons + metadataset.organizations
+                elif prop.datatype == Datatype.CONTROLLED_VOCABULARY:
+                    options = prop.value_options
                 options_strs = ["Select to add"] + [str(o) for o in options]
                 choice = wx.Choice(parent, choices=options_strs, size=(150, -1))
                 choice.SetToolTip("Add a Person or Organization")
@@ -572,7 +575,6 @@ class PropertyRow():
             self.data_widget = [text1, text2, text3]
 
         # TODO: Grant
-        # TODO: Type of Data
 
         btn = wx.Button(parent, label="?")
         btn.Bind(wx.EVT_BUTTON, lambda event: parent.show_help(event, prop.description, prop.example))
@@ -643,8 +645,10 @@ class PropertyRow():
                 self.data_widget[1].GetValue(),
                 self.data_widget[2].GetValue(),
             )
+        elif datatype == Datatype.CONTROLLED_VOCABULARY:
+            if cardinality == Cardinality.ONE_TO_UNBOUND:
+                return self.data_widget.GetStrings()
         # TODO: Grant
-        # TODO: Type of Data
         return "Couldn't find my value... sorry"
 
     def refresh_ui(self):
@@ -702,7 +706,8 @@ class PropertyRow():
                 self.data_widget.SetLabel(val)
         elif datatype == Datatype.PROJECT:
             self.data_widget.SetLabel(str(val))
-        elif datatype == Datatype.PERSON_OR_ORGANIZATION or \
+        elif datatype == Datatype.CONTROLLED_VOCABULARY or \
+                datatype == Datatype.PERSON_OR_ORGANIZATION or \
                 datatype == Datatype.PERSON or \
                 datatype == Datatype.ORGANIZATION:
             if cardinality == Cardinality.ZERO_OR_ONE:
@@ -721,7 +726,6 @@ class PropertyRow():
             self.data_widget[1].SetValue(val[1])
             self.data_widget[2].SetValue(val[2])
         # TODO: Grant
-        # TODO: Type of Data
         # print("Couldn't set value.")
 
     def onKillFocus(self, event):
