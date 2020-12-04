@@ -1,35 +1,60 @@
-# Metadata Module
+<!---
+Copyright © 2015-2019 the contributors (see Contributors.md).
 
-The metadata module provides a GUI for entering project specific metadata and store it in RDF XML.
+This file is part of Knora.
 
-__TODO:__ Add more information.
+Knora is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-The basic idea of collectMetadata.py is the collection of metadata for research projects that 
-will be delivered to the DaSCH Service Platform (DSP). The program offers a interface to ingest 
-a project, collect metadata and produce an XML-File that can be delivered to the DSP-Servers.
+Knora is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
 
-On the top-level these metadata comprise information about the folder in which the 
-project files are stored, an informal project name and the the data files if there 
-are some (e.g. NIE-INE projects)
+You should have received a copy of the GNU Affero General Public
+License along with Knora.  If not, see <http://www.gnu.org/licenses/>.
+-->
 
-On the second level there are functional metadata like short code, short name and the official
-long name of the project, as well as the ARK URL and a description of the project. 
+# DSP-METADATA-GUI Metadata Module
 
-On the same level there are information about administrative data (the researcher, its role, the
-funding of the project, and information about the permissions to use the data and copyrights 
-etc.) 
-[This comes below: For collecting the second level information there are different forms]
+The dsp-metadata-gui is Python module and provides a GUI for collecting project specific metadata 
+and store it in RDF XML.
 
-## How to use
+## Specific objectives of the metadata module
 
-__TODO:__ Add more information.
+- Collection of metadata on a scientific project for publication on the DSP
+- Acquisition of metadata to create an archived project
+- The metadata present the project and make it visible to other researchers
+- The metadata follow a metadata schema which is explained under [dsp-ontologies] 
+(https://github.com/dasch-swiss/dsp-ontologies)
 
-Install collectMetadata.py on your computer (Requirements see below), if you have a research project
-you want to deliver to the DaSCH Service Platform. In the file menu choose 'Open Folder' and open 
-your project folder. The project will be displayed in the list of projects. Select the project and 
-start editing your metadata with the 'Edit' button below the list. 
 
-To be continued, as soon there is more to choose from... 
+# Features
+
+The metadata module can be used as a tool for recording a research project or for the administration of several projects, for example in an institution. 
+A project or a list of projects can be edited. 
+Once all mandatory data of a project have been entered, the metadata can be validated. 
+If the validation is successful, the project metadata (and files) can be uploaded to the DSP server. 
+
+After approval by the DSP administrator, the project with its metadata (and possibly its project files) is publicly visible and findable.
+
+# Use of the metadata module
+
+1. Select a project folder with the project files it contains (the project folder can be empty, the files can be selected later).
+
+2. Select a project in the list and edit the metadata tabs. The following tabs are available: Base Data, Project, Dataset, Person, Organisation. Filling in the mandatory and possibly the optional fields. A button with a question mark is available behind each field for explanation. Clicking on the question mark makes a help text visible. 
+
+3. Validation
+
+4. Upload to DSP server
+
+For detailed documentation see [Link] ()
+
+# Installation
+
+
 
 ## Requirements
 
