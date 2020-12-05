@@ -20,6 +20,7 @@ from metaDataHelpers import CalendarDlg
 #
 # - I'd love to have an over-arching progress bar that indicates to the user, how much of the forms they have filled out
 #   (see wx.Gauge)
+# - Graph visualization would be nice
 #
 #############################################
 
@@ -576,8 +577,39 @@ class PropertyRow():
             inner_sizer.Add(inner_sizer2)
             sizer.Add(inner_sizer, pos=(index, 1))
             self.data_widget = [text1, text2, text3]
-
-        # TODO: Attribution
+        elif prop.datatype == Datatype.ATTRIBUTION:
+            inner_sizer = wx.BoxSizer()
+            input_sizer = wx.BoxSizer(wx.VERTICAL)
+            textcontrol = wx.TextCtrl(parent, size=(150, -1), style=wx.TE_PROCESS_ENTER)
+            textcontrol.SetHint("Role")
+            input_sizer.Add(textcontrol)
+            choice = wx.Choice(parent, size=(150, -1))
+            choice.SetToolTip("Add a Person or Organization")
+            self.choice_widget = choice
+            input_sizer.Add(choice)
+            inner_sizer.Add(input_sizer)
+            inner_sizer.AddSpacer(5)
+            button_sizer = wx.BoxSizer(wx.VERTICAL)
+            plus_button = wx.Button(parent, label="+")
+            button_sizer.Add(plus_button, flag=wx.EXPAND)
+            remove_button = wx.Button(parent, label="Del Selected")
+            button_sizer.Add(remove_button)
+            inner_sizer.Add(button_sizer)
+            inner_sizer.AddSpacer(5)
+            content_list = wx.ListCtrl(parent, -1, style=wx.LC_REPORT | wx.LC_SINGLE_SEL, size=(300, -1))
+            content_list.InsertColumn(0, 'Role', width=100)
+            content_list.InsertColumn(1, 'Agent', width=450)
+            inner_sizer.Add(content_list)
+            sizer.Add(inner_sizer, pos=(index, 1))
+            self.data_widget = content_list
+            remove_button.Bind(wx.EVT_BUTTON,
+                               lambda event: parent.remove_from_list(event,
+                                                                     content_list))
+            plus_button.Bind(wx.EVT_BUTTON,
+                             lambda e: parent.add_to_list(e,
+                                                          content_list,
+                                                          (textcontrol, choice),
+                                                          (textcontrol.GetValue(), choice.GetStringSelection())))
 
         btn = wx.Button(parent, label="?")
         btn.Bind(wx.EVT_BUTTON, lambda event: parent.show_help(
@@ -662,7 +694,17 @@ class PropertyRow():
                 strs = self.data_widget.GetStrings()
                 objs = [self.metadataset.get_by_string(s) for s in strs]
                 return objs
-        # TODO: Attribution
+        elif datatype == Datatype.ATTRIBUTION:
+            if cardinality == Cardinality.ONE_TO_UNBOUND:
+                w = self.data_widget
+                res = []
+                for i in range(w.GetItemCount()):
+                    t = w.GetItem(i, 0).GetText()
+                    o = self.metadataset.get_by_string(w.GetItem(i, 1).GetText())
+                    if t and not t.isspace() and o:
+                        res.append((t, o,))
+                return res
+        print(f"Couldn't find a type here... weird... {datatype}")
         return "Couldn't find my value... sorry"
 
     def refresh_ui(self):
@@ -677,7 +719,8 @@ class PropertyRow():
                 options = self.prop.value_options
             elif self.prop.datatype == Datatype.ORGANIZATION:
                 options = self.metadataset.organizations
-            elif self.prop.datatype == Datatype.PERSON_OR_ORGANIZATION:
+            elif self.prop.datatype == Datatype.PERSON_OR_ORGANIZATION or \
+                    self.prop.datatype == Datatype.ATTRIBUTION:
                 options = self.metadataset.persons + self.metadataset.organizations
             options_strs = ["Select to add"] + [str(o) for o in options]
             self.choice_widget.SetItems(options_strs)
@@ -746,7 +789,12 @@ class PropertyRow():
             self.data_widget[0].SetValue(val[0])
             self.data_widget[1].SetValue(val[1])
             self.data_widget[2].SetValue(val[2])
-        # TODO: Attribution
+        elif datatype == Datatype.ATTRIBUTION:
+            if undefined:
+                val = [("", "",)]
+            self.data_widget.DeleteAllItems()
+            for v in val:
+                self.data_widget.Append((v[0], str(v[1])))
 
     def onValueChange(self, event, navigate: bool = True):
         data_handler.update_all()
@@ -857,13 +905,25 @@ class DataTab(wx.ScrolledWindow):
         """
         if not addable:  # is None
             return
-        if str(addable).isspace() or \
-                addable == "Select to add" or \
-                str(addable) in content_list.GetStrings():
+        if isinstance(widget, tuple):
+            role = addable[0]
+            agent = addable[1]
+            if not role or not agent or \
+                    role.isspace() or agent.isspace() or \
+                    agent == "Select to add":
+                print('invalid input')
+                # TODO: check, if already in there
+                return
+            print('add to list')
+            content_list.Append((role, agent))
+        else:
+            if str(addable).isspace() or \
+                    addable == "Select to add" or \
+                    str(addable) in content_list.GetStrings():
+                self.reset_widget(widget)
+                return
+            content_list.Append(str(addable))
             self.reset_widget(widget)
-            return
-        content_list.Append(str(addable))
-        self.reset_widget(widget)
         data_handler.update_all()
 
     def reset_widget(self, widget):
@@ -878,6 +938,7 @@ class DataTab(wx.ScrolledWindow):
         remove an object from a listbox.
 
         """
+        # FIXME: attribution
         selection = content_list.GetSelection()
         if selection >= 0:
             content_list.Delete(selection)

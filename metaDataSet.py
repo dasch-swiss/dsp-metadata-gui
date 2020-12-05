@@ -230,6 +230,8 @@ class MetaDataSet:
         return graph
 
     def get_by_string(self, s: str):
+        if not s or s.isspace():
+            return
         if str(self.project) == s:
             return self.project
         id_str = s.split(':')[0]
