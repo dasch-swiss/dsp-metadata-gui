@@ -13,7 +13,6 @@ The Classes defined here aim to represent a metadata-set, closely following the 
 
 ##### TODO-List #####
 #
-# - Class `Grant`
 # - implement on the fly input validation
 # - implement overall data validation
 # - don't add person/org/etc. to graph, unless they're referenced somewhere
@@ -138,6 +137,7 @@ class MetaDataSet:
         self.dataset = [Dataset(name, self.project, self)]
         self.persons = [Person(self)]
         self.organizations = [Organization(self)]
+        self.grants = [Grant(self)]
         self.update_iris()
 
     def update_iris(self):
@@ -156,6 +156,8 @@ class MetaDataSet:
             person.iri_suffix = f"-person-{str(i + 1).zfill(3)}"
         for i, org in enumerate(self.organizations):
             org.iri_suffix = f"-organization-{str(i + 1).zfill(3)}"
+        for i, g in enumerate(self.grants):
+            g.iri_suffix = f"-grant-{str(i + 1).zfill(3)}"
 
     def __str__(self):
         return str({
@@ -167,7 +169,8 @@ class MetaDataSet:
                 self.project,
                 self.dataset,
                 self.persons,
-                self.organizations
+                self.organizations,
+                self.grants,
             ]
         })
 
@@ -180,6 +183,8 @@ class MetaDataSet:
         for p in self.persons:
             res.extend(p.get_properties())
         for o in self.organizations:
+            res.extend(o.get_properties())
+        for o in self.grants:
             res.extend(o.get_properties())
         return res
 
@@ -211,6 +216,8 @@ class MetaDataSet:
             person.add_rdf_to_graph(graph, "Person")
         for i, org in enumerate(self.organizations):
             org.add_rdf_to_graph(graph, "Organization")
+        for i, org in enumerate(self.grants):
+            org.add_rdf_to_graph(graph, "Grant")
         # print("\n------------------\n")
         # print(graph.serialize(format='nt').decode("utf-8"))
         print("\n------------------\n")
@@ -235,6 +242,9 @@ class MetaDataSet:
         for o in self.organizations:
             if str(o).startswith(id_str):
                 return o
+        for o in self.grants:
+            if str(o).startswith(id_str):
+                return o
 
     def add_dataset(self):
         new = Dataset(self.name, self.project, self)
@@ -251,6 +261,11 @@ class MetaDataSet:
         self.organizations.append(new)
         self.update_iris()
 
+    def add_grant(self):
+        new = Grant(self)
+        self.grants.append(new)
+        self.update_iris()
+
     def remove(self, obj):
         if obj in self.dataset:
             self.dataset.remove(obj)
@@ -258,12 +273,15 @@ class MetaDataSet:
             self.persons.remove(obj)
         if obj in self.organizations:
             self.organizations.remove(obj)
+        if obj in self.grants:
+            self.grants.remove(obj)
 
 
 class DataClass(ABC):
     """
     Abstract parent class of all classes holding data.
     """
+
     def get_metadataset(self) -> MetaDataSet:
         """
         Returns the `MetaDataSet` to which this class belongs
@@ -286,8 +304,6 @@ class DataClass(ABC):
         # TODO: should be done in Project class
         graph.add((iri, RDF.type, type))
         for prop in self.get_properties():
-            # graph.add((iri, prop.predicate, prop.rdf_value))
-            # graph.add(prop.get_triple(iri))
             graph += prop.get_triples(iri)
 
     # TODO: ensure that this gets updated whenever the shortcode changes
@@ -329,6 +345,7 @@ class Project(DataClass):
         name (str): The name of the project
         meta (MetaDataSet): the owning `MetaDataSet`
     """
+
     def __init__(self, name: str, meta: MetaDataSet):
         self.meta = meta
         self.name = Property("Name",
@@ -537,7 +554,7 @@ class Dataset(DataClass):
 
         self.howToCite = Property("How to cite",
                                   "How to cite the data",
-                                  "Testprojekt (test), 2002, https://test.dasch.swiss",
+                                  "Test-project (test), 2002, https://test.dasch.swiss",
                                   Datatype.STRING,
                                   Cardinality.ONE,
                                   predicate=dsp_repo.hasHowToCite)
@@ -558,7 +575,7 @@ class Dataset(DataClass):
 
         self.language = Property("Language",
                                  "Language(s) of the dataset",
-                                 "Hetite",
+                                 "English",
                                  Datatype.STRING,
                                  Cardinality.ONE_TO_UNBOUND,
                                  predicate=dsp_repo.hasLanguage)
@@ -626,9 +643,6 @@ class Dataset(DataClass):
         if self.title.value:
             n1 = self.title.value
         return f"{classname}: {n1}"
-
-    def get_metadataset(self):
-        return self.meta
 
 
 class Person(DataClass):
@@ -701,8 +715,6 @@ class Person(DataClass):
         ]
 
     def __str__(self):
-        # return str(self.get_rdf_iri())
-        # return f"dsp-repo:Person <{self.givenName} {self.familyName}>"
         classname = str(self.get_rdf_iri()).split('#')[1]
         n1 = "<first name missing>"
         if self.givenName.value:
@@ -711,9 +723,6 @@ class Person(DataClass):
         if self.familyName.value:
             n2 = self.familyName.value
         return f"{classname}: {n1} {n2}"
-
-    def get_metadataset(self):
-        return self.meta
 
 
 class Organization(DataClass):
@@ -763,20 +772,65 @@ class Organization(DataClass):
         ]
 
     def __str__(self):
-        # return str(self.get_rdf_iri())
-        # return f"dsp-repo:Organization <{self.name}>"
         classname = str(self.get_rdf_iri()).split('#')[1]
         n1 = "<name missing>"
         if self.name.value:
             n1 = self.name.value
         return f"{classname}: {n1}"
 
-    def get_metadataset(self):
-        return self.meta
 
+class Grant(DataClass):
+    """
+    Grant Shape.
 
-# TODO: dsp-repo:Grant (?)
-# TODO: schema:PostalAddress
+    Corresponds to `dsp-repo:Grant` in the ontology.
+    """
+
+    def __init__(self, meta):
+        self.meta = meta
+
+        self.name = Property("Name",
+                             "Name of the grant",
+                             "Ambizione",
+                             Datatype.STRING,
+                             Cardinality.ZERO_OR_ONE,
+                             predicate=dsp_repo.hasName)
+
+        self.url = Property("URL",
+                            "URL of the grant",
+                            "https://www.snf.ch/grants/001",
+                            Datatype.URL,
+                            Cardinality.ZERO_OR_ONE,
+                            predicate=dsp_repo.hasURL)
+
+        self.number = Property("Number",
+                               "The number of the grant.",
+                               "00012345",
+                               Datatype.IRI,
+                               Cardinality.ZERO_OR_ONE,
+                               predicate=dsp_repo.hasNumber)
+
+        self.funder = Property("Funder",
+                               "Funding person or institution of the project",
+                               "",
+                               Datatype.PERSON_OR_ORGANIZATION,
+                               Cardinality.ONE_TO_UNBOUND,
+                               predicate=dsp_repo.hasFunder)
+
+    def get_properties(self):
+        return [
+            self.funder,
+            self.name,
+            self.number,
+            self.url,
+        ]
+
+    def __str__(self):
+        classname = str(self.get_rdf_iri()).split('#')[1]
+        n1 = "<funder missing>"
+        if self.funder.value:
+            n1 = self.funder.value
+        return f"{classname}: {n1}"
 
 
 class Property():
@@ -818,6 +872,7 @@ class Property():
         """
         if re.search('skos\\.um\\.es', url):
             return "SKOS UNESCO Nomenclature"
+        # TODO: more
         loc = urlparse(url).netloc
         if len(loc.split('.')) > 2:
             return '.'.join(loc.split('.')[1:])
@@ -872,7 +927,8 @@ class Property():
                 b2 = BNode()
                 g.add((blank, SDO.propertyID, b2))
                 g.add((b2, RDF.type, SDO.PropertyValue))
-                g.add((b2, SDO.propertyID, Literal(Property.get_url_property_id(v))))
+                g.add((b2, SDO.propertyID, Literal(
+                    Property.get_url_property_id(v))))
                 g.add((blank, SDO.url, Literal(v)))
             elif datatype == Datatype.PLACE:
                 b0 = BNode()
@@ -894,11 +950,12 @@ class Property():
                 g.add((subject, self.predicate, v.get_rdf_iri()))
             elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
                 if v[0] or v[1]:
-                    dmp = URIRef('DMP')  # FIXME: should be something proper
+                    dmp = URIRef('DMP')
                     g.add((subject, self.predicate, dmp))
                     g.add((dmp, RDF.type, dsp_repo.DataManagementPlan))
                     if v[0]:
-                        g.add((dmp, dsp_repo.isAvailable, Literal(v[0], datatype=XSD.boolean)))
+                        g.add((dmp, dsp_repo.isAvailable, Literal(
+                            v[0], datatype=XSD.boolean)))
                     if v[1]:
                         b1 = BNode()
                         g.add((dmp, dsp_repo.hasURL, b1))
@@ -910,13 +967,16 @@ class Property():
                 b0 = BNode()
                 g.add((subject, self.predicate, b0))
                 g.add((b0, RDF.type, SDO.PostalAddress))
-                g.add((b0, SDO.streetAddress, Literal(v[0], datatype=XSD.string)))
+                g.add((b0, SDO.streetAddress, Literal(
+                    v[0], datatype=XSD.string)))
                 g.add((b0, SDO.postalCode, Literal(v[1], datatype=XSD.string)))
-                g.add((b0, SDO.addressLocality, Literal(v[2], datatype=XSD.string)))
+                g.add((b0, SDO.addressLocality, Literal(
+                    v[2], datatype=XSD.string)))
+            elif datatype == Datatype.GRANT:
+                g.add((subject, self.predicate, v.get_rdf_iri()))
 
             else:
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
-            # TODO: Grant
             # TODO: Attribution
         return g
 

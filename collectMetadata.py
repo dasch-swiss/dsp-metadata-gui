@@ -52,7 +52,8 @@ class DataHandling:
         self.current_window = None
         self.projects = []
         self.tabs = []
-        self.data_storage = os.path.expanduser("~") + "/DaSCH/config/repos.data"
+        self.data_storage = os.path.expanduser(
+            "~") + "/DaSCH/config/repos.data"
         # LATER: path could be made customizable
         self.load_data()
         print("Data loaded.")
@@ -104,7 +105,7 @@ class DataHandling:
         """
         ToDo: implement this class.
         """
-        # TODO: how do process_data and vaidate_graph really divide labour?
+        # TODO: how do process_data and validate_graph really divide labour?
         print(f'Should be processing Dataset: {index}')
         self.validate_graph(self.projects[index])
 
@@ -210,7 +211,8 @@ class ProjectPanel(wx.Panel):
         super().__init__(parent)
         # Here we create the window ...
         main_sizer = wx.BoxSizer(wx.VERTICAL)
-        title = wx.StaticText(self, label="DaSCH Service Platform - Metadata Collection", size=(400, -1))
+        title = wx.StaticText(
+            self, label="DaSCH Service Platform - Metadata Collection", size=(400, -1))
         main_sizer.Add(title, 0, wx.ALL | wx.LEFT, 10)
 
         # LATER: Here we might do some cosmetics (Title, info button and the like ...
@@ -354,9 +356,11 @@ class TabOne(wx.Panel):
         data_sizer.Add(file_list)
         button_sizer = wx.BoxSizer(wx.VERTICAL)
         btn_add = wx.Button(self, label="Add File(s)")
-        btn_add.Bind(wx.EVT_BUTTON, lambda event: self.add_file(dataset, file_list))
+        btn_add.Bind(wx.EVT_BUTTON, lambda event: self.add_file(
+            dataset, file_list))
         btn_del = wx.Button(self, label="Remove Selected")
-        btn_del.Bind(wx.EVT_BUTTON, lambda event: self.remove_file(dataset, file_list))
+        btn_del.Bind(wx.EVT_BUTTON, lambda event: self.remove_file(
+            dataset, file_list))
         button_sizer.Add(btn_add, flag=wx.EXPAND)
         button_sizer.Add(btn_del, flag=wx.EXPAND)
         data_sizer.Add(button_sizer)
@@ -492,7 +496,8 @@ class PropertyRow():
                 inner_sizer = wx.BoxSizer()
                 date = wx.StaticText(parent, size=(100, -1))
                 pick_date_button = wx.Button(parent, label="Pick Date")
-                pick_date_button.Bind(wx.EVT_BUTTON, lambda event: parent.pick_date(event, date, self.prop))
+                pick_date_button.Bind(
+                    wx.EVT_BUTTON, lambda event: parent.pick_date(event, date, self.prop))
                 inner_sizer.Add(date)
                 inner_sizer.Add(pick_date_button)
                 sizer.Add(inner_sizer, pos=(index, 1))
@@ -504,6 +509,7 @@ class PropertyRow():
         elif prop.datatype == Datatype.PERSON_OR_ORGANIZATION or \
                 prop.datatype == Datatype.PERSON or \
                 prop.datatype == Datatype.ORGANIZATION or \
+                prop.datatype == Datatype.GRANT or \
                 prop.datatype == Datatype.CONTROLLED_VOCABULARY:
             if prop.cardinality == Cardinality.ZERO_OR_ONE:
                 if prop.datatype == Datatype.PERSON:
@@ -513,11 +519,15 @@ class PropertyRow():
                 elif prop.datatype == Datatype.PERSON_OR_ORGANIZATION:
                     options = metadataset.persons + metadataset.organizations
                 options_strs = ["Select to add"] + [str(o) for o in options]
-                choice = wx.Choice(parent, choices=options_strs, size=(450, -1))
+                choice = wx.Choice(
+                    parent, choices=options_strs, size=(450, -1))
                 choice.SetToolTip("Add a Person or Organization")
+                # TODO: does that need an event handler?
+                # TODO: do I need to set the choice widget here?
                 self.data_widget = choice
                 sizer.Add(choice, pos=(index, 1))
-            if prop.cardinality == Cardinality.ONE_TO_UNBOUND:
+            if prop.cardinality == Cardinality.ONE_TO_UNBOUND or \
+                    prop.cardinality == Cardinality.UNBOUND:
                 inner_sizer = wx.BoxSizer()
                 box = wx.ListBox(parent, size=(400, -1))
                 self.data_widget = box
@@ -531,14 +541,20 @@ class PropertyRow():
                     options = metadataset.persons + metadataset.organizations
                 elif prop.datatype == Datatype.CONTROLLED_VOCABULARY:
                     options = prop.value_options
+                elif prop.datatype == Datatype.GRANT:
+                    options = metadataset.grants
                 options_strs = ["Select to add"] + [str(o) for o in options]
-                choice = wx.Choice(parent, choices=options_strs, size=(150, -1))
+                choice = wx.Choice(
+                    parent, choices=options_strs, size=(150, -1))
                 choice.SetToolTip("Add a Person or Organization")
-                choice.Bind(wx.EVT_CHOICE, lambda e: parent.add_to_list(e, box, choice, choice.GetStringSelection()))
+                choice.Bind(wx.EVT_CHOICE,
+                            lambda e: parent.add_to_list(e, box, choice,
+                                                         choice.GetStringSelection()))
                 self.choice_widget = choice
                 control_sizer.Add(choice, flag=wx.EXPAND)
                 remove_button = wx.Button(parent, label="Del Selected")
-                remove_button.Bind(wx.EVT_BUTTON, lambda event: parent.remove_from_list(event, box))
+                remove_button.Bind(
+                    wx.EVT_BUTTON, lambda event: parent.remove_from_list(event, box))
                 control_sizer.Add(remove_button)
                 inner_sizer.Add(control_sizer)
                 sizer.Add(inner_sizer, pos=(index, 1))
@@ -574,12 +590,14 @@ class PropertyRow():
             sizer.Add(inner_sizer, pos=(index, 1))
             self.data_widget = [text1, text2, text3]
 
-        # TODO: Grant
+        # TODO: Attribution
 
         btn = wx.Button(parent, label="?")
-        btn.Bind(wx.EVT_BUTTON, lambda event: parent.show_help(event, prop.description, prop.example))
+        btn.Bind(wx.EVT_BUTTON, lambda event: parent.show_help(
+            event, prop.description, prop.example))
         sizer.Add(btn, pos=(index, 2))
-        opt = wx.StaticText(parent, label=Cardinality.get_optionality_string(prop.cardinality))
+        opt = wx.StaticText(
+            parent, label=Cardinality.get_optionality_string(prop.cardinality))
         sizer.Add(opt, pos=(index, 3))
         self.refresh_ui()
 
@@ -632,6 +650,10 @@ class PropertyRow():
                 strs = self.data_widget.GetStrings()
                 objs = [self.metadataset.get_by_string(s) for s in strs]
                 return objs
+            if cardinality == Cardinality.UNBOUND:
+                strs = self.data_widget.GetStrings()
+                objs = [self.metadataset.get_by_string(s) for s in strs]
+                return objs
         elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
             return (
                 self.data_widget[0].GetValue(),
@@ -648,7 +670,12 @@ class PropertyRow():
         elif datatype == Datatype.CONTROLLED_VOCABULARY:
             if cardinality == Cardinality.ONE_TO_UNBOUND:
                 return self.data_widget.GetStrings()
-        # TODO: Grant
+        elif datatype == Datatype.GRANT:
+            if cardinality == Cardinality.UNBOUND:
+                strs = self.data_widget.GetStrings()
+                objs = [self.metadataset.get_by_string(s) for s in strs]
+                return objs
+        # TODO: Attribution
         return "Couldn't find my value... sorry"
 
     def refresh_ui(self):
@@ -666,6 +693,7 @@ class PropertyRow():
                     options = self.metadataset.persons + self.metadataset.organizations
                 options_strs = ["Select to add"] + [str(o) for o in options]
                 self.choice_widget.SetItems(options_strs)
+                # TODO: grant
 
     def set_value(self, val):
         """
@@ -707,12 +735,16 @@ class PropertyRow():
         elif datatype == Datatype.PROJECT:
             self.data_widget.SetLabel(str(val))
         elif datatype == Datatype.CONTROLLED_VOCABULARY or \
+                datatype == Datatype.GRANT or \
                 datatype == Datatype.PERSON_OR_ORGANIZATION or \
                 datatype == Datatype.PERSON or \
                 datatype == Datatype.ORGANIZATION:
             if cardinality == Cardinality.ZERO_OR_ONE:
-                self.data_widget.SetSelection(self.data_widget.FindString(str(val)))
+                self.data_widget.SetSelection(
+                    self.data_widget.FindString(str(val)))
             if cardinality == Cardinality.ONE_TO_UNBOUND:
+                self.data_widget.SetItems([str(v) for v in val])
+            if cardinality == Cardinality.UNBOUND:
                 self.data_widget.SetItems([str(v) for v in val])
         elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
             if undefined:
@@ -725,8 +757,7 @@ class PropertyRow():
             self.data_widget[0].SetValue(val[0])
             self.data_widget[1].SetValue(val[1])
             self.data_widget[2].SetValue(val[2])
-        # TODO: Grant
-        # print("Couldn't set value.")
+        # TODO: Attribution
 
     def onKillFocus(self, event):
         data_handler.update_all()
@@ -759,17 +790,20 @@ class DataTab(wx.ScrolledWindow):
             dataset_listbox = wx.ListBox(self, size=(700, -1))
             for ds in dataset:
                 dataset_listbox.Append(str(ds))
-            dataset_listbox.Bind(wx.EVT_LISTBOX, lambda e: self.change_selection(e))
+            dataset_listbox.Bind(
+                wx.EVT_LISTBOX, lambda e: self.change_selection(e))
             dataset_listbox.Select(0)
             self.multiple_listbox = dataset_listbox
             dataset_sizer.Add(dataset_listbox)
             dataset_sizer.AddSpacer(5)
             button_sizer = wx.BoxSizer(wx.VERTICAL)
             button_add = wx.Button(self, label="Add New")
-            button_add.Bind(wx.EVT_BUTTON, lambda e: self.add_object(e, dataset_listbox, title))
+            button_add.Bind(wx.EVT_BUTTON, lambda e: self.add_object(
+                e, dataset_listbox, title))
             button_sizer.Add(button_add, flag=wx.EXPAND)
             button_remove = wx.Button(self, label="Remove Selected")
-            button_remove.Bind(wx.EVT_BUTTON, lambda e: self.remove_object(e, dataset_listbox))
+            button_remove.Bind(
+                wx.EVT_BUTTON, lambda e: self.remove_object(e, dataset_listbox))
             button_sizer.Add(button_remove)
             dataset_sizer.Add(button_sizer)
             outer_sizer.Add(dataset_sizer)
@@ -794,7 +828,8 @@ class DataTab(wx.ScrolledWindow):
         if self.multiple:
             self.multiple_listbox.SetItems([str(ds) for ds in self.dataset])
             if self.multiple_selection < 0:
-                self.multiple_selection = len(self.multiple_listbox.GetItems()) - 1
+                self.multiple_selection = len(
+                    self.multiple_listbox.GetItems()) - 1
             self.multiple_listbox.SetSelection(self.multiple_selection)
         for row in self.rows:
             row.refresh_ui()
@@ -806,7 +841,8 @@ class DataTab(wx.ScrolledWindow):
             self.metadataset.add_dataset()
         elif title == "Organization":
             self.metadataset.add_organization()
-        # TODO: more?
+        elif title == "Grant":
+            self.metadataset.add_grant()
         self.multiple_selection = -1
         data_handler.refresh_ui()
 
@@ -829,6 +865,10 @@ class DataTab(wx.ScrolledWindow):
         """
         add an object to a listbox.
         """
+        # FIXME: why is this not working?
+        print(f'adding: {addable}')
+        print(f'index selected: {widget.GetSelection()}')
+        print(f'options: {widget.GetStrings()}')
         if not addable:  # is None
             return
         if str(addable).isspace() or \
@@ -880,7 +920,8 @@ class HelpPopup(wx.PopupTransientWindow):
         wx.PopupTransientWindow.__init__(self, parent)
         panel = wx.Panel(self)
 
-        st = wx.StaticText(panel, -1, "Description:\n" + message + "\n\n" + "Example:\n" + sample)
+        st = wx.StaticText(panel, -1, "Description:\n" +
+                           message + "\n\n" + "Example:\n" + sample)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(st, 0, wx.ALL, 5)
@@ -909,10 +950,14 @@ class TabbedWindow(wx.Frame):
         # Create the tab windows
         tab1 = TabOne(nb, self.dataset)
         tab2 = DataTab(nb, self.dataset, self.dataset.project, "Project")
-        tab3 = DataTab(nb, self.dataset, self.dataset.dataset, "Dataset", multiple=True)
-        tab4 = DataTab(nb, self.dataset, self.dataset.persons, "Person", multiple=True)
-        tab5 = DataTab(nb, self.dataset, self.dataset.organizations, "Organization", multiple=True)
-        # tab6 = DataTab(nb, None, "Data Management Plan")
+        tab3 = DataTab(nb, self.dataset, self.dataset.dataset,
+                       "Dataset", multiple=True)
+        tab4 = DataTab(nb, self.dataset, self.dataset.persons,
+                       "Person", multiple=True)
+        tab5 = DataTab(nb, self.dataset, self.dataset.organizations,
+                       "Organization", multiple=True)
+        tab6 = DataTab(nb, self.dataset, self.dataset.grants,
+                       "Grant", multiple=True)
 
         # Add the windows to tabs and name them.
         nb.AddPage(tab1, "Base Data")
@@ -920,7 +965,7 @@ class TabbedWindow(wx.Frame):
         nb.AddPage(tab3, "Dataset")
         nb.AddPage(tab4, "Person")
         nb.AddPage(tab5, "Organization")
-        # nb.AddPage(tab6, "Data Management Plan")
+        nb.AddPage(tab6, "Grant")
 
         data_handler.tabs = [tab2, tab3, tab4, tab5]
 
