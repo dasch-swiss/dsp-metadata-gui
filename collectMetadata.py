@@ -939,9 +939,14 @@ class DataTab(wx.ScrolledWindow):
 
         """
         # FIXME: attribution
-        selection = content_list.GetSelection()
-        if selection >= 0:
-            content_list.Delete(selection)
+        if isinstance(content_list, wx.ListCtrl):
+            selection = content_list.GetFirstSelected()
+            if selection >= 0:
+                content_list.DeleteItem(selection)
+        else:
+            selection = content_list.GetSelection()
+            if selection >= 0:
+                content_list.Delete(selection)
         data_handler.update_all()
 
     def show_help(self, evt, message, sample):
