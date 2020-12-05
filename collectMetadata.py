@@ -11,6 +11,8 @@ from metaDataHelpers import CalendarDlg
 # - more properties, classes
 # - call method when something changed in a field; then, call specific validation
 # - Add some sort of 'import from RDF' functionality
+# - give indication of cardinality in help popup
+# - ensure that help popup is always on screen entirely
 #
 #############################################
 
