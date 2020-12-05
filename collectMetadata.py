@@ -938,7 +938,6 @@ class DataTab(wx.ScrolledWindow):
         remove an object from a listbox.
 
         """
-        # FIXME: attribution
         if isinstance(content_list, wx.ListCtrl):
             selection = content_list.GetFirstSelected()
             if selection >= 0:
@@ -971,10 +970,8 @@ class HelpPopup(wx.PopupTransientWindow):
     def __init__(self, parent, message, sample):
         wx.PopupTransientWindow.__init__(self, parent)
         panel = wx.Panel(self)
-
-        st = wx.StaticText(panel, -1, "Description:\n" +
-                           message + "\n\n" + "Example:\n" + sample)
-
+        msg = f"Description:\n{message}\n\nExample:\n{sample}"
+        st = wx.StaticText(panel, -1, msg)
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(st, 0, wx.ALL, 5)
         panel.SetSizer(sizer)
