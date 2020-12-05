@@ -512,19 +512,12 @@ class PropertyRow():
                 prop.datatype == Datatype.GRANT or \
                 prop.datatype == Datatype.CONTROLLED_VOCABULARY:
             if prop.cardinality == Cardinality.ZERO_OR_ONE:
-                if prop.datatype == Datatype.PERSON:
-                    options = metadataset.persons
-                elif prop.datatype == Datatype.ORGANIZATION:
-                    options = metadataset.organizations
-                elif prop.datatype == Datatype.PERSON_OR_ORGANIZATION:
-                    options = metadataset.persons + metadataset.organizations
-                options_strs = ["Select to add"] + [str(o) for o in options]
-                choice = wx.Choice(
-                    parent, choices=options_strs, size=(450, -1))
+                choice = wx.Choice(parent, size=(450, -1))
                 choice.SetToolTip("Add a Person or Organization")
                 # TODO: does that need an event handler?
                 # TODO: do I need to set the choice widget here?
                 self.data_widget = choice
+                self.choice_widget = choice
                 sizer.Add(choice, pos=(index, 1))
             if prop.cardinality == Cardinality.ONE_TO_UNBOUND or \
                     prop.cardinality == Cardinality.UNBOUND:
@@ -533,19 +526,7 @@ class PropertyRow():
                 self.data_widget = box
                 inner_sizer.Add(box)
                 control_sizer = wx.BoxSizer(wx.VERTICAL)
-                if prop.datatype == Datatype.PERSON:
-                    options = metadataset.persons
-                elif prop.datatype == Datatype.ORGANIZATION:
-                    options = metadataset.organizations
-                elif prop.datatype == Datatype.PERSON_OR_ORGANIZATION:
-                    options = metadataset.persons + metadataset.organizations
-                elif prop.datatype == Datatype.CONTROLLED_VOCABULARY:
-                    options = prop.value_options
-                elif prop.datatype == Datatype.GRANT:
-                    options = metadataset.grants
-                options_strs = ["Select to add"] + [str(o) for o in options]
-                choice = wx.Choice(
-                    parent, choices=options_strs, size=(150, -1))
+                choice = wx.Choice(parent, size=(150, -1))
                 choice.SetToolTip("Add a Person or Organization")
                 choice.Bind(wx.EVT_CHOICE,
                             lambda e: parent.add_to_list(e, box, choice,
@@ -681,19 +662,21 @@ class PropertyRow():
     def refresh_ui(self):
         self.set_value(self.prop.value)
         if self.choice_widget:
-            if self.prop.datatype == Datatype.PERSON_OR_ORGANIZATION or \
-                    self.prop.datatype == Datatype.PERSON or \
-                    self.prop.datatype == Datatype.ORGANIZATION:
-                options = []
-                if self.prop.datatype == Datatype.PERSON:
-                    options = self.metadataset.persons
-                elif self.prop.datatype == Datatype.ORGANIZATION:
-                    options = self.metadataset.organizations
-                elif self.prop.datatype == Datatype.PERSON_OR_ORGANIZATION:
-                    options = self.metadataset.persons + self.metadataset.organizations
-                options_strs = ["Select to add"] + [str(o) for o in options]
-                self.choice_widget.SetItems(options_strs)
-                # TODO: grant
+            options = []
+            if self.prop.datatype == Datatype.GRANT:
+                options = self.metadataset.grants
+            elif self.prop.datatype == Datatype.PERSON:
+                options = self.metadataset.persons
+            elif self.prop.datatype == Datatype.CONTROLLED_VOCABULARY:
+                options = self.prop.value_options
+            elif self.prop.datatype == Datatype.ORGANIZATION:
+                options = self.metadataset.organizations
+            elif self.prop.datatype == Datatype.PERSON_OR_ORGANIZATION:
+                options = self.metadataset.persons + self.metadataset.organizations
+            options_strs = ["Select to add"] + [str(o) for o in options]
+            self.choice_widget.SetItems(options_strs)
+            if self.choice_widget == self.data_widget:
+                self.set_value(self.prop.value)
 
     def set_value(self, val):
         """
