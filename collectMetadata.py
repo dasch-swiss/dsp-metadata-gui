@@ -134,7 +134,6 @@ class DataHandling:
         Calling this function iterates over each Property in the dataset
         and updates it with the value found in its corresponding GUI component.
         """
-        print("update")
         for tab in self.tabs:
             tab.update_data()
         self.refresh_ui()
@@ -820,8 +819,7 @@ class DataTab(wx.ScrolledWindow):
         if self.multiple:
             self.multiple_listbox.SetItems([str(ds) for ds in self.dataset])
             if self.multiple_selection < 0:
-                self.multiple_selection = len(
-                    self.multiple_listbox.GetItems()) - 1
+                self.multiple_selection = len(self.multiple_listbox.GetItems()) - 1
             self.multiple_listbox.SetSelection(self.multiple_selection)
         for row in self.rows:
             row.refresh_ui()
@@ -938,14 +936,10 @@ class TabbedWindow(wx.Frame):
         # Create the tab windows
         tab1 = TabOne(nb, self.dataset)
         tab2 = DataTab(nb, self.dataset, self.dataset.project, "Project")
-        tab3 = DataTab(nb, self.dataset, self.dataset.dataset,
-                       "Dataset", multiple=True)
-        tab4 = DataTab(nb, self.dataset, self.dataset.persons,
-                       "Person", multiple=True)
-        tab5 = DataTab(nb, self.dataset, self.dataset.organizations,
-                       "Organization", multiple=True)
-        tab6 = DataTab(nb, self.dataset, self.dataset.grants,
-                       "Grant", multiple=True)
+        tab3 = DataTab(nb, self.dataset, self.dataset.dataset, "Dataset", multiple=True)
+        tab4 = DataTab(nb, self.dataset, self.dataset.persons, "Person", multiple=True)
+        tab5 = DataTab(nb, self.dataset, self.dataset.organizations, "Organization", multiple=True)
+        tab6 = DataTab(nb, self.dataset, self.dataset.grants, "Grant", multiple=True)
 
         # Add the windows to tabs and name them.
         nb.AddPage(tab1, "Base Data")
@@ -955,7 +949,7 @@ class TabbedWindow(wx.Frame):
         nb.AddPage(tab5, "Organization")
         nb.AddPage(tab6, "Grant")
 
-        data_handler.tabs = [tab2, tab3, tab4, tab5]
+        data_handler.tabs = [tab2, tab3, tab4, tab5, tab6]
 
         nb_sizer = wx.BoxSizer()
         nb_sizer.Add(nb, 1, wx.ALL | wx.EXPAND)
