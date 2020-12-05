@@ -132,6 +132,7 @@ class DataHandling:
         Calling this function iterates over each Property in the dataset
         and updates it with the value found in its corresponding GUI component.
         """
+        print("update")
         for tab in self.tabs:
             tab.update_data()
         self.refresh_ui()
@@ -434,39 +435,44 @@ class PropertyRow():
                 or prop.datatype == Datatype.PLACE:
             if prop.cardinality == Cardinality.ONE \
                     or prop.cardinality == Cardinality.ZERO_OR_ONE:  # String or similar, exactly 1 or 0-1
-                textcontrol = wx.TextCtrl(parent, size=(550, -1))
-                textcontrol.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
+                textcontrol = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
+                textcontrol.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
                 sizer.Add(textcontrol, pos=(index, 1))
                 self.data_widget = textcontrol
             elif prop.cardinality == Cardinality.ONE_TO_TWO:  # String or similar, 1-2
                 inner_sizer = wx.BoxSizer(wx.VERTICAL)
-                textcontrol1 = wx.TextCtrl(parent, size=(550, -1))
-                textcontrol1.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
+                textcontrol1 = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
+                textcontrol1.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
                 inner_sizer.Add(textcontrol1)
                 inner_sizer.AddSpacer(5)
-                textcontrol2 = wx.TextCtrl(parent, size=(550, -1))
+                textcontrol2 = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
                 textcontrol2.SetHint('Second value is optional')
-                textcontrol2.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
+                textcontrol2.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
                 inner_sizer.Add(textcontrol2)
                 sizer.Add(inner_sizer, pos=(index, 1))
                 self.data_widget = [textcontrol1, textcontrol2]
             elif prop.cardinality == Cardinality.ZERO_TO_TWO:  # String or similar, 0-2
                 inner_sizer = wx.BoxSizer(wx.VERTICAL)
-                textcontrol1 = wx.TextCtrl(parent, size=(550, -1))
+                textcontrol1 = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
                 textcontrol1.SetHint('Optional')
-                textcontrol1.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
+                textcontrol1.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
                 inner_sizer.Add(textcontrol1)
                 inner_sizer.AddSpacer(5)
-                textcontrol2 = wx.TextCtrl(parent, size=(550, -1))
+                textcontrol2 = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
                 textcontrol2.SetHint('Optional')
-                textcontrol2.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
+                textcontrol2.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
                 inner_sizer.Add(textcontrol2)
                 sizer.Add(inner_sizer, pos=(index, 1))
                 self.data_widget = [textcontrol1, textcontrol2]
             elif prop.cardinality == Cardinality.ONE_TO_UNBOUND \
                     or prop.cardinality == Cardinality.UNBOUND:  # String or similar, 1-n, 0-2 or 0-n
                 inner_sizer = wx.BoxSizer()
-                textcontrol = wx.TextCtrl(parent, size=(200, -1))
+                textcontrol = wx.TextCtrl(parent, size=(200, -1), style=wx.TE_PROCESS_ENTER)
+                textcontrol.Bind(wx.EVT_TEXT_ENTER,
+                                 lambda e: parent.add_to_list(e,
+                                                              content_list,
+                                                              textcontrol,
+                                                              textcontrol.GetValue()))
                 inner_sizer.Add(textcontrol)
                 inner_sizer.AddSpacer(5)
                 button_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -514,8 +520,7 @@ class PropertyRow():
             if prop.cardinality == Cardinality.ZERO_OR_ONE:
                 choice = wx.Choice(parent, size=(450, -1))
                 choice.SetToolTip("Add a Person or Organization")
-                # TODO: does that need an event handler?
-                # TODO: do I need to set the choice widget here?
+                choice.Bind(wx.EVT_CHOICE, lambda e: self.onValueChange(e, False))
                 self.data_widget = choice
                 self.choice_widget = choice
                 sizer.Add(choice, pos=(index, 1))
@@ -544,27 +549,27 @@ class PropertyRow():
             cb = wx.CheckBox(parent, label='is available')
             cb.Bind(wx.EVT_CHECKBOX, lambda e: data_handler.update_all())
             inner_sizer.Add(cb)
-            text = wx.TextCtrl(parent, size=(550, -1))
+            text = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
             text.SetHint('Optional URL')
-            text.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
+            text.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
             inner_sizer.Add(text)
             sizer.Add(inner_sizer, pos=(index, 1))
             self.data_widget = [cb, text]
         elif prop.datatype == Datatype.ADDRESS:
             inner_sizer = wx.BoxSizer(wx.VERTICAL)
-            text1 = wx.TextCtrl(parent, size=(550, -1))
+            text1 = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
             text1.SetHint('Street')
-            text1.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
+            text1.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
             inner_sizer.Add(text1)
-            text2 = wx.TextCtrl(parent, size=(100, -1))
+            text2 = wx.TextCtrl(parent, size=(100, -1), style=wx.TE_PROCESS_ENTER)
             text2.SetHint('Postal Code')
-            text2.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
+            text2.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
             inner_sizer2 = wx.BoxSizer()
             inner_sizer2.Add(text2)
             inner_sizer2.AddSpacer(5)
-            text3 = wx.TextCtrl(parent, size=(445, -1))
+            text3 = wx.TextCtrl(parent, size=(445, -1), style=wx.TE_PROCESS_ENTER)
             text3.SetHint('Locality')
-            text3.Bind(wx.EVT_KILL_FOCUS, self.onKillFocus)
+            text3.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
             inner_sizer2.Add(text3)
             inner_sizer.AddSpacer(5)
             inner_sizer.Add(inner_sizer2)
@@ -742,8 +747,10 @@ class PropertyRow():
             self.data_widget[2].SetValue(val[2])
         # TODO: Attribution
 
-    def onKillFocus(self, event):
+    def onValueChange(self, event, navigate: bool = True):
         data_handler.update_all()
+        if navigate:
+            event.GetEventObject().Navigate()
 
 
 class DataTab(wx.ScrolledWindow):
@@ -848,10 +855,6 @@ class DataTab(wx.ScrolledWindow):
         """
         add an object to a listbox.
         """
-        # FIXME: why is this not working?
-        print(f'adding: {addable}')
-        print(f'index selected: {widget.GetSelection()}')
-        print(f'options: {widget.GetStrings()}')
         if not addable:  # is None
             return
         if str(addable).isspace() or \
