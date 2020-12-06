@@ -6,6 +6,7 @@ import validators
 from rdflib import Graph, URIRef, RDF, Literal, Namespace, BNode
 from rdflib.namespace import SDO, XSD
 
+from util import utils
 from util.utils import Cardinality, Datatype, Validity
 
 """
@@ -949,6 +950,7 @@ class Property():
         missing = "Required value is missing."
         valid = "The current value is valid."
         optional = "This field is optional"
+        no_url = "Invalid URL"
 
         if not value:
             print(f'missing:\ncard: {cardinality}\ntype: {datatype}\n')
@@ -979,9 +981,35 @@ class Property():
                     return Validity.VALID, valid
                 else:
                     return Validity.OPTIONAL_VALUE_MISSING, optional
+            elif cardinality == Cardinality.ONE_TO_UNBOUND:
+                if len(value) > 0 and value[0] and not value[0].isspace():
+                    return Validity.VALID, valid
+                else:
+                    return Validity.REQUIRED_VALUE_MISSING, missing
+            elif cardinality == Cardinality.UNBOUND:
+                if len(value) > 0 and value[0] and not value[0].isspace():
+                    return Validity.VALID, valid
+                else:
+                    return Validity.OPTIONAL_VALUE_MISSING, optional
 
         elif datatype == Datatype.URL:
-            pass
+            if cardinality == Cardinality.UNBOUND:
+                if len(value) > 0 and value[0] and not value[0].isspace():
+                    if utils.areURLs(value):
+                        return Validity.VALID, valid
+                    else:
+                        return Validity.INVALID_VALUE, no_url
+                else:
+                    return Validity.OPTIONAL_VALUE_MISSING, optional
+            elif cardinality == Cardinality.ZERO_OR_ONE:
+                if value and not value.isspace():
+                    if utils.isURL(value):
+                        return Validity.VALID, valid
+                    else:
+                        return Validity.INVALID_VALUE, no_url
+                else:
+                    return Validity.OPTIONAL_VALUE_MISSING, optional
+
         elif datatype == Datatype.IRI:
             pass
 

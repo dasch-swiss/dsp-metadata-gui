@@ -1,6 +1,19 @@
 from enum import Enum
 
 
+def areURLs(urls: list):
+    for url in urls:
+        if not isURL(url):
+            return False
+    return True
+
+
+def isURL(url: str):
+    if url and not url.isspace():
+        return True  # TODO: add actual test here
+    return False
+
+
 class Validity(Enum):
     VALID = 0
     INVALID_VALUE = 1
