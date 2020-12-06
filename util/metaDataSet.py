@@ -1059,6 +1059,11 @@ class Property():
                     return Validity.VALID, valid
                 else:
                     return Validity.REQUIRED_VALUE_MISSING, missing
+            if cardinality == Cardinality.ZERO_OR_ONE:
+                if value:
+                    return Validity.VALID, valid
+                else:
+                    return Validity.OPTIONAL_VALUE_MISSING, optional
 
         print(f'behaviour undefined:\ncard: {cardinality}\ntype: {datatype}\n')
         return "", ""
