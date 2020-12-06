@@ -951,6 +951,7 @@ class Property():
         valid = "The current value is valid."
         optional = "This field is optional"
         no_url = "Invalid URL"
+        no_mail = "Invalid e-mail address"
 
         if not value:
             print(f'missing:\ncard: {cardinality}\ntype: {datatype}\n')
@@ -959,7 +960,8 @@ class Property():
             else:
                 return Validity.OPTIONAL_VALUE_MISSING, valid
 
-        if datatype == Datatype.STRING:
+        if datatype == Datatype.STRING or \
+                datatype == Datatype.STRING_OR_URL:
             if cardinality == Cardinality.ONE:
                 if self.name == "Shortcode":
                     if re.match('\d{4}$', value):
@@ -1009,9 +1011,54 @@ class Property():
                         return Validity.INVALID_VALUE, no_url
                 else:
                     return Validity.OPTIONAL_VALUE_MISSING, optional
+            elif cardinality == Cardinality.ONE_TO_TWO or \
+                    cardinality == Cardinality.ONE_TO_UNBOUND:
+                if value[0] and not value[0].isspace():
+                    if utils.areURLs(value):
+                        return Validity.VALID, valid
+                    else:
+                        return Validity.INVALID_VALUE, no_url
+                else:
+                    return Validity.OPTIONAL_VALUE_MISSING, optional
 
         elif datatype == Datatype.IRI:
-            pass
+            if cardinality == Cardinality.ZERO_OR_ONE:
+                if value and not value.isspace():
+                    if utils.is_email(value):
+                        return Validity.VALID, valid
+                    else:
+                        return Validity.INVALID_VALUE, no_mail
+                else:
+                    return Validity.OPTIONAL_VALUE_MISSING, optional
+            elif cardinality == Cardinality.ZERO_TO_TWO:
+                if value[0] and not value[0].isspace():
+                    if utils.are_emails(value):
+                        return Validity.VALID, valid
+                    else:
+                        return Validity.INVALID_VALUE, no_mail
+                else:
+                    return Validity.REQUIRED_VALUE_MISSING, missing
+
+        elif datatype == Datatype.GRANT or \
+                datatype == Datatype.PROJECT or \
+                datatype == Datatype.PERSON or \
+                datatype == Datatype.ORGANIZATION or \
+                datatype == Datatype.PERSON_OR_ORGANIZATION:
+            if cardinality == Cardinality.UNBOUND:
+                if len(value) > 0 and value[0]:
+                    return Validity.VALID, valid
+                else:
+                    return Validity.OPTIONAL_VALUE_MISSING, optional
+            if cardinality == Cardinality.ONE_TO_UNBOUND:
+                if len(value) > 0 and value[0]:
+                    return Validity.VALID, valid
+                else:
+                    return Validity.REQUIRED_VALUE_MISSING, missing
+            if cardinality == Cardinality.ONE:
+                if value:
+                    return Validity.VALID, valid
+                else:
+                    return Validity.REQUIRED_VALUE_MISSING, missing
 
         print(f'behaviour undefined:\ncard: {cardinality}\ntype: {datatype}\n')
         return "", ""

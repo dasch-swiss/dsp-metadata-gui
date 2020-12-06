@@ -1,8 +1,11 @@
+import validators
 from enum import Enum
 
 
 def areURLs(urls: list):
     for url in urls:
+        if not url:
+            continue
         if not isURL(url):
             return False
     return True
@@ -10,7 +13,29 @@ def areURLs(urls: list):
 
 def isURL(url: str):
     if url and not url.isspace():
-        return True  # TODO: add actual test here
+        if validators.url(url):
+            return True
+        if validators.url('http://' + url):
+            return True
+        # LATER: good enough?
+        # if validators.url('http://www.' + url):
+        #     return True
+    return False
+
+
+def are_emails(mails: list):
+    for mail in mails:
+        if not mail:
+            continue
+        if not is_email(mail):
+            return False
+    return True
+
+
+def is_email(mail: str):
+    if mail and not mail.isspace():
+        if validators.email(mail):
+            return True
     return False
 
 
