@@ -146,6 +146,10 @@ class MetaDataSet:
         conforms, results_graph, results_text = pyshacl.validate(
             graph, shacl_graph=ontology_url)
         print(f"Validation result: {conforms}")
+        print('\n------------\n')
+        print(results_graph)
+        print('\n------------\n')
+        print(results_text)
         return conforms
 
     def generate_rdf_graph(self) -> Graph:
@@ -385,7 +389,7 @@ class Project(DataClass):
                                   Datatype.STRING,
                                   Cardinality.ONE,
                                   value="0000",
-                                  predicate=dsp_repo.hasShortCode)
+                                  predicate=dsp_repo.hasShortcode)
 
         self.alternateName = Property("Alternate Name",
                                       "Alternative name of the project, e.g. in case of an overly long official name",
@@ -565,7 +569,7 @@ class Dataset(DataClass):
         self.distribution = Property("Distribution",
                                      "A downloadable form of this dataset, at a specific location, in a specific format",
                                      "https://test.dasch.swiss",
-                                     Datatype.URL,
+                                     Datatype.URL,  # FIXME: should be DataDownload?
                                      Cardinality.ZERO_OR_ONE,
                                      predicate=dsp_repo.hasDistribution)
 
@@ -870,7 +874,8 @@ class Property():
                     datatype = Datatype.ORGANIZATION
             # Handle datatypes
             if datatype == Datatype.STRING or datatype == Datatype.CONTROLLED_VOCABULARY:
-                g.add((subject, self.predicate, Literal(v, datatype=XSD.string)))
+                # g.add((subject, self.predicate, Literal(v, datatype=XSD.string)))  # FIXME: should be able to be type string
+                g.add((subject, self.predicate, Literal(v)))
             elif datatype == Datatype.DATE:
                 g.add((subject, self.predicate, Literal(v, datatype=XSD.date)))
             elif datatype == Datatype.URL:
@@ -943,6 +948,7 @@ class Property():
 
         missing = "Required value is missing."
         valid = "The current value is valid."
+        optional = "This field is optional"
 
         if not value:
             print(f'missing:\ncard: {cardinality}\ntype: {datatype}\n')
@@ -959,9 +965,21 @@ class Property():
                     else:
                         return Validity.INVALID_VALUE, "Shortcode must be exactly 4 digits."
                 else:
-                    return Validity.VALID, valid
+                    if value and not value.isspace():
+                        return Validity.VALID, valid
+                    else:
+                        return Validity.REQUIRED_VALUE_MISSING, missing
             elif cardinality == Cardinality.ONE_TO_TWO:
-                pass
+                if value[0] and not value[0].isspace():
+                    return Validity.VALID, valid
+                else:
+                    return Validity.REQUIRED_VALUE_MISSING, missing
+            elif cardinality == Cardinality.ZERO_OR_ONE:
+                if value and not value.isspace():
+                    return Validity.VALID, valid
+                else:
+                    return Validity.OPTIONAL_VALUE_MISSING, optional
+
         elif datatype == Datatype.URL:
             pass
         elif datatype == Datatype.IRI:
