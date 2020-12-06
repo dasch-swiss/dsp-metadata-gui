@@ -931,8 +931,7 @@ class Property():
                 b2 = BNode()
                 g.add((blank, SDO.propertyID, b2))
                 g.add((b2, RDF.type, SDO.PropertyValue))
-                g.add((b2, SDO.propertyID, Literal(
-                    Property.get_url_property_id(v))))
+                g.add((b2, SDO.propertyID, Literal(Property.get_url_property_id(v))))
                 g.add((blank, SDO.url, Literal(v)))
             elif datatype == Datatype.PLACE:
                 b0 = BNode()
@@ -984,10 +983,8 @@ class Property():
                 g.add((b0, RDF.type, prov.Attribution))
                 g.add((b0, dsp_repo.hasRole, Literal(v[0], datatype=XSD.string)))
                 g.add((b0, prov.agent, v[1].get_rdf_iri()))
-
             else:
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
-            # TODO: Attribution
         return g
 
     def __str__(self):

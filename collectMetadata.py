@@ -8,11 +8,12 @@ from metaDataHelpers import CalendarDlg
 
 ################# TODO List #################
 #
-# - more properties, classes
-# - call method when something changed in a field; then, call specific validation
+# - on the fly validation
+# - export RDF function
 # - Add some sort of 'import from RDF' functionality
 # - give indication of cardinality in help popup
 # - ensure that help popup is always on screen entirely
+# - move some misplaced classes to `metaDataHelpers`
 #
 #############################################
 
