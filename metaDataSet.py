@@ -22,6 +22,7 @@ The Classes defined here aim to represent a metadata-set, closely following the 
 ontology_url = "https://raw.githubusercontent.com/dasch-swiss/dsp-ontologies/main/dsp-repository/v1/dsp-repository.shacl.ttl"
 
 dsp_repo = Namespace("http://ns.dasch.swiss/repository#")
+prov = Namespace("http://www.w3.org/ns/prov#")
 
 
 class Cardinality(Enum):
@@ -209,6 +210,7 @@ class MetaDataSet:
         graph.bind("dsp-repo", dsp_repo)
         graph.bind("schema", SDO)
         graph.bind("xsd", XSD)
+        graph.bind("prov", prov)
         self.project.add_rdf_to_graph(graph, "Project")
         for i, person in enumerate(self.dataset):
             person.add_rdf_to_graph(graph, "Dataset")
@@ -976,6 +978,12 @@ class Property():
                     v[2], datatype=XSD.string)))
             elif datatype == Datatype.GRANT:
                 g.add((subject, self.predicate, v.get_rdf_iri()))
+            elif datatype == Datatype.ATTRIBUTION:
+                b0 = BNode()
+                g.add((subject, self.predicate, b0))
+                g.add((b0, RDF.type, prov.Attribution))
+                g.add((b0, dsp_repo.hasRole, Literal(v[0], datatype=XSD.string)))
+                g.add((b0, prov.agent, v[1].get_rdf_iri()))
 
             else:
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")

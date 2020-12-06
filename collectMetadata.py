@@ -914,7 +914,6 @@ class DataTab(wx.ScrolledWindow):
                 print('invalid input')
                 # TODO: check, if already in there
                 return
-            print('add to list')
             content_list.Append((role, agent))
         else:
             if str(addable).isspace() or \
