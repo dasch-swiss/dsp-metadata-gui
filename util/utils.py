@@ -1,6 +1,13 @@
 from enum import Enum
 
 
+class Validity(Enum):
+    VALID = 0
+    INVALID_VALUE = 1
+    REQUIRED_VALUE_MISSING = 2
+    OPTIONAL_VALUE_MISSING = 3
+
+
 class Cardinality(Enum):
     """
     A set of cardinalities that may be used for properties.
@@ -22,14 +29,20 @@ class Cardinality(Enum):
         Returns:
             str: "Mandatory" or "Optional", depending on the cardinality
         """
+        if Cardinality.isMandatory(card):
+            return "Mandatory"
+        else:
+            return "Optional"
+
+    def isMandatory(card) -> bool:
         if card == Cardinality.ONE \
                 or card == Cardinality.ONE_TO_TWO \
                 or card == Cardinality.ONE_TO_UNBOUND:
-            return "Mandatory"
+            return True
         if card == Cardinality.UNBOUND \
                 or card == Cardinality.ZERO_OR_ONE \
                 or card == Cardinality.ZERO_TO_TWO:
-            return "Optional"
+            return False
 
 
 class Datatype(Enum):

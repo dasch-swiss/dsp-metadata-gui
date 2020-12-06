@@ -1,8 +1,10 @@
 import wx
 import os
+from wx.lib.stattext import GenStaticText
 
 from util.dataHandling import DataHandling
-from util.metaDataSet import MetaDataSet, Cardinality, Datatype
+from util.metaDataSet import MetaDataSet
+from util.utils import Cardinality, Datatype, Validity
 from util.metaDataHelpers import CalendarDlg
 
 
@@ -500,11 +502,10 @@ class PropertyRow():
                                                           (textcontrol.GetValue(), choice.GetStringSelection())))
 
         btn = wx.Button(parent, label="?")
-        btn.Bind(wx.EVT_BUTTON, lambda event: parent.show_help(
-            event, prop.description, prop.example))
+        btn.Bind(wx.EVT_BUTTON, lambda event: parent.show_help(event, prop.description, prop.example))
         sizer.Add(btn, pos=(index, 2))
-        opt = wx.StaticText(
-            parent, label=Cardinality.get_optionality_string(prop.cardinality))
+        opt = GenStaticText(parent, label=Cardinality.get_optionality_string(prop.cardinality))
+        self.validity_widget = opt
         sizer.Add(opt, pos=(index, 3))
         self.refresh_ui()
 
@@ -598,22 +599,40 @@ class PropertyRow():
     def refresh_ui(self):
         self.set_value(self.prop.value)
         if self.choice_widget:
-            options = []
-            if self.prop.datatype == Datatype.GRANT:
-                options = self.metadataset.grants
-            elif self.prop.datatype == Datatype.PERSON:
-                options = self.metadataset.persons
-            elif self.prop.datatype == Datatype.CONTROLLED_VOCABULARY:
-                options = self.prop.value_options
-            elif self.prop.datatype == Datatype.ORGANIZATION:
-                options = self.metadataset.organizations
-            elif self.prop.datatype == Datatype.PERSON_OR_ORGANIZATION or \
-                    self.prop.datatype == Datatype.ATTRIBUTION:
-                options = self.metadataset.persons + self.metadataset.organizations
-            options_strs = ["Select to add"] + [str(o) for o in options]
-            self.choice_widget.SetItems(options_strs)
-            if self.choice_widget == self.data_widget:
-                self.set_value(self.prop.value)
+            self.refresh_choice()
+        self.validate()
+
+    def refresh_choice(self):
+        options = []
+        if self.prop.datatype == Datatype.GRANT:
+            options = self.metadataset.grants
+        elif self.prop.datatype == Datatype.PERSON:
+            options = self.metadataset.persons
+        elif self.prop.datatype == Datatype.CONTROLLED_VOCABULARY:
+            options = self.prop.value_options
+        elif self.prop.datatype == Datatype.ORGANIZATION:
+            options = self.metadataset.organizations
+        elif self.prop.datatype == Datatype.PERSON_OR_ORGANIZATION or \
+                self.prop.datatype == Datatype.ATTRIBUTION:
+            options = self.metadataset.persons + self.metadataset.organizations
+        options_strs = ["Select to add"] + [str(o) for o in options]
+        self.choice_widget.SetItems(options_strs)
+        if self.choice_widget == self.data_widget:
+            self.set_value(self.prop.value)
+
+    def validate(self):
+        widget = self.validity_widget
+        res, msg = self.prop.validate()
+        if res == Validity.VALID:
+            widget.SetForegroundColour(wx.Colour(30, 170, 30))
+        elif res == Validity.INVALID_VALUE:
+            widget.SetForegroundColour(wx.Colour(170, 30, 30))
+        elif res == Validity.REQUIRED_VALUE_MISSING:
+            widget.SetForegroundColour(wx.Colour(170, 30, 30))
+        elif res == Validity.OPTIONAL_VALUE_MISSING:
+            widget.SetForegroundColour(wx.NullColour)
+        widget.SetToolTip(msg)
+        # TODO: get tooltip to work here
 
     def set_value(self, val):
         """

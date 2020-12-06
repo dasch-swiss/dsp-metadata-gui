@@ -108,7 +108,8 @@ class DataHandling:
         """
         Refresh all values in the UI according to the saved values.
 
-        Note: Calling this method discards all unsaved changes.
+        This method also invokes on-the-fly validation.
+        Note: Calling this method discards all changes that have not been updated in the metaDataSet.
         """
         for tab in self.tabs:
             tab.refresh_ui()

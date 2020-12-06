@@ -6,7 +6,7 @@ import validators
 from rdflib import Graph, URIRef, RDF, Literal, Namespace, BNode
 from rdflib.namespace import SDO, XSD
 
-from util.utils import Cardinality, Datatype
+from util.utils import Cardinality, Datatype, Validity
 
 """
 The Classes defined here aim to represent a metadata-set, closely following the metadata ontology.
@@ -935,6 +935,40 @@ class Property():
             else:
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
         return g
+
+    def validate(self) -> (Validity, str):
+        datatype = self.datatype
+        cardinality = self.cardinality
+        value = self.value
+
+        missing = "Required value is missing."
+        valid = "The current value is valid."
+
+        if not value:
+            print(f'missing:\ncard: {cardinality}\ntype: {datatype}\n')
+            if Cardinality.isMandatory(cardinality):
+                return Validity.REQUIRED_VALUE_MISSING, missing
+            else:
+                return Validity.OPTIONAL_VALUE_MISSING, valid
+
+        if datatype == Datatype.STRING:
+            if cardinality == Cardinality.ONE:
+                if self.name == "Shortcode":
+                    if re.match('\d{4}$', value):
+                        return Validity.VALID, valid
+                    else:
+                        return Validity.INVALID_VALUE, "Shortcode must be exactly 4 digits."
+                else:
+                    return Validity.VALID, valid
+            elif cardinality == Cardinality.ONE_TO_TWO:
+                pass
+        elif datatype == Datatype.URL:
+            pass
+        elif datatype == Datatype.IRI:
+            pass
+
+        print(f'behaviour undefined:\ncard: {cardinality}\ntype: {datatype}\n')
+        return "", ""
 
     def __str__(self):
         if self.value:
