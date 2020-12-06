@@ -764,7 +764,7 @@ class Grant(DataClass):
         self.number = Property("Number",
                                "The number of the grant.",
                                "00012345",
-                               Datatype.IRI,
+                               Datatype.STRING,
                                Cardinality.ZERO_OR_ONE,
                                predicate=dsp_repo.hasNumber)
 
