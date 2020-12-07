@@ -964,7 +964,7 @@ class Property():
                 datatype == Datatype.STRING_OR_URL:
             if cardinality == Cardinality.ONE:
                 if self.name == "Shortcode":
-                    if re.match('\d{4}$', value):
+                    if re.match('\d{4}$', value):  # FIXME: should be alphanumeric, not numeric
                         return Validity.VALID, valid
                     else:
                         return Validity.INVALID_VALUE, "Shortcode must be exactly 4 digits."
@@ -1012,7 +1012,7 @@ class Property():
                 else:
                     return Validity.OPTIONAL_VALUE_MISSING, optional
             elif cardinality == Cardinality.ONE_TO_TWO or \
-                    cardinality == Cardinality.ONE_TO_UNBOUND:
+                    cardinality == Cardinality.ONE_TO_UNBOUND:  # TODO: should make sure that ARK URL
                 if value[0] and not value[0].isspace():
                     if utils.areURLs(value):
                         return Validity.VALID, valid
@@ -1064,6 +1064,17 @@ class Property():
                     return Validity.VALID, valid
                 else:
                     return Validity.OPTIONAL_VALUE_MISSING, optional
+
+        elif datatype == Datatype.DATE:
+            if not value or value.isspace():
+                if cardinality == Cardinality.ONE:
+                    return Validity.REQUIRED_VALUE_MISSING, missing
+                elif cardinality == Cardinality.ZERO_OR_ONE:
+                    return Validity.OPTIONAL_VALUE_MISSING, optional
+            elif value and re.match('\d{4}-\d{2}-\d{2}$', value):
+                return Validity.VALID, valid
+            else:
+                return Validity.INVALID_VALUE, "Not a valid date."
 
         print(f'behaviour undefined:\ncard: {cardinality}\ntype: {datatype}\n')
         return "", ""
