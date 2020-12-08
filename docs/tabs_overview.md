@@ -5,7 +5,7 @@
 All window tabs share some similarities but the "Base Data" tab is slightly
 simpler than the other tabs.
 
-##Similarities
+## Similarities
 
 All tabs have a frame and a bottom that works alike. There are three buttons 
 "Save", "Save and Close", and "Cancel".

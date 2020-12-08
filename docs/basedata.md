@@ -35,3 +35,5 @@ Files may be of the following formats:
 
 See also: 
 [DSP-API Introduction Data Formats](https://github.com/dasch-swiss/dsp-api/blob/main/docs/01-introduction/data-formats.md)
+
+[Back to tabs overview](tabs_overview.md)
