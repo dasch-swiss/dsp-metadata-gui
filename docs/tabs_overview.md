@@ -17,7 +17,7 @@ All tabs share the same layout: On the left side there is the title of form
 field, right to it there are the fields to enter information.
 
 On the right hand of the window there are buttons with a question mark. If you
-click this button a small window opens with a brief explanation and an example 
+click this button a small window opens the "Help" with a brief explanation and an example 
 for the field it is attached to.
 
 ## Differences
@@ -32,7 +32,7 @@ green. This applies for mandatory and optional fields.
 
 For further detail go to the specific tab documentation.
 
-- [Base Data](base_data.md)
+- [Base Data](basedata.md)
 - [Project](project.md)
 - [Data](data.md)
 - [Person](person.md)
