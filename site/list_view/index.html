@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>List view - My Docs</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Welcome to MkDocs</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../basedata/" class="nav-link">Base Data Tab</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../data/" class="nav-link">Data Tab</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../grant/" class="nav-link">Grant Tab</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">List view</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../organization/" class="nav-link">Organization Tab</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../overview/" class="nav-link">Overview</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../person/" class="nav-link">Person Tab</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../project/" class="nav-link">Project Tab</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../tabs_overview/" class="nav-link">Tabbed Windows Overview</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../todos_questions/" class="nav-link">Todos questions</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../grant/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../organization/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#list-view" class="nav-link">List view</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#file" class="nav-link">File</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#new-folder" class="nav-link">New Folder</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#button-edit-in-tabs" class="nav-link">Button Edit in Tabs</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#process-selected-in-xml" class="nav-link">Process selected in XML</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="list-view">List view</h1>
+<p><a href="../overview/">Back to overview</a></p>
+<p>List view is the first window you will see after starting the tool. In List View you have a Menu Bar (top of the screen), an empty list window, 
+and the buttons "New Folder", "Edit in Tabs" and "Process selected to XML".</p>
+<p>The Menu Bar shows "File", "Option", "Help", and "Window".  </p>
+<h2 id="file">File</h2>
+<p>"File" provides you to open your project (in case you work for an organization, 
+which deals with several projects, you can open several projects). "New Folder" in
+"File" opens a dialog box allowing you to select the folder with your project. 
+We presume your project folder has the name of your project in abbreviated form.</p>
+<p>Your project folder may contain your project files (zip, xml, et cetera.). </p>
+<p>XX__At the time of writing, the files are not acquired, but this is to change soon.__XX
+You may select your files later on, if you are not ready. The files should be in your
+project folder for processing and upload to the DSP-Server.</p>
+<p>After you have selected the project folder, it appears in the "List". The "List" has 
+three columns: "Folder", "Project", and "List of Files". The "Folder" entry shows the path
+of your project on the file system in absolute notation, the "Project" entry shows your 
+project, and the "List of Files" entry shows your files. This entry may be empty, 
+before you have selected your files (see also below).</p>
+<h2 id="new-folder">New Folder</h2>
+<p>The button "New Folder" works likewise to the "Menu" "New Folder" dialogue.</p>
+<h2 id="button-edit-in-tabs">Button Edit in Tabs</h2>
+<p>Select your project and click "Edit in Tabs" to process your data further. This will lead
+you to the Tabbed View. A second window will be opened (see <a href="../overview/">overview</a>)</p>
+<h2 id="process-selected-in-xml">Process selected in XML</h2>
+<p>Once you are finished with collecting your metadata and all mandatory form fields are filled
+in and you have green light (Flag "mandatory" is typed in green colour) you may process your 
+project to RDF/XML. </p>
+<p><strong>More to come...</strong></p>
+<p><a href="../overview/">Back to overview</a></p>
+<p><a href="../README.md">Back to README</a></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

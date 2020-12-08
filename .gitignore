@@ -1,11 +1,7 @@
 .tmp
 
 # mkdocs specifics
-mkdocs.yml
-index.md
-site/
-
-
+# none
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
