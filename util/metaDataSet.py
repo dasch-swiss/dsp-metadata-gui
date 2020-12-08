@@ -568,7 +568,7 @@ class Dataset(DataClass):
         self.distribution = Property("Distribution",
                                      "A downloadable form of this dataset, at a specific location, in a specific format",
                                      "https://test.dasch.swiss",
-                                     Datatype.URL,  # FIXME: should be DataDownload?
+                                     Datatype.DOWNLOAD,
                                      Cardinality.ZERO_OR_ONE,
                                      predicate=dsp_repo.hasDistribution)
 
@@ -770,7 +770,7 @@ class Grant(DataClass):
                                "Funding person or institution of the project",
                                "",
                                Datatype.PERSON_OR_ORGANIZATION,
-                               Cardinality.ONE_TO_UNBOUND,  # FIXME: zero to one (does that make sense?)
+                               Cardinality.ZERO_OR_ONE,  # QUESTION: does that make sense?
                                predicate=dsp_repo.hasFunder)
 
     def get_properties(self):
@@ -873,7 +873,8 @@ class Property():
                     datatype = Datatype.ORGANIZATION
             # Handle datatypes
             if datatype == Datatype.STRING or datatype == Datatype.CONTROLLED_VOCABULARY:
-                # g.add((subject, self.predicate, Literal(v, datatype=XSD.string)))  # FIXME: should be able to be type string
+                # g.add((subject, self.predicate, Literal(v, datatype=XSD.string)))
+                # FIXME: should be able to be type string
                 g.add((subject, self.predicate, Literal(v)))
             elif datatype == Datatype.DATE:
                 g.add((subject, self.predicate, Literal(v, datatype=XSD.date)))
@@ -936,6 +937,9 @@ class Property():
                 g.add((b0, RDF.type, prov.Attribution))
                 g.add((b0, dsp_repo.hasRole, Literal(v[0], datatype=XSD.string)))
                 g.add((b0, prov.agent, v[1].get_rdf_iri()))
+            elif datatype == Datatype.DOWNLOAD:
+                # TODO: implement
+                pass
             else:
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
         return g
@@ -958,7 +962,8 @@ class Property():
                 return Validity.OPTIONAL_VALUE_MISSING, valid
 
         if datatype == Datatype.STRING or \
-                datatype == Datatype.STRING_OR_URL:
+                datatype == Datatype.STRING_OR_URL or \
+                datatype == Datatype.DOWNLOAD:
             if cardinality == Cardinality.ONE:
                 if self.name == "Shortcode":
                     if re.match('[a-zA-Z0-9]{4}$', value):

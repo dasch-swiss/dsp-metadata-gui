@@ -324,6 +324,7 @@ class PropertyRow():
                 or prop.datatype == Datatype.STRING_OR_URL \
                 or prop.datatype == Datatype.URL \
                 or prop.datatype == Datatype.IRI \
+                or prop.datatype == Datatype.DOWNLOAD \
                 or prop.datatype == Datatype.PLACE:
             if prop.cardinality == Cardinality.ONE \
                     or prop.cardinality == Cardinality.ZERO_OR_ONE:  # String or similar, exactly 1 or 0-1
@@ -531,6 +532,7 @@ class PropertyRow():
                 or datatype == Datatype.STRING_OR_URL \
                 or datatype == Datatype.URL \
                 or datatype == Datatype.IRI \
+                or datatype == Datatype.DOWNLOAD \
                 or datatype == Datatype.PLACE:
             if cardinality == Cardinality.ONE \
                     or cardinality == Cardinality.ZERO_OR_ONE:
@@ -656,6 +658,7 @@ class PropertyRow():
                 or datatype == Datatype.STRING_OR_URL \
                 or datatype == Datatype.URL \
                 or datatype == Datatype.IRI \
+                or datatype == Datatype.DOWNLOAD \
                 or datatype == Datatype.PLACE:
             if cardinality == Cardinality.ONE \
                     or cardinality == Cardinality.ZERO_OR_ONE:

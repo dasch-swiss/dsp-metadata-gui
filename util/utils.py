@@ -102,3 +102,4 @@ class Datatype(Enum):
     ADDRESS = 12
     PERSON = 13
     ORGANIZATION = 14
+    DOWNLOAD = 15
