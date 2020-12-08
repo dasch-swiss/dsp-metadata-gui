@@ -672,7 +672,7 @@ class Person(DataClass):
             self.address,
         ]
 
-    def __str__(self):
+    def __str__(self):  # TODO: show all names
         classname = str(self.get_rdf_iri()).split('#')[1]
         n1 = "<first name missing>"
         if self.givenName.value:
@@ -772,7 +772,7 @@ class Grant(DataClass):
                                "Funding person or institution of the project",
                                "",
                                Datatype.PERSON_OR_ORGANIZATION,
-                               Cardinality.ONE_TO_UNBOUND,
+                               Cardinality.ONE_TO_UNBOUND,  # FIXME: zero to one (does that make sense?)
                                predicate=dsp_repo.hasFunder)
 
     def get_properties(self):
@@ -783,7 +783,7 @@ class Grant(DataClass):
             self.url,
         ]
 
-    def __str__(self):
+    def __str__(self):  # FIXME: doesn't look right
         classname = str(self.get_rdf_iri()).split('#')[1]
         n1 = "<funder missing>"
         if self.funder.value:
@@ -848,7 +848,7 @@ class Property():
         Returns:
             Graph: a graph containing one or multiple triples that represent the property
         """
-        g = Graph()
+        g = Graph()  # TODO: ensure that names come in the right order
         # Ensure the data can be looped
         vals = self.value
         if not isinstance(vals, list):
@@ -963,7 +963,7 @@ class Property():
                 datatype == Datatype.STRING_OR_URL:
             if cardinality == Cardinality.ONE:
                 if self.name == "Shortcode":
-                    if re.match('[a-zA-Z0-9]{4}$', value):  # FIXME: should be alphanumeric, not numeric
+                    if re.match('[a-zA-Z0-9]{4}$', value):
                         return Validity.VALID, valid
                     else:
                         return Validity.INVALID_VALUE, "Shortcode must be exactly 4 digits."
@@ -1071,11 +1071,11 @@ class Property():
                     return Validity.REQUIRED_VALUE_MISSING, missing
                 elif cardinality == Cardinality.ZERO_OR_ONE:
                     return Validity.OPTIONAL_VALUE_MISSING, optional
-            elif value and re.match('\d{4}-\d{2}-\d{2}$', value):
+            elif value and re.match(r'\d{4}-\d{2}-\d{2}$', value):
                 return Validity.VALID, valid
             else:
                 return Validity.INVALID_VALUE, "Not a valid date."
-        
+
         elif datatype == Datatype.ADDRESS:
             if cardinality == Cardinality.UNBOUND:
                 if value[0] and not value[0].isspace() and \
@@ -1089,7 +1089,29 @@ class Property():
                 else:
                     return Validity.INVALID_VALUE, "Not a valid address."
 
-        print(f'behaviour undefined:\ncard: {cardinality}\ntype: {datatype}\n')
+        elif datatype == Datatype.CONTROLLED_VOCABULARY:
+            if cardinality == Cardinality.ONE_TO_UNBOUND:
+                for v in value:
+                    if v not in self.value_options:
+                        return Validity.INVALID_VALUE, f"Value '{v}' not allowed."
+                return Validity.VALID, valid
+
+        elif datatype == Datatype.ATTRIBUTION:
+            if cardinality == Cardinality.ONE_TO_UNBOUND:
+                for v in value:
+                    if (not v[0] or v[0].isspace()) or \
+                            (not v[1] or not isinstance(v[1], (Person, Organization))):
+                        return Validity.INVALID_VALUE, "Not a valid address."
+                return Validity.VALID, valid
+
+        elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
+            if cardinality == Cardinality.ZERO_OR_ONE:
+                if value[0] or (value[1] and not value[1].isspace()):
+                    return Validity.VALID, valid
+                else:
+                    return Validity.OPTIONAL_VALUE_MISSING, optional
+
+        print(f'behavior undefined:\ncard: {cardinality}\ntype: {datatype}\n')
         return "", ""
 
     def __str__(self):
