@@ -15,8 +15,6 @@ The Classes defined here aim to represent a metadata-set, closely following the 
 
 ##### TODO-List #####
 #
-# - implement on the fly input validation
-# - implement overall data validation
 # - don't add person/org/etc. to graph, unless they're referenced somewhere
 #
 #####################
@@ -570,7 +568,7 @@ class Dataset(DataClass):
         self.distribution = Property("Distribution",
                                      "A downloadable form of this dataset, at a specific location, in a specific format",
                                      "https://test.dasch.swiss",
-                                     Datatype.URL,  # FIXME: should be DataDownload?
+                                     Datatype.DOWNLOAD,
                                      Cardinality.ZERO_OR_ONE,
                                      predicate=dsp_repo.hasDistribution)
 
@@ -676,7 +674,7 @@ class Person(DataClass):
         classname = str(self.get_rdf_iri()).split('#')[1]
         n1 = "<first name missing>"
         if self.givenName.value:
-            n1 = self.givenName.value[0]
+            n1 = " ".join(self.givenName.value)
         n2 = "<family name missing>"
         if self.familyName.value:
             n2 = self.familyName.value
@@ -733,7 +731,7 @@ class Organization(DataClass):
         classname = str(self.get_rdf_iri()).split('#')[1]
         n1 = "<name missing>"
         if self.name.value:
-            n1 = self.name.value
+            n1 = " / ".join(self.name.value)
         return f"{classname}: {n1}"
 
 
@@ -772,7 +770,7 @@ class Grant(DataClass):
                                "Funding person or institution of the project",
                                "",
                                Datatype.PERSON_OR_ORGANIZATION,
-                               Cardinality.ONE_TO_UNBOUND,  # FIXME: zero to one (does that make sense?)
+                               Cardinality.ZERO_OR_ONE,  # QUESTION: does that make sense?
                                predicate=dsp_repo.hasFunder)
 
     def get_properties(self):
@@ -783,11 +781,11 @@ class Grant(DataClass):
             self.url,
         ]
 
-    def __str__(self):  # FIXME: doesn't look right
+    def __str__(self):
         classname = str(self.get_rdf_iri()).split('#')[1]
         n1 = "<funder missing>"
         if self.funder.value:
-            n1 = self.funder.value
+            n1 = " & ".join([str(o) for o in self.funder.value])
         return f"{classname}: {n1}"
 
 
@@ -875,7 +873,8 @@ class Property():
                     datatype = Datatype.ORGANIZATION
             # Handle datatypes
             if datatype == Datatype.STRING or datatype == Datatype.CONTROLLED_VOCABULARY:
-                # g.add((subject, self.predicate, Literal(v, datatype=XSD.string)))  # FIXME: should be able to be type string
+                # g.add((subject, self.predicate, Literal(v, datatype=XSD.string)))
+                # FIXME: should be able to be type string
                 g.add((subject, self.predicate, Literal(v)))
             elif datatype == Datatype.DATE:
                 g.add((subject, self.predicate, Literal(v, datatype=XSD.date)))
@@ -938,6 +937,9 @@ class Property():
                 g.add((b0, RDF.type, prov.Attribution))
                 g.add((b0, dsp_repo.hasRole, Literal(v[0], datatype=XSD.string)))
                 g.add((b0, prov.agent, v[1].get_rdf_iri()))
+            elif datatype == Datatype.DOWNLOAD:
+                # TODO: implement
+                pass
             else:
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
         return g
@@ -960,7 +962,8 @@ class Property():
                 return Validity.OPTIONAL_VALUE_MISSING, valid
 
         if datatype == Datatype.STRING or \
-                datatype == Datatype.STRING_OR_URL:
+                datatype == Datatype.STRING_OR_URL or \
+                datatype == Datatype.DOWNLOAD:
             if cardinality == Cardinality.ONE:
                 if self.name == "Shortcode":
                     if re.match('[a-zA-Z0-9]{4}$', value):
