@@ -56,6 +56,7 @@ class Cardinality(Enum):
     ONE_TO_UNBOUND = 3
     ONE_TO_TWO = 4
     ZERO_TO_TWO = 5
+    ONE_TO_UNBOUND_ORDERED = 6
 
     def get_optionality_string(card) -> str:
         """

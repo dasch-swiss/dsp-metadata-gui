@@ -358,6 +358,7 @@ class PropertyRow():
                 sizer.Add(inner_sizer, pos=(index, 1))
                 self.data_widget = [textcontrol1, textcontrol2]
             elif prop.cardinality == Cardinality.ONE_TO_UNBOUND \
+                    or prop.cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED \
                     or prop.cardinality == Cardinality.UNBOUND:  # String or similar, 1-n, 0-2 or 0-n
                 inner_sizer = wx.BoxSizer()
                 textcontrol = wx.TextCtrl(parent, size=(200, -1), style=wx.TE_PROCESS_ENTER)
@@ -541,6 +542,7 @@ class PropertyRow():
                     or cardinality == Cardinality.ZERO_TO_TWO:
                 return [self.data_widget[0].GetValue(), self.data_widget[1].GetValue()]
             if cardinality == Cardinality.ONE_TO_UNBOUND \
+                    or cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED \
                     or cardinality == Cardinality.UNBOUND:
                 return self.data_widget.GetStrings()
         elif datatype == Datatype.DATE:
@@ -668,6 +670,7 @@ class PropertyRow():
                 self.data_widget[0].SetValue(val[0])
                 self.data_widget[1].SetValue(val[1])
             if cardinality == Cardinality.ONE_TO_UNBOUND \
+                    or cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED \
                     or cardinality == Cardinality.UNBOUND:
                 self.data_widget.SetItems(val)
         elif datatype == Datatype.DATE:

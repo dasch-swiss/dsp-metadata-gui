@@ -5,6 +5,7 @@ import pyshacl
 import validators
 from rdflib import Graph, URIRef, RDF, Literal, Namespace, BNode
 from rdflib.namespace import SDO, XSD
+from rdflib.collection import Collection
 
 from util import utils
 from util.utils import Cardinality, Datatype, Validity
@@ -621,7 +622,7 @@ class Person(DataClass):
                                   "Given name of the person",
                                   "John",
                                   Datatype.STRING,
-                                  Cardinality.ONE_TO_UNBOUND,
+                                  Cardinality.ONE_TO_UNBOUND_ORDERED,
                                   predicate=dsp_repo.hasGivenName)
 
         self.familyName = Property("Family name",
@@ -849,6 +850,12 @@ class Property():
         g = Graph()  # TODO: ensure that names come in the right order
         # Ensure the data can be looped
         vals = self.value
+        if self.datatype == Datatype.STRING and \
+                self.cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED:
+            listnode = BNode()
+            Collection(g, listnode, [Literal(v, datatype=XSD.string) for v in vals if v and not v.isspace()])
+            g.add((subject, self.predicate, listnode))
+            return g
         if not isinstance(vals, list):
             vals = [vals]
         for v in vals:
@@ -985,7 +992,8 @@ class Property():
                     return Validity.VALID, valid
                 else:
                     return Validity.OPTIONAL_VALUE_MISSING, optional
-            elif cardinality == Cardinality.ONE_TO_UNBOUND:
+            elif cardinality == Cardinality.ONE_TO_UNBOUND or \
+                    cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED:
                 if len(value) > 0 and value[0] and not value[0].isspace():
                     return Validity.VALID, valid
                 else:
