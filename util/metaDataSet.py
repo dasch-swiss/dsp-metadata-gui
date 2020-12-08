@@ -963,7 +963,7 @@ class Property():
                 datatype == Datatype.STRING_OR_URL:
             if cardinality == Cardinality.ONE:
                 if self.name == "Shortcode":
-                    if re.match('\d{4}$', value):  # FIXME: should be alphanumeric, not numeric
+                    if re.match('[a-zA-Z0-9]{4}$', value):  # FIXME: should be alphanumeric, not numeric
                         return Validity.VALID, valid
                     else:
                         return Validity.INVALID_VALUE, "Shortcode must be exactly 4 digits."
