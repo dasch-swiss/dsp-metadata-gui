@@ -15,8 +15,6 @@ The Classes defined here aim to represent a metadata-set, closely following the 
 
 ##### TODO-List #####
 #
-# - implement on the fly input validation
-# - implement overall data validation
 # - don't add person/org/etc. to graph, unless they're referenced somewhere
 #
 #####################
@@ -676,7 +674,7 @@ class Person(DataClass):
         classname = str(self.get_rdf_iri()).split('#')[1]
         n1 = "<first name missing>"
         if self.givenName.value:
-            n1 = self.givenName.value[0]
+            n1 = " ".join(self.givenName.value)
         n2 = "<family name missing>"
         if self.familyName.value:
             n2 = self.familyName.value
@@ -733,7 +731,7 @@ class Organization(DataClass):
         classname = str(self.get_rdf_iri()).split('#')[1]
         n1 = "<name missing>"
         if self.name.value:
-            n1 = self.name.value
+            n1 = " / ".join(self.name.value)
         return f"{classname}: {n1}"
 
 
@@ -783,11 +781,11 @@ class Grant(DataClass):
             self.url,
         ]
 
-    def __str__(self):  # FIXME: doesn't look right
+    def __str__(self):
         classname = str(self.get_rdf_iri()).split('#')[1]
         n1 = "<funder missing>"
         if self.funder.value:
-            n1 = self.funder.value
+            n1 = " & ".join([str(o) for o in self.funder.value])
         return f"{classname}: {n1}"
 
 
