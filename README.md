@@ -37,6 +37,8 @@ and store it in RDF XML.
 
 # Features
 
+For detailed description see [overview](docs/overview.md)
+
 The metadata module can be used as a tool for recording a research project or for the administration of several projects, for example in an institution. 
 A project or a list of projects can be edited. 
 Once all mandatory data of a project have been entered, the metadata can be validated. 

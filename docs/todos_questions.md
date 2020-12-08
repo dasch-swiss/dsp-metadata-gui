@@ -21,8 +21,8 @@ License along with Knora.  If not, see <http://www.gnu.org/licenses/>.
 
 ## List view 
 
-- [ ] At the moment files in the Open Folder dialog are not ingested? Will this 
-be changed?
+- [ ] At the moment files in the Open Folder dialog are not ingested? Will 
+be changed with low priority
 
 
 ## Tab Base Data
@@ -31,21 +31,18 @@ be changed?
 
 ## Tab Project
 
-- [ ] Description: Could there be a textfield with multiple lines?
-- [ ] End date: Problematic for running projects without end date, if the end date is 
-mandatory
-- [ ] Publications: I would suggest a field where one can see a complete citation. 
-Maybe a text field with multiple lines
+- [ ] Description: Will get multiple lines
+- [x] End date: ok, end date will be end of finance.
+- [ ] Publications: One full line for collecting publication, one full line for listbox
 
 ## Dataset
 
-- [ ] Abstract: Textfield with multiple lines instead of list box?
-- [ ] Language: Could there be a select box?
+- [ ] Abstract: solution like in Publications field
+- [x] Language: Free entry ok, any language possible
 - [ ] Dataset status: Select box with states: pre start, ongoing, halted, finished 
-or others
-- [ ] Documentation: Maybe a text field with multiple lines
-- [ ] Date modified: Last modification date should be mandatory. People should know if
-they work with a outdated data set.
+or others: to be checked with DSP team
+- [x] Documentation: Link or string
+
 
 ## Person
 
