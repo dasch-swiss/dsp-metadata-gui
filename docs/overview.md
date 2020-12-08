@@ -28,9 +28,9 @@ from the DSP Admin [(Ivan Subotic)](ivan.subotic@dasch.swiss)
 [List view](list_view.md)
 
 Tabbed view
-
-- [Base Data](base_data.md)
-- [Project](project.md)
+- [Tabs overview](tabs_overview.md)
+- [Base Data](Base_Data.md)
+- [Project](Project.md)
 - [Data](data.md)
 - [Person](person.md)
 - [Organization](organization.md)
