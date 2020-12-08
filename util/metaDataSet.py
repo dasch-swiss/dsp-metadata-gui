@@ -954,7 +954,6 @@ class Property():
         no_mail = "Invalid e-mail address"
 
         if not value:
-            print(f'missing:\ncard: {cardinality}\ntype: {datatype}\n')
             if Cardinality.isMandatory(cardinality):
                 return Validity.REQUIRED_VALUE_MISSING, missing
             else:
@@ -994,7 +993,8 @@ class Property():
                 else:
                     return Validity.OPTIONAL_VALUE_MISSING, optional
 
-        elif datatype == Datatype.URL:
+        elif datatype == Datatype.URL or \
+                datatype == Datatype.PLACE:
             if cardinality == Cardinality.UNBOUND:
                 if len(value) > 0 and value[0] and not value[0].isspace():
                     if utils.areURLs(value):
@@ -1075,6 +1075,19 @@ class Property():
                 return Validity.VALID, valid
             else:
                 return Validity.INVALID_VALUE, "Not a valid date."
+        
+        elif datatype == Datatype.ADDRESS:
+            if cardinality == Cardinality.UNBOUND:
+                if value[0] and not value[0].isspace() and \
+                        value[1] and not value[1].isspace() and \
+                        value[2] and not value[2].isspace():
+                    return Validity.VALID, valid
+                elif (not value[0] or value[0].isspace()) and \
+                        (not value[1] or value[1].isspace()) and \
+                        (not value[2] or value[2].isspace()):
+                    return Validity.OPTIONAL_VALUE_MISSING, optional
+                else:
+                    return Validity.INVALID_VALUE, "Not a valid address."
 
         print(f'behaviour undefined:\ncard: {cardinality}\ntype: {datatype}\n')
         return "", ""
