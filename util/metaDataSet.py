@@ -519,8 +519,9 @@ class Dataset(DataClass):
         self.status = Property("Dataset status",
                                "Current status of a dataset (testing phase, ongoing, finished)",
                                "The dataset is work in progress",
-                               Datatype.STRING,
+                               Datatype.CONTROLLED_VOCABULARY,
                                Cardinality.ONE,
+                               value_options=['in planning', 'ongoing', 'halted', 'finished'],
                                predicate=dsp_repo.hasStatus)
 
         self.datePublished = Property("Date published",
@@ -1107,6 +1108,10 @@ class Property():
                 for v in value:
                     if v not in self.value_options:
                         return Validity.INVALID_VALUE, f"Value '{v}' not allowed."
+                return Validity.VALID, valid
+            elif cardinality == Cardinality.ONE:
+                if value not in self.value_options:
+                    return Validity.INVALID_VALUE, f"Value '{value}' not allowed."
                 return Validity.VALID, valid
 
         elif datatype == Datatype.ATTRIBUTION:

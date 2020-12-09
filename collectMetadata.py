@@ -416,9 +416,10 @@ class PropertyRow():
                 prop.datatype == Datatype.ORGANIZATION or \
                 prop.datatype == Datatype.GRANT or \
                 prop.datatype == Datatype.CONTROLLED_VOCABULARY:
-            if prop.cardinality == Cardinality.ZERO_OR_ONE:
+            if prop.cardinality == Cardinality.ZERO_OR_ONE \
+                    or prop.cardinality == Cardinality.ONE:
                 choice = wx.Choice(parent, size=(450, -1))
-                choice.SetToolTip("Add a Person or Organization")
+                # choice.SetToolTip("Add a Person or Organization")
                 choice.Bind(wx.EVT_CHOICE, lambda e: self.onValueChange(e, False))
                 self.data_widget = choice
                 self.choice_widget = choice
@@ -431,7 +432,7 @@ class PropertyRow():
                 inner_sizer.Add(box)
                 control_sizer = wx.BoxSizer(wx.VERTICAL)
                 choice = wx.Choice(parent, size=(150, -1))
-                choice.SetToolTip("Add a Person or Organization")
+                # choice.SetToolTip("Add a Person or Organization")
                 choice.Bind(wx.EVT_CHOICE,
                             lambda e: parent.add_to_list(e, box, choice,
                                                          choice.GetStringSelection()))
@@ -594,6 +595,14 @@ class PropertyRow():
         elif datatype == Datatype.CONTROLLED_VOCABULARY:
             if cardinality == Cardinality.ONE_TO_UNBOUND:
                 return self.data_widget.GetStrings()
+            elif cardinality == Cardinality.ONE:
+                sel = self.data_widget.GetSelection()
+                if sel >= 0:
+                    s = self.data_widget.GetString(sel)
+                    if s in self.prop.value_options:
+                        return s
+                    else:
+                        return ""
         elif datatype == Datatype.GRANT:
             if cardinality == Cardinality.UNBOUND:
                 strs = self.data_widget.GetStrings()
@@ -698,7 +707,8 @@ class PropertyRow():
                 datatype == Datatype.PERSON_OR_ORGANIZATION or \
                 datatype == Datatype.PERSON or \
                 datatype == Datatype.ORGANIZATION:
-            if cardinality == Cardinality.ZERO_OR_ONE:
+            if cardinality == Cardinality.ZERO_OR_ONE \
+                    or cardinality == Cardinality.ONE:
                 self.data_widget.SetSelection(
                     self.data_widget.FindString(str(val)))
             if cardinality == Cardinality.ONE_TO_UNBOUND:
