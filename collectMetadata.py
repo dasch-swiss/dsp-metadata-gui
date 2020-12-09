@@ -281,11 +281,14 @@ class TabOne(wx.Panel):
                            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE) as fd:
             if fd.ShowModal() == wx.ID_OK:
                 for p in fd.GetPaths():
-                    if p not in dataset.files:
-                        # TODO: check if it's actually in project path
-                        # TODO: make this relative to project path
-                        dataset.files.append(p)
-                        listbox.Append(p)
+                    f = str(p)
+                    if f.startswith(dataset.path):
+                        f = f.replace(f'{dataset.path}/', '')
+                    else:
+                        continue
+                    if f and f not in dataset.files:
+                        dataset.files.append(f)
+                        listbox.Append(f)
 
     def remove_file(self, dataset, file_list):
         selection = file_list.GetSelection()
