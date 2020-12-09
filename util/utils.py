@@ -104,3 +104,4 @@ class Datatype(Enum):
     PERSON = 13
     ORGANIZATION = 14
     DOWNLOAD = 15
+    SHORTCODE = 16

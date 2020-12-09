@@ -46,7 +46,7 @@ or others: to be checked with DSP team
 
 ## Person
 
-- [ ] Given name: only the first entered name is visible
+- [X] Given name: only the first entered name is visible
 
 ## Organization
 

@@ -1,5 +1,6 @@
 import wx
 import os
+import re
 from wx.lib.stattext import GenStaticText
 
 from util.dataHandling import DataHandling
@@ -60,12 +61,12 @@ class ProjectFrame(wx.Frame):
         menu_bar = wx.MenuBar()
         file_menu = wx.Menu()
         open_folder_menu_item = file_menu.Append(
-            wx.ID_NEW, 'New Folder',
+            wx.ID_NEW, 'Add new Project',
             'Open a folder with project files'
         )
         self.Bind(
             event=wx.EVT_MENU,
-            handler=self.on_open_folder,
+            handler=self.panel.on_add_new_project,
             source=open_folder_menu_item,
         )
         save_menu_item = file_menu.Append(wx.ID_SAVE, "&Save")
@@ -78,14 +79,6 @@ class ProjectFrame(wx.Frame):
         # LATER: add `Show Help` option
         menu_bar.Append(options_help, '&Help')
         self.SetMenuBar(menu_bar)
-
-    def on_open_folder(self, event):
-        title = "Choose a directory:"
-        dlg = wx.DirDialog(self, title,
-                           style=wx.DD_DEFAULT_STYLE)
-        if dlg.ShowModal() == wx.ID_OK:
-            self.panel.add_new_project(dlg.GetPath())
-        dlg.Destroy()
 
     def on_save(self, event):
         if data_handler.current_window:
@@ -122,8 +115,8 @@ class ProjectPanel(wx.Panel):
         # Here we create the Edit button
         main_sizer.Add(self.list_ctrl, 0, wx.ALL | wx.EXPAND, 20)
 
-        new_folder_button = wx.Button(self, label='New Folder')
-        new_folder_button.Bind(wx.EVT_BUTTON, parent.on_open_folder)
+        new_folder_button = wx.Button(self, label='Add new Project')
+        new_folder_button.Bind(wx.EVT_BUTTON, self.on_add_new_project)
         main_sizer.Add(new_folder_button, 0, wx.ALL | wx.CENTER, 5)
 
         edit_tabs_button = wx.Button(self, label='Edit in Tabs')
@@ -138,17 +131,28 @@ class ProjectPanel(wx.Panel):
 
         self.display_repos()
 
-    def on_open_folder(self, event):
+    def on_add_new_project(self, event):
         """
         Open a new folder and add it to projects.
         """
+        # TODO: get shortcode first
+        title = "Enter Project Shortcode:\n(4 alphanumeric characters)\n\nIf your project doesn't have a shortcode assigned yet, \nplease contact the DaSCH Client Services)"
+        dlg = wx.TextEntryDialog(self, title)
+        if dlg.ShowModal() == wx.ID_OK:
+            shortcode = dlg.GetValue()
+            if not re.match('[a-zA-Z0-9]{4}$', shortcode):
+                print("Invalid shortcode entered.")
+                return
+        else:
+            return
+        # LATER: should be able to chose an existing project here
         title = "Choose a directory:"
         dlg = wx.DirDialog(self, title,
                            style=wx.DD_DEFAULT_STYLE)
         if dlg.ShowModal() == wx.ID_OK:
             # Here the update function is called. This function is strictly restricted to new folders.
             # New data will be appended to the available structure.
-            self.panel.add_new_project(dlg.GetPath())
+            self.add_new_project(dlg.GetPath(), shortcode)
         dlg.Destroy()
 
     def display_repos(self):
@@ -195,17 +199,17 @@ class ProjectPanel(wx.Panel):
             data_handler.process_data(selection)
             # LATER: let this return indication of success. display something to the user.
 
-    def add_new_project(self, folder_path):
+    def add_new_project(self, folder_path, shortcode):
         """ Add a new project.
 
-            Where is this function called? It is called by on_open_folder in in the Class ProjectFrame
+            Where is this function called? It is called by on_add_new_project in in the Class ProjectFrame
             What should this function do? It should get a new project, store it and then reload the project list
         """
         dir_list = os.listdir(folder_path)
         if '.DS_Store' in dir_list:
             dir_list.remove('.DS_Store')
-
-        data_handler.add_project(folder_path)
+        # TODO: add files from folder to project
+        data_handler.add_project(folder_path, shortcode)
         self.load_view()
 
 
@@ -502,6 +506,10 @@ class PropertyRow():
                                                           content_list,
                                                           (textcontrol, choice),
                                                           (textcontrol.GetValue(), choice.GetStringSelection())))
+        elif prop.datatype == Datatype.SHORTCODE:
+            text = wx.StaticText(parent)
+            self.data_widget = text
+            sizer.Add(text, pos=(index, 1))
 
         btn = wx.Button(parent, label="?")
         btn.Bind(wx.EVT_BUTTON, lambda event: parent.show_help(event, prop.description, prop.example))
@@ -597,6 +605,8 @@ class PropertyRow():
                     if t and not t.isspace() and o:
                         res.append((t, o,))
                 return res
+        elif datatype == Datatype.SHORTCODE:
+            return self.data_widget.GetLabel()
         print(f"Couldn't find a type here... weird... {datatype}")
         return "Couldn't find my value... sorry"
 
@@ -708,6 +718,8 @@ class PropertyRow():
             self.data_widget.DeleteAllItems()
             for v in val:
                 self.data_widget.Append((v[0], str(v[1])))
+        elif datatype == Datatype.SHORTCODE:
+            return self.data_widget.SetLabel(val)
 
     def onValueChange(self, event, navigate: bool = True):
         data_handler.update_all()

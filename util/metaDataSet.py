@@ -78,12 +78,12 @@ class MetaDataSet:
     def files(self, files: list):
         self.__files = files
 
-    def __init__(self, index: int, name: str, path: str):
+    def __init__(self, index: int, name: str, path: str, shortcode: str):
         self.index = index
         self.name = name
         self.path = path
         self.files = []
-        self.project = Project(name, self)
+        self.project = Project(name, shortcode, self)
         self.dataset = [Dataset(name, self.project, self)]
         self.persons = [Person(self)]
         self.organizations = [Organization(self)]
@@ -303,7 +303,7 @@ class Project(DataClass):
         meta (MetaDataSet): the owning `MetaDataSet`
     """
 
-    def __init__(self, name: str, meta: MetaDataSet):
+    def __init__(self, name: str, shortcode: str, meta: MetaDataSet):
         self.meta = meta
         self.name = Property("Name",
                              "The name of the Project",
@@ -386,9 +386,9 @@ class Project(DataClass):
         self.shortcode = Property("Shortcode",
                                   "Internal shortcode of the project",
                                   "0000",
-                                  Datatype.STRING,
+                                  Datatype.SHORTCODE,
                                   Cardinality.ONE,
-                                  value="0000",
+                                  value=shortcode,
                                   predicate=dsp_repo.hasShortcode)
 
         self.alternateName = Property("Alternate Name",
@@ -879,7 +879,9 @@ class Property():
                 else:
                     datatype = Datatype.ORGANIZATION
             # Handle datatypes
-            if datatype == Datatype.STRING or datatype == Datatype.CONTROLLED_VOCABULARY:
+            if datatype == Datatype.STRING \
+                    or datatype == Datatype.CONTROLLED_VOCABULARY \
+                    or datatype == Datatype.SHORTCODE:
                 # g.add((subject, self.predicate, Literal(v, datatype=XSD.string)))
                 # FIXME: should be able to be type string
                 g.add((subject, self.predicate, Literal(v)))
@@ -972,16 +974,10 @@ class Property():
                 datatype == Datatype.STRING_OR_URL or \
                 datatype == Datatype.DOWNLOAD:
             if cardinality == Cardinality.ONE:
-                if self.name == "Shortcode":
-                    if re.match('[a-zA-Z0-9]{4}$', value):
-                        return Validity.VALID, valid
-                    else:
-                        return Validity.INVALID_VALUE, "Shortcode must be exactly 4 digits."
+                if value and not value.isspace():
+                    return Validity.VALID, valid
                 else:
-                    if value and not value.isspace():
-                        return Validity.VALID, valid
-                    else:
-                        return Validity.REQUIRED_VALUE_MISSING, missing
+                    return Validity.REQUIRED_VALUE_MISSING, missing
             elif cardinality == Cardinality.ONE_TO_TWO:
                 if value[0] and not value[0].isspace():
                     return Validity.VALID, valid
@@ -1003,6 +999,12 @@ class Property():
                     return Validity.VALID, valid
                 else:
                     return Validity.OPTIONAL_VALUE_MISSING, optional
+
+        elif datatype == Datatype.SHORTCODE:
+            if re.match('[a-zA-Z0-9]{4}$', value):
+                return Validity.VALID, valid
+            else:
+                return Validity.INVALID_VALUE, "Shortcode must be exactly 4 alphanumeric characters."
 
         elif datatype == Datatype.URL or \
                 datatype == Datatype.PLACE:
