@@ -206,8 +206,7 @@ class ProjectPanel(wx.Panel):
         dir_list = os.listdir(folder_path)
         if '.DS_Store' in dir_list:
             dir_list.remove('.DS_Store')
-        # TODO: add files from folder to project
-        data_handler.add_project(folder_path, shortcode)
+        data_handler.add_project(folder_path, shortcode, dir_list)
         self.load_view()
 
 

@@ -26,7 +26,7 @@ class DataHandling:
         self.load_data()
         print("Data loaded.")
 
-    def add_project(self, folder_path: str, shortcode: str):
+    def add_project(self, folder_path: str, shortcode: str, files: list):
         """
         Add a new project.
 
@@ -37,11 +37,13 @@ class DataHandling:
         Args:
             folder_path (str): path to the project folder
             shortcode (str): the project shortcode
+            files (list): the files in the project folder
         """
         index = len(self.projects)
         folder_name = os.path.basename(folder_path)
         dataset = MetaDataSet(index, folder_name, folder_path, shortcode)
         self.projects.append(dataset)
+        dataset.files += files
         self.save_data()
 
     def load_data(self):

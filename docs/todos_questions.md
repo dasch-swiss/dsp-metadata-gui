@@ -21,7 +21,7 @@ License along with Knora.  If not, see <http://www.gnu.org/licenses/>.
 
 ## List view 
 
-- [ ] At the moment files in the Open Folder dialog are not ingested? Will 
+- [X] At the moment files in the Open Folder dialog are not ingested? Will 
 be changed with low priority
 
 
