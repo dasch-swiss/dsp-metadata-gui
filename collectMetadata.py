@@ -11,7 +11,6 @@ from util.metaDataHelpers import CalendarDlg
 
 ################# TODO List #################
 #
-# - on the fly validation
 # - export RDF function
 # - Add some sort of 'import from RDF' functionality
 # - give indication of cardinality in help popup
@@ -135,7 +134,6 @@ class ProjectPanel(wx.Panel):
         """
         Open a new folder and add it to projects.
         """
-        # TODO: get shortcode first
         title = "Enter Project Shortcode:\n(4 alphanumeric characters)\n\nIf your project doesn't have a shortcode assigned yet, \nplease contact the DaSCH Client Services)"
         dlg = wx.TextEntryDialog(self, title)
         if dlg.ShowModal() == wx.ID_OK:
@@ -320,6 +318,7 @@ class PropertyRow():
         self.data_widget = None
         self.choice_widget = None
         self.parent = parent
+        self.validity_msg = ""
         name_label = wx.StaticText(parent, label=prop.name + ": ")
         sizer.Add(name_label, pos=(index, 0))
 
@@ -514,7 +513,10 @@ class PropertyRow():
         btn = wx.Button(parent, label="?")
         btn.Bind(wx.EVT_BUTTON, lambda event: parent.show_help(event, prop.description, prop.example))
         sizer.Add(btn, pos=(index, 2))
-        opt = GenStaticText(parent, label=Cardinality.get_optionality_string(prop.cardinality))
+        opt = wx.Button(parent, label=Cardinality.get_optionality_string(prop.cardinality))
+        opt.Bind(wx.EVT_BUTTON, lambda event: parent.show_validity(event,
+                                                                   self.validity_msg,
+                                                                   Cardinality.as_sting(prop.cardinality)))
         self.validity_widget = opt
         sizer.Add(opt, pos=(index, 3))
         self.refresh_ui()
@@ -645,7 +647,7 @@ class PropertyRow():
             widget.SetForegroundColour(wx.Colour(170, 30, 30))
         elif res == Validity.OPTIONAL_VALUE_MISSING:
             widget.SetForegroundColour(wx.NullColour)
-        widget.SetToolTip(msg)
+        self.validity_msg = msg
         # TODO: get tooltip to work here
 
     def set_value(self, val):
@@ -876,7 +878,20 @@ class DataTab(wx.ScrolledWindow):
         """
         Show a help dialog
         """
-        win = HelpPopup(self, message, sample)
+        msg = f"Description:\n{message}\n\nExample:\n{sample}"
+        win = HelpPopup(self, msg)
+        btn = evt.GetEventObject()
+        pos = btn.ClientToScreen((0, 0))
+        sz = btn.GetSize()
+        win.Position(pos, (0, sz[1]))
+        win.Popup()
+
+    def show_validity(self, evt, val, card):
+        """
+        Show a help dialog
+        """
+        msg = f"Validation Result:\n{val}\n\nExpected Cardinality:\n{card}"
+        win = HelpPopup(self, msg)
         btn = evt.GetEventObject()
         pos = btn.ClientToScreen((0, 0))
         sz = btn.GetSize()
@@ -891,10 +906,9 @@ class DataTab(wx.ScrolledWindow):
 
 
 class HelpPopup(wx.PopupTransientWindow):
-    def __init__(self, parent, message, sample):
+    def __init__(self, parent, msg):
         wx.PopupTransientWindow.__init__(self, parent)
         panel = wx.Panel(self)
-        msg = f"Description:\n{message}\n\nExample:\n{sample}"
         st = wx.StaticText(panel, -1, msg)
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(st, 0, wx.ALL, 5)

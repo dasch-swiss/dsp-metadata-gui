@@ -83,6 +83,22 @@ class Cardinality(Enum):
                 or card == Cardinality.ZERO_TO_TWO:
             return False
 
+    def as_sting(card) -> str:
+        if card == Cardinality.UNBOUND:
+            return "Unbound: 0-n values"
+        elif card == Cardinality.ONE:
+            return "Exactly one value"
+        elif card == Cardinality.ZERO_OR_ONE:
+            return "Optional: Zero or one value"
+        elif card == Cardinality.ONE_TO_UNBOUND:
+            return "Mandatory unbound: 1-n values"
+        elif card == Cardinality.ONE_TO_TWO:
+            return "One or two values"
+        elif card == Cardinality.ZERO_TO_TWO:
+            return "Optional: Zero, one or two values"
+        elif card == Cardinality.ONE_TO_UNBOUND_ORDERED:
+            return "Mandatory unbound: 1-n values (ordered)"
+
 
 class Datatype(Enum):
     """
