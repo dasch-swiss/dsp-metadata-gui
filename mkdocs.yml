@@ -1,1 +1,26 @@
 site_name: DSP-Metadata-GUI
+
+nav:
+  - Overview:
+    - Overview: overview.md
+    - List View: list_view.md
+  - Tabbed View:
+    - Tabbed View: tabs_overview.md
+    - Base Data: basedata.md
+    - Project: project.md
+    - Data: data.md
+    - Person: person.md
+    - Organization: organization.md
+    - Grant: grant.md
+
+theme:
+  name: material
+  logo: 'assets/images/dasch-icon-white.svg'
+  favicon: 'assets/images/dasch-favicon.ico'
+  pallette:
+    primary: 'deep purple'
+    accent: 'deep purple'
+  features:
+    - navigation.tabs
+  extra_css:
+    - 'assets/style/theme.css'
