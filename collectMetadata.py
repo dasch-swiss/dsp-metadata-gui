@@ -1,7 +1,6 @@
 import wx
 import os
 import re
-from wx.lib.stattext import GenStaticText
 
 from util.dataHandling import DataHandling
 from util.metaDataSet import MetaDataSet
@@ -15,7 +14,6 @@ from util.metaDataHelpers import CalendarDlg
 # - Add some sort of 'import from RDF' functionality
 # - give indication of cardinality in help popup
 # - ensure that help popup is always on screen entirely
-# - move some misplaced classes to `metaDataHelpers`
 #
 #############################################
 
@@ -603,6 +601,8 @@ class PropertyRow():
                         return s
                     else:
                         return ""
+                else:
+                    return ""
         elif datatype == Datatype.GRANT:
             if cardinality == Cardinality.UNBOUND:
                 strs = self.data_widget.GetStrings()

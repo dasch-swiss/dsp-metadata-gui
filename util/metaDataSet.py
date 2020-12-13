@@ -480,12 +480,12 @@ class Dataset(DataClass):
                                predicate=dsp_repo.sameAs)
 
         self.typeOfData = Property("Type of data",
-                                   "Type of data related to the dataset: xml, text, image, movie, audio",
+                                   "Type of data related to the dataset",
                                    "xml",
                                    Datatype.CONTROLLED_VOCABULARY,
                                    Cardinality.ONE_TO_UNBOUND,
-                                   value_options=["xml", "text",
-                                                  "image", "movie", "audio"],
+                                   value_options=["XML", "Text",
+                                                  "Image", "Movie", "Audio"],
                                    predicate=dsp_repo.hasTypeOfData)
 
         self.documentation = Property("Documentation",
@@ -517,11 +517,11 @@ class Dataset(DataClass):
                                   predicate=dsp_repo.hasHowToCite)
 
         self.status = Property("Dataset status",
-                               "Current status of a dataset (testing phase, ongoing, finished)",
+                               "Current status of a dataset",
                                "The dataset is work in progress",
                                Datatype.CONTROLLED_VOCABULARY,
                                Cardinality.ONE,
-                               value_options=['in planning', 'ongoing', 'halted', 'finished'],
+                               value_options=['In planning', 'Ongoing', 'On hold', 'Finished'],
                                predicate=dsp_repo.hasStatus)
 
         self.datePublished = Property("Date published",
@@ -672,7 +672,7 @@ class Person(DataClass):
             self.address,
         ]
 
-    def __str__(self):  # TODO: show all names
+    def __str__(self):
         classname = str(self.get_rdf_iri()).split('#')[1]
         n1 = "<first name missing>"
         if self.givenName.value:
@@ -787,7 +787,7 @@ class Grant(DataClass):
         classname = str(self.get_rdf_iri()).split('#')[1]
         n1 = "<funder missing>"
         if self.funder.value:
-            n1 = " & ".join([str(o) for o in self.funder.value])
+            n1 = str(self.funder.value)
         return f"{classname}: {n1}"
 
 
@@ -797,11 +797,6 @@ class Property():
 
     Corresponds to `sh:property`
     """
-
-    # name = None
-    # description = None
-    # datatype = None
-    # cardinality = None
 
     def __init__(self, name: str, description: str, example: str, datatype: Datatype.STRING,
                  cardinality=Cardinality.UNBOUND, value=None, value_options=None,
@@ -883,9 +878,9 @@ class Property():
             if datatype == Datatype.STRING \
                     or datatype == Datatype.CONTROLLED_VOCABULARY \
                     or datatype == Datatype.SHORTCODE:
-                # g.add((subject, self.predicate, Literal(v, datatype=XSD.string)))
+                g.add((subject, self.predicate, Literal(v, datatype=XSD.string)))
                 # FIXME: should be able to be type string
-                g.add((subject, self.predicate, Literal(v)))
+                # g.add((subject, self.predicate, Literal(v)))
             elif datatype == Datatype.DATE:
                 g.add((subject, self.predicate, Literal(v, datatype=XSD.date)))
             elif datatype == Datatype.URL:
@@ -1033,7 +1028,7 @@ class Property():
                     else:
                         return Validity.INVALID_VALUE, no_url
                 else:
-                    return Validity.OPTIONAL_VALUE_MISSING, optional
+                    return Validity.OPTIONAL_VALUE_MISSING, optional  # FIXME: not the case in 1-2 cardinality
 
         elif datatype == Datatype.IRI:
             if cardinality == Cardinality.ZERO_OR_ONE:
