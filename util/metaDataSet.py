@@ -941,8 +941,10 @@ class Property():
                 g.add((b0, dsp_repo.hasRole, Literal(v[0], datatype=XSD.string)))
                 g.add((b0, prov.agent, v[1].get_rdf_iri()))
             elif datatype == Datatype.DOWNLOAD:
-                # TODO: implement
-                pass
+                b0 = BNode()
+                g.add((subject, self.predicate, b0))
+                g.add((b0, RDF.type, SDO.DataDownload))
+                g.add((b0, SDO.url, Literal(v)))
             elif datatype == Datatype.IRI:
                 if isinstance(v, tuple):
                     if v and v[0]:
