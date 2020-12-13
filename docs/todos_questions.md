@@ -39,7 +39,7 @@ be changed with low priority
 
 - [ ] Abstract: solution like in Publications field
 - [x] Language: Free entry ok, any language possible
-- [ ] Dataset status: Select box with states: pre start, ongoing, halted, finished 
+- [x] Dataset status: Select box with states: pre start, ongoing, halted, finished 
 or others: to be checked with DSP team
 - [x] Documentation: Link or string
 
