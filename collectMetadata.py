@@ -15,6 +15,7 @@ from util.metaDataHelpers import CalendarDlg
 # - Add some sort of 'import from RDF' functionality
 # - give indication of cardinality in help popup
 # - ensure that help popup is always on screen entirely
+# - document all methods
 #
 #############################################
 
@@ -660,7 +661,6 @@ class PropertyRow():
         elif res == Validity.OPTIONAL_VALUE_MISSING:
             widget.SetForegroundColour(wx.NullColour)
         self.validity_msg = msg
-        # TODO: get tooltip to work here
 
     def set_value(self, val):
         """
