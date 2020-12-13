@@ -879,8 +879,6 @@ class Property():
                     or datatype == Datatype.CONTROLLED_VOCABULARY \
                     or datatype == Datatype.SHORTCODE:
                 g.add((subject, self.predicate, Literal(v, datatype=XSD.string)))
-                # FIXME: should be able to be type string
-                # g.add((subject, self.predicate, Literal(v)))
             elif datatype == Datatype.DATE:
                 g.add((subject, self.predicate, Literal(v, datatype=XSD.date)))
             elif datatype == Datatype.URL:
@@ -943,6 +941,9 @@ class Property():
                 g.add((b0, dsp_repo.hasRole, Literal(v[0], datatype=XSD.string)))
                 g.add((b0, prov.agent, v[1].get_rdf_iri()))
             elif datatype == Datatype.DOWNLOAD:
+                # TODO: implement
+                pass
+            elif datatype == Datatype.IRI:
                 # TODO: implement
                 pass
             else:
@@ -1021,14 +1022,14 @@ class Property():
                 else:
                     return Validity.OPTIONAL_VALUE_MISSING, optional
             elif cardinality == Cardinality.ONE_TO_TWO or \
-                    cardinality == Cardinality.ONE_TO_UNBOUND:  # TODO: should make sure that ARK URL
+                    cardinality == Cardinality.ONE_TO_UNBOUND:
                 if value[0] and not value[0].isspace():
                     if utils.areURLs(value):
                         return Validity.VALID, valid
                     else:
                         return Validity.INVALID_VALUE, no_url
                 else:
-                    return Validity.OPTIONAL_VALUE_MISSING, optional  # FIXME: not the case in 1-2 cardinality
+                    return Validity.REQUIRED_VALUE_MISSING, missing
 
         elif datatype == Datatype.IRI:
             if cardinality == Cardinality.ZERO_OR_ONE:
@@ -1046,7 +1047,7 @@ class Property():
                     else:
                         return Validity.INVALID_VALUE, no_mail
                 else:
-                    return Validity.REQUIRED_VALUE_MISSING, missing
+                    return Validity.OPTIONAL_VALUE_MISSING, optional
 
         elif datatype == Datatype.GRANT or \
                 datatype == Datatype.PROJECT or \

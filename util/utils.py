@@ -76,7 +76,8 @@ class Cardinality(Enum):
     def isMandatory(card) -> bool:
         if card == Cardinality.ONE \
                 or card == Cardinality.ONE_TO_TWO \
-                or card == Cardinality.ONE_TO_UNBOUND:
+                or card == Cardinality.ONE_TO_UNBOUND \
+                or card == Cardinality.ONE_TO_UNBOUND_ORDERED:
             return True
         if card == Cardinality.UNBOUND \
                 or card == Cardinality.ZERO_OR_ONE \
