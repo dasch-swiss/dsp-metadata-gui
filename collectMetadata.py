@@ -11,6 +11,7 @@ from util.metaDataHelpers import CalendarDlg
 ################# TODO List #################
 #
 # - export RDF function
+# - option to remove projects from main list (note: indices will become a problem here)
 # - Add some sort of 'import from RDF' functionality
 # - give indication of cardinality in help popup
 # - ensure that help popup is always on screen entirely

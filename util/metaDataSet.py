@@ -944,8 +944,14 @@ class Property():
                 # TODO: implement
                 pass
             elif datatype == Datatype.IRI:
-                # TODO: implement
-                pass
+                if isinstance(v, tuple):
+                    if v and v[0]:
+                        g.add((subject, self.predicate, URIRef(v[0])))
+                    if v and v[1]:
+                        g.add((subject, self.predicate, URIRef(v[1])))
+                else:
+                    if v and not v.isspace():
+                        g.add((subject, self.predicate, URIRef(v)))
             else:
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
         return g
