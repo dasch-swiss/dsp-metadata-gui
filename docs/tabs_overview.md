@@ -1,7 +1,5 @@
 # Tabbed Windows Overview
 
-[Back to overview](overview.md)
-
 All window tabs share some similarities but the "Base Data" tab is slightly
 simpler than the other tabs.
 

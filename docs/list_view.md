@@ -1,6 +1,6 @@
 # List view
 
-[Back to overview](overview.md)
+![list view](assets/images/list_view.png)
 
 List view is the first window you will see after starting the tool. In List View you have a Menu Bar (top of the screen), an empty list window, 
 and the buttons "New Folder", "Edit in Tabs" and "Process selected to XML".
@@ -14,17 +14,12 @@ which deals with several projects, you can open several projects). "New Folder" 
 "File" opens a dialog box allowing you to select the folder with your project. 
 We presume your project folder has the name of your project in abbreviated form.
 
-Your project folder may contain your project files (zip, xml, et cetera.). 
-
-XX__At the time of writing, the files are not acquired, but this is to change soon.__XX
-You may select your files later on, if you are not ready. The files should be in your
-project folder for processing and upload to the DSP-Server.
+Your project folder should contain your project files (zip, xml, et cetera.). 
 
 After you have selected the project folder, it appears in the "List". The "List" has 
 three columns: "Folder", "Project", and "List of Files". The "Folder" entry shows the path
 of your project on the file system in absolute notation, the "Project" entry shows your 
-project, and the "List of Files" entry shows your files. This entry may be empty, 
-before you have selected your files (see also below).
+project, and the "List of Files" entry shows your files. 
 
 ## New Folder
 
@@ -42,7 +37,3 @@ in and you have green light (Flag "mandatory" is typed in green colour) you may 
 project to RDF/XML. 
 
 **More to come...**
-
-[Back to overview](overview.md)
-
-[Back to README](../README.md)

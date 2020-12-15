@@ -1,9 +1,5 @@
 # Base Data Tab
 
-[Back to overview](overview.md)
-
-[Back to tabs overview](tabs_overview.md)
-
 ## Current Project
 The first line shows the current project. You cannot change the project name.
 
@@ -35,5 +31,3 @@ Files may be of the following formats:
 
 See also: 
 [DSP-API Introduction Data Formats](https://github.com/dasch-swiss/dsp-api/blob/main/docs/01-introduction/data-formats.md)
-
-[Back to tabs overview](tabs_overview.md)

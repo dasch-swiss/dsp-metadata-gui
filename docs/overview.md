@@ -21,13 +21,14 @@ License along with Knora.  If not, see <http://www.gnu.org/licenses/>.
 
 ## Before you start
 Before you start with collecting data to your project in the DSP-metadata-tool **make 
-sure you have the short code of your project**. You get the shortcode of your project 
-from the DSP Admin [(Ivan Subotic)](ivan.subotic@dasch.swiss)
-<!-- we should warn him before publication of this link ;-) -->
+sure you have the alphanumeric shortcode of your project**. You get the shortcode of your project 
+from the DaSCH Client Services.
+<!-- Will there be a contact point given? -->
 
 [List view](list_view.md)
 
 Tabbed view
+
 - [Tabs overview](tabs_overview.md)
 - [Base Data](basedata.md)
 - [Project](project.md)

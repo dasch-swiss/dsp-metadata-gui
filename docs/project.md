@@ -1,9 +1,4 @@
 # Project Tab
-
-[Back to overview](overview.md)
-
-[Back to tabs overview](tabs_overview.md)
-
 With tab Project you collect project specific data to describe your project. All 
 fields are specified by the ontology ( [dsp-ontologies](https://github.com/dasch-swiss/dsp-ontologies)).
 If you are unsure, you might consult the ontology.
@@ -88,8 +83,6 @@ tab "Organization", and then select it here by "Select to add"
 Here you select the grant by which your project is financed. Under tabs, you find "Grant". Fill in
 what applies to your Grant there and select it here.
 
-XX__ Grant still seems to be an object, which is not jet transparent... __XX
-
 ## Alternate Name
 
 Under "Alternate Name" you may fill in an abbreviated form of your project if the official 
@@ -112,5 +105,3 @@ Expected is a string.
 
 If your project has a person assigned as contact point, enter this person under persons, and select it 
 here, if you have a organization address, select your organization.
-
-[Back to tabs overview](tabs_overview.md)
