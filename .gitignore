@@ -2,7 +2,7 @@
 
 # mkdocs specifics
 site/
-assets/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
