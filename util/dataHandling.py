@@ -2,6 +2,7 @@ import os
 import pickle
 
 from .metaDataSet import MetaDataSet
+from .utils import open_file
 
 
 class DataHandling:
@@ -20,8 +21,7 @@ class DataHandling:
         self.current_window = None
         self.projects = []
         self.tabs = []
-        self.data_storage = os.path.expanduser(
-            "~") + "/DaSCH/config/repos.data"
+        self.data_storage = os.path.expanduser("~") + "/DaSCH/config/repos.data"
         # LATER: path could be made customizable
         self.load_data()
         print("Data loaded.")
@@ -78,9 +78,27 @@ class DataHandling:
         """
         # TODO: how do process_data and validate_graph really divide labour?
         print(f'Should be processing Dataset: {index}')
-        self.validate_graph(self.projects[index])
+        project = self.projects[index]
+        self.validate_graph(project)
+        graph = project.generate_rdf_graph()
+        self.export_rdf(project.path, graph)
 
-    def validate_graph(self, dataset):
+    def export_rdf(self, path, graph):
+        p = path + '/metadata.ttl'
+        with open(p, 'w') as f:
+            s = graph.serialize(format='turtle').decode("utf-8")
+            f.write(s)
+        p = path + '/metadata.json'
+        with open(p, 'w') as f:
+            s = graph.serialize(format='json-ld').decode("utf-8")
+            f.write(s)
+        p = path + '/metadata.xml'
+        with open(p, 'w') as f:
+            s = graph.serialize(format='xml').decode("utf-8")
+            f.write(s)
+        open_file(path)
+
+    def validate_graph(self, dataset: MetaDataSet):
         """
         Validates all properties in a specific `MetaDataSet.`
 
@@ -88,7 +106,7 @@ class DataHandling:
         but rather generates the RDF graph, which then gets validated.
         """
         print("should be validating the data")
-        validation_result = dataset.validate_graph()
+        validation_result = dataset.validate_graph(dataset.generate_rdf_graph())
         if validation_result:
             # TODO: give positive feedback to user
             pass

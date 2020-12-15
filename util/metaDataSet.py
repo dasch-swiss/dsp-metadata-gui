@@ -138,11 +138,11 @@ class MetaDataSet:
             res.extend(o.get_properties())
         return res
 
-    def validate_graph(self):
+    def validate_graph(self, graph):
         """
         Validates the graph of the entire data against the SHACL ontology.
         """
-        graph = self.generate_rdf_graph()
+        # graph = self.generate_rdf_graph()
         conforms, results_graph, results_text = pyshacl.validate(
             graph, shacl_graph=ontology_url)
         print(f"Validation result: {conforms}")

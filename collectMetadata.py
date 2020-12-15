@@ -97,37 +97,40 @@ class ProjectPanel(wx.Panel):
 
     def __init__(self, parent, selection=None):
         super().__init__(parent)
-        # Here we create the window ...
-        main_sizer = wx.BoxSizer(wx.VERTICAL)
-        title = wx.StaticText(
-            self, label="DaSCH Service Platform - Metadata Collection", size=(400, -1))
-        main_sizer.Add(title, 0, wx.ALL | wx.LEFT, 10)
-
-        # LATER: Here we might do some cosmetics (Title, info button and the like ...
         self.folder_path = ""
         self.row_obj_dict = {}
 
-        self.list_ctrl = wx.ListCtrl(
-            self, size=(-1, 200),
-            style=wx.LC_REPORT | wx.BORDER_SUNKEN
-        )
-
+        # Here we create the window ...
+        main_sizer = wx.BoxSizer(wx.VERTICAL)
+        title = wx.StaticText(self, label="DaSCH Service Platform - Metadata Collection", size=(400, -1))
+        main_sizer.Add(title, 0, wx.ALL | wx.LEFT, 10)
+        self.list_ctrl = wx.ListCtrl(self, size=(-1, 200), style=wx.LC_REPORT | wx.BORDER_SUNKEN)
         self.create_header()
+        main_sizer.Add(self.list_ctrl, 0, wx.ALL | wx.EXPAND, 10)
 
         # Here we create the Edit button
-        main_sizer.Add(self.list_ctrl, 0, wx.ALL | wx.EXPAND, 20)
-
+        button_sizer = wx.BoxSizer()
         new_folder_button = wx.Button(self, label='Add new Project')
         new_folder_button.Bind(wx.EVT_BUTTON, self.on_add_new_project)
-        main_sizer.Add(new_folder_button, 0, wx.ALL | wx.CENTER, 5)
+        button_sizer.Add(new_folder_button, 0, wx.ALL | wx.EXPAND, 0)
 
-        edit_tabs_button = wx.Button(self, label='Edit in Tabs')
+        new_folder_button = wx.Button(self, label='Remove selected Project')
+        new_folder_button.Bind(wx.EVT_BUTTON, self.on_remove_project)
+        button_sizer.Add(new_folder_button, 0, wx.LEFT | wx.EXPAND, 5)
+
+        edit_tabs_button = wx.Button(self, label='Edit selected Project')
         edit_tabs_button.Bind(wx.EVT_BUTTON, self.on_edit_tabbed)
-        main_sizer.Add(edit_tabs_button, 0, wx.ALL | wx.CENTER, 5)
+        button_sizer.Add(edit_tabs_button, 0, wx.LEFT | wx.EXPAND, 5)
 
-        process_xml_button = wx.Button(self, label='Process selected to XML')
+        validate_button = wx.Button(self, label='Validate selected Project')
+        validate_button.Bind(wx.EVT_BUTTON, self.on_validate)
+        button_sizer.Add(validate_button, 0, wx.LEFT | wx.EXPAND, 5)
+
+        process_xml_button = wx.Button(self, label='Export selected Project as RDF')
         process_xml_button.Bind(wx.EVT_BUTTON, self.on_process_data)
-        main_sizer.Add(process_xml_button, 0, wx.ALL | wx.Center, 5)
+        button_sizer.Add(process_xml_button, 0, wx.LEFT | wx.EXPAND, 5)
+
+        main_sizer.Add(button_sizer, 0, wx.ALL, 10)
         self.SetSizer(main_sizer)
         self.Fit()
 
@@ -148,8 +151,7 @@ class ProjectPanel(wx.Panel):
             return
         # LATER: should be able to chose an existing project here
         title = "Choose a directory:"
-        dlg = wx.DirDialog(self, title,
-                           style=wx.DD_DEFAULT_STYLE)
+        dlg = wx.DirDialog(self, title, style=wx.DD_DEFAULT_STYLE)
         if dlg.ShowModal() == wx.ID_OK:
             # Here the update function is called. This function is strictly restricted to new folders.
             # New data will be appended to the available structure.
@@ -211,6 +213,20 @@ class ProjectPanel(wx.Panel):
             dir_list.remove('.DS_Store')
         data_handler.add_project(folder_path, shortcode, dir_list)
         self.load_view()
+
+    def on_remove_project(self, event):
+        # selection = self.list_ctrl.GetFocusedItem()
+        # if selection >= 0:
+        #     pass
+        # TODO: implement
+        pass
+
+    def on_validate(self, event):
+        # selection = self.list_ctrl.GetFocusedItem()
+        # if selection >= 0:
+        #     pass
+        # TODO: implement
+        pass
 
 
 class TabOne(wx.Panel):
