@@ -56,6 +56,9 @@ class ProjectFrame(wx.Frame):
         self.Show()
 
     def create_menu(self):
+        """
+        Create the menu, add a folder dialog box
+        """
         menu_bar = wx.MenuBar()
         file_menu = wx.Menu()
         open_folder_menu_item = file_menu.Append(

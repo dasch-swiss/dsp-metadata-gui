@@ -37,29 +37,35 @@ and store it in RDF XML.
 
 # Features
 
-For detailed description see [overview](docs/overview.md)
+For detailed description see [overview](overview.md)
 
-The metadata module can be used as a tool for recording a research project or for the administration of several projects, for example in an institution. 
+The metadata module can be used as a tool for recording a research project or for the administration of several projects, 
+for example in an institution. 
 A project or a list of projects can be edited. 
 Once all mandatory data of a project have been entered, the metadata can be validated. 
 If the validation is successful, the project metadata (and files) can be uploaded to the DSP server. 
 
-After approval by the DSP administrator, the project with its metadata (and possibly its project files) is publicly visible and findable.
+After approval by the DSP administrator, the project with its metadata (and possibly its project files) is publicly 
+visible and findable.
 
 # Use of the metadata module
 
-1. Select a project folder with the project files it contains (the project folder can be empty, the files can be selected later).
+1. Select a project folder with the project files it contains (the project folder can be empty, the files can be 
+   selected later).
 
-2. Select a project in the list and edit the metadata tabs. The following tabs are available: Base Data, Project, Dataset, Person, Organisation. Filling in the mandatory and possibly the optional fields. A button with a question mark is available behind each field for explanation. Clicking on the question mark makes a help text visible. 
+2. Select a project in the list and edit the metadata tabs. The following tabs are available: Base Data, Project, 
+   Dataset, Person, Organisation. Filling in the mandatory and possibly the optional fields. 
+   A button with a question mark is available behind each field for explanation. Clicking on the question mark 
+   makes a help text visible. 
 
 3. Validation
 
 4. Upload to DSP server
 
-For detailed documentation see [Link] ()
+For detailed documentation see [still empty Link]()
 
 # Installation
-
+__TODO:__ Add installation hints.
 
 
 ## Requirements
