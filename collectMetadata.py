@@ -51,7 +51,7 @@ class ProjectFrame(wx.Frame):
 
     def __init__(self):
         super().__init__(parent=None,
-                         title='Project Data Editor', size=(1100, 450))
+                         title='Project Data Editor', size=(1100, 750))
         self.panel = ProjectPanel(self)
         self.create_menu()
         self.Show()
@@ -105,38 +105,44 @@ class ProjectPanel(wx.Panel):
         title = wx.StaticText(self, label="DaSCH Service Platform - Metadata Collection", size=(400, -1))
         main_sizer.Add(title, 0, wx.ALL | wx.LEFT, 10)
         self.list_ctrl = wx.ListCtrl(self, size=(-1, 200), style=wx.LC_REPORT | wx.BORDER_SUNKEN)
-        self.create_header()
+        self.list_ctrl.Bind(wx.EVT_LIST_ITEM_SELECTED, self.on_item_selected)
         main_sizer.Add(self.list_ctrl, 0, wx.ALL | wx.EXPAND, 10)
 
+        bottom_sizer = wx.BoxSizer()
+        rdf_display = wx.StaticText(self, label="No Project selected.", size=(700, -1))
+        self.rdf_display = rdf_display
+        bottom_sizer.Add(self.rdf_display)
+
         # Here we create the Edit button
-        button_sizer = wx.BoxSizer()
+        button_sizer = wx.BoxSizer(wx.VERTICAL)
         new_folder_button = wx.Button(self, label='Add new Project')
         new_folder_button.Bind(wx.EVT_BUTTON, self.on_add_new_project)
-        button_sizer.Add(new_folder_button, 0, wx.ALL | wx.EXPAND, 0)
+        button_sizer.Add(new_folder_button, 0, wx.ALL | wx.EXPAND, 7)
 
         new_folder_button = wx.Button(self, label='Remove selected Project')
         new_folder_button.Bind(wx.EVT_BUTTON, self.on_remove_project)
-        button_sizer.Add(new_folder_button, 0, wx.LEFT | wx.EXPAND, 5)
+        button_sizer.Add(new_folder_button, 0, wx.ALL | wx.EXPAND, 7)
 
         edit_tabs_button = wx.Button(self, label='Edit selected Project')
         edit_tabs_button.Bind(wx.EVT_BUTTON, self.on_edit_tabbed)
-        button_sizer.Add(edit_tabs_button, 0, wx.LEFT | wx.EXPAND, 5)
+        button_sizer.Add(edit_tabs_button, 0, wx.ALL | wx.EXPAND, 7)
 
         validate_button = wx.Button(self, label='Validate selected Project')
         validate_button.Bind(wx.EVT_BUTTON, self.on_validate)
-        button_sizer.Add(validate_button, 0, wx.LEFT | wx.EXPAND, 5)
+        button_sizer.Add(validate_button, 0, wx.ALL | wx.EXPAND, 7)
 
         process_xml_button = wx.Button(self, label='Export selected Project as RDF')
         process_xml_button.Bind(wx.EVT_BUTTON, self.on_process_data)
-        button_sizer.Add(process_xml_button, 0, wx.LEFT | wx.EXPAND, 5)
+        button_sizer.Add(process_xml_button, 0, wx.ALL | wx.EXPAND, 7)
 
         # LATER: add option to zip pickle, data and metadata, and save it somewhere
 
-        main_sizer.Add(button_sizer, 0, wx.ALL, 10)
+        bottom_sizer.Add(button_sizer, 0, wx.ALL, 10)
+        main_sizer.Add(bottom_sizer, 0, wx.ALL, 10)
         self.SetSizer(main_sizer)
         self.Fit()
-
-        self.display_repos()
+        self.create_header()
+        self.load_view()
 
     def on_add_new_project(self, event):
         """
@@ -182,21 +188,35 @@ class ProjectPanel(wx.Panel):
 
     def load_view(self):
         # The previous list contents is cleared before reloading it
-        self.list_ctrl.ClearAll()
+        # self.list_ctrl.ClearAll()  # FIXME: find a solution here
         # Construct a header
-        self.create_header()
         self.display_repos()
+        self.display_rdf()
+
+    def display_rdf(self):
+        project = self.get_selected_project()
+        print(project)
+        if project:
+            txt = project.get_turtle()
+        else:
+            txt = "No project selected."
+        self.rdf_display.SetLabel(txt)
+
+    def get_selected_project(self) -> MetaDataSet:
+        selection = self.list_ctrl.GetFirstSelected()
+        print(selection)
+        # if selection >= 0:
+        #     return data_handler.projects[selection]  # FIXME: broken
 
     def on_edit_tabbed(self, event):
         """
         This function calls the EditBaseDialog and hands over pFiles, a list.
         """
-        selection = self.list_ctrl.GetFocusedItem()
-        if selection >= 0:
-            repo = data_handler.projects[selection]
-            dlg = TabbedWindow(self, repo)
-            data_handler.current_window = dlg
-            dlg.Show()
+        repo = self.get_selected_project()
+        if repo:
+            window = TabbedWindow(self, repo)
+            data_handler.current_window = window
+            window.Show()
             self.Disable()
 
     def on_process_data(self, event):
@@ -223,6 +243,7 @@ class ProjectPanel(wx.Panel):
         # if selection >= 0:
         #     pass
         # TODO: implement
+        self.load_view()
         pass
 
     def on_validate(self, event):
@@ -231,6 +252,9 @@ class ProjectPanel(wx.Panel):
         #     pass
         # TODO: implement
         pass
+
+    def on_item_selected(self, event):
+        self.load_view()
 
 
 class TabOne(wx.Panel):

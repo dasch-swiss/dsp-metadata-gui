@@ -146,10 +146,10 @@ class MetaDataSet:
         # graph = self.generate_rdf_graph()
         conforms, results_graph, results_text = pyshacl.validate(graph, shacl_graph=ontology_url)
         print(f"Validation result: {conforms}")
-        print('\n------------\n')
-        print(results_graph)
-        print('\n------------\n')
-        print(results_text)
+        # print('\n------------\n')
+        # print(results_graph)
+        # print('\n------------\n')
+        # print(results_text)
         return conforms
 
     def generate_rdf_graph(self) -> Graph:
@@ -175,9 +175,9 @@ class MetaDataSet:
             org.add_rdf_to_graph(graph, "Grant")
         # print("\n------------------\n")
         # print(graph.serialize(format='nt').decode("utf-8"))
-        print("\n------------------\n")
-        print(graph.serialize(format='turtle').decode("utf-8"))
-        print("\n------------------\n")
+        # print("\n------------------\n")
+        # print(graph.serialize(format='turtle').decode("utf-8"))
+        # print("\n------------------\n")
         # print(graph.serialize(format='xml').decode("utf-8"))
         # print("\n------------------\n")
         # print(graph.serialize(format='json-ld').decode("utf-8"))
