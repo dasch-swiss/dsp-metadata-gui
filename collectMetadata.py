@@ -349,7 +349,7 @@ class PropertyRow():
         if prop.datatype == Datatype.STRING \
                 or prop.datatype == Datatype.STRING_OR_URL \
                 or prop.datatype == Datatype.URL \
-                or prop.datatype == Datatype.IRI \
+                or prop.datatype == Datatype.EMAIL \
                 or prop.datatype == Datatype.DOWNLOAD \
                 or prop.datatype == Datatype.PLACE:
             if prop.cardinality == Cardinality.ONE \
@@ -566,7 +566,7 @@ class PropertyRow():
         if datatype == Datatype.STRING \
                 or datatype == Datatype.STRING_OR_URL \
                 or datatype == Datatype.URL \
-                or datatype == Datatype.IRI \
+                or datatype == Datatype.EMAIL \
                 or datatype == Datatype.DOWNLOAD \
                 or datatype == Datatype.PLACE:
             if cardinality == Cardinality.ONE \
@@ -704,7 +704,7 @@ class PropertyRow():
         if datatype == Datatype.STRING \
                 or datatype == Datatype.STRING_OR_URL \
                 or datatype == Datatype.URL \
-                or datatype == Datatype.IRI \
+                or datatype == Datatype.EMAIL \
                 or datatype == Datatype.DOWNLOAD \
                 or datatype == Datatype.PLACE:
             if cardinality == Cardinality.ONE \

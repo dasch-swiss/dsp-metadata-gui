@@ -128,7 +128,7 @@ class Datatype(Enum):
     CONTROLLED_VOCABULARY = 8
     PROJECT = 9
     ATTRIBUTION = 10
-    IRI = 11
+    EMAIL = 11
     ADDRESS = 12
     PERSON = 13
     ORGANIZATION = 14

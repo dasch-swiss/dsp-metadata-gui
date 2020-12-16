@@ -657,7 +657,7 @@ class Person(DataClass):
         self.email = Property("E-mail",
                               "E-mail address of the person",
                               "john.doe@dasch.swiss",
-                              Datatype.IRI,
+                              Datatype.EMAIL,
                               Cardinality.ZERO_TO_TWO,
                               predicate=dsp_repo.hasEmail)
 
@@ -724,7 +724,7 @@ class Organization(DataClass):
         self.email = Property("E-mail",
                               "E-mail address of the organization",
                               "info@dasch.swiss",
-                              Datatype.IRI,
+                              Datatype.EMAIL,
                               Cardinality.ZERO_OR_ONE,
                               predicate=dsp_repo.hasEmail)
 
@@ -966,15 +966,15 @@ class Property():
                 g.add((subject, self.predicate, b0))
                 g.add((b0, RDF.type, SDO.DataDownload))
                 g.add((b0, SDO.url, Literal(v)))
-            elif datatype == Datatype.IRI:
+            elif datatype == Datatype.EMAIL:
                 if isinstance(v, tuple):
                     if v and v[0]:
-                        g.add((subject, self.predicate, URIRef(v[0])))
+                        g.add((subject, self.predicate, Literal(v[0])))
                     if v and v[1]:
-                        g.add((subject, self.predicate, URIRef(v[1])))
+                        g.add((subject, self.predicate, Literal(v[1])))
                 else:
                     if v and not v.isspace():
-                        g.add((subject, self.predicate, URIRef(v)))
+                        g.add((subject, self.predicate, Literal(v)))
             else:
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
         return g
@@ -1060,7 +1060,7 @@ class Property():
                 else:
                     return Validity.REQUIRED_VALUE_MISSING, missing
 
-        elif datatype == Datatype.IRI:
+        elif datatype == Datatype.EMAIL:
             if cardinality == Cardinality.ZERO_OR_ONE:
                 if value and not value.isspace():
                     if utils.is_email(value):
