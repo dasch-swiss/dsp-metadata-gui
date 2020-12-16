@@ -84,6 +84,7 @@ class DataHandling:
         self.export_rdf(project.path, graph)
 
     def export_rdf(self, path, graph):
+        path += '/metadata'
         p = path + '/metadata.ttl'
         with open(p, 'w') as f:
             s = graph.serialize(format='turtle').decode("utf-8")

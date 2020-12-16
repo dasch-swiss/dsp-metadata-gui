@@ -31,7 +31,7 @@ be changed with low priority
 
 ## Tab Project
 
-- [ ] Description: Will get multiple lines
+- [x] Description: Will get multiple lines
 - [x] End date: ok, end date will be end of finance.
 - [ ] Publications: One full line for collecting publication, one full line for listbox
 

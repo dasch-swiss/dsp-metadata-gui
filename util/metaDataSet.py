@@ -339,7 +339,8 @@ class Project(DataClass):
                                     "This is a test project. All properties have been used to test these. You will just describe your project briefly.",
                                     Datatype.STRING,
                                     Cardinality.ONE,
-                                    predicate=dsp_repo.hasDescription)
+                                    predicate=dsp_repo.hasDescription,
+                                    multiline=True)
 
         self.keywords = Property("Keywords",
                                  "Keywords and tags",
@@ -429,7 +430,8 @@ class Project(DataClass):
                                     "Publications produced during the lifetime of the project",
                                     "Doe, J. (2000). A Publication.",
                                     Datatype.STRING,
-                                    predicate=dsp_repo.hasPublication)
+                                    predicate=dsp_repo.hasPublication,
+                                    multiline=True)
 
         self.contactPoint = Property("Contact Point",
                                      "Contact information",
@@ -491,7 +493,8 @@ class Dataset(DataClass):
                                  "This is merely an exemplary dataset",
                                  Datatype.STRING_OR_URL,
                                  Cardinality.ONE_TO_UNBOUND,
-                                 predicate=dsp_repo.hasAbstract)
+                                 predicate=dsp_repo.hasAbstract,
+                                 multiline=True)
 
         self.sameAs = Property("Alternative URL",
                                "Alternative URL to the dataset, if applicable",
@@ -821,7 +824,7 @@ class Property():
 
     def __init__(self, name: str, description: str, example: str, datatype: Datatype.STRING,
                  cardinality=Cardinality.UNBOUND, value=None, value_options=None,
-                 predicate=dsp_repo.whatever):
+                 predicate=dsp_repo.whatever, multiline=False):
         self.name = name
         self.description = description
         self.example = example
@@ -830,6 +833,7 @@ class Property():
         self.value = value
         self.value_options = value_options
         self.predicate = predicate
+        self.multiline = multiline
 
     def get_url_property_id(url: str) -> str:
         """
@@ -867,14 +871,14 @@ class Property():
         g = Graph()  # TODO: ensure that names come in the right order
         # Ensure the data can be looped
         vals = self.value
+        if not isinstance(vals, list):
+            vals = [vals]
         if self.datatype == Datatype.STRING and \
                 self.cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED:
             listnode = BNode()
             Collection(g, listnode, [Literal(v, datatype=XSD.string) for v in vals if v and not v.isspace()])
             g.add((subject, self.predicate, listnode))
             return g
-        if not isinstance(vals, list):
-            vals = [vals]
         for v in vals:
             if not v:
                 continue

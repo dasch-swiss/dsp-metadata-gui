@@ -130,6 +130,8 @@ class ProjectPanel(wx.Panel):
         process_xml_button.Bind(wx.EVT_BUTTON, self.on_process_data)
         button_sizer.Add(process_xml_button, 0, wx.LEFT | wx.EXPAND, 5)
 
+        # LATER: add option to zip pickle, data and metadata, and save it somewhere
+
         main_sizer.Add(button_sizer, 0, wx.ALL, 10)
         self.SetSizer(main_sizer)
         self.Fit()
@@ -354,8 +356,11 @@ class PropertyRow():
                 or prop.datatype == Datatype.PLACE:
             if prop.cardinality == Cardinality.ONE \
                     or prop.cardinality == Cardinality.ZERO_OR_ONE:  # String or similar, exactly 1 or 0-1
-                textcontrol = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
-                textcontrol.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
+                if prop.multiline:
+                    textcontrol = wx.TextCtrl(parent, size=(550, 200), style=wx.TE_MULTILINE)
+                else:
+                    textcontrol = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
+                    textcontrol.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
                 sizer.Add(textcontrol, pos=(index, 1))
                 self.data_widget = textcontrol
             elif prop.cardinality == Cardinality.ONE_TO_TWO:  # String or similar, 1-2
