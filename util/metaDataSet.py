@@ -85,7 +85,7 @@ class MetaDataSet:
         self.files = []
         self.project = Project(name, shortcode, self)
         self.dataset = [Dataset(name, self.project, self)]
-        self.persons = [Person(self)]
+        self.persons = [Person(self)]  # FIXME: persons get wiped on every load
         self.organizations = [Organization(self)]
         self.grants = [Grant(self)]
         self.update_iris()
@@ -129,7 +129,8 @@ class MetaDataSet:
         Returns a list of all properties held by fields of this class. (person, dataset, etc.)
         """
         res = self.project.get_properties()
-        res.extend(self.dataset.get_properties())
+        for p in self.dataset:
+            res.extend(p.get_properties())
         for p in self.persons:
             res.extend(p.get_properties())
         for o in self.organizations:
@@ -143,8 +144,7 @@ class MetaDataSet:
         Validates the graph of the entire data against the SHACL ontology.
         """
         # graph = self.generate_rdf_graph()
-        conforms, results_graph, results_text = pyshacl.validate(
-            graph, shacl_graph=ontology_url)
+        conforms, results_graph, results_text = pyshacl.validate(graph, shacl_graph=ontology_url)
         print(f"Validation result: {conforms}")
         print('\n------------\n')
         print(results_graph)
@@ -232,6 +232,27 @@ class MetaDataSet:
             self.organizations.remove(obj)
         if obj in self.grants:
             self.grants.remove(obj)
+
+    def get_status(self):
+        if self.validate_graph(self.generate_rdf_graph()):
+            overall = 'Valid'
+        else:
+            overall = 'Invalid'
+        invalid = 0
+        missing = 0
+        optional = 0
+        valid = 0
+        for p in self.get_all_properties():
+            v, _ = p.validate()
+            if v == Validity.INVALID_VALUE:
+                invalid += 1
+            elif v == Validity.REQUIRED_VALUE_MISSING:
+                missing += 1
+            elif v == Validity.OPTIONAL_VALUE_MISSING:
+                optional += 1
+            elif v == Validity.VALID:
+                valid += 1
+        return f"{overall}  --  {invalid + missing} Problems; {valid} Values"
 
 
 class DataClass(ABC):

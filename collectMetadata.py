@@ -166,15 +166,17 @@ class ProjectPanel(wx.Panel):
             self.list_ctrl.InsertItem(project.index, project.path)
             self.list_ctrl.SetItem(project.index, 1, project.name)
             self.list_ctrl.SetItem(project.index, 2, str(project.files))
+            self.list_ctrl.SetItem(project.index, 3, project.get_status())
 
     def create_header(self):
         """
         Here we create the header for once and always...
         """
         # Construct a header
-        self.list_ctrl.InsertColumn(0, 'Folder', width=340)
-        self.list_ctrl.InsertColumn(1, 'Project', width=240)
-        self.list_ctrl.InsertColumn(2, 'List of files', width=500)
+        self.list_ctrl.InsertColumn(0, 'Folder', width=300)
+        self.list_ctrl.InsertColumn(1, 'Project', width=200)
+        self.list_ctrl.InsertColumn(2, 'List of files', width=340)
+        self.list_ctrl.InsertColumn(3, 'Status', width=350)
 
     def load_view(self):
         # The previous list contents is cleared before reloading it
