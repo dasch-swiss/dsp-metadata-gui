@@ -175,7 +175,7 @@ class ProjectPanel(wx.Panel):
 
     def create_header(self):
         """
-        Here we create the header for once and always...
+        Here we create the header
         """
         # Construct a header
         self.list_ctrl.InsertColumn(0, 'Folder', width=300)
@@ -325,22 +325,22 @@ class TabOne(wx.Panel):
 
 
 class PropertyRow():
-    """
-    A row in a tab of the UI
-
-    This Class organizes a single row in the data tabs.
-    Upon initiation, the UI elements ara generated and placed.
-    Later on, the data handler can let this class return the value that the property should be assigned.
-
-    Args:
-        parent (wx.ScrolledWindow): The scrolled panel in which the row is to be placed.
-        data_class (Project|Dataset|List[Person]|etc.): The Class that is to be displayed
-        prop (Property): The property to be displayed
-        sizer (wx.Sizer): The sizer that organizes the layout of the parent component
-        index (int): the row in the sizer grid
-    """
 
     def __init__(self, parent, prop, sizer, index, metadataset):
+        """
+        A row in a tab of the UI
+
+        This Class organizes a single row in the data tabs.
+        Upon initiation, the UI elements ara generated and placed.
+        Later on, the data handler can let this class return the value that the property should be assigned.
+
+        Args:
+            parent (wx.ScrolledWindow): The scrolled panel in which the row is to be placed.
+            data_class (Project|Dataset|List[Person]|etc.): The Class that is to be displayed
+            prop (Property): The property to be displayed
+            sizer (wx.Sizer): The sizer that organizes the layout of the parent component
+            index (int): the row in the sizer grid
+        """
         self.prop_name = prop.name
         self.metadataset = metadataset
         self.data_widget = None
@@ -806,6 +806,16 @@ class PropertyRow():
 class DataTab(wx.ScrolledWindow):
 
     def __init__(self, parent, metadataset, dataset, title, multiple=False):
+        """
+        The class does the following: ToDo: Check the params, dataclass?
+
+        Args:
+            parent (object): to be checked
+            metadataset (object): to be checked
+            dataset (object): to be checked
+            title (str): title of the project
+            multiple (bool): false
+        """
         wx.Panel.__init__(self, parent, style=wx.EXPAND)
 
         self.parent = parent
@@ -981,6 +991,12 @@ class DataTab(wx.ScrolledWindow):
 
 class HelpPopup(wx.PopupTransientWindow):
     def __init__(self, parent, msg):
+        """
+        This class provides a help message
+        Args:
+            parent (object): the parent class
+            msg (str): the help text with examples
+        """
         wx.PopupTransientWindow.__init__(self, parent)
         panel = wx.Panel(self)
         st = wx.StaticText(panel, -1, msg)
@@ -994,6 +1010,15 @@ class HelpPopup(wx.PopupTransientWindow):
 
 class TabbedWindow(wx.Frame):
     def __init__(self, parent, dataset: MetaDataSet):
+        """
+        This class organizes the different tabs
+        ToDo: What exactly is the metadataset?
+
+        Args:
+            parent (object): the parent object
+            dataset (object): the dataset
+            MetaDataSet (object): the metadataset
+        """
         wx.Frame.__init__(self, parent, id=-1, title="", pos=wx.DefaultPosition,
                           size=(900, 600), style=wx.DEFAULT_FRAME_STYLE,
                           name="Metadata tabs")
