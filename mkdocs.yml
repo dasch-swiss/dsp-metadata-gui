@@ -4,6 +4,7 @@ nav:
   - Home:
     - Readme: index.md
     - Open Questions: todos_questions.md
+    - Before you start: overview.md
 
   - List View:
     - List: list_view.md
@@ -17,6 +18,7 @@ nav:
     - Grant: grant.md
   - Code documentation:
       - "GUI documentation": collectMetadata.md
+      - "Data Handling": dataHandling.md
 
 theme:
   name: material

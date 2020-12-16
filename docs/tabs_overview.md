@@ -3,7 +3,9 @@
 All window tabs share some similarities but the "Base Data" tab is slightly
 simpler than the other tabs.
 
-## Similarities
+![base tab window](assets/images/base_tab_overview.png)![regular tab overview](assets/images/pro_tabs_overview.png)
+
+### Similarities
 
 All tabs have a frame and a bottom that works alike. There are three buttons 
 "Save", "Save and Close", and "Cancel".
@@ -18,15 +20,19 @@ On the right hand of the window there are buttons with a question mark. If you
 click this button a small window opens the "Help" with a brief explanation and an example 
 for the field it is attached to.
 
-## Differences
+### Differences
 
 In all tabs but the "Base Tab" there is an additional column to the far right 
 with a flag indicating whether the form field is mandatory or optional. If the 
 field is empty or formally not filled in correctly the type colour is red in 
 case the field is marked as mandatory, or black if flagged as optional.
 
-As soon as the field has been filled in correctly the type colour changes to
+As soon as the field has been filled in correctly, the type colour changes to
 green. This applies for mandatory and optional fields.
+
+### Don't see the Save Button anymore?
+
+Drag the tabbed window bigger.
 
 For further detail go to the specific tab documentation.
 

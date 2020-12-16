@@ -7,7 +7,7 @@ and the buttons "New Folder", "Edit in Tabs" and "Process selected to XML".
 
 The Menu Bar shows "File", "Option", "Help", and "Window".  
 
-## File
+### Menu Entry "File"
 
 "File" provides you to open your project (in case you work for an organization, 
 which deals with several projects, you can open several projects). "New Folder" in
@@ -20,17 +20,19 @@ After you have selected the project folder, it appears in the "List". The "List"
 three columns: "Folder", "Project", and "List of Files". The "Folder" entry shows the path
 of your project on the file system in absolute notation, the "Project" entry shows your 
 project, and the "List of Files" entry shows your files. 
+[See also Before you start](overview.md)
 
-## New Folder
+### Button "New Folder"
 
 The button "New Folder" works likewise to the "Menu" "New Folder" dialogue.
+[See also Before you start](overview.md)
 
-## Button Edit in Tabs
+### Button "Edit in Tabs"
 
 Select your project and click "Edit in Tabs" to process your data further. This will lead
 you to the Tabbed View. A second window will be opened (see [overview](overview.md))
 
-## Process selected in XML
+### Button "Process selected in XML"
 
 Once you are finished with collecting your metadata and all mandatory form fields are filled
 in and you have green light (Flag "mandatory" is typed in green colour) you may process your 

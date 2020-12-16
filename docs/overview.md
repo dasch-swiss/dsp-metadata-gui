@@ -17,12 +17,16 @@ You should have received a copy of the GNU Affero General Public
 License along with Knora.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-# Documentation Overview
+# Before you start
 
-## Before you start
+![shortcode window](assets/images/shortcode.png)
+
+
 Before you start with collecting data to your project in the DSP-metadata-tool **make 
 sure you have the alphanumeric shortcode of your project**. You get the shortcode of your project 
-from the DaSCH Client Services.
+from the DaSCH Client Services. The shortcode cannot be changed afterwards, so we prevent you from 
+starting without a shortcode. Be sure you have the correct shortcode. Ask the DaSCH Client Services
+before entering to get the alphanumeric shortcode provided for your project.
 <!-- Will there be a contact point given? -->
 
 [List view](list_view.md)
