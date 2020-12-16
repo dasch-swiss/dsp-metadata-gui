@@ -15,6 +15,7 @@ from util.metaDataHelpers import CalendarDlg
 # - Add some sort of 'import from RDF' functionality
 # - give indication of cardinality in help popup
 # - ensure that help popup is always on screen entirely
+# - document all methods
 #
 #############################################
 
@@ -99,37 +100,42 @@ class ProjectPanel(wx.Panel):
 
     def __init__(self, parent, selection=None):
         super().__init__(parent)
-        # Here we create the window ...
-        main_sizer = wx.BoxSizer(wx.VERTICAL)
-        title = wx.StaticText(
-            self, label="DaSCH Service Platform - Metadata Collection", size=(400, -1))
-        main_sizer.Add(title, 0, wx.ALL | wx.LEFT, 10)
-
-        # LATER: Here we might do some cosmetics (Title, info button and the like ...
         self.folder_path = ""
         self.row_obj_dict = {}
 
-        self.list_ctrl = wx.ListCtrl(
-            self, size=(-1, 200),
-            style=wx.LC_REPORT | wx.BORDER_SUNKEN
-        )
-
+        # Here we create the window ...
+        main_sizer = wx.BoxSizer(wx.VERTICAL)
+        title = wx.StaticText(self, label="DaSCH Service Platform - Metadata Collection", size=(400, -1))
+        main_sizer.Add(title, 0, wx.ALL | wx.LEFT, 10)
+        self.list_ctrl = wx.ListCtrl(self, size=(-1, 200), style=wx.LC_REPORT | wx.BORDER_SUNKEN)
         self.create_header()
+        main_sizer.Add(self.list_ctrl, 0, wx.ALL | wx.EXPAND, 10)
 
         # Here we create the Edit button
-        main_sizer.Add(self.list_ctrl, 0, wx.ALL | wx.EXPAND, 20)
-
+        button_sizer = wx.BoxSizer()
         new_folder_button = wx.Button(self, label='Add new Project')
         new_folder_button.Bind(wx.EVT_BUTTON, self.on_add_new_project)
-        main_sizer.Add(new_folder_button, 0, wx.ALL | wx.CENTER, 5)
+        button_sizer.Add(new_folder_button, 0, wx.ALL | wx.EXPAND, 0)
 
-        edit_tabs_button = wx.Button(self, label='Edit in Tabs')
+        new_folder_button = wx.Button(self, label='Remove selected Project')
+        new_folder_button.Bind(wx.EVT_BUTTON, self.on_remove_project)
+        button_sizer.Add(new_folder_button, 0, wx.LEFT | wx.EXPAND, 5)
+
+        edit_tabs_button = wx.Button(self, label='Edit selected Project')
         edit_tabs_button.Bind(wx.EVT_BUTTON, self.on_edit_tabbed)
-        main_sizer.Add(edit_tabs_button, 0, wx.ALL | wx.CENTER, 5)
+        button_sizer.Add(edit_tabs_button, 0, wx.LEFT | wx.EXPAND, 5)
 
-        process_xml_button = wx.Button(self, label='Process selected to XML')
+        validate_button = wx.Button(self, label='Validate selected Project')
+        validate_button.Bind(wx.EVT_BUTTON, self.on_validate)
+        button_sizer.Add(validate_button, 0, wx.LEFT | wx.EXPAND, 5)
+
+        process_xml_button = wx.Button(self, label='Export selected Project as RDF')
         process_xml_button.Bind(wx.EVT_BUTTON, self.on_process_data)
-        main_sizer.Add(process_xml_button, 0, wx.ALL | wx.Center, 5)
+        button_sizer.Add(process_xml_button, 0, wx.LEFT | wx.EXPAND, 5)
+
+        # LATER: add option to zip pickle, data and metadata, and save it somewhere
+
+        main_sizer.Add(button_sizer, 0, wx.ALL, 10)
         self.SetSizer(main_sizer)
         self.Fit()
 
@@ -150,8 +156,7 @@ class ProjectPanel(wx.Panel):
             return
         # LATER: should be able to chose an existing project here
         title = "Choose a directory:"
-        dlg = wx.DirDialog(self, title,
-                           style=wx.DD_DEFAULT_STYLE)
+        dlg = wx.DirDialog(self, title, style=wx.DD_DEFAULT_STYLE)
         if dlg.ShowModal() == wx.ID_OK:
             # Here the update function is called. This function is strictly restricted to new folders.
             # New data will be appended to the available structure.
@@ -166,15 +171,17 @@ class ProjectPanel(wx.Panel):
             self.list_ctrl.InsertItem(project.index, project.path)
             self.list_ctrl.SetItem(project.index, 1, project.name)
             self.list_ctrl.SetItem(project.index, 2, str(project.files))
+            self.list_ctrl.SetItem(project.index, 3, project.get_status())
 
     def create_header(self):
         """
         Here we create the header for once and always...
         """
         # Construct a header
-        self.list_ctrl.InsertColumn(0, 'Folder', width=340)
-        self.list_ctrl.InsertColumn(1, 'Project', width=240)
-        self.list_ctrl.InsertColumn(2, 'List of files', width=500)
+        self.list_ctrl.InsertColumn(0, 'Folder', width=300)
+        self.list_ctrl.InsertColumn(1, 'Project', width=200)
+        self.list_ctrl.InsertColumn(2, 'List of files', width=340)
+        self.list_ctrl.InsertColumn(3, 'Status', width=350)
 
     def load_view(self):
         # The previous list contents is cleared before reloading it
@@ -213,6 +220,20 @@ class ProjectPanel(wx.Panel):
             dir_list.remove('.DS_Store')
         data_handler.add_project(folder_path, shortcode, dir_list)
         self.load_view()
+
+    def on_remove_project(self, event):
+        # selection = self.list_ctrl.GetFocusedItem()
+        # if selection >= 0:
+        #     pass
+        # TODO: implement
+        pass
+
+    def on_validate(self, event):
+        # selection = self.list_ctrl.GetFocusedItem()
+        # if selection >= 0:
+        #     pass
+        # TODO: implement
+        pass
 
 
 class TabOne(wx.Panel):
@@ -333,13 +354,16 @@ class PropertyRow():
         if prop.datatype == Datatype.STRING \
                 or prop.datatype == Datatype.STRING_OR_URL \
                 or prop.datatype == Datatype.URL \
-                or prop.datatype == Datatype.IRI \
+                or prop.datatype == Datatype.EMAIL \
                 or prop.datatype == Datatype.DOWNLOAD \
                 or prop.datatype == Datatype.PLACE:
             if prop.cardinality == Cardinality.ONE \
                     or prop.cardinality == Cardinality.ZERO_OR_ONE:  # String or similar, exactly 1 or 0-1
-                textcontrol = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
-                textcontrol.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
+                if prop.multiline:
+                    textcontrol = wx.TextCtrl(parent, size=(550, 200), style=wx.TE_MULTILINE)
+                else:
+                    textcontrol = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
+                    textcontrol.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
                 sizer.Add(textcontrol, pos=(index, 1))
                 self.data_widget = textcontrol
             elif prop.cardinality == Cardinality.ONE_TO_TWO:  # String or similar, 1-2
@@ -370,33 +394,65 @@ class PropertyRow():
             elif prop.cardinality == Cardinality.ONE_TO_UNBOUND \
                     or prop.cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED \
                     or prop.cardinality == Cardinality.UNBOUND:  # String or similar, 1-n, 0-2 or 0-n
-                inner_sizer = wx.BoxSizer()
-                textcontrol = wx.TextCtrl(parent, size=(200, -1), style=wx.TE_PROCESS_ENTER)
-                textcontrol.Bind(wx.EVT_TEXT_ENTER,
-                                 lambda e: parent.add_to_list(e,
-                                                              content_list,
-                                                              textcontrol,
-                                                              textcontrol.GetValue()))
-                inner_sizer.Add(textcontrol)
-                inner_sizer.AddSpacer(5)
-                button_sizer = wx.BoxSizer(wx.VERTICAL)
-                plus_button = wx.Button(parent, label="+")
-                plus_button.Bind(wx.EVT_BUTTON,
-                                 lambda e: parent.add_to_list(e,
-                                                              content_list,
-                                                              textcontrol,
-                                                              textcontrol.GetValue()))
-                button_sizer.Add(plus_button, flag=wx.EXPAND)
+                if prop.multiline:
+                    inner_sizer = wx.BoxSizer()
+                    text_sizer = wx.BoxSizer(wx.VERTICAL)
+                    textcontrol = wx.TextCtrl(parent, size=(450, -1), style=wx.TE_PROCESS_ENTER)
+                    textcontrol.Bind(wx.EVT_TEXT_ENTER,
+                                     lambda e: parent.add_to_list(e,
+                                                                  content_list,
+                                                                  textcontrol,
+                                                                  textcontrol.GetValue()))
+                    text_sizer.Add(textcontrol)
+                    text_sizer.AddSpacer(5)
+                    content_list = wx.ListBox(parent, size=(450, -1))
+                    text_sizer.Add(content_list)
+                    inner_sizer.Add(text_sizer)
+                    inner_sizer.AddSpacer(5)
+                    button_sizer = wx.BoxSizer(wx.VERTICAL)
+                    plus_button = wx.Button(parent, label="+")
+                    plus_button.Bind(wx.EVT_BUTTON,
+                                     lambda e: parent.add_to_list(e,
+                                                                  content_list,
+                                                                  textcontrol,
+                                                                  textcontrol.GetValue()))
+                    button_sizer.Add(plus_button, flag=wx.EXPAND)
 
-                remove_button = wx.Button(parent, label="Del Selected")
-                remove_button.Bind(wx.EVT_BUTTON,
-                                   lambda event: parent.remove_from_list(event,
-                                                                         content_list))
-                button_sizer.Add(remove_button)
-                inner_sizer.Add(button_sizer)
-                inner_sizer.AddSpacer(5)
-                content_list = wx.ListBox(parent, size=(250, -1))
-                inner_sizer.Add(content_list)
+                    remove_button = wx.Button(parent, label="Del Selected")
+                    remove_button.Bind(wx.EVT_BUTTON,
+                                       lambda event: parent.remove_from_list(event,
+                                                                             content_list))
+                    button_sizer.Add(remove_button)
+                    inner_sizer.Add(button_sizer)
+                    inner_sizer.AddSpacer(5)
+                else:
+                    inner_sizer = wx.BoxSizer()
+                    textcontrol = wx.TextCtrl(parent, size=(200, -1), style=wx.TE_PROCESS_ENTER)
+                    textcontrol.Bind(wx.EVT_TEXT_ENTER,
+                                     lambda e: parent.add_to_list(e,
+                                                                  content_list,
+                                                                  textcontrol,
+                                                                  textcontrol.GetValue()))
+                    inner_sizer.Add(textcontrol)
+                    inner_sizer.AddSpacer(5)
+                    button_sizer = wx.BoxSizer(wx.VERTICAL)
+                    plus_button = wx.Button(parent, label="+")
+                    plus_button.Bind(wx.EVT_BUTTON,
+                                     lambda e: parent.add_to_list(e,
+                                                                  content_list,
+                                                                  textcontrol,
+                                                                  textcontrol.GetValue()))
+                    button_sizer.Add(plus_button, flag=wx.EXPAND)
+
+                    remove_button = wx.Button(parent, label="Del Selected")
+                    remove_button.Bind(wx.EVT_BUTTON,
+                                       lambda event: parent.remove_from_list(event,
+                                                                             content_list))
+                    button_sizer.Add(remove_button)
+                    inner_sizer.Add(button_sizer)
+                    inner_sizer.AddSpacer(5)
+                    content_list = wx.ListBox(parent, size=(250, -1))
+                    inner_sizer.Add(content_list)
                 sizer.Add(inner_sizer, pos=(index, 1))
                 self.data_widget = content_list
         # date
@@ -550,7 +606,7 @@ class PropertyRow():
         if datatype == Datatype.STRING \
                 or datatype == Datatype.STRING_OR_URL \
                 or datatype == Datatype.URL \
-                or datatype == Datatype.IRI \
+                or datatype == Datatype.EMAIL \
                 or datatype == Datatype.DOWNLOAD \
                 or datatype == Datatype.PLACE:
             if cardinality == Cardinality.ONE \
@@ -666,7 +722,6 @@ class PropertyRow():
         elif res == Validity.OPTIONAL_VALUE_MISSING:
             widget.SetForegroundColour(wx.NullColour)
         self.validity_msg = msg
-        # TODO: get tooltip to work here
 
     def set_value(self, val):
         """
@@ -689,7 +744,7 @@ class PropertyRow():
         if datatype == Datatype.STRING \
                 or datatype == Datatype.STRING_OR_URL \
                 or datatype == Datatype.URL \
-                or datatype == Datatype.IRI \
+                or datatype == Datatype.EMAIL \
                 or datatype == Datatype.DOWNLOAD \
                 or datatype == Datatype.PLACE:
             if cardinality == Cardinality.ONE \

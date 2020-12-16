@@ -1,5 +1,17 @@
+import os
+import platform
+import subprocess
 import validators
 from enum import Enum
+
+
+def open_file(path):
+    if platform.system() == "Windows":
+        os.startfile(path)
+    elif platform.system() == "Darwin":
+        subprocess.Popen(["open", path])
+    else:
+        subprocess.Popen(["xdg-open", path])
 
 
 def areURLs(urls: list):
@@ -116,7 +128,7 @@ class Datatype(Enum):
     CONTROLLED_VOCABULARY = 8
     PROJECT = 9
     ATTRIBUTION = 10
-    IRI = 11
+    EMAIL = 11
     ADDRESS = 12
     PERSON = 13
     ORGANIZATION = 14

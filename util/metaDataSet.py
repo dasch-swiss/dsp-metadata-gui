@@ -85,7 +85,7 @@ class MetaDataSet:
         self.files = []
         self.project = Project(name, shortcode, self)
         self.dataset = [Dataset(name, self.project, self)]
-        self.persons = [Person(self)]
+        self.persons = [Person(self)]  # FIXME: persons get wiped on every load
         self.organizations = [Organization(self)]
         self.grants = [Grant(self)]
         self.update_iris()
@@ -129,7 +129,8 @@ class MetaDataSet:
         Returns a list of all properties held by fields of this class. (person, dataset, etc.)
         """
         res = self.project.get_properties()
-        res.extend(self.dataset.get_properties())
+        for p in self.dataset:
+            res.extend(p.get_properties())
         for p in self.persons:
             res.extend(p.get_properties())
         for o in self.organizations:
@@ -138,13 +139,12 @@ class MetaDataSet:
             res.extend(o.get_properties())
         return res
 
-    def validate_graph(self):
+    def validate_graph(self, graph):
         """
         Validates the graph of the entire data against the SHACL ontology.
         """
-        graph = self.generate_rdf_graph()
-        conforms, results_graph, results_text = pyshacl.validate(
-            graph, shacl_graph=ontology_url)
+        # graph = self.generate_rdf_graph()
+        conforms, results_graph, results_text = pyshacl.validate(graph, shacl_graph=ontology_url)
         print(f"Validation result: {conforms}")
         print('\n------------\n')
         print(results_graph)
@@ -233,6 +233,27 @@ class MetaDataSet:
         if obj in self.grants:
             self.grants.remove(obj)
 
+    def get_status(self):
+        if self.validate_graph(self.generate_rdf_graph()):
+            overall = 'Valid'
+        else:
+            overall = 'Invalid'
+        invalid = 0
+        missing = 0
+        optional = 0
+        valid = 0
+        for p in self.get_all_properties():
+            v, _ = p.validate()
+            if v == Validity.INVALID_VALUE:
+                invalid += 1
+            elif v == Validity.REQUIRED_VALUE_MISSING:
+                missing += 1
+            elif v == Validity.OPTIONAL_VALUE_MISSING:
+                optional += 1
+            elif v == Validity.VALID:
+                valid += 1
+        return f"{overall}  --  {invalid + missing} Problems; {valid} Values"
+
 
 class DataClass(ABC):
     """
@@ -318,7 +339,8 @@ class Project(DataClass):
                                     "This is a test project. All properties have been used to test these. You will just describe your project briefly.",
                                     Datatype.STRING,
                                     Cardinality.ONE,
-                                    predicate=dsp_repo.hasDescription)
+                                    predicate=dsp_repo.hasDescription,
+                                    multiline=True)
 
         self.keywords = Property("Keywords",
                                  "Keywords and tags",
@@ -408,7 +430,8 @@ class Project(DataClass):
                                     "Publications produced during the lifetime of the project",
                                     "Doe, J. (2000). A Publication.",
                                     Datatype.STRING,
-                                    predicate=dsp_repo.hasPublication)
+                                    predicate=dsp_repo.hasPublication,
+                                    multiline=True)
 
         self.contactPoint = Property("Contact Point",
                                      "Contact information",
@@ -470,7 +493,8 @@ class Dataset(DataClass):
                                  "This is merely an exemplary dataset",
                                  Datatype.STRING_OR_URL,
                                  Cardinality.ONE_TO_UNBOUND,
-                                 predicate=dsp_repo.hasAbstract)
+                                 predicate=dsp_repo.hasAbstract,
+                                 multiline=True)
 
         self.sameAs = Property("Alternative URL",
                                "Alternative URL to the dataset, if applicable",
@@ -636,7 +660,7 @@ class Person(DataClass):
         self.email = Property("E-mail",
                               "E-mail address of the person",
                               "john.doe@dasch.swiss",
-                              Datatype.IRI,
+                              Datatype.EMAIL,
                               Cardinality.ZERO_TO_TWO,
                               predicate=dsp_repo.hasEmail)
 
@@ -703,7 +727,7 @@ class Organization(DataClass):
         self.email = Property("E-mail",
                               "E-mail address of the organization",
                               "info@dasch.swiss",
-                              Datatype.IRI,
+                              Datatype.EMAIL,
                               Cardinality.ZERO_OR_ONE,
                               predicate=dsp_repo.hasEmail)
 
@@ -800,7 +824,7 @@ class Property():
 
     def __init__(self, name: str, description: str, example: str, datatype: Datatype.STRING,
                  cardinality=Cardinality.UNBOUND, value=None, value_options=None,
-                 predicate=dsp_repo.whatever):
+                 predicate=dsp_repo.whatever, multiline=False):
         self.name = name
         self.description = description
         self.example = example
@@ -809,6 +833,7 @@ class Property():
         self.value = value
         self.value_options = value_options
         self.predicate = predicate
+        self.multiline = multiline
 
     def get_url_property_id(url: str) -> str:
         """
@@ -846,14 +871,14 @@ class Property():
         g = Graph()  # TODO: ensure that names come in the right order
         # Ensure the data can be looped
         vals = self.value
+        if not isinstance(vals, list):
+            vals = [vals]
         if self.datatype == Datatype.STRING and \
                 self.cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED:
             listnode = BNode()
             Collection(g, listnode, [Literal(v, datatype=XSD.string) for v in vals if v and not v.isspace()])
             g.add((subject, self.predicate, listnode))
             return g
-        if not isinstance(vals, list):
-            vals = [vals]
         for v in vals:
             if not v:
                 continue
@@ -945,15 +970,15 @@ class Property():
                 g.add((subject, self.predicate, b0))
                 g.add((b0, RDF.type, SDO.DataDownload))
                 g.add((b0, SDO.url, Literal(v)))
-            elif datatype == Datatype.IRI:
+            elif datatype == Datatype.EMAIL:
                 if isinstance(v, tuple):
                     if v and v[0]:
-                        g.add((subject, self.predicate, URIRef(v[0])))
+                        g.add((subject, self.predicate, Literal(v[0])))
                     if v and v[1]:
-                        g.add((subject, self.predicate, URIRef(v[1])))
+                        g.add((subject, self.predicate, Literal(v[1])))
                 else:
                     if v and not v.isspace():
-                        g.add((subject, self.predicate, URIRef(v)))
+                        g.add((subject, self.predicate, Literal(v)))
             else:
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
         return g
@@ -1039,7 +1064,7 @@ class Property():
                 else:
                     return Validity.REQUIRED_VALUE_MISSING, missing
 
-        elif datatype == Datatype.IRI:
+        elif datatype == Datatype.EMAIL:
             if cardinality == Cardinality.ZERO_OR_ONE:
                 if value and not value.isspace():
                     if utils.is_email(value):
