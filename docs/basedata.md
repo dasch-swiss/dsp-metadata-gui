@@ -1,5 +1,7 @@
 # Base Data Tab
 
+![Base data tab](assets/images/base_tab_overview.png)
+
 ## Current Project
 The first line shows the current project. You cannot change the project name.
 

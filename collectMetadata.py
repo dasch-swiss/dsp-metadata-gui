@@ -82,6 +82,9 @@ class ProjectFrame(wx.Frame):
         self.SetMenuBar(menu_bar)
 
     def on_save(self, event):
+        """
+        Menu item for saving the current window
+        """
         if data_handler.current_window:
             data_handler.current_window.save()
         else:

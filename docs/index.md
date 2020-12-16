@@ -19,7 +19,7 @@ License along with Knora.  If not, see <http://www.gnu.org/licenses/>.
 
 # Todos and Questions
 
-[Questions and Remarks for Documentation of GUI](todos_questions.md)
+Temp. Chapter: [Questions and Remarks for Documentation of GUI](todos_questions.md)
 
 # DSP-METADATA-GUI Metadata Module
 
@@ -35,26 +35,34 @@ and store it in RDF XML.
  [dsp-ontologies](https://github.com/dasch-swiss/dsp-ontologies)
 
 
-# Features
+## Features
 
-For detailed description see [overview](overview.md)
+The metadata module is provided as a tool for recording just one research project or for the 
+administration of several projects, for example in an institution. 
+There are two windows. First you see a list view. Once you have created a project, you 
+can carry on to the tabbed view.
+One project, or a list of projects can be edited. 
 
-The metadata module can be used as a tool for recording a research project or for the administration of several projects, 
-for example in an institution. 
-A project or a list of projects can be edited. 
 Once all mandatory data of a project have been entered, the metadata can be validated. 
 If the validation is successful, the project metadata (and files) can be uploaded to the DSP server. 
 
 After approval by the DSP administrator, the project with its metadata (and possibly its project files) is publicly 
 visible and findable.
 
-# Use of the metadata module
+For detailed description see  [overview](overview.md) page and follow the links.
 
-1. Select a project folder with the project files it contains (the project folder can be empty, the files can be 
+## Use of the metadata module
+
+1. Enter your short code, given by DaSCH Client Services 
+
+2. Select a project folder with the project files it contains (the project folder can be empty, the files can be 
    selected later).
 
-2. Select a project in the list and edit the metadata tabs. The following tabs are available: Base Data, Project, 
-   Dataset, Person, Organisation. Filling in the mandatory and possibly the optional fields. 
-   A button with a question mark is available behind each field for explanation. Clicking on the question mark 
-   makes a help text visible. 
+3. Select a project in the list and edit the metadata tabs. The following tabs are available: 
+   Base Data, Project, Dataset, Person, Organisation, Grant. 
+   Fill in the mandatory and possibly the optional fields. 
+   
+4. Once all mandatory fields are marked green, proceed to "Process selected to XML"
+
+5. Upload the result of the processing file (XML, RDF/XML, Turtle, etc.) to the DaSCH Service Platform servers.
 

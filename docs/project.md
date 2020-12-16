@@ -1,4 +1,7 @@
 # Project Tab
+
+![project tab](assets/images/pro_tabs_overview.png)
+
 With tab Project you collect project specific data to describe your project. All 
 fields are specified by the ontology ( [dsp-ontologies](https://github.com/dasch-swiss/dsp-ontologies)).
 If you are unsure, you might consult the ontology.
