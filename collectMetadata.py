@@ -391,33 +391,65 @@ class PropertyRow():
             elif prop.cardinality == Cardinality.ONE_TO_UNBOUND \
                     or prop.cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED \
                     or prop.cardinality == Cardinality.UNBOUND:  # String or similar, 1-n, 0-2 or 0-n
-                inner_sizer = wx.BoxSizer()
-                textcontrol = wx.TextCtrl(parent, size=(200, -1), style=wx.TE_PROCESS_ENTER)
-                textcontrol.Bind(wx.EVT_TEXT_ENTER,
-                                 lambda e: parent.add_to_list(e,
-                                                              content_list,
-                                                              textcontrol,
-                                                              textcontrol.GetValue()))
-                inner_sizer.Add(textcontrol)
-                inner_sizer.AddSpacer(5)
-                button_sizer = wx.BoxSizer(wx.VERTICAL)
-                plus_button = wx.Button(parent, label="+")
-                plus_button.Bind(wx.EVT_BUTTON,
-                                 lambda e: parent.add_to_list(e,
-                                                              content_list,
-                                                              textcontrol,
-                                                              textcontrol.GetValue()))
-                button_sizer.Add(plus_button, flag=wx.EXPAND)
+                if prop.multiline:
+                    inner_sizer = wx.BoxSizer()
+                    text_sizer = wx.BoxSizer(wx.VERTICAL)
+                    textcontrol = wx.TextCtrl(parent, size=(450, -1), style=wx.TE_PROCESS_ENTER)
+                    textcontrol.Bind(wx.EVT_TEXT_ENTER,
+                                     lambda e: parent.add_to_list(e,
+                                                                  content_list,
+                                                                  textcontrol,
+                                                                  textcontrol.GetValue()))
+                    text_sizer.Add(textcontrol)
+                    text_sizer.AddSpacer(5)
+                    content_list = wx.ListBox(parent, size=(450, -1))
+                    text_sizer.Add(content_list)
+                    inner_sizer.Add(text_sizer)
+                    inner_sizer.AddSpacer(5)
+                    button_sizer = wx.BoxSizer(wx.VERTICAL)
+                    plus_button = wx.Button(parent, label="+")
+                    plus_button.Bind(wx.EVT_BUTTON,
+                                     lambda e: parent.add_to_list(e,
+                                                                  content_list,
+                                                                  textcontrol,
+                                                                  textcontrol.GetValue()))
+                    button_sizer.Add(plus_button, flag=wx.EXPAND)
 
-                remove_button = wx.Button(parent, label="Del Selected")
-                remove_button.Bind(wx.EVT_BUTTON,
-                                   lambda event: parent.remove_from_list(event,
-                                                                         content_list))
-                button_sizer.Add(remove_button)
-                inner_sizer.Add(button_sizer)
-                inner_sizer.AddSpacer(5)
-                content_list = wx.ListBox(parent, size=(250, -1))
-                inner_sizer.Add(content_list)
+                    remove_button = wx.Button(parent, label="Del Selected")
+                    remove_button.Bind(wx.EVT_BUTTON,
+                                       lambda event: parent.remove_from_list(event,
+                                                                             content_list))
+                    button_sizer.Add(remove_button)
+                    inner_sizer.Add(button_sizer)
+                    inner_sizer.AddSpacer(5)
+                else:
+                    inner_sizer = wx.BoxSizer()
+                    textcontrol = wx.TextCtrl(parent, size=(200, -1), style=wx.TE_PROCESS_ENTER)
+                    textcontrol.Bind(wx.EVT_TEXT_ENTER,
+                                     lambda e: parent.add_to_list(e,
+                                                                  content_list,
+                                                                  textcontrol,
+                                                                  textcontrol.GetValue()))
+                    inner_sizer.Add(textcontrol)
+                    inner_sizer.AddSpacer(5)
+                    button_sizer = wx.BoxSizer(wx.VERTICAL)
+                    plus_button = wx.Button(parent, label="+")
+                    plus_button.Bind(wx.EVT_BUTTON,
+                                     lambda e: parent.add_to_list(e,
+                                                                  content_list,
+                                                                  textcontrol,
+                                                                  textcontrol.GetValue()))
+                    button_sizer.Add(plus_button, flag=wx.EXPAND)
+
+                    remove_button = wx.Button(parent, label="Del Selected")
+                    remove_button.Bind(wx.EVT_BUTTON,
+                                       lambda event: parent.remove_from_list(event,
+                                                                             content_list))
+                    button_sizer.Add(remove_button)
+                    inner_sizer.Add(button_sizer)
+                    inner_sizer.AddSpacer(5)
+                    content_list = wx.ListBox(parent, size=(250, -1))
+                    inner_sizer.Add(content_list)
                 sizer.Add(inner_sizer, pos=(index, 1))
                 self.data_widget = content_list
         # date

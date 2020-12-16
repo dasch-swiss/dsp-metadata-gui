@@ -33,11 +33,11 @@ be changed with low priority
 
 - [x] Description: Will get multiple lines
 - [x] End date: ok, end date will be end of finance.
-- [ ] Publications: One full line for collecting publication, one full line for listbox
+- [x] Publications: One full line for collecting publication, one full line for listbox
 
 ## Dataset
 
-- [ ] Abstract: solution like in Publications field
+- [x] Abstract: solution like in Publications field
 - [x] Language: Free entry ok, any language possible
 - [x] Dataset status: Select box with states: pre start, ongoing, halted, finished 
 or others: to be checked with DSP team
