@@ -413,7 +413,6 @@ class PropertyRow():
                     or prop.cardinality == Cardinality.ZERO_OR_ONE:  # String or similar, exactly 1 or 0-1
                 if prop.multiline:
                     textcontrol = wx.TextCtrl(parent, style=wx.TE_MULTILINE)
-                    textcontrol.SetMinSize((300, 200))
                 else:
                     textcontrol = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
                     textcontrol.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
@@ -423,44 +422,44 @@ class PropertyRow():
                 inner_sizer = wx.BoxSizer(wx.VERTICAL)
                 textcontrol1 = wx.TextCtrl(parent, size=(-1, -1), style=wx.TE_PROCESS_ENTER)
                 textcontrol1.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-                inner_sizer.Add(textcontrol1, wx.EXPAND)
+                inner_sizer.Add(textcontrol1, flag=wx.EXPAND)
                 inner_sizer.AddSpacer(5)
                 textcontrol2 = wx.TextCtrl(parent, size=(-1, -1), style=wx.TE_PROCESS_ENTER)
                 textcontrol2.SetHint('Second value is optional')
                 textcontrol2.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-                inner_sizer.Add(textcontrol2, wx.EXPAND)
+                inner_sizer.Add(textcontrol2, flag=wx.EXPAND)
                 sizer.Add(inner_sizer, flag=wx.EXPAND)
                 self.data_widget = [textcontrol1, textcontrol2]
             elif prop.cardinality == Cardinality.ZERO_TO_TWO:  # String or similar, 0-2
                 inner_sizer = wx.BoxSizer(wx.VERTICAL)
-                textcontrol1 = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
+                textcontrol1 = wx.TextCtrl(parent, size=(-1, -1), style=wx.TE_PROCESS_ENTER)
                 textcontrol1.SetHint('Optional')
                 textcontrol1.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-                inner_sizer.Add(textcontrol1)
+                inner_sizer.Add(textcontrol1, flag=wx.EXPAND)
                 inner_sizer.AddSpacer(5)
-                textcontrol2 = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
+                textcontrol2 = wx.TextCtrl(parent, size=(-1, -1), style=wx.TE_PROCESS_ENTER)
                 textcontrol2.SetHint('Optional')
                 textcontrol2.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-                inner_sizer.Add(textcontrol2)
+                inner_sizer.Add(textcontrol2, flag=wx.EXPAND)
                 sizer.Add(inner_sizer, flag=wx.EXPAND)
                 self.data_widget = [textcontrol1, textcontrol2]
             elif prop.cardinality == Cardinality.ONE_TO_UNBOUND \
                     or prop.cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED \
-                    or prop.cardinality == Cardinality.UNBOUND:  # String or similar, 1-n, 0-2 or 0-n
+                    or prop.cardinality == Cardinality.UNBOUND:  # String or similar, 1-n or 0-n
                 if prop.multiline:
                     inner_sizer = wx.BoxSizer()
                     text_sizer = wx.BoxSizer(wx.VERTICAL)
-                    textcontrol = wx.TextCtrl(parent, size=(450, -1), style=wx.TE_PROCESS_ENTER)
+                    textcontrol = wx.TextCtrl(parent, size=(-1, -1), style=wx.TE_PROCESS_ENTER)
                     textcontrol.Bind(wx.EVT_TEXT_ENTER,
                                      lambda e: parent.add_to_list(e,
                                                                   content_list,
                                                                   textcontrol,
                                                                   textcontrol.GetValue()))
-                    text_sizer.Add(textcontrol)
+                    text_sizer.Add(textcontrol, flag=wx.EXPAND)
                     text_sizer.AddSpacer(5)
-                    content_list = wx.ListBox(parent, size=(450, -1))
-                    text_sizer.Add(content_list)
-                    inner_sizer.Add(text_sizer)
+                    content_list = wx.ListBox(parent, size=(-1, -1))
+                    text_sizer.Add(content_list, 1, flag=wx.EXPAND)
+                    inner_sizer.Add(text_sizer, 1, flag=wx.EXPAND)
                     inner_sizer.AddSpacer(5)
                     button_sizer = wx.BoxSizer(wx.VERTICAL)
                     plus_button = wx.Button(parent, label="+")
@@ -477,16 +476,15 @@ class PropertyRow():
                                                                              content_list))
                     button_sizer.Add(remove_button)
                     inner_sizer.Add(button_sizer)
-                    inner_sizer.AddSpacer(5)
                 else:
                     inner_sizer = wx.BoxSizer()
-                    textcontrol = wx.TextCtrl(parent, size=(200, -1), style=wx.TE_PROCESS_ENTER)
+                    textcontrol = wx.TextCtrl(parent, size=(-1, -1), style=wx.TE_PROCESS_ENTER)
                     textcontrol.Bind(wx.EVT_TEXT_ENTER,
                                      lambda e: parent.add_to_list(e,
                                                                   content_list,
                                                                   textcontrol,
                                                                   textcontrol.GetValue()))
-                    inner_sizer.Add(textcontrol)
+                    inner_sizer.Add(textcontrol, 1)
                     inner_sizer.AddSpacer(5)
                     button_sizer = wx.BoxSizer(wx.VERTICAL)
                     plus_button = wx.Button(parent, label="+")
@@ -504,8 +502,8 @@ class PropertyRow():
                     button_sizer.Add(remove_button)
                     inner_sizer.Add(button_sizer)
                     inner_sizer.AddSpacer(5)
-                    content_list = wx.ListBox(parent, size=(250, -1))
-                    inner_sizer.Add(content_list)
+                    content_list = wx.ListBox(parent, size=(-1, -1))
+                    inner_sizer.Add(content_list, 1, flag=wx.EXPAND)
                 sizer.Add(inner_sizer, flag=wx.EXPAND)
                 self.data_widget = content_list
         # date
@@ -532,7 +530,7 @@ class PropertyRow():
                 prop.datatype == Datatype.CONTROLLED_VOCABULARY:
             if prop.cardinality == Cardinality.ZERO_OR_ONE \
                     or prop.cardinality == Cardinality.ONE:
-                choice = wx.Choice(parent, size=(450, -1))
+                choice = wx.Choice(parent, size=(-1, -1))
                 choice.Bind(wx.EVT_CHOICE, lambda e: self.onValueChange(e, False))
                 self.data_widget = choice
                 self.choice_widget = choice
@@ -540,64 +538,63 @@ class PropertyRow():
             if prop.cardinality == Cardinality.ONE_TO_UNBOUND or \
                     prop.cardinality == Cardinality.UNBOUND:
                 inner_sizer = wx.BoxSizer()
-                box = wx.ListBox(parent, size=(400, -1))
+                box = wx.ListBox(parent, size=(-1, -1))
                 self.data_widget = box
-                inner_sizer.Add(box)
+                inner_sizer.Add(box, 10)
                 control_sizer = wx.BoxSizer(wx.VERTICAL)
-                choice = wx.Choice(parent, size=(150, -1))
+                choice = wx.Choice(parent, size=(-1, -1))
                 choice.Bind(wx.EVT_CHOICE,
                             lambda e: parent.add_to_list(e, box, choice,
                                                          choice.GetStringSelection()))
                 self.choice_widget = choice
                 control_sizer.Add(choice, flag=wx.EXPAND)
                 remove_button = wx.Button(parent, label="Del Selected")
-                remove_button.Bind(
-                    wx.EVT_BUTTON, lambda event: parent.remove_from_list(event, box))
+                remove_button.Bind(wx.EVT_BUTTON, lambda event: parent.remove_from_list(event, box))
                 control_sizer.Add(remove_button)
-                inner_sizer.Add(control_sizer)
+                inner_sizer.Add(control_sizer, 7)
                 sizer.Add(inner_sizer, flag=wx.EXPAND)
         elif prop.datatype == Datatype.DATA_MANAGEMENT_PLAN:
             inner_sizer = wx.BoxSizer(wx.VERTICAL)
             cb = wx.CheckBox(parent, label='is available')
             cb.Bind(wx.EVT_CHECKBOX, lambda e: data_handler.update_all())
-            inner_sizer.Add(cb)
-            text = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
+            inner_sizer.Add(cb, flag=wx.EXPAND)
+            text = wx.TextCtrl(parent, size=(-1, -1), style=wx.TE_PROCESS_ENTER)
             text.SetHint('Optional URL')
             text.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-            inner_sizer.Add(text)
+            inner_sizer.Add(text, flag=wx.EXPAND)
             sizer.Add(inner_sizer, flag=wx.EXPAND)
             self.data_widget = [cb, text]
         elif prop.datatype == Datatype.ADDRESS:
             inner_sizer = wx.BoxSizer(wx.VERTICAL)
-            text1 = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
+            text1 = wx.TextCtrl(parent, size=(-1, -1), style=wx.TE_PROCESS_ENTER)
             text1.SetHint('Street')
             text1.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-            inner_sizer.Add(text1)
-            text2 = wx.TextCtrl(parent, size=(100, -1), style=wx.TE_PROCESS_ENTER)
+            inner_sizer.Add(text1, flag=wx.EXPAND)
+            text2 = wx.TextCtrl(parent, size=(-1, -1), style=wx.TE_PROCESS_ENTER)
             text2.SetHint('Postal Code')
             text2.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
             inner_sizer2 = wx.BoxSizer()
-            inner_sizer2.Add(text2)
+            inner_sizer2.Add(text2, 2)
             inner_sizer2.AddSpacer(5)
-            text3 = wx.TextCtrl(parent, size=(445, -1), style=wx.TE_PROCESS_ENTER)
+            text3 = wx.TextCtrl(parent, size=(-1, -1), style=wx.TE_PROCESS_ENTER)
             text3.SetHint('Locality')
             text3.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-            inner_sizer2.Add(text3)
+            inner_sizer2.Add(text3, 10)
             inner_sizer.AddSpacer(5)
-            inner_sizer.Add(inner_sizer2)
+            inner_sizer.Add(inner_sizer2, flag=wx.EXPAND)
             sizer.Add(inner_sizer, flag=wx.EXPAND)
             self.data_widget = [text1, text2, text3]
         elif prop.datatype == Datatype.ATTRIBUTION:
             inner_sizer = wx.BoxSizer()
             input_sizer = wx.BoxSizer(wx.VERTICAL)
-            textcontrol = wx.TextCtrl(parent, size=(150, -1), style=wx.TE_PROCESS_ENTER)
+            textcontrol = wx.TextCtrl(parent, size=(-1, -1), style=wx.TE_PROCESS_ENTER)
             textcontrol.SetHint("Role")
-            input_sizer.Add(textcontrol)
-            choice = wx.Choice(parent, size=(150, -1))
+            input_sizer.Add(textcontrol, flag=wx.EXPAND)
+            choice = wx.Choice(parent, size=(-1, -1))
             choice.SetToolTip("Add a Person or Organization")
             self.choice_widget = choice
-            input_sizer.Add(choice)
-            inner_sizer.Add(input_sizer)
+            input_sizer.Add(choice, flag=wx.EXPAND)
+            inner_sizer.Add(input_sizer, 1)
             inner_sizer.AddSpacer(5)
             button_sizer = wx.BoxSizer(wx.VERTICAL)
             plus_button = wx.Button(parent, label="+")
@@ -606,10 +603,11 @@ class PropertyRow():
             button_sizer.Add(remove_button)
             inner_sizer.Add(button_sizer)
             inner_sizer.AddSpacer(5)
-            content_list = wx.ListCtrl(parent, -1, style=wx.LC_REPORT | wx.LC_SINGLE_SEL, size=(300, -1))
-            content_list.InsertColumn(0, 'Role', width=100)
-            content_list.InsertColumn(1, 'Agent', width=450)
-            inner_sizer.Add(content_list)
+            content_list = wx.ListCtrl(parent, -1, style=wx.LC_REPORT | wx.LC_SINGLE_SEL, size=(-1, -1))
+            content_list.InsertColumn(0, 'Role')
+            print(content_list.GetSize())
+            content_list.InsertColumn(1, 'Agent')
+            inner_sizer.Add(content_list, 1)
             sizer.Add(inner_sizer, flag=wx.EXPAND)
             self.data_widget = content_list
             remove_button.Bind(wx.EVT_BUTTON,
@@ -845,6 +843,8 @@ class PropertyRow():
             self.data_widget.DeleteAllItems()
             for v in val:
                 self.data_widget.Append((v[0], str(v[1])))
+                self.data_widget.SetColumnWidth(0, -1)
+                self.data_widget.SetColumnWidth(1, -1)
         elif datatype == Datatype.SHORTCODE:
             return self.data_widget.SetLabel(val)
 
