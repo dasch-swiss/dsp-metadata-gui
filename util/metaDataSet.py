@@ -855,13 +855,14 @@ class Property():
         Returns:
             Graph: a graph containing one or multiple triples that represent the property
         """
-        g = Graph()  # TODO: ensure that names come in the right order
+        g = Graph()
         # Ensure the data can be looped
         vals = self.value
         if not isinstance(vals, list):
             vals = [vals]
         if self.datatype == Datatype.STRING and \
                 self.cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED:
+            # TODO: will need to be changed, once the name thing is through (PR #11)
             listnode = BNode()
             Collection(g, listnode, [Literal(v, datatype=XSD.string) for v in vals if v and not v.isspace()])
             g.add((subject, self.predicate, listnode))

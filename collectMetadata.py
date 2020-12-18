@@ -100,6 +100,7 @@ class ProjectPanel(wx.Panel):
         super().__init__(parent)
         self.folder_path = ""
         self.row_obj_dict = {}
+        self.project_dependent_buttons = []
 
         # Here we create the window ...
         main_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -130,18 +131,22 @@ class ProjectPanel(wx.Panel):
         button_sizer.Add(new_folder_button, 0, wx.ALL | wx.EXPAND, 7)
 
         new_folder_button = wx.Button(self, label='Remove selected Project')
+        self.project_dependent_buttons.append(new_folder_button)
         new_folder_button.Bind(wx.EVT_BUTTON, self.on_remove_project)
         button_sizer.Add(new_folder_button, 0, wx.ALL | wx.EXPAND, 7)
 
         edit_tabs_button = wx.Button(self, label='Edit selected Project')
+        self.project_dependent_buttons.append(edit_tabs_button)
         edit_tabs_button.Bind(wx.EVT_BUTTON, self.on_edit_tabbed)
         button_sizer.Add(edit_tabs_button, 0, wx.ALL | wx.EXPAND, 7)
 
         validate_button = wx.Button(self, label='Validate selected Project')
+        self.project_dependent_buttons.append(validate_button)
         validate_button.Bind(wx.EVT_BUTTON, self.on_validate)
         button_sizer.Add(validate_button, 0, wx.ALL | wx.EXPAND, 7)
 
         process_xml_button = wx.Button(self, label='Export selected Project as RDF')
+        self.project_dependent_buttons.append(process_xml_button)
         process_xml_button.Bind(wx.EVT_BUTTON, self.on_process_data)
         button_sizer.Add(process_xml_button, 0, wx.ALL | wx.EXPAND, 7)
 
@@ -206,8 +211,19 @@ class ProjectPanel(wx.Panel):
         # TODO: ensure that no remainder of a deleted project is displayed
         self.display_repos()
         self.display_rdf()
-        # TODO: enable/disable buttons according to if a project is selected or not
+        self.refresh_buttons()
         self.Layout()
+
+    def refresh_buttons(self):
+        if self.get_selected_project():
+            flag = True
+        else:
+            flag = False
+        for b in self.project_dependent_buttons:
+            if flag:
+                b.Enable()
+            else:
+                b.Disable()
 
     def display_rdf(self):
         project = self.get_selected_project()
