@@ -401,8 +401,7 @@ class PropertyRow():
         self.parent = parent
         self.validity_msg = ""
         name_label = wx.StaticText(parent, label=prop.name + ": ")
-        sizer.Add(name_label, pos=(index, 0))
-
+        sizer.Add(name_label)
         # String or String/URL etc.
         if prop.datatype == Datatype.STRING \
                 or prop.datatype == Datatype.STRING_OR_URL \
@@ -413,23 +412,24 @@ class PropertyRow():
             if prop.cardinality == Cardinality.ONE \
                     or prop.cardinality == Cardinality.ZERO_OR_ONE:  # String or similar, exactly 1 or 0-1
                 if prop.multiline:
-                    textcontrol = wx.TextCtrl(parent, size=(550, 200), style=wx.TE_MULTILINE)
+                    textcontrol = wx.TextCtrl(parent, style=wx.TE_MULTILINE)
+                    textcontrol.SetMinSize((300, 200))
                 else:
-                    textcontrol = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
+                    textcontrol = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
                     textcontrol.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-                sizer.Add(textcontrol, pos=(index, 1))
+                sizer.Add(textcontrol, flag=wx.EXPAND)
                 self.data_widget = textcontrol
             elif prop.cardinality == Cardinality.ONE_TO_TWO:  # String or similar, 1-2
                 inner_sizer = wx.BoxSizer(wx.VERTICAL)
-                textcontrol1 = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
+                textcontrol1 = wx.TextCtrl(parent, size=(-1, -1), style=wx.TE_PROCESS_ENTER)
                 textcontrol1.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-                inner_sizer.Add(textcontrol1)
+                inner_sizer.Add(textcontrol1, wx.EXPAND)
                 inner_sizer.AddSpacer(5)
-                textcontrol2 = wx.TextCtrl(parent, size=(550, -1), style=wx.TE_PROCESS_ENTER)
+                textcontrol2 = wx.TextCtrl(parent, size=(-1, -1), style=wx.TE_PROCESS_ENTER)
                 textcontrol2.SetHint('Second value is optional')
                 textcontrol2.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-                inner_sizer.Add(textcontrol2)
-                sizer.Add(inner_sizer, pos=(index, 1))
+                inner_sizer.Add(textcontrol2, wx.EXPAND)
+                sizer.Add(inner_sizer, flag=wx.EXPAND)
                 self.data_widget = [textcontrol1, textcontrol2]
             elif prop.cardinality == Cardinality.ZERO_TO_TWO:  # String or similar, 0-2
                 inner_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -442,7 +442,7 @@ class PropertyRow():
                 textcontrol2.SetHint('Optional')
                 textcontrol2.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
                 inner_sizer.Add(textcontrol2)
-                sizer.Add(inner_sizer, pos=(index, 1))
+                sizer.Add(inner_sizer, flag=wx.EXPAND)
                 self.data_widget = [textcontrol1, textcontrol2]
             elif prop.cardinality == Cardinality.ONE_TO_UNBOUND \
                     or prop.cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED \
@@ -506,7 +506,7 @@ class PropertyRow():
                     inner_sizer.AddSpacer(5)
                     content_list = wx.ListBox(parent, size=(250, -1))
                     inner_sizer.Add(content_list)
-                sizer.Add(inner_sizer, pos=(index, 1))
+                sizer.Add(inner_sizer, flag=wx.EXPAND)
                 self.data_widget = content_list
         # date
         elif prop.datatype == Datatype.DATE:
@@ -519,12 +519,12 @@ class PropertyRow():
                     wx.EVT_BUTTON, lambda event: parent.pick_date(event, date, self.prop))
                 inner_sizer.Add(date)
                 inner_sizer.Add(pick_date_button)
-                sizer.Add(inner_sizer, pos=(index, 1))
+                sizer.Add(inner_sizer, flag=wx.EXPAND)
                 self.data_widget = date
         elif prop.datatype == Datatype.PROJECT:
             txt = wx.StaticText(parent, label=str(prop.value))
             self.data_widget = txt
-            sizer.Add(txt, pos=(index, 1))
+            sizer.Add(txt, flag=wx.EXPAND)
         elif prop.datatype == Datatype.PERSON_OR_ORGANIZATION or \
                 prop.datatype == Datatype.PERSON or \
                 prop.datatype == Datatype.ORGANIZATION or \
@@ -533,11 +533,10 @@ class PropertyRow():
             if prop.cardinality == Cardinality.ZERO_OR_ONE \
                     or prop.cardinality == Cardinality.ONE:
                 choice = wx.Choice(parent, size=(450, -1))
-                # choice.SetToolTip("Add a Person or Organization")
                 choice.Bind(wx.EVT_CHOICE, lambda e: self.onValueChange(e, False))
                 self.data_widget = choice
                 self.choice_widget = choice
-                sizer.Add(choice, pos=(index, 1))
+                sizer.Add(choice, flag=wx.EXPAND)
             if prop.cardinality == Cardinality.ONE_TO_UNBOUND or \
                     prop.cardinality == Cardinality.UNBOUND:
                 inner_sizer = wx.BoxSizer()
@@ -546,7 +545,6 @@ class PropertyRow():
                 inner_sizer.Add(box)
                 control_sizer = wx.BoxSizer(wx.VERTICAL)
                 choice = wx.Choice(parent, size=(150, -1))
-                # choice.SetToolTip("Add a Person or Organization")
                 choice.Bind(wx.EVT_CHOICE,
                             lambda e: parent.add_to_list(e, box, choice,
                                                          choice.GetStringSelection()))
@@ -557,7 +555,7 @@ class PropertyRow():
                     wx.EVT_BUTTON, lambda event: parent.remove_from_list(event, box))
                 control_sizer.Add(remove_button)
                 inner_sizer.Add(control_sizer)
-                sizer.Add(inner_sizer, pos=(index, 1))
+                sizer.Add(inner_sizer, flag=wx.EXPAND)
         elif prop.datatype == Datatype.DATA_MANAGEMENT_PLAN:
             inner_sizer = wx.BoxSizer(wx.VERTICAL)
             cb = wx.CheckBox(parent, label='is available')
@@ -567,7 +565,7 @@ class PropertyRow():
             text.SetHint('Optional URL')
             text.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
             inner_sizer.Add(text)
-            sizer.Add(inner_sizer, pos=(index, 1))
+            sizer.Add(inner_sizer, flag=wx.EXPAND)
             self.data_widget = [cb, text]
         elif prop.datatype == Datatype.ADDRESS:
             inner_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -587,7 +585,7 @@ class PropertyRow():
             inner_sizer2.Add(text3)
             inner_sizer.AddSpacer(5)
             inner_sizer.Add(inner_sizer2)
-            sizer.Add(inner_sizer, pos=(index, 1))
+            sizer.Add(inner_sizer, flag=wx.EXPAND)
             self.data_widget = [text1, text2, text3]
         elif prop.datatype == Datatype.ATTRIBUTION:
             inner_sizer = wx.BoxSizer()
@@ -612,7 +610,7 @@ class PropertyRow():
             content_list.InsertColumn(0, 'Role', width=100)
             content_list.InsertColumn(1, 'Agent', width=450)
             inner_sizer.Add(content_list)
-            sizer.Add(inner_sizer, pos=(index, 1))
+            sizer.Add(inner_sizer, flag=wx.EXPAND)
             self.data_widget = content_list
             remove_button.Bind(wx.EVT_BUTTON,
                                lambda event: parent.remove_from_list(event,
@@ -625,17 +623,17 @@ class PropertyRow():
         elif prop.datatype == Datatype.SHORTCODE:
             text = wx.StaticText(parent)
             self.data_widget = text
-            sizer.Add(text, pos=(index, 1))
+            sizer.Add(text, flag=wx.EXPAND)
 
         btn = wx.Button(parent, label="?")
         btn.Bind(wx.EVT_BUTTON, lambda event: parent.show_help(event, prop.description, prop.example))
-        sizer.Add(btn, pos=(index, 2))
+        sizer.Add(btn)
         opt = wx.Button(parent, label=Cardinality.get_optionality_string(prop.cardinality))
         opt.Bind(wx.EVT_BUTTON, lambda event: parent.show_validity(event,
                                                                    self.validity_msg,
                                                                    Cardinality.as_sting(prop.cardinality)))
         self.validity_widget = opt
-        sizer.Add(opt, pos=(index, 3))
+        sizer.Add(opt)
         self.refresh_ui()
 
     @property
@@ -856,7 +854,7 @@ class PropertyRow():
             event.GetEventObject().Navigate()
 
 
-class DataTab(wx.ScrolledWindow):
+class DataTab(scrolledPanel.ScrolledPanel):
 
     def __init__(self, parent, metadataset, dataset, title, multiple=False):
         """
@@ -869,7 +867,8 @@ class DataTab(wx.ScrolledWindow):
             title (str): title of the project
             multiple (bool): false
         """
-        wx.Panel.__init__(self, parent, style=wx.EXPAND)
+        # wx.Panel.__init__(self, parent, style=wx.EXPAND)
+        scrolledPanel.ScrolledPanel.__init__(self, parent, -1)
 
         self.parent = parent
         self.dataset = dataset
@@ -878,7 +877,7 @@ class DataTab(wx.ScrolledWindow):
         self.rows = []
         self.multiple_selection = 0
         outer_sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer = wx.GridBagSizer(10, 10)
+        sizer = wx.FlexGridSizer(4, 10, 10)
 
         if dataset:
             ds = dataset
@@ -888,16 +887,19 @@ class DataTab(wx.ScrolledWindow):
                 row = PropertyRow(self, prop, sizer, i, metadataset)
                 self.rows.append(row)
 
+        sizer.AddGrowableCol(1)
+
         if multiple:
             dataset_sizer = wx.BoxSizer()
-            dataset_listbox = wx.ListBox(self, size=(700, -1))
+            # dataset_listbox = wx.ListBox(self, size=(700, -1))
+            dataset_listbox = wx.ListBox(self, size=(-1, -1))
             for ds in dataset:
                 dataset_listbox.Append(str(ds))
             dataset_listbox.Bind(
                 wx.EVT_LISTBOX, lambda e: self.change_selection(e))
             dataset_listbox.Select(0)
             self.multiple_listbox = dataset_listbox
-            dataset_sizer.Add(dataset_listbox)
+            dataset_sizer.Add(dataset_listbox, wx.EXPAND)
             dataset_sizer.AddSpacer(5)
             button_sizer = wx.BoxSizer(wx.VERTICAL)
             button_add = wx.Button(self, label="Add New")
@@ -909,12 +911,14 @@ class DataTab(wx.ScrolledWindow):
                 wx.EVT_BUTTON, lambda e: self.remove_object(e, dataset_listbox))
             button_sizer.Add(button_remove)
             dataset_sizer.Add(button_sizer)
-            outer_sizer.Add(dataset_sizer)
+            outer_sizer.Add(dataset_sizer, flag=wx.EXPAND)
             outer_sizer.AddSpacer(20)
-        outer_sizer.Add(sizer)
+        outer_sizer.Add(sizer, flag=wx.EXPAND)
         self.SetSizer(outer_sizer)
-
-        self.SetScrollbars(0, 16, 60, 15)
+        self.SetupScrolling(scroll_x=True, scroll_y=True)
+        self.Fit()
+        self.Layout()
+        # self.SetScrollbars(0, 16, 60, 15)
 
     @property
     def active_dataset(self):
@@ -1121,9 +1125,10 @@ class TabbedWindow(wx.Frame):
         button_sizer.Add(cancel_button, 0, wx.ALL, 5)
 
         # Set notebook in a sizer to create the layout
-        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer = wx.FlexGridSizer(1, 2, 10)
+        sizer.AddGrowableCol(0)
+        sizer.AddGrowableRow(1)
         sizer.Add(nb_sizer, 0, wx.ALL | wx.EXPAND, 5)
-        sizer.AddSpacer(5)
         sizer.Add(button_sizer, 0, wx.ALL | wx.BOTTOM, 5)
         panel.SetSizer(sizer)
         sizer.Fit(self)
