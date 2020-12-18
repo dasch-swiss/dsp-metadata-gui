@@ -217,7 +217,7 @@ class MetaDataSet:
             self.grants.remove(obj)
 
     def get_status(self):
-        if self.validate_graph(self.generate_rdf_graph()):
+        if self.validate_graph(self.generate_rdf_graph())[0]:
             overall = 'Valid'
         else:
             overall = 'Invalid'

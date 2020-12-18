@@ -1,5 +1,6 @@
 import wx
 import wx.lib.scrolledpanel as scrolledPanel
+import wx.lib.dialogs as dlgs
 import os
 import re
 
@@ -264,12 +265,11 @@ class ProjectPanel(wx.Panel):
         if repo:
             conforms, results_graph, results_text = data_handler.validate_graph(repo)
             if conforms:
-                with wx.MessageDialog(self, "Validation successful",
-                                      "", wx.OK | wx.ICON_INFORMATION) as dlg:
+                with wx.MessageDialog(self, "Validation Successful", "Validation Successful", wx.OK | wx.ICON_INFORMATION) as dlg:
                     dlg.ShowModal()
             else:
 
-                with wx.MessageDialog(self, results_text, "Validation Failed", wx.OK | wx.ICON_ERROR) as dlg:
+                with dlgs.ScrolledMessageDialog(self, results_text, "Validation Failed", size=(800, 500)) as dlg:
                     dlg.ShowModal()
 
     def on_item_selected(self, event):
