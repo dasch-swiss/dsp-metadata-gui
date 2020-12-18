@@ -98,21 +98,14 @@ class DataHandling:
             f.write(s)
         open_file(path)
 
-    def validate_graph(self, dataset: MetaDataSet):
+    def validate_graph(self, dataset: MetaDataSet) -> tuple:
         """
         Validates all properties in a specific `MetaDataSet.`
 
         Does not validate each of the properties separately,
         but rather generates the RDF graph, which then gets validated.
         """
-        print("should be validating the data")
-        validation_result = dataset.validate_graph(dataset.generate_rdf_graph())
-        if validation_result:
-            # TODO: give positive feedback to user
-            pass
-        else:
-            # TODO: inform user that validation has failed
-            pass
+        return dataset.validate_graph(dataset.generate_rdf_graph())
 
     def update_all(self):
         """

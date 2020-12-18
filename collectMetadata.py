@@ -11,8 +11,6 @@ from util.metaDataHelpers import CalendarDlg
 
 ################# TODO List #################
 #
-# - export RDF function
-# - option to remove projects from main list (note: indices will become a problem here)
 # - Add some sort of 'import from RDF' functionality
 # - give indication of cardinality in help popup
 # - ensure that help popup is always on screen entirely
@@ -22,8 +20,6 @@ from util.metaDataHelpers import CalendarDlg
 
 ################ Idea List ##################
 #
-# - I'd love to have an over-arching progress bar that indicates to the user, how much of the forms they have filled out
-#   (see wx.Gauge)
 # - Graph visualization would be nice
 #
 #############################################
@@ -175,8 +171,6 @@ class ProjectPanel(wx.Panel):
         title = "Choose a directory:"
         dlg = wx.DirDialog(self, title, style=wx.DD_DEFAULT_STYLE)
         if dlg.ShowModal() == wx.ID_OK:
-            # Here the update function is called. This function is strictly restricted to new folders.
-            # New data will be appended to the available structure.
             self.add_new_project(dlg.GetPath(), shortcode)
         dlg.Destroy()
 
@@ -208,9 +202,7 @@ class ProjectPanel(wx.Panel):
 
     def load_view(self):
         # TODO: rename to refresh
-        # The previous list contents is cleared before reloading it
-        # self.list_ctrl.ClearAll()  # FIXME: find a solution here
-        # Construct a header
+        # TODO: ensure that no remainder of a deleted project is displayed
         self.display_repos()
         self.display_rdf()
         # TODO: enable/disable buttons according to if a project is selected or not
@@ -244,6 +236,7 @@ class ProjectPanel(wx.Panel):
 
     def on_process_data(self, event):
         """ Set selection and call create_xml """
+        # TODO: what does that actually do? export data? -> rename? rework?
         selection = self.list_ctrl.GetFocusedItem()
         if selection >= 0:
             data_handler.process_data(selection)
@@ -262,19 +255,22 @@ class ProjectPanel(wx.Panel):
         self.load_view()
 
     def on_remove_project(self, event):
-        # selection = self.list_ctrl.GetFocusedItem()
-        # if selection >= 0:
-        #     pass
         # TODO: implement
         self.load_view()
         pass
 
     def on_validate(self, event):
-        # selection = self.list_ctrl.GetFocusedItem()
-        # if selection >= 0:
-        #     pass
-        # TODO: implement
-        pass
+        repo = self.get_selected_project()
+        if repo:
+            conforms, results_graph, results_text = data_handler.validate_graph(repo)
+            if conforms:
+                with wx.MessageDialog(self, "Validation successful",
+                                      "", wx.OK | wx.ICON_INFORMATION) as dlg:
+                    dlg.ShowModal()
+            else:
+
+                with wx.MessageDialog(self, results_text, "Validation Failed", wx.OK | wx.ICON_ERROR) as dlg:
+                    dlg.ShowModal()
 
     def on_item_selected(self, event):
         self.load_view()
@@ -293,7 +289,6 @@ class TabOne(wx.Panel):
         sizer = wx.GridBagSizer(10, 10)
         project_label = wx.StaticText(self, label="Current Project:")
         project_name = wx.StaticText(self, label=self.dataset.name)
-        # QUESTION: should this be changeable?
         sizer.Add(project_label, pos=(0, 0))
         sizer.Add(project_name, pos=(0, 1))
 
@@ -303,7 +298,6 @@ class TabOne(wx.Panel):
         path_field = wx.TextCtrl(self, style=wx.TE_READONLY, size=(550, -1))
         path_field.SetValue(self.dataset.path)
         sizer.Add(path_field, pos=(1, 1))
-        # QUESTION: add button to change folder
         path_help = wx.Button(self, label="?")
         path_help.Bind(wx.EVT_BUTTON, lambda event: self.show_help(event,
                                                                    "Path to the folder with the data",
@@ -333,7 +327,6 @@ class TabOne(wx.Panel):
         path_help.Bind(wx.EVT_BUTTON, lambda event: self.show_help(event,
                                                                    "Files associated with the project",
                                                                    "sample_project.zip"))
-        # TODO: give some indication on the state of this dataset. (valid, invalid, percentage of properties or similar)
         sizer.Add(path_help, pos=(2, 2))
         sizer.AddGrowableCol(1)
         self.SetSizer(sizer)
