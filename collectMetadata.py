@@ -106,23 +106,24 @@ class ProjectPanel(wx.Panel):
 
         # Here we create the window ...
         main_sizer = wx.BoxSizer(wx.VERTICAL)
-        title = wx.StaticText(self, label="DaSCH Service Platform - Metadata Collection", size=(400, -1))
+        title = wx.StaticText(self, label="DaSCH Service Platform - Metadata Collection", size=(-1, -1))
         main_sizer.Add(title, 0, wx.ALL | wx.LEFT, 10)
         self.list_ctrl = wx.ListCtrl(self, size=(-1, 200), style=wx.LC_REPORT | wx.BORDER_SUNKEN)
         self.list_ctrl.Bind(wx.EVT_LIST_ITEM_SELECTED, self.on_item_selected)
         main_sizer.Add(self.list_ctrl, 0, wx.ALL | wx.EXPAND, 10)
 
-        bottom_sizer = wx.BoxSizer()
+        bottom_sizer = wx.FlexGridSizer(1, 2, 10, 10)
+        bottom_sizer.AddGrowableCol(0)
         scroller = scrolledPanel.ScrolledPanel(self)
-        rdf_display = wx.StaticText(scroller, label="No Project selected.", size=(600, -1))
+        rdf_display = wx.StaticText(scroller, label="No Project selected.", size=(-1, -1))
         self.rdf_display = rdf_display
-        scroller.SetMinSize((600, 400))
+        scroller.SetMinSize((-1, 400))
         scroller.SetAutoLayout(1)
         scroller.SetupScrolling(scroll_x=False, scroll_y=True)
         innermost = wx.BoxSizer()
-        innermost.Add(rdf_display)
+        innermost.Add(rdf_display, flag=wx.EXPAND)
         scroller.SetSizer(innermost)
-        bottom_sizer.Add(scroller)
+        bottom_sizer.Add(scroller, flag=wx.EXPAND)
 
         # Here we create the Edit button
         button_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -149,7 +150,7 @@ class ProjectPanel(wx.Panel):
         # LATER: add option to zip pickle, data and metadata, and save it somewhere
 
         bottom_sizer.Add(button_sizer, 0, wx.ALL, 10)
-        main_sizer.Add(bottom_sizer, 0, wx.ALL, 10)
+        main_sizer.Add(bottom_sizer, 0, wx.ALL | wx.EXPAND, 10)
         self.SetSizer(main_sizer)
         self.Fit()
         self.create_header()
@@ -924,6 +925,7 @@ class DataTab(wx.ScrolledWindow):
             self.multiple_listbox.SetSelection(self.multiple_selection)
         for row in self.rows:
             row.refresh_ui()
+        self.Layout()
 
     def add_object(self, event, listbox, title):
         if title == "Person":
