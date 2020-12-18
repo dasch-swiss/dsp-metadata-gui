@@ -1,4 +1,5 @@
 import wx
+import wx.lib.scrolledpanel as scrolledPanel
 import os
 import re
 
@@ -112,9 +113,16 @@ class ProjectPanel(wx.Panel):
         main_sizer.Add(self.list_ctrl, 0, wx.ALL | wx.EXPAND, 10)
 
         bottom_sizer = wx.BoxSizer()
-        rdf_display = wx.StaticText(self, label="No Project selected.", size=(700, -1))
+        scroller = scrolledPanel.ScrolledPanel(self)
+        rdf_display = wx.StaticText(scroller, label="No Project selected.", size=(600, -1))
         self.rdf_display = rdf_display
-        bottom_sizer.Add(self.rdf_display)
+        scroller.SetMinSize((600, 400))
+        scroller.SetAutoLayout(1)
+        scroller.SetupScrolling(scroll_x=False, scroll_y=True)
+        innermost = wx.BoxSizer()
+        innermost.Add(rdf_display)
+        scroller.SetSizer(innermost)
+        bottom_sizer.Add(scroller)
 
         # Here we create the Edit button
         button_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -146,6 +154,7 @@ class ProjectPanel(wx.Panel):
         self.Fit()
         self.create_header()
         self.load_view()
+        self.Layout()
 
     def on_add_new_project(self, event):
         """
@@ -203,10 +212,10 @@ class ProjectPanel(wx.Panel):
         self.display_repos()
         self.display_rdf()
         # TODO: enable/disable buttons according to if a project is selected or not
+        self.Layout()
 
     def display_rdf(self):
         project = self.get_selected_project()
-        print(project)
         if project:
             txt = project.get_turtle()
         else:
@@ -287,7 +296,7 @@ class TabOne(wx.Panel):
         sizer.Add(project_name, pos=(0, 1))
 
         # Path to folder
-        path_label = wx.StaticText(self, label="Path (Readonly): ")
+        path_label = wx.StaticText(self, label="Path: ")
         sizer.Add(path_label, pos=(1, 0))
         path_field = wx.TextCtrl(self, style=wx.TE_READONLY, size=(550, -1))
         path_field.SetValue(self.dataset.path)
