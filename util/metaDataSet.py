@@ -783,7 +783,7 @@ class Grant(DataClass):
                                "Funding person or institution of the project",
                                "",
                                Datatype.PERSON_OR_ORGANIZATION,
-                               Cardinality.ZERO_OR_ONE,  # QUESTION: does that make sense?
+                               Cardinality.ONE_TO_UNBOUND,
                                predicate=dsp_repo.hasFunder)
 
     def get_properties(self):
