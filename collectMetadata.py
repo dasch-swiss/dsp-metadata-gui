@@ -110,6 +110,7 @@ class ProjectPanel(wx.Panel):
         main_sizer.Add(title, 0, wx.ALL | wx.LEFT, 10)
         self.list_ctrl = wx.ListCtrl(self, size=(-1, 200), style=wx.LC_REPORT | wx.BORDER_SUNKEN)
         self.list_ctrl.Bind(wx.EVT_LIST_ITEM_SELECTED, self.on_item_selected)
+        self.list_ctrl.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.on_item_selected)
         main_sizer.Add(self.list_ctrl, 0, wx.ALL | wx.EXPAND, 10)
 
         bottom_sizer = wx.FlexGridSizer(1, 2, 10, 10)
