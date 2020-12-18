@@ -32,8 +32,6 @@ class MetaDataSet:
     This class represents a data set of project metadata.
 
     It holds the following properties:
-    - index: the index of the dataset in the UI (list item).
-      Note: in some case, we'll need to make sure this stays correct
     - name: the repo/project name.
       Typically the name of the folder that was selected.
     - path: the full path of the folder that was selected.
@@ -45,14 +43,6 @@ class MetaDataSet:
 
     At a later stage, this class should be able to return a representation of its data in form of an RDF graph.
     """
-
-    @property
-    def index(self):
-        return self.__index
-
-    @index.setter
-    def index(self, i: int):
-        self.__index = i
 
     @property
     def name(self):
@@ -78,14 +68,14 @@ class MetaDataSet:
     def files(self, files: list):
         self.__files = files
 
-    def __init__(self, index: int, name: str, path: str, shortcode: str):
-        self.index = index
+    def __init__(self, name: str, path: str, shortcode: str):
+        self.shortcode = shortcode
         self.name = name
         self.path = path
         self.files = []
         self.project = Project(name, shortcode, self)
         self.dataset = [Dataset(name, self.project, self)]
-        self.persons = [Person(self)]  # FIXME: persons get wiped on every load
+        self.persons = [Person(self)]  # FIXME: persons get wiped on every load - or does it?
         self.organizations = [Organization(self)]
         self.grants = [Grant(self)]
         self.update_iris()
@@ -111,7 +101,6 @@ class MetaDataSet:
 
     def __str__(self):
         return str({
-            "index": self.index,
             "name": self.name,
             "path": self.path,
             "files": self.files,
@@ -253,6 +242,10 @@ class MetaDataSet:
             elif v == Validity.VALID:
                 valid += 1
         return f"{overall}  --  {invalid + missing} Problems; {valid} Values"
+
+    def get_turtle(self) -> str:
+        g = self.generate_rdf_graph()
+        return g.serialize(format='turtle').decode("utf-8")
 
 
 class DataClass(ABC):

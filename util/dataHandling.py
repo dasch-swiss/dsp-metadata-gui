@@ -39,9 +39,8 @@ class DataHandling:
             shortcode (str): the project shortcode
             files (list): the files in the project folder
         """
-        index = len(self.projects)
         folder_name = os.path.basename(folder_path)
-        dataset = MetaDataSet(index, folder_name, folder_path, shortcode)
+        dataset = MetaDataSet(folder_name, folder_path, shortcode)
         self.projects.append(dataset)
         dataset.files += files
         self.save_data()
@@ -135,3 +134,8 @@ class DataHandling:
         """
         for tab in self.tabs:
             tab.refresh_ui()
+
+    def get_project_by_shortcode(self, shortcode):
+        for p in self.projects:
+            if p.shortcode == shortcode:
+                return p

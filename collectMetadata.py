@@ -170,14 +170,19 @@ class ProjectPanel(wx.Panel):
         dlg.Destroy()
 
     def display_repos(self):
+        # TODO: rename to "refresh_repos"
         """
         Display all loaded repos in the list.
         """
-        for project in data_handler.projects:
-            self.list_ctrl.InsertItem(project.index, project.path)
-            self.list_ctrl.SetItem(project.index, 1, project.name)
-            self.list_ctrl.SetItem(project.index, 2, str(project.files))
-            self.list_ctrl.SetItem(project.index, 3, project.get_status())
+        for i, project in enumerate(data_handler.projects):
+            if i < self.list_ctrl.GetItemCount():
+                self.list_ctrl.SetItem(i, 0, project.path)
+            else:
+                self.list_ctrl.InsertItem(i, project.path)
+            self.list_ctrl.SetItem(i, 1, project.name)
+            self.list_ctrl.SetItem(i, 2, project.shortcode)
+            self.list_ctrl.SetItem(i, 3, str(project.files))
+            self.list_ctrl.SetItem(i, 4, project.get_status())
 
     def create_header(self):
         """
@@ -185,16 +190,19 @@ class ProjectPanel(wx.Panel):
         """
         # Construct a header
         self.list_ctrl.InsertColumn(0, 'Folder', width=300)
-        self.list_ctrl.InsertColumn(1, 'Project', width=200)
-        self.list_ctrl.InsertColumn(2, 'List of files', width=340)
-        self.list_ctrl.InsertColumn(3, 'Status', width=350)
+        self.list_ctrl.InsertColumn(1, 'Project', width=180)
+        self.list_ctrl.InsertColumn(2, 'Shortcode', width=90)
+        self.list_ctrl.InsertColumn(3, 'List of files', width=340)
+        self.list_ctrl.InsertColumn(4, 'Status', width=350)
 
     def load_view(self):
+        # TODO: rename to refresh
         # The previous list contents is cleared before reloading it
         # self.list_ctrl.ClearAll()  # FIXME: find a solution here
         # Construct a header
         self.display_repos()
         self.display_rdf()
+        # TODO: enable/disable buttons according to if a project is selected or not
 
     def display_rdf(self):
         project = self.get_selected_project()
@@ -207,9 +215,10 @@ class ProjectPanel(wx.Panel):
 
     def get_selected_project(self) -> MetaDataSet:
         selection = self.list_ctrl.GetFirstSelected()
-        print(selection)
-        # if selection >= 0:
-        #     return data_handler.projects[selection]  # FIXME: broken
+        if selection < 0:
+            return
+        shortcode = self.list_ctrl.GetItem(selection, col=2).GetText()
+        return data_handler.get_project_by_shortcode(shortcode)
 
     def on_edit_tabbed(self, event):
         """
