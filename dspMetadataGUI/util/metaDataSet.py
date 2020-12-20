@@ -7,8 +7,8 @@ from rdflib import Graph, URIRef, RDF, Literal, Namespace, BNode
 from rdflib.namespace import SDO, XSD
 from rdflib.collection import Collection
 
-from util import utils
-from util.utils import Cardinality, Datatype, Validity
+from . import utils
+from .utils import Cardinality, Datatype, Validity
 
 """
 The Classes defined here aim to represent a metadata-set, closely following the metadata ontology.
@@ -156,15 +156,6 @@ class MetaDataSet:
             org.add_rdf_to_graph(graph, "Organization")
         for i, org in enumerate(self.grants):
             org.add_rdf_to_graph(graph, "Grant")
-        # print("\n------------------\n")
-        # print(graph.serialize(format='nt').decode("utf-8"))
-        # print("\n------------------\n")
-        # print(graph.serialize(format='turtle').decode("utf-8"))
-        # print("\n------------------\n")
-        # print(graph.serialize(format='xml').decode("utf-8"))
-        # print("\n------------------\n")
-        # print(graph.serialize(format='json-ld').decode("utf-8"))
-        # print("\n------------------\n")
         return graph
 
     def get_by_string(self, s: str):

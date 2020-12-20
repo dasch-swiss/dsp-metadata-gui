@@ -4,10 +4,14 @@ import wx.lib.dialogs as dlgs
 import os
 import re
 
-from util.dataHandling import DataHandling
-from util.metaDataSet import MetaDataSet
-from util.utils import Cardinality, Datatype, Validity
-from util.metaDataHelpers import CalendarDlg
+from dspMetadataGUI.util.dataHandling import DataHandling
+from dspMetadataGUI.util.metaDataSet import MetaDataSet
+from dspMetadataGUI.util.utils import Cardinality, Datatype, Validity
+from dspMetadataGUI.util.metaDataHelpers import CalendarDlg
+# from util.dataHandling import DataHandling
+# from util.metaDataSet import MetaDataSet
+# from util.utils import Cardinality, Datatype, Validity
+# from util.metaDataHelpers import CalendarDlg
 
 
 ################# TODO List #################
@@ -16,6 +20,13 @@ from util.metaDataHelpers import CalendarDlg
 # - give indication of cardinality in help popup
 # - ensure that help popup is always on screen entirely
 # - document all methods
+#
+# ### for publishing:
+# 
+# - remove all print() statements
+# - imports in __init__.py
+# - setup.py
+# - setup.cfg
 #
 #############################################
 
@@ -605,7 +616,6 @@ class PropertyRow():
             inner_sizer.AddSpacer(5)
             content_list = wx.ListCtrl(parent, -1, style=wx.LC_REPORT | wx.LC_SINGLE_SEL)
             content_list.InsertColumn(0, 'Role')
-            print(content_list.GetSize())
             content_list.InsertColumn(1, 'Agent')
             inner_sizer.Add(content_list, 1)
             sizer.Add(inner_sizer, flag=wx.EXPAND)

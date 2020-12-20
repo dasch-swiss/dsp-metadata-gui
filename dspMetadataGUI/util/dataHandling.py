@@ -24,7 +24,6 @@ class DataHandling:
         self.data_storage = os.path.expanduser("~") + "/DaSCH/config/repos.data"
         # LATER: path could be made customizable
         self.load_data()
-        print("Data loaded.")
 
     def add_project(self, folder_path: str, shortcode: str, files: list):
         """
@@ -67,7 +66,6 @@ class DataHandling:
         Currently, the data are stored under `~/DaSCH/config/repos.data`.
         """
         # LATER: could let the user decide where to store the data.
-        print("Saving data...")
         with open(self.data_storage, 'wb') as file:
             pickle.dump(self.projects, file)
 
@@ -76,7 +74,6 @@ class DataHandling:
         ToDo: implement this class.
         """
         # TODO: how do process_data and validate_graph really divide labour?
-        print(f'Should be processing Dataset: {index}')
         project = self.projects[index]
         self.validate_graph(project)
         graph = project.generate_rdf_graph()
