@@ -8,10 +8,6 @@ from dspMetadataGUI.util.dataHandling import DataHandling
 from dspMetadataGUI.util.metaDataSet import MetaDataSet
 from dspMetadataGUI.util.utils import Cardinality, Datatype, Validity
 from dspMetadataGUI.util.metaDataHelpers import CalendarDlg
-# from util.dataHandling import DataHandling
-# from util.metaDataSet import MetaDataSet
-# from util.utils import Cardinality, Datatype, Validity
-# from util.metaDataHelpers import CalendarDlg
 
 
 ################# TODO List #################
@@ -20,9 +16,12 @@ from dspMetadataGUI.util.metaDataHelpers import CalendarDlg
 # - give indication of cardinality in help popup
 # - ensure that help popup is always on screen entirely
 # - document all methods
+# - document distribution process etc.
+# - implement "zip and export" functionality
+# - implement "upload to dsp" functionality
 #
 # ### for publishing:
-# 
+#
 # - remove all print() statements
 # - imports in __init__.py
 # - setup.py
