@@ -282,9 +282,13 @@ class ProjectPanel(wx.Panel):
         self.load_view()
 
     def on_remove_project(self, event):
-        # TODO: implement
-        self.load_view()
-        pass
+        selected = self.get_selected_project()
+        msg = f"Are you sure you want to delete the Project '{selected.name} ({selected.shortcode})'"
+        with wx.MessageDialog(self, "Sure?", msg, wx.YES_NO) as dlg:
+            if dlg.ShowModal() == wx.ID_YES:
+                data_handler.remove_project(selected)
+                self.list_ctrl.DeleteAllItems()
+                self.load_view()
 
     def on_validate(self, event):
         repo = self.get_selected_project()

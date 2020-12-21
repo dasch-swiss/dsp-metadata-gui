@@ -44,6 +44,11 @@ class DataHandling:
         dataset.files += files
         self.save_data()
 
+    def remove_project(self, project):
+        if project and project in self.projects:
+            self.projects.remove(project)
+            self.save_data()
+
     def load_data(self):
         """
         Load data from previous runtimes (if any).

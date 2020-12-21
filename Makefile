@@ -4,6 +4,7 @@ CURRENT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 .PHONY: dist
 dist: ## generate distribution package
+	$(MAKE) clean
 	python3 setup.py sdist bdist_wheel
 
 .PHONY: upload
@@ -30,8 +31,8 @@ install: ## install from source
 clean: ## cleans the project directory
 	@rm -rf dist/
 
-.PHONY: install-and-run
-install-and-run: ## install from source
+.PHONY: run
+run: ## install and run from source
 	$(MAKE) clean
 	$(MAKE) dist
 	$(MAKE) install
