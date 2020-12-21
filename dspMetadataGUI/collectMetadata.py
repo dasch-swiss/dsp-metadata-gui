@@ -160,6 +160,11 @@ class ProjectPanel(wx.Panel):
         process_xml_button.Bind(wx.EVT_BUTTON, self.on_process_data)
         button_sizer.Add(process_xml_button, 0, wx.ALL | wx.EXPAND, 7)
 
+        zip_and_export_btn = wx.Button(self, label='ZIP and Export Project')
+        self.project_dependent_buttons.append(zip_and_export_btn)
+        zip_and_export_btn.Bind(wx.EVT_BUTTON, self.on_zip_and_export)
+        button_sizer.Add(zip_and_export_btn, 0, wx.ALL | wx.EXPAND, 7)
+
         # LATER: add option to zip pickle, data and metadata, and save it somewhere
 
         bottom_sizer.Add(button_sizer, 0, wx.ALL, 10)
@@ -169,6 +174,14 @@ class ProjectPanel(wx.Panel):
         self.create_header()
         self.load_view()
         self.Layout()
+
+    def on_zip_and_export(self, event):
+        title = "Where to export to?"
+        with wx.DirDialog(self, title, style=wx.DD_DEFAULT_STYLE) as dlg:
+            if dlg.ShowModal() == wx.ID_OK:
+                path = dlg.GetPath()
+                print(path)
+                data_handler.zip_and_export(self.get_selected_project(), path)
 
     def on_add_new_project(self, event):
         """

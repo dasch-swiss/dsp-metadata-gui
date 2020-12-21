@@ -1,5 +1,6 @@
 import os
 import pickle
+import shutil
 
 from .metaDataSet import MetaDataSet
 from .utils import open_file
@@ -84,8 +85,10 @@ class DataHandling:
         graph = project.generate_rdf_graph()
         self.export_rdf(project.path, graph)
 
-    def export_rdf(self, path, graph):
+    def export_rdf(self, path, graph, show=True):
         path += '/metadata'
+        if not os.path.exists(path):
+            os.makedirs(path)
         p = path + '/metadata.ttl'
         with open(p, 'w') as f:
             s = graph.serialize(format='turtle').decode("utf-8")
@@ -98,7 +101,32 @@ class DataHandling:
         with open(p, 'w') as f:
             s = graph.serialize(format='xml').decode("utf-8")
             f.write(s)
-        open_file(path)
+        if show:
+            open_file(path)
+
+    def zip_and_export(self, dataset: MetaDataSet, target: str):
+        if not dataset:
+            return
+        if not target:
+            target = dataset.path
+        target_file = os.path.join(target, dataset.name)
+        # TODO: create metadata if necessary
+        p = dataset.path
+        tmp = os.path.join(p, '.tmp')
+        meta = os.path.join(p, 'metadata')
+        os.makedirs(tmp, exist_ok=True)
+        tmp_m = os.path.join(tmp, 'metadata')
+        os.makedirs(tmp_m, exist_ok=True)
+        pickle_path = os.path.join(tmp, 'binary')
+        os.makedirs(pickle_path, exist_ok=True)
+        for f in dataset.files:
+            shutil.copy(os.path.join(p, f), tmp)
+        shutil.copytree(meta, tmp_m, dirs_exist_ok=True)
+        with open(os.path.join(pickle_path, 'repos.data'), mode='wb') as pick:
+            pickle.dump(dataset, pick)
+        shutil.make_archive(target_file, 'zip', tmp)
+        shutil.rmtree(tmp, ignore_errors=True)
+        open_file(target)
 
     def validate_graph(self, dataset: MetaDataSet) -> tuple:
         """
