@@ -27,18 +27,18 @@ The Class ProjectFrame manages the frame with the menu bar. A runner class
 
 ## Class 'ProjectFrame'
 
-::: collectMetadata:ProjectFrame.__init__
+::: dspMetadataGUI.collectMetadata:ProjectFrame.__init__
     rendering:
         show_root_heading: false
         show_source: false
 
 ### create_menu()
 
-::: collectMetadata:ProjectFrame.create_menu
+::: dspMetadataGUI.collectMetadata:ProjectFrame.create_menu
 
 ### on_save()
 
-::: collectMetadata:ProjectFrame.on_save
+::: dspMetadataGUI.collectMetadata:ProjectFrame.on_save
 
 ## Class 'ProjectPanel'
 
@@ -47,124 +47,124 @@ and provides an edit button.
 
 ### on_add_new_project()
 
-::: collectMetadata:ProjectPanel.on_add_new_project
+::: dspMetadataGUI.collectMetadata:ProjectPanel.on_add_new_project
 
-::: collectMetadata:ProjectPanel.display_repos
+::: dspMetadataGUI.collectMetadata:ProjectPanel.display_repos
 
-::: collectMetadata:ProjectPanel.create_header
+::: dspMetadataGUI.collectMetadata:ProjectPanel.create_header
 
-::: collectMetadata:ProjectPanel.load_view
+::: dspMetadataGUI.collectMetadata:ProjectPanel.load_view
 
-::: collectMetadata:ProjectPanel.on_edit_tabbed
+::: dspMetadataGUI.collectMetadata:ProjectPanel.on_edit_tabbed
 
-::: collectMetadata:ProjectPanel.on_process_data
+::: dspMetadataGUI.collectMetadata:ProjectPanel.on_process_data
 
-::: collectMetadata:ProjectPanel.add_new_project
+::: dspMetadataGUI.collectMetadata:ProjectPanel.add_new_project
 
-::: collectMetadata:ProjectPanel.on_remove_project
+::: dspMetadataGUI.collectMetadata:ProjectPanel.on_remove_project
 
-::: collectMetadata:ProjectPanel.on_validate
+::: dspMetadataGUI.collectMetadata:ProjectPanel.on_validate
 
 ## Class TabOne
 
-::: collectMetadata:TabOne.show_help
+::: dspMetadataGUI.collectMetadata:TabOne.show_help
 
-::: collectMetadata:TabOne.add_file
+::: dspMetadataGUI.collectMetadata:TabOne.add_file
 
-::: collectMetadata:TabOne.remove_file
+::: dspMetadataGUI.collectMetadata:TabOne.remove_file
 
 ## Class PropertyRow
 
-::: collectMetadata:PropertyRow.__init__
+::: dspMetadataGUI.collectMetadata:PropertyRow.__init__
 
 ### data_class() 
 
-::: collectMetadata:PropertyRow.data_class
+::: dspMetadataGUI.collectMetadata:PropertyRow.data_class
 
 ### prop()
 
-::: collectMetadata:PropertyRow.prop
+::: dspMetadataGUI.collectMetadata:PropertyRow.prop
 
 ### get_value()
 
-::: collectMetadata:PropertyRow.get_value
+::: dspMetadataGUI.collectMetadata:PropertyRow.get_value
 
 ### refresh_ui()
 
-::: collectMetadata:PropertyRow.refresh_ui
+::: dspMetadataGUI.collectMetadata:PropertyRow.refresh_ui
 
 ### refresh_chocie()
 
-::: collectMetadata:PropertyRow.refresh_choice
+::: dspMetadataGUI.collectMetadata:PropertyRow.refresh_choice
 
 ### validate()
 
-::: collectMetadata:PropertyRow.validate
+::: dspMetadataGUI.collectMetadata:PropertyRow.validate
 
 ### set_value()
 
-::: collectMetadata:PropertyRow.set_value
+::: dspMetadataGUI.collectMetadata:PropertyRow.set_value
 
 ### onValueChange()
 
-::: collectMetadata:PropertyRow.onValueChange
+::: dspMetadataGUI.collectMetadata:PropertyRow.onValueChange
 
 ## Class DataTab
 
-:::collectMetadata:DataTab.__init__
+:::dspMetadataGUI.collectMetadata:DataTab.__init__
 
 ### active_dataset()
 
-:::collectMetadata:DataTab.active_dataset
+:::dspMetadataGUI.collectMetadata:DataTab.active_dataset
 
 ### update_data()
 
-:::collectMetadata:DataTab.update_data
+:::dspMetadataGUI.collectMetadata:DataTab.update_data
 
 ### refresh_ui()
 
-:::collectMetadata:DataTab.refresh_ui
+:::dspMetadataGUI.collectMetadata:DataTab.refresh_ui
 
 ### add_object()
 
-:::collectMetadata:DataTab.add_object
+:::dspMetadataGUI.collectMetadata:DataTab.add_object
 
 ### remove_object()
 
-:::collectMetadata:DataTab.remove_object
+:::dspMetadataGUI.collectMetadata:DataTab.remove_object
 
 ### change_selection()
 
-:::collectMetadata:DataTab.change_selection
+:::dspMetadataGUI.collectMetadata:DataTab.change_selection
 
 ### add_to_list()
 
-:::collectMetadata:DataTab.add_to_list
+:::dspMetadataGUI.collectMetadata:DataTab.add_to_list
 
 ### reset_widget()
 
-:::collectMetadata:DataTab.reset_widget
+:::dspMetadataGUI.collectMetadata:DataTab.reset_widget
 
 ### remove_from_list()
 
-:::collectMetadata:DataTab.remove_from_list
+:::dspMetadataGUI.collectMetadata:DataTab.remove_from_list
 
 ### show_help()
 
-:::collectMetadata:DataTab.show_help
+:::dspMetadataGUI.collectMetadata:DataTab.show_help
 
 ### show_validity()
 
-:::collectMetadata:DataTab.show_validity
+:::dspMetadataGUI.collectMetadata:DataTab.show_validity
 
 ### pic_date()
 
-:::collectMetadata:DataTab.pick_date
+:::dspMetadataGUI.collectMetadata:DataTab.pick_date
 
 ## Class HelpPopup
 
-:::collectMetadata:HelpPopup.__init__
+:::dspMetadataGUI.collectMetadata:HelpPopup.__init__
 
 ## Class TabbedWindow
 
-:::collectMetadata:TabbedWindow.__init__
+:::dspMetadataGUI.collectMetadata:TabbedWindow.__init__
