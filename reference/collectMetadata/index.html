@@ -1,0 +1,1909 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="shortcut icon" href="../../assets/images/dasch-favicon.ico">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.4">
+    
+    
+      
+        <title>GUI documentation - DSP-Metadata-GUI</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.358818c7.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.f0267088.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+      
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#documentation-for-metadata-gui" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="../.." title="DSP-Metadata-GUI" class="md-header-nav__button md-logo" aria-label="DSP-Metadata-GUI">
+      
+  <img src="../../assets/images/dasch-icon-white.svg" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            DSP-Metadata-GUI
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              GUI documentation
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="DSP-Metadata-GUI" class="md-nav__button md-logo" aria-label="DSP-Metadata-GUI">
+      
+  <img src="../../assets/images/dasch-icon-white.svg" alt="logo">
+
+    </a>
+    DSP-Metadata-GUI
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Usage
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Usage" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon"></span>
+        Usage
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../prep/" class="md-nav__link">
+      Before you start
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      List View
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="List View" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        List View
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../list_view/" class="md-nav__link">
+      List
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Tabbed View
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Tabbed View" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon"></span>
+        Tabbed View
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tabs_overview/" class="md-nav__link">
+      Tabs Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../basedata/" class="md-nav__link">
+      Base Data
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../project/" class="md-nav__link">
+      Project
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data/" class="md-nav__link">
+      Data
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../person/" class="md-nav__link">
+      Person
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../organization/" class="md-nav__link">
+      Organization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../grant/" class="md-nav__link">
+      Grant
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+    
+    <label class="md-nav__link" for="nav-5">
+      API Reference
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon"></span>
+        API Reference
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        GUI documentation
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" class="md-nav__link md-nav__link--active">
+      GUI documentation
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-gui-classes" class="md-nav__link">
+    The GUI Classes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#main-function" class="md-nav__link">
+    Main Function
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.collectMetadata" class="md-nav__link">
+    collectMetadata()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-projectframe" class="md-nav__link">
+    Class 'ProjectFrame'
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectFrame.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-projectpanel" class="md-nav__link">
+    Class 'ProjectPanel'
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.refresh_repos" class="md-nav__link">
+    refresh_repos()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.create_header" class="md-nav__link">
+    create_header()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.load_view" class="md-nav__link">
+    load_view()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.on_edit_tabbed" class="md-nav__link">
+    on_edit_tabbed()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.on_process_data" class="md-nav__link">
+    on_process_data()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.add_new_project" class="md-nav__link">
+    add_new_project()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.on_remove_project" class="md-nav__link">
+    on_remove_project()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.on_validate" class="md-nav__link">
+    on_validate()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-tabone" class="md-nav__link">
+    Class TabOne
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.TabOne.show_help" class="md-nav__link">
+    show_help()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.TabOne.add_file" class="md-nav__link">
+    add_file()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.TabOne.remove_file" class="md-nav__link">
+    remove_file()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-propertyrow" class="md-nav__link">
+    Class PropertyRow
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.PropertyRow.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data_class" class="md-nav__link">
+    data_class()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.PropertyRow.data_class" class="md-nav__link">
+    data_class
+  </a>
+  
+    <nav class="md-nav" aria-label="data_class">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prop" class="md-nav__link">
+    prop()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.PropertyRow.prop" class="md-nav__link">
+    prop
+  </a>
+  
+    <nav class="md-nav" aria-label="prop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_value" class="md-nav__link">
+    get_value()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.PropertyRow.get_value" class="md-nav__link">
+    get_value()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_value()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#refresh_ui" class="md-nav__link">
+    refresh_ui()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.PropertyRow.refresh_ui" class="md-nav__link">
+    refresh_ui()
+  </a>
+  
+    <nav class="md-nav" aria-label="refresh_ui()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#refresh_chocie" class="md-nav__link">
+    refresh_chocie()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.PropertyRow.refresh_choice" class="md-nav__link">
+    refresh_choice()
+  </a>
+  
+    <nav class="md-nav" aria-label="refresh_choice()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#validate" class="md-nav__link">
+    validate()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.PropertyRow.validate" class="md-nav__link">
+    validate()
+  </a>
+  
+    <nav class="md-nav" aria-label="validate()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set_value" class="md-nav__link">
+    set_value()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.PropertyRow.set_value" class="md-nav__link">
+    set_value()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../dataHandling/" class="md-nav__link">
+      Data Handling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../metaDataSet/" class="md-nav__link">
+      Data Structure
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-gui-classes" class="md-nav__link">
+    The GUI Classes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#main-function" class="md-nav__link">
+    Main Function
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.collectMetadata" class="md-nav__link">
+    collectMetadata()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-projectframe" class="md-nav__link">
+    Class 'ProjectFrame'
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectFrame.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-projectpanel" class="md-nav__link">
+    Class 'ProjectPanel'
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.refresh_repos" class="md-nav__link">
+    refresh_repos()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.create_header" class="md-nav__link">
+    create_header()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.load_view" class="md-nav__link">
+    load_view()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.on_edit_tabbed" class="md-nav__link">
+    on_edit_tabbed()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.on_process_data" class="md-nav__link">
+    on_process_data()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.add_new_project" class="md-nav__link">
+    add_new_project()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.on_remove_project" class="md-nav__link">
+    on_remove_project()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.ProjectPanel.on_validate" class="md-nav__link">
+    on_validate()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-tabone" class="md-nav__link">
+    Class TabOne
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.TabOne.show_help" class="md-nav__link">
+    show_help()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.TabOne.add_file" class="md-nav__link">
+    add_file()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.TabOne.remove_file" class="md-nav__link">
+    remove_file()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-propertyrow" class="md-nav__link">
+    Class PropertyRow
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.PropertyRow.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+    <nav class="md-nav" aria-label="__init__()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data_class" class="md-nav__link">
+    data_class()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.PropertyRow.data_class" class="md-nav__link">
+    data_class
+  </a>
+  
+    <nav class="md-nav" aria-label="data_class">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prop" class="md-nav__link">
+    prop()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.PropertyRow.prop" class="md-nav__link">
+    prop
+  </a>
+  
+    <nav class="md-nav" aria-label="prop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_value" class="md-nav__link">
+    get_value()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.PropertyRow.get_value" class="md-nav__link">
+    get_value()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_value()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#refresh_ui" class="md-nav__link">
+    refresh_ui()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.PropertyRow.refresh_ui" class="md-nav__link">
+    refresh_ui()
+  </a>
+  
+    <nav class="md-nav" aria-label="refresh_ui()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#refresh_chocie" class="md-nav__link">
+    refresh_chocie()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.PropertyRow.refresh_choice" class="md-nav__link">
+    refresh_choice()
+  </a>
+  
+    <nav class="md-nav" aria-label="refresh_choice()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#validate" class="md-nav__link">
+    validate()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.PropertyRow.validate" class="md-nav__link">
+    validate()
+  </a>
+  
+    <nav class="md-nav" aria-label="validate()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set_value" class="md-nav__link">
+    set_value()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.collectMetadata.PropertyRow.set_value" class="md-nav__link">
+    set_value()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="documentation-for-metadata-gui">Documentation for 'Metadata GUI'</h1>
+<h2 id="the-gui-classes">The GUI Classes</h2>
+<p>The DSP-Metadata-GUI is managed by a set of classes within the module collectMetadata.py and other
+classes. In this page we introduce the GUI classes.</p>
+<p>There are the following classes:</p>
+<ul>
+<li>ProjectFrame</li>
+<li>ProjectPanel</li>
+<li>TabOne</li>
+<li>PropertyRow</li>
+<li>DataTab</li>
+<li>HelpPopup</li>
+<li>TabbedWindow</li>
+</ul>
+<!-- The Class ProjectFrame manages the frame with the menu bar. A runner class 
+(not shown here) collectMetadata() launches the app. -->
+
+<!-- In the mkdocstrings documentation (Usage, etc.) the path to the class is given as
+    ::: collectMetadata.ProjectFrame and explicitly allows to address a Class. 
+    In this directive there are two mistakes: Between the module and the Class there
+    should be a colon, and classes may not be addressed. You must mention the function,
+    otherwise it does not work, at least for me it did never work... -->
+
+<h2 id="main-function">Main Function</h2>
+<div class="doc doc-object doc-function">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.collectMetadata">
+
+        <code class="highlight language-python">
+collectMetadata<span class="p">()</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>Runner function that launches the app.</p>
+<p>Calling this method initiates a data handler and opens the GUI.</p>
+<p><strong>Examples:</strong></p>
+<p>To run the application, simply call:</p>
+<pre><code>$ collectMetadata()
+</code></pre>
+</div>
+</div>
+<h2 id="class-projectframe">Class 'ProjectFrame'</h2>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.ProjectFrame.__init__">
+
+        <code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+      </h2>
+<div class="doc doc-contents first">
+<p>This class holds the frame of the main application window.</p>
+</div>
+</div>
+<!-- ### create_menu()
+
+::: dspMetadataGUI.collectMetadata:ProjectFrame.create_menu
+
+### on_save()
+
+::: dspMetadataGUI.collectMetadata:ProjectFrame.on_save -->
+
+<h2 id="class-projectpanel">Class 'ProjectPanel'</h2>
+<!-- 
+This class manages the window content. It displays a list of projects, which are selectable
+and provides an edit button. -->
+
+<!-- ### __init__() -->
+
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.ProjectPanel.__init__">
+
+        <code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">selection</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+      </h2>
+<div class="doc doc-contents first">
+<p>Panel containing the contents of the application's main window.</p>
+<p>The Panel displays a list of projects on top.
+On the bottom left it shows a preview of the turtle serialization of the selected project.
+On the bottom right it holds a number of buttons for various tasks.
+(Adding/removing projects, modifying projects, exporting data, etc.)</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parent</code></td>
+<td><code>ProjectFrame</code></td>
+<td>
+<p>The parent frame to hold this panel.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>selection</code></td>
+<td><code>[type]</code></td>
+<td>
+<p>[description]. Defaults to None.</p>
+</td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+<p>TODO: remove selection param?</p>
+</div>
+</div>
+<!-- ### on_add_new_project()
+
+::: dspMetadataGUI.collectMetadata:ProjectPanel.on_add_new_project -->
+
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.ProjectPanel.refresh_repos">
+
+        <code class="highlight language-python">
+refresh_repos<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>Refresh all loaded repos in the list.</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.ProjectPanel.create_header">
+
+        <code class="highlight language-python">
+create_header<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>Here we create the header</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.ProjectPanel.load_view">
+
+        <code class="highlight language-python">
+load_view<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.ProjectPanel.on_edit_tabbed">
+
+        <code class="highlight language-python">
+on_edit_tabbed<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>This function calls the EditBaseDialog and hands over pFiles, a list.</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.ProjectPanel.on_process_data">
+
+        <code class="highlight language-python">
+on_process_data<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>Set selection and call create_xml </p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.ProjectPanel.add_new_project">
+
+        <code class="highlight language-python">
+add_new_project<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">,</span> <span class="n">shortcode</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>Add a new project.</p>
+<p>Where is this function called? It is called by on_add_new_project in in the Class ProjectFrame
+What should this function do? It should get a new project, store it and then reload the project list</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.ProjectPanel.on_remove_project">
+
+        <code class="highlight language-python">
+on_remove_project<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.ProjectPanel.on_validate">
+
+        <code class="highlight language-python">
+on_validate<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<h2 id="class-tabone">Class TabOne</h2>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.TabOne.show_help">
+
+        <code class="highlight language-python">
+show_help<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.TabOne.add_file">
+
+        <code class="highlight language-python">
+add_file<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">listbox</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.TabOne.remove_file">
+
+        <code class="highlight language-python">
+remove_file<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">file_list</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<h2 id="class-propertyrow">Class PropertyRow</h2>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.PropertyRow.__init__">
+
+        <code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">sizer</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">metadataset</span><span class="p">)</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+      </h2>
+<div class="doc doc-contents first">
+<p>A row in a tab of the UI</p>
+<p>This Class organizes a single row in the data tabs.
+Upon initiation, the UI elements ara generated and placed.
+Later on, the data handler can let this class return the value that the property should be assigned.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parent</code></td>
+<td><code>wx.ScrolledWindow</code></td>
+<td>
+<p>The scrolled panel in which the row is to be placed.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>data_class</code></td>
+<td><code>Project|Dataset|List[Person]|etc.</code></td>
+<td>
+<p>The Class that is to be displayed</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>prop</code></td>
+<td><code>Property</code></td>
+<td>
+<p>The property to be displayed</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>sizer</code></td>
+<td><code>wx.Sizer</code></td>
+<td>
+<p>The sizer that organizes the layout of the parent component</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>index</code></td>
+<td><code>int</code></td>
+<td>
+<p>the row in the sizer grid</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<h3 id="data_class">data_class()</h3>
+<div class="doc doc-object doc-attribute">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.PropertyRow.data_class">
+
+        <code class="highlight">
+data_class        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+      </h2>
+<div class="doc doc-contents first">
+    </div>
+</div>
+<h3 id="prop">prop()</h3>
+<div class="doc doc-object doc-attribute">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.PropertyRow.prop">
+
+        <code class="highlight">
+prop        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+      </h2>
+<div class="doc doc-contents first">
+    </div>
+</div>
+<h3 id="get_value">get_value()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.PropertyRow.get_value">
+
+        <code class="highlight language-python">
+get_value<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>Returns the new property value that has been entered to the UI</p>
+</div>
+</div>
+<h3 id="refresh_ui">refresh_ui()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.PropertyRow.refresh_ui">
+
+        <code class="highlight language-python">
+refresh_ui<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<h3 id="refresh_chocie">refresh_chocie()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.PropertyRow.refresh_choice">
+
+        <code class="highlight language-python">
+refresh_choice<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<h3 id="validate">validate()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.PropertyRow.validate">
+
+        <code class="highlight language-python">
+validate<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<h3 id="set_value">set_value()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.PropertyRow.set_value">
+
+        <code class="highlight language-python">
+set_value<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<h1 id="todo-doc">TODO: doc</h1>
+</div>
+</div>
+<h3 id="onvaluechange">onValueChange()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.PropertyRow.onValueChange">
+
+        <code class="highlight language-python">
+onValueChange<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">navigate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<h2 id="class-datatab">Class DataTab</h2>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.DataTab.__init__">
+
+        <code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">metadataset</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">multiple</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+      </h2>
+<div class="doc doc-contents first">
+<p>The class does the following: ToDo: Check the params, dataclass?</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parent</code></td>
+<td><code>object</code></td>
+<td>
+<p>to be checked</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>metadataset</code></td>
+<td><code>object</code></td>
+<td>
+<p>to be checked</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>dataset</code></td>
+<td><code>object</code></td>
+<td>
+<p>to be checked</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td><code>str</code></td>
+<td>
+<p>title of the project</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>multiple</code></td>
+<td><code>bool</code></td>
+<td>
+<p>false</p>
+</td>
+<td><code>False</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<h3 id="active_dataset">active_dataset()</h3>
+<div class="doc doc-object doc-attribute">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.DataTab.active_dataset">
+
+        <code class="highlight">
+active_dataset        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+      </h2>
+<div class="doc doc-contents first">
+    </div>
+</div>
+<h3 id="update_data">update_data()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.DataTab.update_data">
+
+        <code class="highlight language-python">
+update_data<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<h3 id="refresh_ui_1">refresh_ui()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.DataTab.refresh_ui">
+
+        <code class="highlight language-python">
+refresh_ui<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<h3 id="add_object">add_object()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.DataTab.add_object">
+
+        <code class="highlight language-python">
+add_object<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">listbox</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<h3 id="remove_object">remove_object()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.DataTab.remove_object">
+
+        <code class="highlight language-python">
+remove_object<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">listbox</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<h3 id="change_selection">change_selection()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.DataTab.change_selection">
+
+        <code class="highlight language-python">
+change_selection<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<h3 id="add_to_list">add_to_list()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.DataTab.add_to_list">
+
+        <code class="highlight language-python">
+add_to_list<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">content_list</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">addable</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>add an object to a listbox.</p>
+</div>
+</div>
+<h3 id="reset_widget">reset_widget()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.DataTab.reset_widget">
+
+        <code class="highlight language-python">
+reset_widget<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<h3 id="remove_from_list">remove_from_list()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.DataTab.remove_from_list">
+
+        <code class="highlight language-python">
+remove_from_list<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">content_list</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>remove an object from a listbox.</p>
+</div>
+</div>
+<h3 id="show_help">show_help()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.DataTab.show_help">
+
+        <code class="highlight language-python">
+show_help<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>Show a help dialog</p>
+</div>
+</div>
+<h3 id="show_validity">show_validity()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.DataTab.show_validity">
+
+        <code class="highlight language-python">
+show_validity<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">card</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>Show a help dialog</p>
+</div>
+</div>
+<h3 id="pic_date">pic_date()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.DataTab.pick_date">
+
+        <code class="highlight language-python">
+pick_date<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<h2 id="class-helppopup">Class HelpPopup</h2>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.HelpPopup.__init__">
+
+        <code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+      </h2>
+<div class="doc doc-contents first">
+<p>This class provides a help message</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parent</code></td>
+<td><code>object</code></td>
+<td>
+<p>the parent class</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>msg</code></td>
+<td><code>str</code></td>
+<td>
+<p>the help text with examples</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<h2 id="class-tabbedwindow">Class TabbedWindow</h2>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.collectMetadata.TabbedWindow.__init__">
+
+        <code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+      </h2>
+<div class="doc doc-contents first">
+<p>This class organizes the different tabs
+ToDo: What exactly is the metadataset?</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parent</code></td>
+<td><code>object</code></td>
+<td>
+<p>the parent object</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>dataset</code></td>
+<td><code>MetaDataSet</code></td>
+<td>
+<p>the dataset</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>MetaDataSet</code></td>
+<td><code>object</code></td>
+<td>
+<p>the metadataset</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../../grant/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Grant
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../dataHandling/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Data Handling
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.7e0ee788.min.js"></script>
+      <script src="../../assets/javascripts/bundle.b3a72adc.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.4ac00218.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,818 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="shortcut icon" href="../../assets/images/dasch-favicon.ico">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.4">
+    
+    
+      
+        <title>Documentation for Data Handling Class - DSP-Metadata-GUI</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.358818c7.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.f0267088.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+      
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#documentation-for-data-handling-class" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="../.." title="DSP-Metadata-GUI" class="md-header-nav__button md-logo" aria-label="DSP-Metadata-GUI">
+      
+  <img src="../../assets/images/dasch-icon-white.svg" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            DSP-Metadata-GUI
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Documentation for Data Handling Class
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="DSP-Metadata-GUI" class="md-nav__button md-logo" aria-label="DSP-Metadata-GUI">
+      
+  <img src="../../assets/images/dasch-icon-white.svg" alt="logo">
+
+    </a>
+    DSP-Metadata-GUI
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Usage
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Usage" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon"></span>
+        Usage
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../prep/" class="md-nav__link">
+      Before you start
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      List View
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="List View" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        List View
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../list_view/" class="md-nav__link">
+      List
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Tabbed View
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Tabbed View" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon"></span>
+        Tabbed View
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../tabs_overview/" class="md-nav__link">
+      Tabs Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../basedata/" class="md-nav__link">
+      Base Data
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../project/" class="md-nav__link">
+      Project
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../data/" class="md-nav__link">
+      Data
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../person/" class="md-nav__link">
+      Person
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../organization/" class="md-nav__link">
+      Organization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../grant/" class="md-nav__link">
+      Grant
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      API Reference
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon"></span>
+        API Reference
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../collectMetadata/" class="md-nav__link">
+      GUI documentation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../dataHandling/" class="md-nav__link">
+      Data Handling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../metaDataSet/" class="md-nav__link">
+      Data Structure
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#class-datahandling" class="md-nav__link">
+    Class Datahandling
+  </a>
+  
+    <nav class="md-nav" aria-label="Class Datahandling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-add_project" class="md-nav__link">
+    Function add_project()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.util.dataHandling.DataHandling.add_project" class="md-nav__link">
+    add_project()
+  </a>
+  
+    <nav class="md-nav" aria-label="add_project()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-load_data" class="md-nav__link">
+    Function load_data()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.util.dataHandling.DataHandling.load_data" class="md-nav__link">
+    load_data()
+  </a>
+  
+    <nav class="md-nav" aria-label="load_data()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-save_data" class="md-nav__link">
+    Function save_data()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.util.dataHandling.DataHandling.save_data" class="md-nav__link">
+    save_data()
+  </a>
+  
+    <nav class="md-nav" aria-label="save_data()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-process_data" class="md-nav__link">
+    Function process_data()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.util.dataHandling.DataHandling.process_data" class="md-nav__link">
+    process_data()
+  </a>
+  
+    <nav class="md-nav" aria-label="process_data()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-export_rdf" class="md-nav__link">
+    Function export_rdf()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.util.dataHandling.DataHandling.export_rdf" class="md-nav__link">
+    export_rdf()
+  </a>
+  
+    <nav class="md-nav" aria-label="export_rdf()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-validate_graph" class="md-nav__link">
+    Function validate_graph()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.util.dataHandling.DataHandling.validate_graph" class="md-nav__link">
+    validate_graph()
+  </a>
+  
+    <nav class="md-nav" aria-label="validate_graph()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-update_all" class="md-nav__link">
+    Function update_all()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.util.dataHandling.DataHandling.update_all" class="md-nav__link">
+    update_all()
+  </a>
+  
+    <nav class="md-nav" aria-label="update_all()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-refresh_ui" class="md-nav__link">
+    Function refresh_ui()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dspMetadataGUI.util.dataHandling.DataHandling.refresh_ui" class="md-nav__link">
+    refresh_ui()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="documentation-for-data-handling-class">Documentation for Data Handling Class</h1>
+<h2 id="class-datahandling">Class Datahandling</h2>
+<h3 id="function-add_project">Function add_project()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.add_project">
+
+        <code class="highlight language-python">
+add_project<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">,</span> <span class="n">shortcode</span><span class="p">,</span> <span class="n">files</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>Add a new project.</p>
+<p>This project adds a new project folder to the collection after the user specified the folder.</p>
+<p>The Project is appended at the end of the list.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>folder_path</code></td>
+<td><code>str</code></td>
+<td>
+<p>path to the project folder</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>shortcode</code></td>
+<td><code>str</code></td>
+<td>
+<p>the project shortcode</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>files</code></td>
+<td><code>list</code></td>
+<td>
+<p>the files in the project folder</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<h3 id="function-load_data">Function load_data()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.load_data">
+
+        <code class="highlight language-python">
+load_data<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>Load data from previous runtimes (if any).</p>
+<p>Currently, this checks <code>~/DaSCH/config/repos.data</code>.</p>
+</div>
+</div>
+<h3 id="function-save_data">Function save_data()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.save_data">
+
+        <code class="highlight language-python">
+save_data<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>Save data to disc.</p>
+<p>Currently, the data are stored under <code>~/DaSCH/config/repos.data</code>.</p>
+</div>
+</div>
+<h3 id="function-process_data">Function process_data()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.process_data">
+
+        <code class="highlight language-python">
+process_data<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>ToDo: implement this class.</p>
+</div>
+</div>
+<h3 id="function-export_rdf">Function export_rdf()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.export_rdf">
+
+        <code class="highlight language-python">
+export_rdf<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+
+    </div>
+</div>
+<h3 id="function-validate_graph">Function validate_graph()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.validate_graph">
+
+        <code class="highlight language-python">
+validate_graph<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>Validates all properties in a specific <code>MetaDataSet.</code></p>
+<p>Does not validate each of the properties separately,
+but rather generates the RDF graph, which then gets validated.</p>
+</div>
+</div>
+<h3 id="function-update_all">Function update_all()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.update_all">
+
+        <code class="highlight language-python">
+update_all<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>Update date from GUI.</p>
+<p>Calling this function iterates over each Property in the dataset
+and updates it with the value found in its corresponding GUI component.</p>
+</div>
+</div>
+<h3 id="function-refresh_ui">Function refresh_ui()</h3>
+<div class="doc doc-object doc-method">
+<h2 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.refresh_ui">
+
+        <code class="highlight language-python">
+refresh_ui<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      </h2>
+<div class="doc doc-contents first">
+<p>Refresh all values in the UI according to the saved values.</p>
+<p>This method also invokes on-the-fly validation.
+Note: Calling this method discards all changes that have not been updated in the metaDataSet.</p>
+</div>
+</div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.7e0ee788.min.js"></script>
+      <script src="../../assets/javascripts/bundle.b3a72adc.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.4ac00218.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
