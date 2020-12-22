@@ -17,7 +17,7 @@ You should have received a copy of the GNU Affero General Public
 License along with Knora.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-# Todos and Questions
+<!-- # Todos and Questions
 
 Temp. Chapter: [Questions and Remarks for Documentation of GUI](todos_questions.md)
 
@@ -65,4 +65,6 @@ For detailed description see  [overview](overview.md) page and follow the links.
 4. Once all mandatory fields are marked green, proceed to "Process selected to XML"
 
 5. Upload the result of the processing file (XML, RDF/XML, Turtle, etc.) to the DaSCH Service Platform servers.
+ -->
 
+{!README.md!}

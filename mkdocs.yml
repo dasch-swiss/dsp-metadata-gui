@@ -1,11 +1,9 @@
 site_name: DSP-Metadata-GUI
 
 nav:
-  - Home:
-    - Readme: index.md
-    - Open Questions: todos_questions.md
-    - Before you start: overview.md
-
+  - Overview: index.md
+  - Usage:
+    - Before you start: prep.md
   - List View:
     - List: list_view.md
   - Tabbed View:
@@ -16,9 +14,10 @@ nav:
     - Person: person.md
     - Organization: organization.md
     - Grant: grant.md
-  - Code documentation:
-      - "GUI documentation": collectMetadata.md
-      - "Data Handling": dataHandling.md
+  - API Reference:
+      - "GUI documentation": reference/collectMetadata.md
+      - "Data Handling": reference/dataHandling.md
+      - "Data Structure": reference/metaDataSet.md
 
 theme:
   name: material
@@ -27,13 +26,29 @@ theme:
   pallette:
     primary: 'deep purple'
     accent: 'deep purple'
-  features:
-    - navigation.tabs
+  # features:
+  #   - navigation.tabs
+  feature:
+    tabs: false
   extra_css:
     - 'assets/style/theme.css'
 
+markdown_extensions:
+  - markdown_include.include
+
 plugins:
+  - search
   - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          rendering:
+            show_root_heading: true
+            show_root_full_path: false
+            # heading_level: 2
+            show_source: false
+            group_by_category: false
+            # show_if_no_docstring: true
       watch:
         - util/
         - docs/

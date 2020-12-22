@@ -1,3 +1,9 @@
+"""
+This module holds the data structure that is used for modelling metadata.
+
+The classes defined here aim to represent a metadata-set, closely following the metadata ontology.
+"""
+
 from abc import ABC, abstractmethod
 from urllib.parse import urlparse
 import re
@@ -10,9 +16,6 @@ from rdflib.collection import Collection
 from . import utils
 from .utils import Cardinality, Datatype, Validity
 
-"""
-The Classes defined here aim to represent a metadata-set, closely following the metadata ontology.
-"""
 
 ##### TODO-List #####
 #
@@ -21,7 +24,6 @@ The Classes defined here aim to represent a metadata-set, closely following the 
 #####################
 
 ontology_url = "https://raw.githubusercontent.com/dasch-swiss/dsp-ontologies/main/dsp-repository/v1/dsp-repository.shacl.ttl"
-
 dsp_repo = Namespace("http://ns.dasch.swiss/repository#")
 prov = Namespace("http://www.w3.org/ns/prov#")
 
@@ -30,7 +32,6 @@ class MetaDataSet:
     """ Representation of a data set.
 
     This class represents a data set of project metadata.
-
     It holds the following properties:
     - name: the repo/project name.
       Typically the name of the folder that was selected.
@@ -69,6 +70,14 @@ class MetaDataSet:
         self.__files = files
 
     def __init__(self, name: str, path: str, shortcode: str):
+        """
+        Initiates the object.
+
+        Args:
+            name (str): [description]
+            path (str): [description]
+            shortcode (str): [description]
+        """
         self.shortcode = shortcode
         self.name = name
         self.path = path

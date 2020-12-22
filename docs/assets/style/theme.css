@@ -1,4 +1,5 @@
 .md-header,
 .md-tabs {
   background-color: rgb(89, 73, 167) !important;
+  /* FIXME: doesn't seem to do anything */
 }

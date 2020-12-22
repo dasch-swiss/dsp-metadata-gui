@@ -117,7 +117,7 @@ class ProjectPanel(wx.Panel):
         self.row_obj_dict = {}
         self.project_dependent_buttons = []
 
-        # Here we create the window ...
+        # Create list for projects
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         title = wx.StaticText(self, label="DaSCH Service Platform - Metadata Collection")
         main_sizer.Add(title, 0, wx.ALL | wx.LEFT, 10)
@@ -126,6 +126,7 @@ class ProjectPanel(wx.Panel):
         self.list_ctrl.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.on_item_selected)
         main_sizer.Add(self.list_ctrl, 0, wx.ALL | wx.EXPAND, 10)
 
+        # Create turtle preview
         bottom_sizer = wx.FlexGridSizer(1, 2, 10, 10)
         bottom_sizer.AddGrowableCol(0)
         scroller = scrolledPanel.ScrolledPanel(self)
@@ -139,7 +140,7 @@ class ProjectPanel(wx.Panel):
         scroller.SetSizer(innermost)
         bottom_sizer.Add(scroller, flag=wx.EXPAND)
 
-        # Here we create the Edit button
+        # Create Buttons
         button_sizer = wx.BoxSizer(wx.VERTICAL)
         new_folder_button = wx.Button(self, label='Add new Project')
         new_folder_button.Bind(wx.EVT_BUTTON, self.on_add_new_project)
@@ -167,11 +168,10 @@ class ProjectPanel(wx.Panel):
 
         zip_and_export_btn = wx.Button(self, label='ZIP and Export Project')
         self.project_dependent_buttons.append(zip_and_export_btn)
-        zip_and_export_btn.Bind(wx.EVT_BUTTON, self.on_zip_and_export)
+        zip_and_export_btn.Bind(wx.EVT_BUTTON, self.__on_zip_and_export)
         button_sizer.Add(zip_and_export_btn, 0, wx.ALL | wx.EXPAND, 7)
 
-        # LATER: add option to zip pickle, data and metadata, and save it somewhere
-
+        # Layout it all
         bottom_sizer.Add(button_sizer, 0, wx.ALL, 10)
         main_sizer.Add(bottom_sizer, 0, wx.ALL | wx.EXPAND, 10)
         self.SetSizer(main_sizer)
@@ -180,7 +180,10 @@ class ProjectPanel(wx.Panel):
         self.load_view()
         self.Layout()
 
-    def on_zip_and_export(self, event):
+    def __on_zip_and_export(self, event):
+        """
+        Export a ZIP archive containing the selected files, metadata and a pickle with the binaries.
+        """
         title = "Where to export to?"
         with wx.DirDialog(self, title, style=wx.DD_DEFAULT_STYLE) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
@@ -208,10 +211,9 @@ class ProjectPanel(wx.Panel):
             self.add_new_project(dlg.GetPath(), shortcode)
         dlg.Destroy()
 
-    def display_repos(self):
-        # TODO: rename to "refresh_repos"
+    def refresh_repos(self):
         """
-        Display all loaded repos in the list.
+        Refresh all loaded repos in the list.
         """
         for i, project in enumerate(data_handler.projects):
             if i < self.list_ctrl.GetItemCount():
@@ -237,7 +239,7 @@ class ProjectPanel(wx.Panel):
     def load_view(self):
         # TODO: rename to refresh
         # TODO: ensure that no remainder of a deleted project is displayed
-        self.display_repos()
+        self.refresh_repos()
         self.display_rdf()
         self.refresh_buttons()
         self.Layout()

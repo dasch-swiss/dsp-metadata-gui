@@ -27,19 +27,19 @@ There are the following classes:
 
 ## Main Function
 
-### collectMetadata()
-
-`collectMetadata()`
-
 ::: dspMetadataGUI.collectMetadata:collectMetadata
-    rendering:
-        show_source: false
+    <!-- rendering:
+        show_root_heading: true
+        show_root_full_path: false
+        heading_level: 3
+        show_source: false -->
 
 ## Class 'ProjectFrame'
 
+
 ::: dspMetadataGUI.collectMetadata:ProjectFrame.__init__
-    rendering:
-        show_source: false
+    <!-- rendering:
+        show_source: false -->
 
 <!-- ### create_menu()
 
@@ -50,18 +50,22 @@ There are the following classes:
 ::: dspMetadataGUI.collectMetadata:ProjectFrame.on_save -->
 
 ## Class 'ProjectPanel'
+
 <!-- 
 This class manages the window content. It displays a list of projects, which are selectable
 and provides an edit button. -->
+
+<!-- ### __init__() -->
+
 ::: dspMetadataGUI.collectMetadata:ProjectPanel.__init__
-    rendering:
-        show_source: false
+    <!-- rendering:
+        show_source: false -->
 
-### on_add_new_project()
+<!-- ### on_add_new_project()
 
-::: dspMetadataGUI.collectMetadata:ProjectPanel.on_add_new_project
+::: dspMetadataGUI.collectMetadata:ProjectPanel.on_add_new_project -->
 
-::: dspMetadataGUI.collectMetadata:ProjectPanel.display_repos
+::: dspMetadataGUI.collectMetadata:ProjectPanel.refresh_repos
 
 ::: dspMetadataGUI.collectMetadata:ProjectPanel.create_header
 

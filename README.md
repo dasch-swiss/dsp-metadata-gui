@@ -17,10 +17,6 @@ You should have received a copy of the GNU Affero General Public
 License along with Knora.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-# Todos and Questions
-
-[Questions and Remarks for Documentation of GUI](docs/todos_questions.md)
-
 # DSP-METADATA-GUI Metadata Module
 
 The dsp-metadata-gui is Python module and provides a GUI for collecting project specific metadata 
@@ -37,7 +33,7 @@ and store it in RDF XML.
 
 # Features
 
-For detailed description see [overview](overview.md)
+For detailed description see [overview](prep.md)
 
 The metadata module can be used as a tool for recording a research project or for the administration of several projects, 
 for example in an institution. 

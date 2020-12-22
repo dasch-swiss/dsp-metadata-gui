@@ -20,17 +20,17 @@ After you have selected the project folder, it appears in the "List". The "List"
 three columns: "Folder", "Project", and "List of Files". The "Folder" entry shows the path
 of your project on the file system in absolute notation, the "Project" entry shows your 
 project, and the "List of Files" entry shows your files. 
-[See also Before you start](overview.md)
+[See also Before you start](prep.md)
 
 ### Button "New Folder"
 
 The button "New Folder" works likewise to the "Menu" "New Folder" dialogue.
-[See also Before you start](overview.md)
+[See also Before you start](prep.md)
 
 ### Button "Edit in Tabs"
 
 Select your project and click "Edit in Tabs" to process your data further. This will lead
-you to the Tabbed View. A second window will be opened (see [overview](overview.md))
+you to the Tabbed View. A second window will be opened (see [overview](prep.md))
 
 ### Button "Process selected in XML"
 
