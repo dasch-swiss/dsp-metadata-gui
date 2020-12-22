@@ -40,6 +40,12 @@ def collectMetadata():
     Runner function that launches the app.
 
     Calling this method initiates a data handler and opens the GUI.
+
+    Example:
+        To run the application, simply call:
+        ```
+        $ collectMetadata()
+        ```
     """
     # create a data handler
     global data_handler
@@ -51,36 +57,26 @@ def collectMetadata():
 
 
 class ProjectFrame(wx.Frame):
-    """
-    This class sets the Project frame, and creates the file menu.
-
-    Here we open folders and ingest new project files.
-    """
-
     def __init__(self):
+        """
+        This class holds the frame of the main application window.
+        """
         super().__init__(parent=None,
                          title='Project Data Editor', size=(1100, 750))
         self.panel = ProjectPanel(self)
-        self.create_menu()
+        self.__create_menu()
         self.Show()
 
-    def create_menu(self):
+    def __create_menu(self):
         """
         Create the menu, add a folder dialog box
         """
         menu_bar = wx.MenuBar()
         file_menu = wx.Menu()
-        open_folder_menu_item = file_menu.Append(
-            wx.ID_NEW, 'Add new Project',
-            'Open a folder with project files'
-        )
-        self.Bind(
-            event=wx.EVT_MENU,
-            handler=self.panel.on_add_new_project,
-            source=open_folder_menu_item,
-        )
+        open_folder_menu_item = file_menu.Append(wx.ID_NEW, 'Add new Project', 'Open a folder with project files')
+        self.Bind(event=wx.EVT_MENU, handler=self.panel.on_add_new_project, source=open_folder_menu_item)
         save_menu_item = file_menu.Append(wx.ID_SAVE, "&Save")
-        self.Bind(wx.EVT_MENU, self.on_save, source=save_menu_item)
+        self.Bind(wx.EVT_MENU, self.__on_save, source=save_menu_item)
         menu_bar.Append(file_menu, '&File')
         options_menu = wx.Menu()
         # LATER: add `save on tab change` option
@@ -90,7 +86,7 @@ class ProjectFrame(wx.Frame):
         menu_bar.Append(options_help, '&Help')
         self.SetMenuBar(menu_bar)
 
-    def on_save(self, event):
+    def __on_save(self, event):
         """
         Menu item for saving the current window
         """
@@ -101,12 +97,21 @@ class ProjectFrame(wx.Frame):
 
 
 class ProjectPanel(wx.Panel):
-    """ This class manages the window content.
+    def __init__(self, parent: ProjectFrame, selection=None):
+        """
+        Panel containing the contents of the application's main window.
 
-    It displays a list of projects, which are selectable and provides an edit button.
-    """
+        The Panel displays a list of projects on top.
+        On the bottom left it shows a preview of the turtle serialization of the selected project.
+        On the bottom right it holds a number of buttons for various tasks.
+        (Adding/removing projects, modifying projects, exporting data, etc.)
 
-    def __init__(self, parent, selection=None):
+        Args:
+            parent (ProjectFrame): The parent frame to hold this panel.
+            selection ([type], optional): [description]. Defaults to None.
+        
+        TODO: remove selection param?
+        """
         super().__init__(parent)
         self.folder_path = ""
         self.row_obj_dict = {}

@@ -16,8 +16,8 @@ There are the following classes:
 - TabbedWindow
 
 
-The Class ProjectFrame manages the frame with the menu bar. A runner class 
-(not shown here) collectMetadata() launches the app.
+<!-- The Class ProjectFrame manages the frame with the menu bar. A runner class 
+(not shown here) collectMetadata() launches the app. -->
 
 <!-- In the mkdocstrings documentation (Usage, etc.) the path to the class is given as
     ::: collectMetadata.ProjectFrame and explicitly allows to address a Class. 
@@ -25,25 +25,37 @@ The Class ProjectFrame manages the frame with the menu bar. A runner class
     should be a colon, and classes may not be addressed. You must mention the function,
     otherwise it does not work, at least for me it did never work... -->
 
+## Main Function
+
+### collectMetadata()
+
+`collectMetadata()`
+
+::: dspMetadataGUI.collectMetadata:collectMetadata
+    rendering:
+        show_source: false
+
 ## Class 'ProjectFrame'
 
 ::: dspMetadataGUI.collectMetadata:ProjectFrame.__init__
     rendering:
-        show_root_heading: false
         show_source: false
 
-### create_menu()
+<!-- ### create_menu()
 
 ::: dspMetadataGUI.collectMetadata:ProjectFrame.create_menu
 
 ### on_save()
 
-::: dspMetadataGUI.collectMetadata:ProjectFrame.on_save
+::: dspMetadataGUI.collectMetadata:ProjectFrame.on_save -->
 
 ## Class 'ProjectPanel'
-
+<!-- 
 This class manages the window content. It displays a list of projects, which are selectable
-and provides an edit button.
+and provides an edit button. -->
+::: dspMetadataGUI.collectMetadata:ProjectPanel.__init__
+    rendering:
+        show_source: false
 
 ### on_add_new_project()
 
