@@ -38,3 +38,12 @@ run: ## install and run from source
 	$(MAKE) install
 	dsp-metadata
 
+.PHONY: doc
+doc: ## build and serve doc
+	mkdocs build
+	mkdocs serve
+
+.PHONY: deploy-doc
+deploy-doc: ## deploy doc to github pages
+	mkdocs gh-deploy
+
