@@ -190,8 +190,76 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#specific-objectives-of-the-metadata-module" class="md-nav__link">
-    Specific objectives of the metadata module
+  <a href="#install-and-run" class="md-nav__link">
+    Install and run
+  </a>
+  
+    <nav class="md-nav" aria-label="Install and run">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation-via-pip" class="md-nav__link">
+    Installation via pip
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installation-from-source" class="md-nav__link">
+    Installation from source
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#road-map" class="md-nav__link">
+    Road map
+  </a>
+  
+    <nav class="md-nav" aria-label="Road map">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#planned-or-missing-features" class="md-nav__link">
+    Planned or missing features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-issues" class="md-nav__link">
+    Known issues
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    Documentation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development" class="md-nav__link">
+    Development
   </a>
   
 </li>
@@ -451,6 +519,18 @@
   </li>
 
     
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="todo/" class="md-nav__link">
+      Pending Tasks
+    </a>
+  </li>
+
+    
   </ul>
 </nav>
                   </div>
@@ -475,8 +555,76 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#specific-objectives-of-the-metadata-module" class="md-nav__link">
-    Specific objectives of the metadata module
+  <a href="#install-and-run" class="md-nav__link">
+    Install and run
+  </a>
+  
+    <nav class="md-nav" aria-label="Install and run">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation-via-pip" class="md-nav__link">
+    Installation via pip
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installation-from-source" class="md-nav__link">
+    Installation from source
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#road-map" class="md-nav__link">
+    Road map
+  </a>
+  
+    <nav class="md-nav" aria-label="Road map">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#planned-or-missing-features" class="md-nav__link">
+    Planned or missing features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-issues" class="md-nav__link">
+    Known issues
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    Documentation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development" class="md-nav__link">
+    Development
   </a>
   
 </li>
@@ -494,138 +642,50 @@
               
                 
                 
-                <!---
-Copyright © 2015-2019 the contributors (see Contributors.md).
-
-This file is part of Knora.
-
-Knora is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Knora is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public
-License along with Knora.  If not, see <http://www.gnu.org/licenses/>.
--->
-
-<!-- # Todos and Questions
-
-Temp. Chapter: [Questions and Remarks for Documentation of GUI](todos_questions.md)
-
-# DSP-METADATA-GUI Metadata Module
-
-The dsp-metadata-gui is Python module and provides a GUI for collecting project specific metadata 
-and store it in RDF XML.
-
-## Specific objectives of the metadata module
-
-- Collection of metadata on a scientific project for publication on the DSP
-- Acquisition of metadata to create an archived project
-- The metadata present the project and make it visible to other researchers
-- The metadata follow a metadata schema which is explained under
- [dsp-ontologies](https://github.com/dasch-swiss/dsp-ontologies)
-
-
-## Features
-
-The metadata module is provided as a tool for recording just one research project or for the 
-administration of several projects, for example in an institution. 
-There are two windows. First you see a list view. Once you have created a project, you 
-can carry on to the tabbed view.
-One project, or a list of projects can be edited. 
-
-Once all mandatory data of a project have been entered, the metadata can be validated. 
-If the validation is successful, the project metadata (and files) can be uploaded to the DSP server. 
-
-After approval by the DSP administrator, the project with its metadata (and possibly its project files) is publicly 
-visible and findable.
-
-For detailed description see  [overview](overview.md) page and follow the links.
-
-## Use of the metadata module
-
-1. Enter your short code, given by DaSCH Client Services 
-
-2. Select a project folder with the project files it contains (the project folder can be empty, the files can be 
-   selected later).
-
-3. Select a project in the list and edit the metadata tabs. The following tabs are available: 
-   Base Data, Project, Dataset, Person, Organisation, Grant. 
-   Fill in the mandatory and possibly the optional fields. 
-
-4. Once all mandatory fields are marked green, proceed to "Process selected to XML"
-
-5. Upload the result of the processing file (XML, RDF/XML, Turtle, etc.) to the DaSCH Service Platform servers.
- -->
-
-<!---
-Copyright © 2015-2019 the contributors (see Contributors.md).
-
-This file is part of Knora.
-
-Knora is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Knora is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public
-License along with Knora.  If not, see <http://www.gnu.org/licenses/>.
--->
-
-<h1 id="dsp-metadata-gui-metadata-module">DSP-METADATA-GUI Metadata Module</h1>
-<p>The dsp-metadata-gui is Python module and provides a GUI for collecting project specific metadata 
-and store it in RDF XML.</p>
-<h2 id="specific-objectives-of-the-metadata-module">Specific objectives of the metadata module</h2>
-<ul>
-<li>Collection of metadata on a scientific project for publication on the DSP</li>
-<li>Acquisition of metadata to create an archived project</li>
-<li>The metadata present the project and make it visible to other researchers</li>
-<li>The metadata follow a metadata schema which is explained under
- <a href="https://github.com/dasch-swiss/dsp-ontologies">dsp-ontologies</a></li>
-</ul>
-<h1 id="features">Features</h1>
-<p>For detailed description see <a href="prep/">overview</a></p>
-<p>The metadata module can be used as a tool for recording a research project or for the administration of several projects, 
-for example in an institution. 
-A project or a list of projects can be edited. 
-Once all mandatory data of a project have been entered, the metadata can be validated. 
-If the validation is successful, the project metadata (and files) can be uploaded to the DSP server. </p>
-<p>After approval by the DSP administrator, the project with its metadata (and possibly its project files) is publicly 
-visible and findable.</p>
-<h1 id="use-of-the-metadata-module">Use of the metadata module</h1>
+                <h1 id="dsp-metadata-gui-metadata-module">DSP-METADATA-GUI Metadata Module</h1>
+<p>The <code>dsp-metadata-gui</code> is a GUI application written in Python for collecting project specific metadata 
+and turn it into RDF.</p>
+<p>As part of the <code>dsp-tools</code>, its aim is to enable researchers and project managers who deposit research data on the DSP (DaSCH Service Platform), to add metadata about the project and datasets to the DSP repository. By providing metadata, the project will be findable on the platform, which is an integral part of the FAIR principles.</p>
+<p>The metadata follows the schema defined by the <a href="https://github.com/dasch-swiss/dsp-ontologies">dsp-ontologies</a>.</p>
+<h2 id="install-and-run">Install and run</h2>
+<p>The module provides a command line entry point to run the GUI. The only requirement is Python 3 and PIP installed and ready to use.</p>
+<h3 id="installation-via-pip">Installation via pip</h3>
+<p>To install the application, run:</p>
+<pre><code class="language-bash">pip install dsp-metadata-gui
+</code></pre>
+<p>Or respectively:</p>
+<pre><code class="language-shell">pip3 install dsp-metadata-gui
+</code></pre>
+<p>Afterwards, the program can be started by running the command <code>dsp-metadata</code> in your terminal of choice.</p>
+<h3 id="installation-from-source">Installation from source</h3>
+<p>Clone this repo and run <code>make run</code>. If you don't use GNU Make, run the commands specified in the <code>Makefile</code> manually.</p>
+<p>This will package the application, install it to your python environment and run the application.</p>
+<h2 id="usage">Usage</h2>
+<p>The Application is divided into two widows:</p>
 <ol>
 <li>
-<p>Select a project folder with the project files it contains (the project folder can be empty, the files can be 
-   selected later).</p>
+<p>The main window lets you organize a list of projects, for which you can collect metadata. Several actions can be performed with projects, e.g. editing or exporting the project.</p>
 </li>
 <li>
-<p>Select a project in the list and edit the metadata tabs. The following tabs are available: Base Data, Project, 
-   Dataset, Person, Organisation. Filling in the mandatory and possibly the optional fields. 
-   A button with a question mark is available behind each field for explanation. Clicking on the question mark 
-   makes a help text visible. </p>
-</li>
-<li>
-<p>Validation</p>
-</li>
-<li>
-<p>Upload to DSP server</p>
+<p>When editing a project, in the project window, the actual metadata can be added, modified and saved.</p>
 </li>
 </ol>
-<p>For detailed documentation see <a href="">still empty Link</a></p>
-<h1 id="installation">Installation</h1>
-<p><strong>TODO:</strong> Add installation hints.</p>
-<h2 id="requirements">Requirements</h2>
-<p><strong>TODO:</strong> Add more information.</p>
+<p>To add a project, you will need the project short code, which is assigned to you by the DaSCH Client Service.<br />
+A project is always associated with a folder on your local machine. If any files should be included with the metadata import, these files must be within that folder.
+Once all metadata are added and valid, and the overall DRF graph of the metadata set validates against the ontology, the project can be exported for upload to the DSP.</p>
+<h2 id="road-map">Road map</h2>
+<h3 id="planned-or-missing-features">Planned or missing features</h3>
+<ul>
+<li>Direct import to DSP</li>
+</ul>
+<p>TODO: more</p>
+<h3 id="known-issues">Known issues</h3>
+<p>None</p>
+<h2 id="documentation">Documentation</h2>
+<p>The documentation is created using <code>mkdocs</code> and <code>mkdocstrings</code> with <code>markdown_include.include</code>. To create the documentation, make sure to install all of these, using pip.</p>
+<p>To serve the documentation locally, run <code>make doc</code>. To deploy the documentation to github pages, run <code>make deploy-doc</code>.</p>
+<h2 id="development">Development</h2>
+<p>TODO: describe</p>
                 
               
               
