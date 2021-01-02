@@ -196,7 +196,7 @@ class ProjectPanel(wx.Panel):
         Open a new folder and add it to projects.
         """
         title = "Enter Project Shortcode:\n(4 alphanumeric characters)\n\nIf your project doesn't have a shortcode assigned yet, \nplease contact the DaSCH Client Services)"
-        dlg = wx.TextEntryDialog(self, title)
+        dlg = wx.TextEntryDialog(self, message=title, caption="Enter Shortcode")
         if dlg.ShowModal() == wx.ID_OK:
             shortcode = dlg.GetValue()
             if not re.match('[a-zA-Z0-9]{4}$', shortcode):
