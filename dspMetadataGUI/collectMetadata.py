@@ -109,7 +109,7 @@ class ProjectPanel(wx.Panel):
         Args:
             parent (ProjectFrame): The parent frame to hold this panel.
             selection ([type], optional): [description]. Defaults to None.
-        
+
         TODO: remove selection param?
         """
         super().__init__(parent)

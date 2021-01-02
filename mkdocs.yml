@@ -18,6 +18,7 @@ nav:
       - "GUI documentation": reference/collectMetadata.md
       - "Data Handling": reference/dataHandling.md
       - "Data Structure": reference/metaDataSet.md
+  - Pending Tasks: todo.md
 
 theme:
   name: material
@@ -35,6 +36,7 @@ theme:
 
 markdown_extensions:
   - markdown_include.include
+  - pymdownx.tasklist
 
 plugins:
   - search
