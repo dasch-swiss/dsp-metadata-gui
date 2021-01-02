@@ -3,8 +3,9 @@ site_name: DSP-Metadata-GUI
 nav:
   - Overview: index.md
   - Usage:
+    - Usage Overview: usage_overview.md
     - Before you start: prep.md
-  - List View:
+  - Project Organization:
     - List: list_view.md
   - Tabbed View:
     - Tabs Overview: tabs_overview.md
@@ -31,8 +32,8 @@ theme:
   #   - navigation.tabs
   feature:
     tabs: false
-  extra_css:
-    - 'assets/style/theme.css'
+extra_css:
+  - 'assets/style/theme.css'
 
 markdown_extensions:
   - markdown_include.include

@@ -11,6 +11,7 @@
 - [ ] Include UML diagram
 - [ ] Restructure documentation
 - [ ] Write documentation files:
+    - [x] Usage_overview
     - [ ] Readme
     - [ ] Changelog
     - [ ] basedata
@@ -34,4 +35,4 @@
 
 ## Others
 
-- [ ] get doc theme to work
+- [x] get doc theme to work
