@@ -13,8 +13,6 @@ from dspMetadataGUI.util.metaDataHelpers import CalendarDlg
 ################# TODO List #################
 #
 # - Add some sort of 'import from RDF' functionality
-# - give indication of cardinality in help popup
-# - ensure that help popup is always on screen entirely
 # - document all methods
 # - document distribution process etc.
 # - implement "zip and export" functionality

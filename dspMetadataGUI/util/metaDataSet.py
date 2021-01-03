@@ -321,24 +321,29 @@ class Project(DataClass):
                              name,
                              predicate=dsp_repo.hasName)
 
+        msg = "This is a test project. All properties have been used to test these."
+        msg += "\nYou will just describe your project briefly."
         self.description = Property("Description",
                                     "Description of the Project",
-                                    "This is a test project. All properties have been used to test these. You will just describe your project briefly.",
+                                    msg,
                                     Datatype.STRING,
                                     Cardinality.ONE,
                                     predicate=dsp_repo.hasDescription,
                                     multiline=True)
 
+        msg = "mathematics, science, history of science, history of mathematics."
+        msg += "\nUse the plus sign to have a new field for each key word."
         self.keywords = Property("Keywords",
                                  "Keywords and tags",
-                                 "mathematics, science, history of science, history of mathematics. Use the plus sign to have a new field for each key word.",
+                                 msg,
                                  Datatype.STRING,
                                  Cardinality.ONE_TO_UNBOUND,
                                  predicate=dsp_repo.hasKeywords)
 
+        msg = "Discipline and research fields from UNESCO nomenclature: https://skos.um.es/unesco6/?l=en"
+        msg += "\nor from http://www.snf.ch/SiteCollectionDocuments/allg_disziplinenliste.pdf"
         self.discipline = Property("Discipline",
-                                   """Discipline and research fields from UNESCO nomenclature: https://skos.um.es/unesco6/?l=en \
-                                   or from http://www.snf.ch/SiteCollectionDocuments/allg_disziplinenliste.pdf""",
+                                   msg,
                                    "http://skos.um.es/unesco6/11",
                                    Datatype.STRING_OR_URL,
                                    Cardinality.ONE_TO_UNBOUND,
@@ -351,22 +356,23 @@ class Project(DataClass):
                                   Cardinality.ONE,
                                   predicate=dsp_repo.hasStartDate)
 
+        msg = "The date when the project was finished, e. g. when the last changes to the project data where completed."
         self.endDate = Property("End Date",
-                                "The date when the project was finished, e. g. when the last changes to the project data where completed.",
+                                msg,
                                 "2000-07-26T21:32:52",
                                 Datatype.DATE,
                                 Cardinality.ONE,
                                 predicate=dsp_repo.hasEndDate)
 
         self.temporalCoverage = Property("Temporal coverage",
-                                         "Temporal coverage of the project from http://perio.do/en/ or https://chronontology.dainst.org/",
+                                         "Temporal coverage of the project from http://perio.do/en/\nor https://chronontology.dainst.org/",
                                          "http://chronontology.dainst.org/period/Ef9SyESSafJ1",
                                          Datatype.STRING_OR_URL,
                                          Cardinality.ONE_TO_UNBOUND,
                                          predicate=dsp_repo.hasTemporalCoverage)
 
         self.spatialCoverage = Property("Spatial coverage",
-                                        "Spatial coverage of the project from Geonames URL: https://www.geonames.org/ or from Pleiades URL: https://pleiades.stoa.org/places",
+                                        "Spatial coverage of the project from Geonames URL: https://www.geonames.org/\nor from Pleiades URL: https://pleiades.stoa.org/places",
                                         "https://www.geonames.org/6255148/europe.html",
                                         Datatype.PLACE,
                                         Cardinality.ONE_TO_UNBOUND,
@@ -386,7 +392,7 @@ class Project(DataClass):
                               predicate=dsp_repo.hasGrant)
 
         self.url = Property("URL",
-                            "Landing page or Website of the project. We recommend DSP Landing Page. Optionally, a second URL can be added too.",
+                            "Landing page or Website of the project. We recommend DSP Landing Page.\nOptionally, a second URL can be added too.",
                             "https://test.dasch.swiss/",
                             Datatype.URL,
                             Cardinality.ONE_TO_TWO,
