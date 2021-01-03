@@ -574,18 +574,18 @@ class PropertyRow():
                 inner_sizer = wx.BoxSizer()
                 box = wx.ListBox(parent)
                 self.data_widget = box
-                inner_sizer.Add(box, 10)
+                inner_sizer.Add(box, 1)
                 control_sizer = wx.BoxSizer(wx.VERTICAL)
-                choice = wx.Choice(parent)
+                choice = wx.Choice(parent, size=(150, -1))
                 choice.Bind(wx.EVT_CHOICE,
                             lambda e: parent.add_to_list(e, box, choice,
                                                          choice.GetStringSelection()))
                 self.choice_widget = choice
-                control_sizer.Add(choice, flag=wx.EXPAND)
+                control_sizer.Add(choice)
                 remove_button = wx.Button(parent, label="Del Selected")
                 remove_button.Bind(wx.EVT_BUTTON, lambda event: parent.remove_from_list(event, box))
                 control_sizer.Add(remove_button)
-                inner_sizer.Add(control_sizer, 7)
+                inner_sizer.Add(control_sizer)
                 sizer.Add(inner_sizer, flag=wx.EXPAND)
         elif prop.datatype == Datatype.DATA_MANAGEMENT_PLAN:
             inner_sizer = wx.BoxSizer(wx.VERTICAL)
