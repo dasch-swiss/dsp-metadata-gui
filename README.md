@@ -51,6 +51,9 @@ To add a project, you will need the project short code, which is assigned to you
 A project is always associated with a folder on your local machine. If any files should be included with the metadata import, these files must be within that folder.
 Once all metadata are added and valid, and the overall DRF graph of the metadata set validates against the ontology, the project can be exported for upload to the DSP.
 
+All data is locally stored in the file `~/DaSCH/config/repos.data`. for more detail, see [here](list_view/#local-data-storage).  
+TODO: fix this link in readme (works in doc)
+
 
 ## Road map
 

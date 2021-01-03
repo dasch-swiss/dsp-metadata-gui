@@ -21,9 +21,10 @@
     - [ ] list_view
     - [ ] organization
     - [ ] person
-    - [ ] prep
+    - [x] prep
     - [ ] project
     - [ ] tabs_overview
+- [ ] fix link in readme so it works both in readme and in docs
 
 
 ### API Reference

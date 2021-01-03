@@ -4,9 +4,9 @@ nav:
   - Overview: index.md
   - Usage:
     - Usage Overview: usage_overview.md
-    - Before you start: prep.md
-  - Project Organization:
-    - List: list_view.md
+    - Project Organization: list_view.md
+      # - Before you start: prep.md
+      # - List: list_view.md
   - Tabbed View:
     - Tabs Overview: tabs_overview.md
     - Base Data: basedata.md
