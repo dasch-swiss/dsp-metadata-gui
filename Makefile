@@ -13,10 +13,11 @@ upload: ## upload distribution package to PyPi
 
 .PHONY: test-upload
 test-upload: ## upload distribution package to PyPi
+	$(MAKE) dist
 	python3 -m twine upload --repository testpypi dist/*
 
 .PHONY: upgrade-dist-tools
-upgrade-dist-tool: ## upgrade packages necessary for testing, building, packaging and uploading to PyPi
+upgrade-dist-tools: ## upgrade packages necessary for testing, building, packaging and uploading to PyPi
 	python3 -m pip install --upgrade pip setuptools wheel tqdm twine pytest mkdocs mkdocs
 
 .PHONY: install-requirements

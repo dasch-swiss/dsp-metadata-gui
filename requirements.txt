@@ -1,6 +1,5 @@
 certifi
 chardet
-decorator
 idna
 isodate
 numpy
@@ -14,4 +13,4 @@ requests
 six
 urllib3
 validators
-wxPython
+wxpython
