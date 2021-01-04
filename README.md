@@ -28,6 +28,26 @@ Or respectively:
 pip3 install dsp-metadata-gui
 ```
 
+{==
+
+__Note:__
+
+Until the first release of the tool, it is available only on the [PYPI test instance](https://test.pypi.org/project/dsp-metadata-gui/).
+
+To install the application from there, run:
+
+```shell
+pip install -i https://test.pypi.org/simple/ dsp-metadata-gui
+```
+
+or
+
+```shell
+pip3 install -i https://test.pypi.org/simple/ dsp-metadata-gui
+```
+
+==}
+
 Afterwards, the program can be started by running the command `dsp-metadata` in your terminal of choice.
 
 
@@ -52,7 +72,7 @@ A project is always associated with a folder on your local machine. If any files
 Once all metadata are added and valid, and the overall DRF graph of the metadata set validates against the ontology, the project can be exported for upload to the DSP.
 
 All data is locally stored in the file `~/DaSCH/config/repos.data`. for more detail, see [here](list_view/#local-data-storage).  
-TODO: fix this link in readme (works in doc)
+{== TODO: fix this link in readme (works in doc) ==}
 
 
 ## Road map

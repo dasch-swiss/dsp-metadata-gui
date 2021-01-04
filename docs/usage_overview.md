@@ -16,6 +16,26 @@ Or respectively:
 pip3 install dsp-metadata-gui
 ```
 
+{==
+
+__Note:__
+
+Until the first release of the tool, it is available only on the [PYPI test instance](https://test.pypi.org/project/dsp-metadata-gui/).
+
+To install the application from there, run:
+
+```shell
+pip install -i https://test.pypi.org/simple/ dsp-metadata-gui
+```
+
+or
+
+```shell
+pip3 install -i https://test.pypi.org/simple/ dsp-metadata-gui
+```
+
+==}
+
 
 ## Run
 

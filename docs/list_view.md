@@ -65,9 +65,19 @@ If you do not have a a shortcode for your project yet, please get in touch with 
 
 ### Folder and Files
 
+#### Folder
+
 When adding a new project, after entering the project shortcode, you need to select a folder of your local file system, that is associated with the project.
 
 ___Note:___ _Do not move or remove that folder, it might cause you to lose all data related to this project - or in the worst case, cause the tool to crash._
+
+This folder must hold all files you want to associate with the project. It is also where the RDF is exported to.
+
+#### Files
+
+If you not only want to submit project metadata, but also primary project data with it (e.g. the NIE-INE projects), this data should come in the simplest possible form. Ideally, all data should be combined into one ZIP archive.
+
+When creating a project and associating the folder with it, all files in this folder are automatically associated with the project. However, files can be added or removed at any time in the [project base data](tab_view.md#base-data), provided that the files are _in the folder_. 
 
 
 ## Local Data Storage

@@ -5,6 +5,7 @@ nav:
   - Usage:
     - Usage Overview: usage_overview.md
     - Project Organization: list_view.md
+    - Entering Metadata: tab_view.md
       # - Before you start: prep.md
       # - List: list_view.md
   - Tabbed View:
@@ -38,6 +39,7 @@ extra_css:
 markdown_extensions:
   - markdown_include.include
   - pymdownx.tasklist
+  - pymdownx.critic
 
 plugins:
   - search

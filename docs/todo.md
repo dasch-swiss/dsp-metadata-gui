@@ -2,6 +2,9 @@
 
 ## Programming
 
+- [ ] fix layout issue in dataset tab
+- [ ] fix to-string of Grant class
+
 
 ## Documentation
 
@@ -11,17 +14,17 @@
 - [ ] Include UML diagram
 - [ ] Restructure documentation
 - [ ] Write documentation files:
+    - [x] index
+    - [x] Readme
     - [x] Usage_overview
-    - [ ] Readme
+    - [x] list_view
+    - [ ] tab_view
     - [ ] Changelog
     - [ ] basedata
     - [ ] data
     - [ ] grant
-    - [x] index
-    - [ ] list_view
     - [ ] organization
     - [ ] person
-    - [x] prep
     - [ ] project
     - [ ] tabs_overview
 - [ ] fix link in readme so it works both in readme and in docs
