@@ -6,16 +6,8 @@ nav:
     - Usage Overview: usage_overview.md
     - Project Organization: list_view.md
     - Entering Metadata: tab_view.md
-      # - Before you start: prep.md
-      # - List: list_view.md
-  - Tabbed View:
-    - Tabs Overview: tabs_overview.md
-    - Base Data: basedata.md
-    - Project: project.md
-    - Data: data.md
-    - Person: person.md
-    - Organization: organization.md
-    - Grant: grant.md
+    - Metadata Classes:
+      - Project: project.md
   - API Reference:
       - "GUI documentation": reference/collectMetadata.md
       - "Data Handling": reference/dataHandling.md

@@ -20,14 +20,8 @@
     - [x] list_view
     - [ ] tab_view
     - [ ] Changelog
-    - [ ] basedata
-    - [ ] data
-    - [ ] grant
-    - [ ] organization
-    - [ ] person
-    - [ ] project
-    - [ ] tabs_overview
 - [ ] fix link in readme so it works both in readme and in docs
+- [ ] document all classes (explain properties, tab by tab)
 
 
 ### API Reference
