@@ -99,4 +99,4 @@ You can only edit properties of the instance that is currently selected.
 
 Each property of a class has a defined cardinality, as defined in the ontology.
 
-
+<!-- TODO: more -->
