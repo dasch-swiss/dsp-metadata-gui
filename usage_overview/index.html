@@ -14,7 +14,7 @@
     
     
       
-        <title>Base Data - DSP-Metadata-GUI</title>
+        <title>Usage Overview - DSP-Metadata-GUI</title>
       
     
     
@@ -59,7 +59,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#base-data-tab" class="md-skip">
+        <a href="#usage-overview" class="md-skip">
           Skip to content
         </a>
       
@@ -88,7 +88,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              Base Data
+              Usage Overview
             
           </span>
         </div>
@@ -171,10 +171,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
     
     <label class="md-nav__link" for="nav-2">
       Usage
@@ -192,11 +194,63 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../usage_overview/" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Usage Overview
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" class="md-nav__link md-nav__link--active">
       Usage Overview
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run" class="md-nav__link">
+    Run
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#collect-metadata" class="md-nav__link">
+    Collect metadata
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -233,12 +287,10 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
     
     <label class="md-nav__link" for="nav-3">
       Tabbed View
@@ -268,63 +320,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-      
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Base Data
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-    
-    <a href="./" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../basedata/" class="md-nav__link">
       Base Data
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#current-project" class="md-nav__link">
-    Current Project
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#path-readonly" class="md-nav__link">
-    Path (Readonly)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#files" class="md-nav__link">
-    Files
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
         
@@ -491,22 +491,22 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#current-project" class="md-nav__link">
-    Current Project
+  <a href="#installation" class="md-nav__link">
+    Installation
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#path-readonly" class="md-nav__link">
-    Path (Readonly)
+  <a href="#run" class="md-nav__link">
+    Run
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#files" class="md-nav__link">
-    Files
+  <a href="#collect-metadata" class="md-nav__link">
+    Collect metadata
   </a>
   
 </li>
@@ -524,32 +524,42 @@
               
                 
                 
-                <h1 id="base-data-tab">Base Data Tab</h1>
-<p><img alt="Base data tab" src="../assets/images/base_tab_overview.png" /></p>
-<h2 id="current-project">Current Project</h2>
-<p>The first line shows the current project. You cannot change the project name.</p>
-<h2 id="path-readonly">Path (Readonly)</h2>
-<p>The second line shows the path of your project on the file system. Do not
-move the folder once you have selected it. Should you have moved it 
-unintentionally you may put it in place according to the path. </p>
-<p>Otherwise your files will not be uploaded to the server.</p>
-<p>XX__This behaviour might be changed in later versions __XX</p>
-<h2 id="files">Files</h2>
-<p>The third line shows which files you have selected for uploading. The 
-buttons "Add File(s)" and "Remove Selected" allow you to add or remove
-files.</p>
-<p>XX__ Question: are the operations stored right away or do we need to 
-confirm with save? __XX</p>
-<p>Files may be of the following formats:
-- Text
-- Tabular data
-- Data in tree or graph structures
-- Images
-- Audio and Video files
-- PDF
-- ZIP files containing the above data types data</p>
-<p>See also: 
-<a href="https://github.com/dasch-swiss/dsp-api/blob/main/docs/01-introduction/data-formats.md">DSP-API Introduction Data Formats</a></p>
+                <h1 id="usage-overview">Usage Overview</h1>
+<h2 id="installation">Installation</h2>
+<p>Be sure to have Python 3 installed.</p>
+<p>To install the application, run:</p>
+<pre><code class="language-bash">pip install dsp-metadata-gui
+</code></pre>
+<p>Or respectively:</p>
+<pre><code class="language-shell">pip3 install dsp-metadata-gui
+</code></pre>
+<mark class="critic block">
+<p><strong>Note:</strong></p>
+<p>Until the first release of the tool, it is available only on the <a href="https://test.pypi.org/project/dsp-metadata-gui/">PYPI test instance</a>.</p>
+<p>To install the application from there, run:</p>
+<pre><code class="language-shell">pip install -i https://test.pypi.org/simple/ dsp-metadata-gui
+</code></pre>
+<p>or</p>
+<pre><code class="language-shell">pip3 install -i https://test.pypi.org/simple/ dsp-metadata-gui
+</code></pre>
+</mark>
+<h2 id="run">Run</h2>
+<p>Once installed, you can start the tool from your terminal:</p>
+<pre><code class="language-shell">dsp-metadata
+</code></pre>
+<h2 id="collect-metadata">Collect metadata</h2>
+<p>The application is divided into two main parts: <a href="../list_view/">Project Organization</a> and the <a href="../tabs_overview/">Form for collecting Metadata</a>.</p>
+<p>In the <a href="../list_view/">Project Organization</a>, you can organize all projects, for which you want to collect metadata.<br />
+At first, you will need to add a new project. For that you need the project shortcode, which is provided by the DaSCH Client Services. (If you don't have your shortcode yet, <a href="mailto:info@dasch.swiss">get in touch</a>.)<br />
+After adding at least one project, you can select a project in the list and perform several actions, like editing the data or exporting an RDF serialization of the project metadata.</p>
+<p>When editing a project the <a href="../tabs_overview/">form for collecting metadata</a> opens up.<br />
+There are multiple tabs, where data can be entered for several classes like:</p>
+<ul>
+<li>Project</li>
+<li>Dataset(s)</li>
+<li>Person(s)</li>
+<li>etc.</li>
+</ul>
                 
               
               
@@ -568,7 +578,7 @@ confirm with save? __XX</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../tabs_overview/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href=".." class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -577,19 +587,19 @@ confirm with save? __XX</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Tabs Overview
+                Overview
               </div>
             </div>
           </a>
         
         
-          <a href="../project/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../list_view/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Project
+                Project Organization
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">
