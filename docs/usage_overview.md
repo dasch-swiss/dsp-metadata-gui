@@ -4,6 +4,30 @@
 
 Be sure to have Python 3 installed.
 
+{==
+
+__Note:__
+
+Due to some issues with the automatic installation of dependencies, the following three packages must be installed manually, before installing the tool itself:
+
+- `validators`
+- `isodate`
+- `wxPython`
+
+To install the application from there, run:
+
+```shell
+pip install validators isodate wxPython
+```
+
+or
+
+```shell
+pip3 install validators isodate wxPython
+```
+
+==}
+
 To install the application, run:
 
 ```bash
