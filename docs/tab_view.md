@@ -79,7 +79,7 @@ This class represents a financial grant that was granted to the project.
 
 
 
-## Properties and Cardinalities
+## Properties, Cardinalities, Values
 
 ### Multiple Instances of a Class
 
@@ -99,4 +99,25 @@ You can only edit properties of the instance that is currently selected.
 
 Each property of a class has a defined cardinality, as defined in the ontology.
 
-<!-- TODO: more -->
+Generally, a property can either be `optional` or `mandatory`.
+
+Furthermore, a property can either be restricted to occur only once, or it can potentially occur multiple times. (Combined, several cardinalities are possible, e.g. `1`, `0-1`, `0-n`, `1-n` but also `1-2` etc.)
+
+Except for some cases that should be self-explanatory, the GUI mostly differentiates between properties that can occur maximum one time, and properties that can occur multiple times.  
+Where only one value is expected, there will only be an input field. Where multiple values can occur, there is an input field, a list of all values and buttons to add and remove values to/from the list.  
+___Note:___ _A value is only added to the list, once the "+" button is pressed or enter is hit._  
+For an example, see the image below: While a dataset can only have one title, it may consist of multiple languages.
+
+![Cardinalities](assets/images/cardinalities.png)
+
+### Values
+
+Generally, the value of a property can either be a text-like value (e.g. Text, URLs, etc.), or it can link another object (Dataset, Project, Person, etc.).
+
+Text-like values are represented as text fields in the GUI. The value can simply be typed in.  
+Object links are represented as dropdown lists in the GUI. The dropdown shows all objects that can be referenced in this place. The linkable objects can be created and modified in their respective tab.
+
+Example: A Project can have either a person or an organization as a point of contact.
+
+![Linked Objects](assets/images/links.png)
+

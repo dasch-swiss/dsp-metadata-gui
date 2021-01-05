@@ -38,7 +38,7 @@ The following actions can be performed:
   Removes the selected project from the list.
   _Note: This can not be undone._
 - Edit a project  
-  Opens the [form for collecting metadata](tabs_overview.md).
+  Opens the [form for collecting metadata](tab_view.md).
 - Validate a project  
   Validates the selected project against the [ontology](https://github.com/dasch-swiss/dsp-ontologies/blob/main/dsp-repository/v1/dsp-repository.shacl.ttl).
 - Export RDF data  

@@ -10,9 +10,9 @@ nav:
       - Project: project.md
   - API Reference:
       - "GUI documentation": reference/collectMetadata.md
-      - "Data Handling": reference/dataHandling.md
       - "Data Structure": reference/metaDataSet.md
   - Pending Tasks: todo.md
+  - Change Log: changelog.md
 
 theme:
   name: material
