@@ -412,18 +412,6 @@
 
 
   <li class="md-nav__item">
-    <a href="reference/dataHandling/" class="md-nav__link">
-      Data Handling
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="reference/metaDataSet/" class="md-nav__link">
       Data Structure
     </a>
@@ -443,6 +431,18 @@
   <li class="md-nav__item">
     <a href="todo/" class="md-nav__link">
       Pending Tasks
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="changelog/" class="md-nav__link">
+      Change Log
     </a>
   </li>
 
@@ -566,6 +566,21 @@ and turn it into RDF.</p>
 <h2 id="install-and-run">Install and run</h2>
 <p>The module provides a command line entry point to run the GUI. The only requirement is Python 3 and PIP installed and ready to use.</p>
 <h3 id="installation-via-pip">Installation via pip</h3>
+<mark class="critic block">
+<p><strong>Note:</strong></p>
+<p>Due to some issues with the automatic installation of dependencies, the following three packages must be installed manually, before installing the tool itself:</p>
+<ul>
+<li><code>validators</code></li>
+<li><code>isodate</code></li>
+<li><code>wxPython</code></li>
+</ul>
+<p>To install the application from there, run:</p>
+<pre><code class="language-shell">pip install validators isodate wxPython
+</code></pre>
+<p>or</p>
+<pre><code class="language-shell">pip3 install validators isodate wxPython
+</code></pre>
+</mark>
 <p>To install the application, run:</p>
 <pre><code class="language-bash">pip install dsp-metadata-gui
 </code></pre>

@@ -360,18 +360,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../reference/dataHandling/" class="md-nav__link">
-      Data Handling
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../reference/metaDataSet/" class="md-nav__link">
       Data Structure
     </a>
@@ -391,6 +379,18 @@
   <li class="md-nav__item">
     <a href="../todo/" class="md-nav__link">
       Pending Tasks
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../changelog/" class="md-nav__link">
+      Change Log
     </a>
   </li>
 
@@ -455,6 +455,21 @@
                 <h1 id="usage-overview">Usage Overview</h1>
 <h2 id="installation">Installation</h2>
 <p>Be sure to have Python 3 installed.</p>
+<mark class="critic block">
+<p><strong>Note:</strong></p>
+<p>Due to some issues with the automatic installation of dependencies, the following three packages must be installed manually, before installing the tool itself:</p>
+<ul>
+<li><code>validators</code></li>
+<li><code>isodate</code></li>
+<li><code>wxPython</code></li>
+</ul>
+<p>To install the application from there, run:</p>
+<pre><code class="language-shell">pip install validators isodate wxPython
+</code></pre>
+<p>or</p>
+<pre><code class="language-shell">pip3 install validators isodate wxPython
+</code></pre>
+</mark>
 <p>To install the application, run:</p>
 <pre><code class="language-bash">pip install dsp-metadata-gui
 </code></pre>
@@ -476,11 +491,11 @@
 <pre><code class="language-shell">dsp-metadata
 </code></pre>
 <h2 id="collect-metadata">Collect metadata</h2>
-<p>The application is divided into two main parts: <a href="../list_view/">Project Organization</a> and the <a href="tabs_overview.md">Form for collecting Metadata</a>.</p>
+<p>The application is divided into two main parts: <a href="../list_view/">Project Organization</a> and the <a href="../tab_view/">Form for collecting Metadata</a>.</p>
 <p>In the <a href="../list_view/">Project Organization</a>, you can organize all projects, for which you want to collect metadata.<br />
 At first, you will need to add a new project. For that you need the project shortcode, which is provided by the DaSCH Client Services. (If you don't have your shortcode yet, <a href="mailto:info@dasch.swiss">get in touch</a>.)<br />
 After adding at least one project, you can select a project in the list and perform several actions, like editing the data or exporting an RDF serialization of the project metadata.</p>
-<p>When editing a project the <a href="tabs_overview.md">form for collecting metadata</a> opens up.<br />
+<p>When editing a project the <a href="../tab_view/">form for collecting metadata</a> opens up.<br />
 There are multiple tabs, where data can be entered for several classes like:</p>
 <ul>
 <li>Project</li>

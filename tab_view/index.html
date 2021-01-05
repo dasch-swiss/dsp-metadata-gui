@@ -313,11 +313,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#properties-and-cardinalities" class="md-nav__link">
-    Properties and Cardinalities
+  <a href="#properties-cardinalities-values" class="md-nav__link">
+    Properties, Cardinalities, Values
   </a>
   
-    <nav class="md-nav" aria-label="Properties and Cardinalities">
+    <nav class="md-nav" aria-label="Properties, Cardinalities, Values">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -330,6 +330,13 @@
           <li class="md-nav__item">
   <a href="#cardinalities" class="md-nav__link">
     Cardinalities
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#values" class="md-nav__link">
+    Values
   </a>
   
 </li>
@@ -428,18 +435,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../reference/dataHandling/" class="md-nav__link">
-      Data Handling
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../reference/metaDataSet/" class="md-nav__link">
       Data Structure
     </a>
@@ -459,6 +454,18 @@
   <li class="md-nav__item">
     <a href="../todo/" class="md-nav__link">
       Pending Tasks
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../changelog/" class="md-nav__link">
+      Change Log
     </a>
   </li>
 
@@ -549,11 +556,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#properties-and-cardinalities" class="md-nav__link">
-    Properties and Cardinalities
+  <a href="#properties-cardinalities-values" class="md-nav__link">
+    Properties, Cardinalities, Values
   </a>
   
-    <nav class="md-nav" aria-label="Properties and Cardinalities">
+    <nav class="md-nav" aria-label="Properties, Cardinalities, Values">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -566,6 +573,13 @@
           <li class="md-nav__item">
   <a href="#cardinalities" class="md-nav__link">
     Cardinalities
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#values" class="md-nav__link">
+    Values
   </a>
   
 </li>
@@ -627,7 +641,7 @@ The tab therefor does not have the list of multiple instances.</p>
 <h3 id="grant">Grant</h3>
 <p>There can be multiple grants.</p>
 <p>This class represents a financial grant that was granted to the project.</p>
-<h2 id="properties-and-cardinalities">Properties and Cardinalities</h2>
+<h2 id="properties-cardinalities-values">Properties, Cardinalities, Values</h2>
 <h3 id="multiple-instances-of-a-class">Multiple Instances of a Class</h3>
 <p>All classes, except the project, can have multiple instances.
 E.g. there will be multiple people contributing to a project.</p>
@@ -638,7 +652,19 @@ You can only edit properties of the instance that is currently selected.</p>
 <p><img alt="Multiple Instances of a Class" src="../assets/images/multiple_classes.png" /></p>
 <h3 id="cardinalities">Cardinalities</h3>
 <p>Each property of a class has a defined cardinality, as defined in the ontology.</p>
-<!-- TODO: more -->
+<p>Generally, a property can either be <code>optional</code> or <code>mandatory</code>.</p>
+<p>Furthermore, a property can either be restricted to occur only once, or it can potentially occur multiple times. (Combined, several cardinalities are possible, e.g. <code>1</code>, <code>0-1</code>, <code>0-n</code>, <code>1-n</code> but also <code>1-2</code> etc.)</p>
+<p>Except for some cases that should be self-explanatory, the GUI mostly differentiates between properties that can occur maximum one time, and properties that can occur multiple times.<br />
+Where only one value is expected, there will only be an input field. Where multiple values can occur, there is an input field, a list of all values and buttons to add and remove values to/from the list.<br />
+<strong><em>Note:</em></strong> <em>A value is only added to the list, once the "+" button is pressed or enter is hit.</em><br />
+For an example, see the image below: While a dataset can only have one title, it may consist of multiple languages.</p>
+<p><img alt="Cardinalities" src="../assets/images/cardinalities.png" /></p>
+<h3 id="values">Values</h3>
+<p>Generally, the value of a property can either be a text-like value (e.g. Text, URLs, etc.), or it can link another object (Dataset, Project, Person, etc.).</p>
+<p>Text-like values are represented as text fields in the GUI. The value can simply be typed in.<br />
+Object links are represented as dropdown lists in the GUI. The dropdown shows all objects that can be referenced in this place. The linkable objects can be created and modified in their respective tab.</p>
+<p>Example: A Project can have either a person or an organization as a point of contact.</p>
+<p><img alt="Linked Objects" src="../assets/images/links.png" /></p>
                 
               
               
