@@ -132,7 +132,7 @@ class ProjectPanel(wx.Panel):
         self.rdf_display = rdf_display
         scroller.SetMinSize((-1, 400))
         scroller.SetAutoLayout(1)
-        scroller.SetupScrolling(scroll_x=False, scroll_y=True)
+        scroller.SetupScrolling(scroll_x=True, scroll_y=True)
         innermost = wx.BoxSizer()
         innermost.Add(rdf_display, flag=wx.EXPAND)
         scroller.SetSizer(innermost)
