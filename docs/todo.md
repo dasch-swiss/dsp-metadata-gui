@@ -5,9 +5,10 @@
 ### minor changes / fixes
 
 - [x] fix layout issue in dataset tab
-- [ ] unify capitalization in GUI
-- [ ] make end date optional
-- [ ] fix to-string of Grant class
+- [x] unify capitalization in GUI
+- [x] make end date optional
+- [x] fix to-string of Grant class
+- [ ] relative URI of DMP is only `<DMP>` which is not unique
 - [ ] change names to string instead of list
 - [ ] change `@base` and IRIs to work correctly
 - [ ] check validity before export

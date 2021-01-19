@@ -361,17 +361,17 @@ class Project(DataClass):
                                 msg,
                                 "2000-07-26T21:32:52",
                                 Datatype.DATE,
-                                Cardinality.ONE,
+                                Cardinality.ZERO_OR_ONE,
                                 predicate=dsp_repo.hasEndDate)
 
-        self.temporalCoverage = Property("Temporal coverage",
+        self.temporalCoverage = Property("Temporal Coverage",
                                          "Temporal coverage of the project from http://perio.do/en/\nor https://chronontology.dainst.org/",
                                          "http://chronontology.dainst.org/period/Ef9SyESSafJ1",
                                          Datatype.STRING_OR_URL,
                                          Cardinality.ONE_TO_UNBOUND,
                                          predicate=dsp_repo.hasTemporalCoverage)
 
-        self.spatialCoverage = Property("Spatial coverage",
+        self.spatialCoverage = Property("Spatial Coverage",
                                         "Spatial coverage of the project from Geonames URL: https://www.geonames.org/\nor from Pleiades URL: https://pleiades.stoa.org/places",
                                         "https://www.geonames.org/6255148/europe.html",
                                         Datatype.PLACE,
@@ -474,7 +474,7 @@ class Dataset(DataClass):
                               value=f"Dataset of {name}",
                               predicate=dsp_repo.hasTitle)
 
-        self.alternativeTitle = Property("Alternative title",
+        self.alternativeTitle = Property("Alternative Title",
                                          "Alternative title of the dataset",
                                          "Another Dataset-Title",
                                          Datatype.STRING,
@@ -496,7 +496,7 @@ class Dataset(DataClass):
                                Cardinality.UNBOUND,
                                predicate=dsp_repo.sameAs)
 
-        self.typeOfData = Property("Type of data",
+        self.typeOfData = Property("Type of Data",
                                    "Type of data related to the dataset",
                                    "xml",
                                    Datatype.CONTROLLED_VOCABULARY,
@@ -526,14 +526,14 @@ class Dataset(DataClass):
                                          Cardinality.ONE,
                                          predicate=dsp_repo.hasConditionsOfAccess)
 
-        self.howToCite = Property("How to cite",
+        self.howToCite = Property("How to Cite",
                                   "How to cite the data",
                                   "Test-project (test), 2002, https://test.dasch.swiss",
                                   Datatype.STRING,
                                   Cardinality.ONE,
                                   predicate=dsp_repo.hasHowToCite)
 
-        self.status = Property("Dataset status",
+        self.status = Property("Dataset Status",
                                "Current status of a dataset",
                                "The dataset is work in progress",
                                Datatype.CONTROLLED_VOCABULARY,
@@ -541,7 +541,7 @@ class Dataset(DataClass):
                                value_options=['In planning', 'Ongoing', 'On hold', 'Finished'],
                                predicate=dsp_repo.hasStatus)
 
-        self.datePublished = Property("Date published",
+        self.datePublished = Property("Date Published",
                                       "Date of publication",
                                       "2000-08-01",
                                       Datatype.DATE,
@@ -570,14 +570,14 @@ class Dataset(DataClass):
                                     Cardinality.ONE_TO_UNBOUND,
                                     predicate=dsp_repo.hasQualifiedAttribution)
 
-        self.dateCreated = Property("Date created",
+        self.dateCreated = Property("Date Created",
                                     "Creation of the dataset",
                                     "2000-08-01",
                                     Datatype.DATE,
                                     Cardinality.ZERO_OR_ONE,
                                     predicate=dsp_repo.hasDateCreated)
 
-        self.dateModified = Property("Date modified",
+        self.dateModified = Property("Date Modified",
                                      "Last modification of the dataset",
                                      "2000-08-01",
                                      Datatype.DATE,
@@ -636,14 +636,14 @@ class Person(DataClass):
                                Cardinality.UNBOUND,
                                predicate=dsp_repo.sameAs)
 
-        self.givenName = Property("Given name",
+        self.givenName = Property("Given Name",
                                   "Given name of the person",
                                   "John",
                                   Datatype.STRING,
                                   Cardinality.ONE_TO_UNBOUND_ORDERED,
                                   predicate=dsp_repo.hasGivenName)
 
-        self.familyName = Property("Family name",
+        self.familyName = Property("Family Name",
                                    "Family name of the person",
                                    "Doe",
                                    Datatype.STRING,
@@ -671,7 +671,7 @@ class Person(DataClass):
                                  Cardinality.ONE_TO_UNBOUND,
                                  predicate=dsp_repo.isMemberOf)
 
-        self.jobTitle = Property("Job title",
+        self.jobTitle = Property("Job Title",
                                  "Position/Job title of the person",
                                  "Dr.",
                                  Datatype.STRING,
@@ -803,9 +803,12 @@ class Grant(DataClass):
     def __str__(self):
         classname = str(self.get_rdf_iri()).split('#')[1]
         n1 = "<funder missing>"
-        if self.funder.value:
-            n1 = str(self.funder.value)
-        return f"{classname}: {n1}"
+        v = self.funder.value
+        if v:
+            if isinstance(v, list):
+                v = v[0]
+            n1 = str(v)
+        return f"{classname}: [{n1}]"
 
 
 class Property():
