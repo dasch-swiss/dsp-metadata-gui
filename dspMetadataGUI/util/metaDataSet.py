@@ -11,7 +11,6 @@ import pyshacl
 import validators
 from rdflib import Graph, URIRef, RDF, Literal, Namespace, BNode
 from rdflib.namespace import SDO, XSD
-from rdflib.collection import Collection
 
 from . import utils
 from .utils import Cardinality, Datatype, Validity
@@ -644,7 +643,7 @@ class Person(DataClass):
                                   predicate=dsp_repo.hasGivenName)
 
         self.familyName = Property("Family Name",
-                                   "Family name of the person",
+                                   "Family name of the person. (Note that you can separate multiple family names with ';' if need be)",
                                    "Doe",
                                    Datatype.STRING,
                                    Cardinality.ONE,
@@ -871,11 +870,7 @@ class Property():
             vals = [vals]
         if self.datatype == Datatype.STRING and \
                 self.cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED:
-            # TODO: will need to be changed, once the name thing is through (PR #11)
-            listnode = BNode()
-            Collection(g, listnode, [Literal(v, datatype=XSD.string) for v in vals if v and not v.isspace()])
-            g.add((subject, self.predicate, listnode))
-            return g
+            vals = [';'.join(vals)]
         for v in vals:
             if not v:
                 continue
