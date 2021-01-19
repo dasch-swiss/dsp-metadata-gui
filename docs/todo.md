@@ -8,7 +8,7 @@
 - [x] unify capitalization in GUI
 - [x] make end date optional
 - [x] fix to-string of Grant class
-- [ ] relative URI of DMP is only `<DMP>` which is not unique
+- [x] relative URI of DMP is only `<DMP>` which is not unique
 - [x] change names to string instead of list
 - [ ] change `@base` and IRIs to work correctly
 - [ ] check validity before export
@@ -22,6 +22,8 @@
 - [ ] switching qualified attribution should change role too
 - [ ] add language tag to string properties
 - [ ] allow deleting last Person/Organization/Dataset
+- [ ] have versioning in pickles
+- [ ] try to handle pickles from older versions
 
 ### major changes
 

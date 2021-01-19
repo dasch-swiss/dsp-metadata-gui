@@ -312,7 +312,7 @@ class Project(DataClass):
 
     def __init__(self, name: str, shortcode: str, meta: MetaDataSet):
         self.meta = meta
-        self.name = Property("Name",
+        self.name = Property(meta, "Name",
                              "The name of the Project",
                              "Test Project",
                              Datatype.STRING,
@@ -322,7 +322,7 @@ class Project(DataClass):
 
         msg = "This is a test project. All properties have been used to test these."
         msg += "\nYou will just describe your project briefly."
-        self.description = Property("Description",
+        self.description = Property(meta, "Description",
                                     "Description of the Project",
                                     msg,
                                     Datatype.STRING,
@@ -332,7 +332,7 @@ class Project(DataClass):
 
         msg = "mathematics, science, history of science, history of mathematics."
         msg += "\nUse the plus sign to have a new field for each key word."
-        self.keywords = Property("Keywords",
+        self.keywords = Property(meta, "Keywords",
                                  "Keywords and tags",
                                  msg,
                                  Datatype.STRING,
@@ -341,14 +341,14 @@ class Project(DataClass):
 
         msg = "Discipline and research fields from UNESCO nomenclature: https://skos.um.es/unesco6/?l=en"
         msg += "\nor from http://www.snf.ch/SiteCollectionDocuments/allg_disziplinenliste.pdf"
-        self.discipline = Property("Discipline",
+        self.discipline = Property(meta, "Discipline",
                                    msg,
                                    "http://skos.um.es/unesco6/11",
                                    Datatype.STRING_OR_URL,
                                    Cardinality.ONE_TO_UNBOUND,
                                    predicate=dsp_repo.hasDiscipline)
 
-        self.startDate = Property("Start Date",
+        self.startDate = Property(meta, "Start Date",
                                   "The date when the project started, e. g. when funding was granted.",
                                   "2000-07-26T21:32:52",
                                   Datatype.DATE,
@@ -356,48 +356,48 @@ class Project(DataClass):
                                   predicate=dsp_repo.hasStartDate)
 
         msg = "The date when the project was finished, e. g. when the last changes to the project data where completed."
-        self.endDate = Property("End Date",
+        self.endDate = Property(meta, "End Date",
                                 msg,
                                 "2000-07-26T21:32:52",
                                 Datatype.DATE,
                                 Cardinality.ZERO_OR_ONE,
                                 predicate=dsp_repo.hasEndDate)
 
-        self.temporalCoverage = Property("Temporal Coverage",
+        self.temporalCoverage = Property(meta, "Temporal Coverage",
                                          "Temporal coverage of the project from http://perio.do/en/\nor https://chronontology.dainst.org/",
                                          "http://chronontology.dainst.org/period/Ef9SyESSafJ1",
                                          Datatype.STRING_OR_URL,
                                          Cardinality.ONE_TO_UNBOUND,
                                          predicate=dsp_repo.hasTemporalCoverage)
 
-        self.spatialCoverage = Property("Spatial Coverage",
+        self.spatialCoverage = Property(meta, "Spatial Coverage",
                                         "Spatial coverage of the project from Geonames URL: https://www.geonames.org/\nor from Pleiades URL: https://pleiades.stoa.org/places",
                                         "https://www.geonames.org/6255148/europe.html",
                                         Datatype.PLACE,
                                         Cardinality.ONE_TO_UNBOUND,
                                         predicate=dsp_repo.hasSpatialCoverage)
 
-        self.funder = Property("Funder",
+        self.funder = Property(meta, "Funder",
                                "Funding person or institution of the project",
                                "",
                                Datatype.PERSON_OR_ORGANIZATION,
                                Cardinality.ONE_TO_UNBOUND,
                                predicate=dsp_repo.hasFunder)
 
-        self.grant = Property("Grant",
+        self.grant = Property(meta, "Grant",
                               "Grant of the project",
                               "",
                               Datatype.GRANT,
                               predicate=dsp_repo.hasGrant)
 
-        self.url = Property("URL",
+        self.url = Property(meta, "URL",
                             "Landing page or Website of the project. We recommend DSP Landing Page.\nOptionally, a second URL can be added too.",
                             "https://test.dasch.swiss/",
                             Datatype.URL,
                             Cardinality.ONE_TO_TWO,
                             predicate=dsp_repo.hasURL)
 
-        self.shortcode = Property("Shortcode",
+        self.shortcode = Property(meta, "Shortcode",
                                   "Internal shortcode of the project",
                                   "0000",
                                   Datatype.SHORTCODE,
@@ -405,27 +405,27 @@ class Project(DataClass):
                                   value=shortcode,
                                   predicate=dsp_repo.hasShortcode)
 
-        self.alternateName = Property("Alternate Name",
+        self.alternateName = Property(meta, "Alternate Name",
                                       "Alternative name of the project, e.g. in case of an overly long official name",
                                       "Another Title",
                                       Datatype.STRING,
                                       predicate=dsp_repo.hasAlternateName)
 
-        self.dataManagementPlan = Property("Data Management Plan",
+        self.dataManagementPlan = Property(meta, "Data Management Plan",
                                            "Data Management Plan of the project",
                                            "",
                                            Datatype.DATA_MANAGEMENT_PLAN,
                                            Cardinality.ZERO_OR_ONE,
                                            predicate=dsp_repo.hasDataManagementPlan)
 
-        self.publication = Property("Publications",
+        self.publication = Property(meta, "Publications",
                                     "Publications produced during the lifetime of the project",
                                     "Doe, J. (2000). A Publication.",
                                     Datatype.STRING,
                                     predicate=dsp_repo.hasPublication,
                                     multiline=True)
 
-        self.contactPoint = Property("Contact Point",
+        self.contactPoint = Property(meta, "Contact Point",
                                      "Contact information",
                                      "",
                                      Datatype.PERSON_OR_ORGANIZATION,
@@ -465,7 +465,7 @@ class Dataset(DataClass):
 
     def __init__(self, name, project, meta):
         self.meta = meta
-        self.title = Property("Title",
+        self.title = Property(meta, "Title",
                               "Title of the dataset",
                               "Dataset-Title",
                               Datatype.STRING,
@@ -473,14 +473,14 @@ class Dataset(DataClass):
                               value=f"Dataset of {name}",
                               predicate=dsp_repo.hasTitle)
 
-        self.alternativeTitle = Property("Alternative Title",
+        self.alternativeTitle = Property(meta, "Alternative Title",
                                          "Alternative title of the dataset",
                                          "Another Dataset-Title",
                                          Datatype.STRING,
                                          Cardinality.ZERO_OR_ONE,
                                          predicate=dsp_repo.hasAlternativeTitle)
 
-        self.abstract = Property("Abstract",
+        self.abstract = Property(meta, "Abstract",
                                  "Description of the dataset",
                                  "This is merely an exemplary dataset",
                                  Datatype.STRING_OR_URL,
@@ -488,14 +488,14 @@ class Dataset(DataClass):
                                  predicate=dsp_repo.hasAbstract,
                                  multiline=True)
 
-        self.sameAs = Property("Alternative URL",
+        self.sameAs = Property(meta, "Alternative URL",
                                "Alternative URL to the dataset, if applicable",
                                "https://test.dasch.swiss/",
                                Datatype.URL,
                                Cardinality.UNBOUND,
                                predicate=dsp_repo.sameAs)
 
-        self.typeOfData = Property("Type of Data",
+        self.typeOfData = Property(meta, "Type of Data",
                                    "Type of data related to the dataset",
                                    "xml",
                                    Datatype.CONTROLLED_VOCABULARY,
@@ -504,35 +504,35 @@ class Dataset(DataClass):
                                                   "Image", "Movie", "Audio"],
                                    predicate=dsp_repo.hasTypeOfData)
 
-        self.documentation = Property("Documentation",
+        self.documentation = Property(meta, "Documentation",
                                       "Additional documentation",
                                       '"http://www.example.org/documentation.md" or "Work in Progress"',
                                       Datatype.STRING_OR_URL,
                                       Cardinality.UNBOUND,
                                       predicate=dsp_repo.hasDocumentation)
 
-        self.license = Property("License",
+        self.license = Property(meta, "License",
                                 "The license terms of the dataset",
                                 "https://creativecommons.org/licenses/by/3.0",
                                 Datatype.URL,
                                 Cardinality.ONE_TO_UNBOUND,
                                 predicate=dsp_repo.hasLicense)
 
-        self.accessConditions = Property("Conditions of Access",
+        self.accessConditions = Property(meta, "Conditions of Access",
                                          "Access conditions of the data",
                                          "Open Access",
                                          Datatype.STRING,
                                          Cardinality.ONE,
                                          predicate=dsp_repo.hasConditionsOfAccess)
 
-        self.howToCite = Property("How to Cite",
+        self.howToCite = Property(meta, "How to Cite",
                                   "How to cite the data",
                                   "Test-project (test), 2002, https://test.dasch.swiss",
                                   Datatype.STRING,
                                   Cardinality.ONE,
                                   predicate=dsp_repo.hasHowToCite)
 
-        self.status = Property("Dataset Status",
+        self.status = Property(meta, "Dataset Status",
                                "Current status of a dataset",
                                "The dataset is work in progress",
                                Datatype.CONTROLLED_VOCABULARY,
@@ -540,21 +540,21 @@ class Dataset(DataClass):
                                value_options=['In planning', 'Ongoing', 'On hold', 'Finished'],
                                predicate=dsp_repo.hasStatus)
 
-        self.datePublished = Property("Date Published",
+        self.datePublished = Property(meta, "Date Published",
                                       "Date of publication",
                                       "2000-08-01",
                                       Datatype.DATE,
                                       Cardinality.ZERO_OR_ONE,
                                       predicate=dsp_repo.hasDatePublished)
 
-        self.language = Property("Language",
+        self.language = Property(meta, "Language",
                                  "Language(s) of the dataset",
                                  "English",
                                  Datatype.STRING,
                                  Cardinality.ONE_TO_UNBOUND,
                                  predicate=dsp_repo.hasLanguage)
 
-        self.project = Property("is Part of",
+        self.project = Property(meta, "is Part of",
                                 "The project to which the data set belongs",
                                 "",
                                 Datatype.PROJECT,
@@ -562,28 +562,28 @@ class Dataset(DataClass):
                                 value=project,
                                 predicate=dsp_repo.isPartOf)
 
-        self.attribution = Property("Qualified Attribution",
+        self.attribution = Property(meta, "Qualified Attribution",
                                     "Persons/Organization involved in the creation of the dataset",
                                     '<person> + "editor"',
                                     Datatype.ATTRIBUTION,
                                     Cardinality.ONE_TO_UNBOUND,
                                     predicate=dsp_repo.hasQualifiedAttribution)
 
-        self.dateCreated = Property("Date Created",
+        self.dateCreated = Property(meta, "Date Created",
                                     "Creation of the dataset",
                                     "2000-08-01",
                                     Datatype.DATE,
                                     Cardinality.ZERO_OR_ONE,
                                     predicate=dsp_repo.hasDateCreated)
 
-        self.dateModified = Property("Date Modified",
+        self.dateModified = Property(meta, "Date Modified",
                                      "Last modification of the dataset",
                                      "2000-08-01",
                                      Datatype.DATE,
                                      Cardinality.ZERO_OR_ONE,
                                      predicate=dsp_repo.hasDateModified)
 
-        self.distribution = Property("Distribution",
+        self.distribution = Property(meta, "Distribution",
                                      "A downloadable form of this dataset, at a specific location, in a specific format",
                                      "https://test.dasch.swiss",
                                      Datatype.DOWNLOAD,
@@ -628,49 +628,49 @@ class Person(DataClass):
 
     def __init__(self, meta):
         self.meta = meta
-        self.sameAs = Property("Alternative URL",
+        self.sameAs = Property(meta, "Alternative URL",
                                "Alternative URL, pointing to an authority file (ORCID, VIAF, GND, ...)",
                                "https://orcid.org/000-000-000-000",
                                Datatype.URL,
                                Cardinality.UNBOUND,
                                predicate=dsp_repo.sameAs)
 
-        self.givenName = Property("Given Name",
+        self.givenName = Property(meta, "Given Name",
                                   "Given name of the person",
                                   "John",
                                   Datatype.STRING,
                                   Cardinality.ONE_TO_UNBOUND_ORDERED,
                                   predicate=dsp_repo.hasGivenName)
 
-        self.familyName = Property("Family Name",
+        self.familyName = Property(meta, "Family Name",
                                    "Family name of the person. (Note that you can separate multiple family names with ';' if need be)",
                                    "Doe",
                                    Datatype.STRING,
                                    Cardinality.ONE,
                                    predicate=dsp_repo.hasFamilyName)
 
-        self.email = Property("E-mail",
+        self.email = Property(meta, "E-mail",
                               "E-mail address of the person",
                               "john.doe@dasch.swiss",
                               Datatype.EMAIL,
                               Cardinality.ZERO_TO_TWO,
                               predicate=dsp_repo.hasEmail)
 
-        self.address = Property("Address",
+        self.address = Property(meta, "Address",
                                 "Postal address of the person",
                                 "",
                                 Datatype.ADDRESS,
                                 Cardinality.UNBOUND,
                                 predicate=dsp_repo.hasAddress)
 
-        self.memberOf = Property("Member of",
+        self.memberOf = Property(meta, "Member of",
                                  "Affiliation of the person",
                                  "",
                                  Datatype.ORGANIZATION,
                                  Cardinality.ONE_TO_UNBOUND,
                                  predicate=dsp_repo.isMemberOf)
 
-        self.jobTitle = Property("Job Title",
+        self.jobTitle = Property(meta, "Job Title",
                                  "Position/Job title of the person",
                                  "Dr.",
                                  Datatype.STRING,
@@ -709,28 +709,28 @@ class Organization(DataClass):
     def __init__(self, meta):
         self.meta = meta
 
-        self.name = Property("Legal Name",
+        self.name = Property(meta, "Legal Name",
                              "Legal name of the organization",
                              "DaSCH",
                              Datatype.STRING,
                              Cardinality.ONE_TO_UNBOUND,
                              predicate=dsp_repo.hasName)
 
-        self.email = Property("E-mail",
+        self.email = Property(meta, "E-mail",
                               "E-mail address of the organization",
                               "info@dasch.swiss",
                               Datatype.EMAIL,
                               Cardinality.ZERO_OR_ONE,
                               predicate=dsp_repo.hasEmail)
 
-        self.address = Property("Address",
+        self.address = Property(meta, "Address",
                                 "Postal address of the organization",
                                 "",
                                 Datatype.ADDRESS,
                                 Cardinality.UNBOUND,
                                 predicate=dsp_repo.hasAddress)
 
-        self.url = Property("URL",
+        self.url = Property(meta, "URL",
                             "URL of the organization",
                             "https://dasch.swiss",
                             Datatype.URL,
@@ -763,28 +763,28 @@ class Grant(DataClass):
     def __init__(self, meta):
         self.meta = meta
 
-        self.name = Property("Name",
+        self.name = Property(meta, "Name",
                              "Name of the grant",
                              "Ambizione",
                              Datatype.STRING,
                              Cardinality.ZERO_OR_ONE,
                              predicate=dsp_repo.hasName)
 
-        self.url = Property("URL",
+        self.url = Property(meta, "URL",
                             "URL of the grant",
                             "https://www.snf.ch/grants/001",
                             Datatype.URL,
                             Cardinality.ZERO_OR_ONE,
                             predicate=dsp_repo.hasURL)
 
-        self.number = Property("Number",
+        self.number = Property(meta, "Number",
                                "The number of the grant.",
                                "00012345",
                                Datatype.STRING,
                                Cardinality.ZERO_OR_ONE,
                                predicate=dsp_repo.hasNumber)
 
-        self.funder = Property("Funder",
+        self.funder = Property(meta, "Funder",
                                "Funding person or institution of the project",
                                "",
                                Datatype.PERSON_OR_ORGANIZATION,
@@ -817,9 +817,10 @@ class Property():
     Corresponds to `sh:property`
     """
 
-    def __init__(self, name: str, description: str, example: str, datatype: Datatype.STRING,
+    def __init__(self, meta: MetaDataSet, name: str, description: str, example: str, datatype: Datatype.STRING,
                  cardinality=Cardinality.UNBOUND, value=None, value_options=None,
                  predicate=dsp_repo.whatever, multiline=False):
+        self.meta = meta
         self.name = name
         self.description = description
         self.example = example
@@ -869,7 +870,8 @@ class Property():
         if not isinstance(vals, list):
             vals = [vals]
         if self.datatype == Datatype.STRING and \
-                self.cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED:
+                self.cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED and \
+                vals and vals[0]:
             vals = [';'.join(vals)]
         for v in vals:
             if not v:
@@ -927,7 +929,12 @@ class Property():
                 g.add((subject, self.predicate, v.get_rdf_iri()))
             elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
                 if v[0] or v[1]:
-                    dmp = URIRef('DMP')
+                    try:
+                        dmp = URIRef(f'{self.meta.shortcode}-dmp')
+                    except Exception as e:
+                        print(f'Warning: DMP has non-unique IRI ({e})')
+                        # LATER: this should not be necessary anymore. remove with next breaking changes
+                        dmp = URIRef('dmp')
                     g.add((subject, self.predicate, dmp))
                     g.add((dmp, RDF.type, dsp_repo.DataManagementPlan))
                     if v[0]:
