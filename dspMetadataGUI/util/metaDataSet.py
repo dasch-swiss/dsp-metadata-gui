@@ -612,7 +612,7 @@ class Dataset(DataClass):
         ]
 
     def __str__(self):
-        classname = str(self.get_rdf_iri()).split('#')[1]
+        classname = str(self.get_rdf_iri()).split('##')[1]
         n1 = "<title missing>"
         if self.title.value:
             n1 = self.title.value
@@ -689,7 +689,8 @@ class Person(DataClass):
         ]
 
     def __str__(self):
-        classname = str(self.get_rdf_iri()).split('#')[1]
+        classname = str(self.get_rdf_iri()).split('##')[1]
+        # classname = str(self.get_rdf_iri())
         n1 = "<first name missing>"
         if self.givenName.value:
             n1 = " ".join(self.givenName.value)
@@ -746,7 +747,7 @@ class Organization(DataClass):
         ]
 
     def __str__(self):
-        classname = str(self.get_rdf_iri()).split('#')[1]
+        classname = str(self.get_rdf_iri()).split('##')[1]
         n1 = "<name missing>"
         if self.name.value:
             n1 = " / ".join(self.name.value)
@@ -800,7 +801,7 @@ class Grant(DataClass):
         ]
 
     def __str__(self):
-        classname = str(self.get_rdf_iri()).split('#')[1]
+        classname = str(self.get_rdf_iri()).split('##')[1]
         n1 = "<funder missing>"
         v = self.funder.value
         if v:
