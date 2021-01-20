@@ -283,7 +283,7 @@ class DataClass(ABC):
         shortcode = self.get_metadataset().project.shortcode.value
         if not shortcode:
             shortcode = "xxxx"
-        classname = '#' + shortcode + self.iri_suffix
+        classname = '#dsp-' + shortcode + self.iri_suffix
         return URIRef(dsp_repo[classname])
 
     @abstractmethod
@@ -930,7 +930,7 @@ class Property():
             elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
                 if v[0] or v[1]:
                     try:
-                        dmp = URIRef(f'#{self.meta.shortcode}-dmp')
+                        dmp = URIRef(f'#dsp-{self.meta.shortcode}-dmp')
                     except Exception as e:
                         print(f'Warning: DMP has non-unique IRI ({e})')
                         # LATER: this should not be necessary anymore. remove with next breaking changes
