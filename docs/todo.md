@@ -11,7 +11,7 @@
 - [x] relative URI of DMP is only `<DMP>` which is not unique
 - [x] change names to string instead of list
 - [ ] change `@base` and IRIs to work correctly
-- [ ] check validity before export
+    - [ ] => check with backend, if it works like that
 - [ ] layout:
     - [ ] long abstract hides buttons
     - [ ] rethink tabs order
@@ -19,6 +19,8 @@
 
 ### medium size changes
 
+- [ ] add "copy ttl to clipboard" button
+- [ ] check validity before export
 - [ ] switching qualified attribution should change role too
 - [ ] add language tag to string properties
 - [ ] allow deleting last Person/Organization/Dataset
