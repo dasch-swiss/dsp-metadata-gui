@@ -86,9 +86,14 @@ class DataHandling:
         self.export_rdf(project.path, graph)
 
     def import_project(self, path):
-        with open(path, 'rb') as f:
-            dataset = pickle.load(f)
-            self.projects.append(dataset)
+        try:
+            with open(path, 'rb') as f:
+                dataset = pickle.load(f)
+                self.projects.append(dataset)
+        except Exception:
+            import traceback
+            traceback.print_exc()
+            print(f'\n\n--------\n\nCould not import file: {path}')
 
     def export_rdf(self, path, graph, show=True):
         path += '/metadata'
