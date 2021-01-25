@@ -12,6 +12,7 @@ from dspMetadataGUI.util.metaDataHelpers import CalendarDlg
 
 ################# TODO List #################
 #
+# - Ensure that metadata is created anew when zip&export is called
 # - Add some sort of 'import from RDF' functionality
 # - document all methods
 # - document distribution process etc.
