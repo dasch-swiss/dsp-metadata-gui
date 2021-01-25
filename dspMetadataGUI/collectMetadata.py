@@ -145,10 +145,14 @@ class ProjectPanel(wx.Panel):
         new_folder_button.Bind(wx.EVT_BUTTON, self.on_add_new_project)
         button_sizer.Add(new_folder_button, 0, wx.ALL | wx.EXPAND, 7)
 
-        new_folder_button = wx.Button(self, label='Remove selected Project')
-        self.project_dependent_buttons.append(new_folder_button)
-        new_folder_button.Bind(wx.EVT_BUTTON, self.on_remove_project)
-        button_sizer.Add(new_folder_button, 0, wx.ALL | wx.EXPAND, 7)
+        import_project_button = wx.Button(self, label='Import Project')
+        import_project_button.Bind(wx.EVT_BUTTON, self.on_import_project)
+        button_sizer.Add(import_project_button, 0, wx.ALL | wx.EXPAND, 7)
+
+        remove_folder_button = wx.Button(self, label='Remove selected Project')
+        self.project_dependent_buttons.append(remove_folder_button)
+        remove_folder_button.Bind(wx.EVT_BUTTON, self.on_remove_project)
+        button_sizer.Add(remove_folder_button, 0, wx.ALL | wx.EXPAND, 7)
 
         edit_tabs_button = wx.Button(self, label='Edit selected Project')
         self.project_dependent_buttons.append(edit_tabs_button)
@@ -299,6 +303,27 @@ class ProjectPanel(wx.Panel):
             dir_list.remove('.DS_Store')
         data_handler.add_project(folder_path, shortcode, dir_list)
         self.load_view()
+
+    def on_import_project(self, event):
+        with wx.FileDialog(self, "Choose file:",
+                           style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as fd:
+            if fd.ShowModal() == wx.ID_OK:
+                f = fd.GetPath()
+                if not f.endswith('.data'):
+                    print(f'Could not import file: {f}\n  For now, only .data supported.')
+                    # LATER: allow RDF import here
+                    return
+                data_handler.import_project(f)
+                self.load_view()
+                # TODO: is that all, here?
+                
+        # selected = self.get_selected_project()
+        # msg = f"Are you sure you want to delete the Project '{selected.name} ({selected.shortcode})'"
+        # with wx.MessageDialog(self, "Sure?", msg, wx.YES_NO) as dlg:
+        #     if dlg.ShowModal() == wx.ID_YES:
+        #         data_handler.remove_project(selected)
+        #         self.list_ctrl.DeleteAllItems()
+        #         self.load_view()
 
     def on_remove_project(self, event):
         selected = self.get_selected_project()

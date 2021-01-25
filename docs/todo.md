@@ -11,7 +11,6 @@
 - [x] relative URI of DMP is only `<DMP>` which is not unique
 - [x] change names to string instead of list
 - [ ] change `@base` and IRIs to work correctly
-    - [ ] => check with backend, if it works like that
 - [ ] layout:
     - [ ] long abstract hides buttons
     - [ ] rethink tabs order
@@ -42,7 +41,8 @@
 - [ ] note on venv recommendation
 - [ ] Update UML diagram
 - [ ] Include UML diagram
-- [ ] Restructure documentation
+- [x] Restructure documentation
+- [ ] document import pickle function
 - [ ] Write documentation files:
     - [x] index
     - [x] Readme

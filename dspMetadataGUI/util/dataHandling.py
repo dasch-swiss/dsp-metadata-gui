@@ -85,6 +85,11 @@ class DataHandling:
         graph = project.generate_rdf_graph()
         self.export_rdf(project.path, graph)
 
+    def import_project(self, path):
+        with open(path, 'rb') as f:
+            dataset = pickle.load(f)
+            self.projects.append(dataset)
+
     def export_rdf(self, path, graph, show=True):
         path += '/metadata'
         if not os.path.exists(path):
@@ -122,7 +127,8 @@ class DataHandling:
         for f in dataset.files:
             shutil.copy(os.path.join(p, f), tmp)
         shutil.copytree(meta, tmp_m, dirs_exist_ok=True)
-        with open(os.path.join(pickle_path, 'repos.data'), mode='wb') as pick:
+        shortcode = dataset.shortcode
+        with open(os.path.join(pickle_path, f'project_{shortcode}.data'), mode='wb') as pick:
             pickle.dump(dataset, pick)
         shutil.make_archive(target_file, 'zip', tmp)
         shutil.rmtree(tmp, ignore_errors=True)
