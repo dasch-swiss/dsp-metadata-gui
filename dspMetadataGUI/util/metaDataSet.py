@@ -150,7 +150,8 @@ class MetaDataSet:
         Returns:
             Graph: The RDF graph
         """
-        graph = Graph(base=dsp_repo)
+        # graph = Graph(base=dsp_repo)  # LATER: should be re-added
+        graph = Graph()
         graph.bind("dsp-repo", dsp_repo)
         graph.bind("schema", SDO)
         graph.bind("xsd", XSD)
@@ -283,7 +284,7 @@ class DataClass(ABC):
         shortcode = self.get_metadataset().project.shortcode.value
         if not shortcode:
             shortcode = "xxxx"
-        classname = '#dsp-' + shortcode + self.iri_suffix
+        classname = 'dsp-' + shortcode + self.iri_suffix
         return URIRef(dsp_repo[classname])
 
     @abstractmethod
@@ -931,11 +932,11 @@ class Property():
             elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
                 if v[0] or v[1]:
                     try:
-                        dmp = URIRef(f'#dsp-{self.meta.shortcode}-dmp')
+                        dmp = URIRef(dsp_repo[f'dsp-{self.meta.shortcode}-dmp'])
                     except Exception as e:
                         print(f'Warning: DMP has non-unique IRI ({e})')
                         # LATER: this should not be necessary anymore. remove with next breaking changes
-                        dmp = URIRef('#dmp')
+                        dmp = URIRef(dsp_repo['dmp'])
                     g.add((subject, self.predicate, dmp))
                     g.add((dmp, RDF.type, dsp_repo.DataManagementPlan))
                     if v[0]:
