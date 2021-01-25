@@ -613,7 +613,7 @@ class Dataset(DataClass):
         ]
 
     def __str__(self):
-        classname = str(self.get_rdf_iri()).split('##')[1]
+        classname = str(self.get_rdf_iri()).split('#')[1]
         n1 = "<title missing>"
         if self.title.value:
             n1 = self.title.value
@@ -690,7 +690,7 @@ class Person(DataClass):
         ]
 
     def __str__(self):
-        classname = str(self.get_rdf_iri()).split('##')[1]
+        classname = str(self.get_rdf_iri()).split('#')[1]
         # classname = str(self.get_rdf_iri())
         n1 = "<first name missing>"
         if self.givenName.value:
@@ -748,7 +748,7 @@ class Organization(DataClass):
         ]
 
     def __str__(self):
-        classname = str(self.get_rdf_iri()).split('##')[1]
+        classname = str(self.get_rdf_iri()).split('#')[1]
         n1 = "<name missing>"
         if self.name.value:
             n1 = " / ".join(self.name.value)
@@ -802,7 +802,7 @@ class Grant(DataClass):
         ]
 
     def __str__(self):
-        classname = str(self.get_rdf_iri()).split('##')[1]
+        classname = str(self.get_rdf_iri()).split('#')[1]
         n1 = "<funder missing>"
         v = self.funder.value
         if v:
@@ -921,7 +921,7 @@ class Property():
                 b2 = BNode()
                 g.add((b1, SDO.propertyID, b2))
                 g.add((b2, RDF.type, SDO.PropertyValue))
-                g.add((b2, SDO.propertyID, Literal("Geonames")))
+                g.add((b2, SDO.propertyID, Literal("Geonames")))  # FIXME: not always the case!
                 g.add((b2, SDO.url, Literal(v)))
             elif datatype == Datatype.PERSON:
                 g.add((subject, self.predicate, v.get_rdf_iri()))
