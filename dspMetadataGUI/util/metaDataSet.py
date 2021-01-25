@@ -918,11 +918,11 @@ class Property():
                 b1 = BNode()
                 g.add((b0, SDO.url, b1))
                 g.add((b1, RDF.type, SDO.URL))
+                g.add((b1, SDO.url, Literal(v)))
                 b2 = BNode()
                 g.add((b1, SDO.propertyID, b2))
                 g.add((b2, RDF.type, SDO.PropertyValue))
                 g.add((b2, SDO.propertyID, Literal("Geonames")))  # FIXME: not always the case!
-                g.add((b2, SDO.url, Literal(v)))
             elif datatype == Datatype.PERSON:
                 g.add((subject, self.predicate, v.get_rdf_iri()))
             elif datatype == Datatype.ORGANIZATION:
