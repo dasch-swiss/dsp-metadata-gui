@@ -114,7 +114,8 @@ class DataHandling:
         if not target:
             target = dataset.path
         target_file = os.path.join(target, dataset.name)
-        # TODO: create metadata if necessary
+        # ensure that metadata is up to date  # LATER: should not be necessary, once this is done upon saving
+        self.export_rdf(dataset.path, dataset.generate_rdf_graph())
         p = dataset.path
         tmp = os.path.join(p, '.tmp')
         meta = os.path.join(p, 'metadata')

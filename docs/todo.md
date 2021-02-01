@@ -20,7 +20,7 @@
 
 - [ ] check validity before export
 - [ ] for URLs (including place), get more reasonable propertyID values
-- [ ] ensure that RDF is up to date when exporting
+- [x] ensure that RDF is up to date when exporting
 - [ ] store .ttl upon change/save instead of creating it on the fly all the time
 - [ ] switching qualified attribution should change role too
 - [ ] add language tag to string properties
