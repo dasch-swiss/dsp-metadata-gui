@@ -128,16 +128,18 @@ class ProjectPanel(wx.Panel):
         # Create turtle preview
         bottom_sizer = wx.FlexGridSizer(1, 2, 10, 10)
         bottom_sizer.AddGrowableCol(0)
-        scroller = scrolledPanel.ScrolledPanel(self)
-        rdf_display = wx.StaticText(scroller, label="No Project selected.")
+        # scroller = scrolledPanel.ScrolledPanel(self)
+        # rdf_display = wx.TextCtrl(scroller, value="No Project selected.")
+        rdf_display = wx.TextCtrl(self, value="No Project selected.", style=wx.TE_READONLY | wx.TE_MULTILINE)
         self.rdf_display = rdf_display
-        scroller.SetMinSize((-1, 400))
-        scroller.SetAutoLayout(1)
-        scroller.SetupScrolling(scroll_x=True, scroll_y=True)
-        innermost = wx.BoxSizer()
-        innermost.Add(rdf_display, flag=wx.EXPAND)
-        scroller.SetSizer(innermost)
-        bottom_sizer.Add(scroller, flag=wx.EXPAND)
+        # scroller.SetMinSize((-1, 400))
+        # scroller.SetAutoLayout(1)
+        # scroller.SetupScrolling(scroll_x=True, scroll_y=True)
+        # innermost = wx.BoxSizer()
+        # innermost.Add(rdf_display, flag=wx.EXPAND)
+        # scroller.SetSizer(innermost)
+        bottom_sizer.Add(rdf_display, flag=wx.EXPAND)
+        # bottom_sizer.Add(scroller, flag=wx.EXPAND)
 
         # Create Buttons
         button_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -264,7 +266,7 @@ class ProjectPanel(wx.Panel):
             txt = project.get_turtle()
         else:
             txt = "No project selected."
-        self.rdf_display.SetLabel(txt)
+        self.rdf_display.SetValue(txt)
 
     def get_selected_project(self) -> MetaDataSet:
         selection = self.list_ctrl.GetFirstSelected()

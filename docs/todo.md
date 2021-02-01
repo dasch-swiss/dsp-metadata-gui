@@ -10,7 +10,7 @@
 - [x] fix to-string of Grant class
 - [x] relative URI of DMP is only `<DMP>` which is not unique
 - [x] change names to string instead of list
-- [ ] change `@base` and IRIs to work correctly
+- [x] change `@base` and IRIs to work correctly
 - [ ] layout:
     - [ ] long abstract hides buttons
     - [ ] rethink tabs order
