@@ -285,15 +285,6 @@ class ProjectPanel(wx.Panel):
                     return
                 data_handler.import_project(f)
                 self.refresh_view()
-                # TODO: is that all, here?
-                
-        # selected = self.get_selected_project()
-        # msg = f"Are you sure you want to delete the Project '{selected.name} ({selected.shortcode})'"
-        # with wx.MessageDialog(self, "Sure?", msg, wx.YES_NO) as dlg:
-        #     if dlg.ShowModal() == wx.ID_YES:
-        #         data_handler.remove_project(selected)
-        #         self.list_ctrl.DeleteAllItems()
-        #         self.load_view()
 
     def on_remove_project(self, event):
         selected = self.get_selected_project()
@@ -800,9 +791,6 @@ class PropertyRow():
         self.validity_msg = msg
 
     def set_value(self, val):
-        """
-        # TODO: doc
-        """
         datatype = self.prop.datatype
         cardinality = self.prop.cardinality
         undefined = False
@@ -1000,15 +988,20 @@ class DataTab(scrolledPanel.ScrolledPanel):
         """
         if not addable:  # is None
             return
-        if isinstance(widget, tuple):
+        if isinstance(widget, tuple):  # Attribution, i.e. two inputs
             role = addable[0]
             agent = addable[1]
             if not role or not agent or \
                     role.isspace() or agent.isspace() or \
                     agent == "Select to add":
                 print('invalid input')
-                # TODO: check, if already in there
                 return
+            for i in range(content_list.GetItemCount()):
+                r = content_list.GetItem(i, 0).GetText()
+                a = content_list.GetItem(i, 1).GetText()
+                if r == role and a == agent:
+                    print('Item already exists')
+                    return
             content_list.Append((role, agent))
         else:
             if str(addable).isspace() or \
