@@ -16,12 +16,6 @@ from . import utils
 from .utils import Cardinality, Datatype, Validity
 
 
-##### TODO-List #####
-#
-# - don't add person/org/etc. to graph, unless they're referenced somewhere
-#
-#####################
-
 ontology_url = "https://raw.githubusercontent.com/dasch-swiss/dsp-ontologies/main/dsp-repository/v1/dsp-repository.shacl.ttl"
 dsp_repo = Namespace("http://ns.dasch.swiss/repository#")
 prov = Namespace("http://www.w3.org/ns/prov#")
@@ -83,7 +77,7 @@ class MetaDataSet:
         self.files = []
         self.project = Project(name, shortcode, self)
         self.dataset = [Dataset(name, self.project, self)]
-        self.persons = [Person(self)]  # FIXME: persons get wiped on every load - or does it?
+        self.persons = [Person(self)]
         self.organizations = [Organization(self)]
         self.grants = [Grant(self)]
         self.update_iris()
@@ -848,7 +842,7 @@ class Property():
         """
         if re.search('skos\\.um\\.es', url):
             return "SKOS UNESCO Nomenclature"
-        # TODO: more
+        # TODO: more propertyID's
         loc = urlparse(url).netloc
         if len(loc.split('.')) > 2:
             return '.'.join(loc.split('.')[1:])
@@ -922,7 +916,7 @@ class Property():
                 b2 = BNode()
                 g.add((b1, SDO.propertyID, b2))
                 g.add((b2, RDF.type, SDO.PropertyValue))
-                g.add((b2, SDO.propertyID, Literal("Geonames")))  # FIXME: not always the case!
+                g.add((b2, SDO.propertyID, Literal("Geonames")))  # TODO: not always the case!
             elif datatype == Datatype.PERSON:
                 g.add((subject, self.predicate, v.get_rdf_iri()))
             elif datatype == Datatype.ORGANIZATION:

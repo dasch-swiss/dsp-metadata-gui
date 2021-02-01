@@ -1023,7 +1023,6 @@ class DataTab(scrolledPanel.ScrolledPanel):
     def remove_from_list(self, event, content_list):
         """
         remove an object from a listbox.
-
         """
         if isinstance(content_list, wx.ListCtrl):
             selection = content_list.GetFirstSelected()

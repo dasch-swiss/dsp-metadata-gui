@@ -19,19 +19,21 @@
 ### medium size changes
 
 - [ ] check validity before export
+- [ ] for URLs (including place), get more reasonable propertyID values
 - [ ] ensure that RDF is up to date when exporting
 - [ ] store .ttl upon change/save instead of creating it on the fly all the time
 - [ ] switching qualified attribution should change role too
 - [ ] add language tag to string properties
 - [ ] allow deleting last Person/Organization/Dataset
 - [ ] rework export function: let user decide what they want (file format, where to store, entire zip, ...)
+- [ ] avoid adding persons/etc to graph, if not referenced anywhere
 
 ### major changes
 
 - [ ] have versioning in pickles
 - [ ] try to handle pickles from older versions
 - [ ] implement upload to DSP functionality
-- [ ] implement import from functionality
+- [ ] implement import from RDF functionality
 
 
 ## Documentation
@@ -71,6 +73,7 @@
 - [ ] investigate issue on windows
 - [ ] investigate `ssl.SSLCertVerificationError`
 - [ ] look into `__init__.py`
+- [ ] have another look at imports and why it doesn't run directly from script, only with installation
 
 ## Nice to Have
 - [ ] rdf graph visualization

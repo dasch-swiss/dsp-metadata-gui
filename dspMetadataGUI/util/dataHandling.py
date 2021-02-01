@@ -61,9 +61,6 @@ class DataHandling:
             return
         with open(self.data_storage, 'rb') as file:
             self.projects = pickle.load(file)
-            # LATER: in principal, we could append the data instead of replacing it
-            # (for loading multiple data sets and combining them)
-            # would have to make sure the indices are correct and no doubles are being added
 
     def save_data(self):
         """
@@ -76,7 +73,6 @@ class DataHandling:
             pickle.dump(self.projects, file)
 
     def validate_and_export_data(self, index: int) -> tuple:
-        # TODO: how do process_data and validate_graph really divide labour?
         project = self.projects[index]
         validation_result = self.validate_graph(project)
         graph = project.generate_rdf_graph()
