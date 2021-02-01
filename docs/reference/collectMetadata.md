@@ -71,11 +71,9 @@ and provides an edit button. -->
 
 ::: dspMetadataGUI.collectMetadata:ProjectPanel.create_header
 
-::: dspMetadataGUI.collectMetadata:ProjectPanel.load_view
+::: dspMetadataGUI.collectMetadata:ProjectPanel.refresh_view
 
 ::: dspMetadataGUI.collectMetadata:ProjectPanel.on_edit_tabbed
-
-::: dspMetadataGUI.collectMetadata:ProjectPanel.on_process_data
 
 ::: dspMetadataGUI.collectMetadata:ProjectPanel.add_new_project
 

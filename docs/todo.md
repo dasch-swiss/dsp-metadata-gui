@@ -40,13 +40,13 @@
 
 ### Usage Documentation
 
-- [ ] minimum python version
-- [ ] note on issues with conda
-- [ ] note on venv recommendation
+- [x] minimum python version
+- [x] note on issues with conda
+- [x] note on venv recommendation
 - [ ] Update UML diagram
 - [ ] Include UML diagram
 - [x] Restructure documentation
-- [ ] document import pickle function
+- [x] document import pickle function
 - [ ] Write documentation files:
     - [x] index
     - [x] Readme
