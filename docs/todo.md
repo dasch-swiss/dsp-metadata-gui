@@ -24,6 +24,7 @@
 - [ ] switching qualified attribution should change role too
 - [ ] add language tag to string properties
 - [ ] allow deleting last Person/Organization/Dataset
+- [ ] rework export function: let user decide what they want (file format, where to store, entire zip, ...)
 
 ### major changes
 

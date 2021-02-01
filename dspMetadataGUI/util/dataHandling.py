@@ -75,15 +75,13 @@ class DataHandling:
         with open(self.data_storage, 'wb') as file:
             pickle.dump(self.projects, file)
 
-    def process_data(self, index: int):
-        """
-        ToDo: implement this class.
-        """
+    def validate_and_export_data(self, index: int) -> tuple:
         # TODO: how do process_data and validate_graph really divide labour?
         project = self.projects[index]
-        self.validate_graph(project)
+        validation_result = self.validate_graph(project)
         graph = project.generate_rdf_graph()
         self.export_rdf(project.path, graph)
+        return validation_result
 
     def import_project(self, path):
         try:

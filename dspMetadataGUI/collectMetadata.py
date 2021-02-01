@@ -139,7 +139,7 @@ class ProjectPanel(wx.Panel):
 
         process_xml_button = wx.Button(self, label='Export selected Project as RDF')
         self.project_dependent_buttons.append(process_xml_button)
-        process_xml_button.Bind(wx.EVT_BUTTON, self.on_process_data)
+        process_xml_button.Bind(wx.EVT_BUTTON, self.export_data)
         button_sizer.Add(process_xml_button, 0, wx.ALL | wx.EXPAND, 7)
 
         zip_and_export_btn = wx.Button(self, label='ZIP and Export Project')
@@ -153,7 +153,7 @@ class ProjectPanel(wx.Panel):
         self.SetSizer(main_sizer)
         self.Fit()
         self.create_header()
-        self.load_view()
+        self.refresh_view()
         self.Layout()
 
     def __on_zip_and_export(self, event):
@@ -211,8 +211,7 @@ class ProjectPanel(wx.Panel):
         self.list_ctrl.InsertColumn(3, 'List of files', width=340)
         self.list_ctrl.InsertColumn(4, 'Status', width=350)
 
-    def load_view(self):
-        # TODO: rename to refresh
+    def refresh_view(self):
         self.refresh_repos()
         self.display_rdf()
         self.refresh_buttons()
@@ -255,12 +254,12 @@ class ProjectPanel(wx.Panel):
             window.Show()
             self.Disable()
 
-    def on_process_data(self, event):
+    def export_data(self, event):
         """ Set selection and call create_xml """
-        # TODO: what does that actually do? export data? -> rename? rework?
         selection = self.list_ctrl.GetFocusedItem()
         if selection >= 0:
-            data_handler.process_data(selection)
+            res = data_handler.validate_and_export_data(selection)
+            print(res[0])
             # LATER: let this return indication of success. display something to the user.
 
     def add_new_project(self, folder_path, shortcode):
@@ -273,7 +272,7 @@ class ProjectPanel(wx.Panel):
         if '.DS_Store' in dir_list:
             dir_list.remove('.DS_Store')
         data_handler.add_project(folder_path, shortcode, dir_list)
-        self.load_view()
+        self.refresh_view()
 
     def on_import_project(self, event):
         with wx.FileDialog(self, "Choose file:",
@@ -285,7 +284,7 @@ class ProjectPanel(wx.Panel):
                     # LATER: allow RDF import here
                     return
                 data_handler.import_project(f)
-                self.load_view()
+                self.refresh_view()
                 # TODO: is that all, here?
                 
         # selected = self.get_selected_project()
@@ -303,7 +302,7 @@ class ProjectPanel(wx.Panel):
             if dlg.ShowModal() == wx.ID_YES:
                 data_handler.remove_project(selected)
                 self.list_ctrl.DeleteAllItems()
-                self.load_view()
+                self.refresh_view()
 
     def on_validate(self, event):
         repo = self.get_selected_project()
@@ -318,7 +317,7 @@ class ProjectPanel(wx.Panel):
                     dlg.ShowModal()
 
     def on_item_selected(self, event):
-        self.load_view()
+        self.refresh_view()
 
 
 class TabOne(wx.Panel):
@@ -1181,7 +1180,7 @@ class TabbedWindow(wx.Frame):
 
     def close(self):
         self.parent.Enable()
-        self.parent.load_view()
+        self.parent.refresh_view()
         data_handler.current_window = None
         self.Destroy()
 
