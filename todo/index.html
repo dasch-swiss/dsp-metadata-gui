@@ -421,6 +421,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#nice-to-have" class="md-nav__link">
+    Nice to Have
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -531,6 +538,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#nice-to-have" class="md-nav__link">
+    Nice to Have
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -549,12 +563,12 @@
 <h3 id="minor-changes-fixes">minor changes / fixes</h3>
 <ul class="task-list">
 <li class="task-list-item"><input type="checkbox" disabled checked/> fix layout issue in dataset tab</li>
-<li class="task-list-item"><input type="checkbox" disabled/> unify capitalization in GUI</li>
-<li class="task-list-item"><input type="checkbox" disabled/> make end date optional</li>
-<li class="task-list-item"><input type="checkbox" disabled/> fix to-string of Grant class</li>
-<li class="task-list-item"><input type="checkbox" disabled/> change names to string instead of list</li>
-<li class="task-list-item"><input type="checkbox" disabled/> change <code>@base</code> and IRIs to work correctly</li>
-<li class="task-list-item"><input type="checkbox" disabled/> check validity before export</li>
+<li class="task-list-item"><input type="checkbox" disabled checked/> unify capitalization in GUI</li>
+<li class="task-list-item"><input type="checkbox" disabled checked/> make end date optional</li>
+<li class="task-list-item"><input type="checkbox" disabled checked/> fix to-string of Grant class</li>
+<li class="task-list-item"><input type="checkbox" disabled checked/> relative URI of DMP is only <code>&lt;DMP&gt;</code> which is not unique</li>
+<li class="task-list-item"><input type="checkbox" disabled checked/> change names to string instead of list</li>
+<li class="task-list-item"><input type="checkbox" disabled checked/> change <code>@base</code> and IRIs to work correctly</li>
 <li class="task-list-item"><input type="checkbox" disabled/> layout:<ul class="task-list">
 <li class="task-list-item"><input type="checkbox" disabled/> long abstract hides buttons</li>
 <li class="task-list-item"><input type="checkbox" disabled/> rethink tabs order</li>
@@ -564,24 +578,33 @@
 </ul>
 <h3 id="medium-size-changes">medium size changes</h3>
 <ul class="task-list">
+<li class="task-list-item"><input type="checkbox" disabled/> check validity before export</li>
+<li class="task-list-item"><input type="checkbox" disabled/> for URLs (including place), get more reasonable propertyID values</li>
+<li class="task-list-item"><input type="checkbox" disabled checked/> ensure that RDF is up to date when exporting</li>
+<li class="task-list-item"><input type="checkbox" disabled/> store .ttl upon change/save instead of creating it on the fly all the time</li>
 <li class="task-list-item"><input type="checkbox" disabled/> switching qualified attribution should change role too</li>
 <li class="task-list-item"><input type="checkbox" disabled/> add language tag to string properties</li>
 <li class="task-list-item"><input type="checkbox" disabled/> allow deleting last Person/Organization/Dataset</li>
+<li class="task-list-item"><input type="checkbox" disabled/> rework export function: let user decide what they want (file format, where to store, entire zip, ...)</li>
+<li class="task-list-item"><input type="checkbox" disabled/> avoid adding persons/etc to graph, if not referenced anywhere</li>
 </ul>
 <h3 id="major-changes">major changes</h3>
 <ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled/> implement DSP import functionality</li>
-<li class="task-list-item"><input type="checkbox" disabled/> implement RDF import functionality</li>
+<li class="task-list-item"><input type="checkbox" disabled/> have versioning in pickles</li>
+<li class="task-list-item"><input type="checkbox" disabled/> try to handle pickles from older versions</li>
+<li class="task-list-item"><input type="checkbox" disabled/> implement upload to DSP functionality</li>
+<li class="task-list-item"><input type="checkbox" disabled/> implement import from RDF functionality</li>
 </ul>
 <h2 id="documentation">Documentation</h2>
 <h3 id="usage-documentation">Usage Documentation</h3>
 <ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled/> minimum python version</li>
-<li class="task-list-item"><input type="checkbox" disabled/> note on issues with conda</li>
-<li class="task-list-item"><input type="checkbox" disabled/> note on venv recommendation</li>
+<li class="task-list-item"><input type="checkbox" disabled checked/> minimum python version</li>
+<li class="task-list-item"><input type="checkbox" disabled checked/> note on issues with conda</li>
+<li class="task-list-item"><input type="checkbox" disabled checked/> note on venv recommendation</li>
 <li class="task-list-item"><input type="checkbox" disabled/> Update UML diagram</li>
 <li class="task-list-item"><input type="checkbox" disabled/> Include UML diagram</li>
-<li class="task-list-item"><input type="checkbox" disabled/> Restructure documentation</li>
+<li class="task-list-item"><input type="checkbox" disabled checked/> Restructure documentation</li>
+<li class="task-list-item"><input type="checkbox" disabled checked/> document import pickle function</li>
 <li class="task-list-item"><input type="checkbox" disabled/> Write documentation files:<ul class="task-list">
 <li class="task-list-item"><input type="checkbox" disabled checked/> index</li>
 <li class="task-list-item"><input type="checkbox" disabled checked/> Readme</li>
@@ -607,6 +630,19 @@
 <li class="task-list-item"><input type="checkbox" disabled/> find out what the real minimum python version is (3.9 is rather high)</li>
 <li class="task-list-item"><input type="checkbox" disabled/> investigate issue on windows</li>
 <li class="task-list-item"><input type="checkbox" disabled/> investigate <code>ssl.SSLCertVerificationError</code></li>
+<li class="task-list-item"><input type="checkbox" disabled/> look into <code>__init__.py</code></li>
+<li class="task-list-item"><input type="checkbox" disabled/> have another look at imports and why it doesn't run directly from script, only with installation</li>
+</ul>
+<h2 id="nice-to-have">Nice to Have</h2>
+<ul class="task-list">
+<li class="task-list-item"><input type="checkbox" disabled/> rdf graph visualization</li>
+<li class="task-list-item"><input type="checkbox" disabled/> Proper Menu</li>
+<li class="task-list-item"><input type="checkbox" disabled/> Options<ul class="task-list">
+<li class="task-list-item"><input type="checkbox" disabled/> Save on Tab-Change</li>
+</ul>
+</li>
+<li class="task-list-item"><input type="checkbox" disabled/> Help</li>
+<li class="task-list-item"><input type="checkbox" disabled/> when adding a project, allow selecting an existing DSP project and get metadata from there, if any.</li>
 </ul>
                 
               
