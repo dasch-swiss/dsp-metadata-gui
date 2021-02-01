@@ -367,7 +367,8 @@ class TabOne(wx.Panel):
         self.SetSizer(sizer)
 
     def show_help(self, evt, message, sample):
-        win = HelpPopup(self, message, sample)
+        msg = f"Description:\n{message}\n\nExample:\n{sample}"
+        win = HelpPopup(self, msg)
         btn = evt.GetEventObject()
         pos = btn.ClientToScreen((0, 0))
         sz = btn.GetSize()

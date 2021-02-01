@@ -12,8 +12,9 @@
 - [x] change names to string instead of list
 - [x] change `@base` and IRIs to work correctly
 - [ ] layout:
-    - [ ] long abstract hides buttons
+    - [ ] long abstract etc. hides buttons
     - [ ] rethink tabs order
+    - [ ] make RDF preview scale with window size
     - [ ] ... (anythng else?)
 
 ### medium size changes
