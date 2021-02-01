@@ -10,30 +10,6 @@ from dspMetadataGUI.util.utils import Cardinality, Datatype, Validity
 from dspMetadataGUI.util.metaDataHelpers import CalendarDlg
 
 
-################# TODO List #################
-#
-# - Ensure that metadata is created anew when zip&export is called
-# - Add some sort of 'import from RDF' functionality
-# - document all methods
-# - document distribution process etc.
-# - implement "zip and export" functionality
-# - implement "upload to dsp" functionality
-#
-# ### for publishing:
-#
-# - remove all print() statements
-# - imports in __init__.py
-# - setup.py
-# - setup.cfg
-#
-#############################################
-
-################ Idea List ##################
-#
-# - Graph visualization would be nice
-#
-#############################################
-
 def collectMetadata():
     """
     Runner function that launches the app.
@@ -78,10 +54,8 @@ class ProjectFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.__on_save, source=save_menu_item)
         menu_bar.Append(file_menu, '&File')
         options_menu = wx.Menu()
-        # LATER: add `save on tab change` option
         menu_bar.Append(options_menu, '&Options')
         options_help = wx.Menu()
-        # LATER: add `Show Help` option
         menu_bar.Append(options_help, '&Help')
         self.SetMenuBar(menu_bar)
 
@@ -96,7 +70,7 @@ class ProjectFrame(wx.Frame):
 
 
 class ProjectPanel(wx.Panel):
-    def __init__(self, parent: ProjectFrame, selection=None):
+    def __init__(self, parent: ProjectFrame):
         """
         Panel containing the contents of the application's main window.
 
@@ -107,9 +81,6 @@ class ProjectPanel(wx.Panel):
 
         Args:
             parent (ProjectFrame): The parent frame to hold this panel.
-            selection ([type], optional): [description]. Defaults to None.
-
-        TODO: remove selection param?
         """
         super().__init__(parent)
         self.folder_path = ""
@@ -209,7 +180,6 @@ class ProjectPanel(wx.Panel):
                 return
         else:
             return
-        # LATER: should be able to chose an existing project here
         title = "Choose a directory:"
         dlg = wx.DirDialog(self, title, style=wx.DD_DEFAULT_STYLE)
         if dlg.ShowModal() == wx.ID_OK:
@@ -243,7 +213,6 @@ class ProjectPanel(wx.Panel):
 
     def load_view(self):
         # TODO: rename to refresh
-        # TODO: ensure that no remainder of a deleted project is displayed
         self.refresh_repos()
         self.display_rdf()
         self.refresh_buttons()

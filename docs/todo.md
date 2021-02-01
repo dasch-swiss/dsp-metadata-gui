@@ -18,18 +18,19 @@
 
 ### medium size changes
 
-- [ ] add "copy ttl to clipboard" button
 - [ ] check validity before export
+- [ ] ensure that RDF is up to date when exporting
+- [ ] store .ttl upon change/save instead of creating it on the fly all the time
 - [ ] switching qualified attribution should change role too
 - [ ] add language tag to string properties
 - [ ] allow deleting last Person/Organization/Dataset
-- [ ] have versioning in pickles
-- [ ] try to handle pickles from older versions
 
 ### major changes
 
-- [ ] implement DSP import functionality
-- [ ] implement RDF import functionality
+- [ ] have versioning in pickles
+- [ ] try to handle pickles from older versions
+- [ ] implement upload to DSP functionality
+- [ ] implement import from functionality
 
 
 ## Documentation
@@ -68,3 +69,12 @@
 - [ ] find out what the real minimum python version is (3.9 is rather high)
 - [ ] investigate issue on windows
 - [ ] investigate `ssl.SSLCertVerificationError`
+- [ ] look into `__init__.py`
+
+## Nice to Have
+- [ ] rdf graph visualization
+- [ ] Proper Menu
+  - [ ] Options
+    - [ ] Save on Tab-Change
+  - [ ] Help
+- [ ] when adding a project, allow selecting an existing DSP project and get metadata from there, if any.
