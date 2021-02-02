@@ -28,6 +28,7 @@
 - [ ] allow deleting last Person/Organization/Dataset
 - [ ] rework export function: let user decide what they want (file format, where to store, entire zip, ...)
 - [ ] avoid adding persons/etc to graph, if not referenced anywhere
+- [ ] in attribution, ensure same person can have multiple roles, rather than having multiple attributions with same person
 
 ### major changes
 

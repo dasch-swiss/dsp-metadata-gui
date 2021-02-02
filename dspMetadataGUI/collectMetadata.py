@@ -106,11 +106,11 @@ class ProjectPanel(wx.Panel):
         # scroller.SetMinSize((-1, 400))
         # scroller.SetAutoLayout(1)
         # scroller.SetupScrolling(scroll_x=True, scroll_y=True)
-        # innermost = wx.BoxSizer()
-        # innermost.Add(rdf_display, flag=wx.EXPAND)
+        innermost = wx.BoxSizer()
+        innermost.Add(rdf_display, flag=wx.EXPAND)  # FIXME: doesn't show correctly
         # scroller.SetSizer(innermost)
-        bottom_sizer.Add(rdf_display, flag=wx.EXPAND)
-        # bottom_sizer.Add(scroller, flag=wx.EXPAND)
+        # bottom_sizer.Add(rdf_display, flag=wx.EXPAND)
+        bottom_sizer.Add(innermost, flag=wx.EXPAND)
 
         # Create Buttons
         button_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -439,7 +439,8 @@ class PropertyRow():
                     textcontrol = wx.TextCtrl(scroller, style=wx.TE_PROCESS_ENTER)
                     textcontrol.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
                 scroll_sizer.Add(textcontrol, flag=wx.EXPAND)
-                scroller.SetBackgroundColour('#FF0000')
+                # scroll_sizer.Add(wx.Button(scroller, label='blahhhh'))
+                scroller.SetBackgroundColour('#004400')  # XXX: remove
                 scroller.Sizer = scroll_sizer
                 scroller.SetupScrolling(scroll_x=True, scroll_y=False)
                 sizer.Add(scroller, flag=wx.EXPAND)
@@ -510,13 +511,13 @@ class PropertyRow():
                     inner_sizer.Add(button_sizer)
                 else:
                     inner_sizer = wx.BoxSizer()
-                    textcontrol = wx.TextCtrl(scroller, style=wx.TE_PROCESS_ENTER)
+                    textcontrol = wx.TextCtrl(scroller, style=wx.TE_PROCESS_ENTER, size=(300, -1))
                     textcontrol.Bind(wx.EVT_TEXT_ENTER,
                                      lambda e: parent.add_to_list(e,
                                                                   content_list,
                                                                   textcontrol,
                                                                   textcontrol.GetValue()))
-                    inner_sizer.Add(textcontrol, 1)
+                    inner_sizer.Add(textcontrol, 0)
                     inner_sizer.AddSpacer(5)
                     button_sizer = wx.BoxSizer(wx.VERTICAL)
                     plus_button = wx.Button(scroller, label="+")
@@ -538,7 +539,7 @@ class PropertyRow():
                     inner_sizer.Add(content_list, 1, flag=wx.EXPAND)
                 # sizer.Add(inner_sizer, flag=wx.EXPAND)
                 scroll_sizer.Add(inner_sizer, flag=wx.EXPAND)
-                scroller.SetBackgroundColour('#00FF00')
+                scroller.SetBackgroundColour('#004400')  # XXX: remove
                 scroller.Sizer = scroll_sizer
                 scroller.SetupScrolling(scroll_x=True, scroll_y=False)
                 sizer.Add(scroller, flag=wx.EXPAND)
@@ -924,7 +925,7 @@ class DataTab(scrolledPanel.ScrolledPanel):
 
         if multiple:
             dataset_sizer = wx.BoxSizer()
-            dataset_listbox = wx.ListBox(self)
+            dataset_listbox = wx.ListBox(self, size=(200, -1))
             for ds in dataset:
                 dataset_listbox.Append(str(ds))
             dataset_listbox.Bind(
