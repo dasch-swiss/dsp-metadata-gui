@@ -61,9 +61,6 @@ class DataHandling:
             return
         with open(self.data_storage, 'rb') as file:
             self.projects = pickle.load(file)
-            # LATER: in principal, we could append the data instead of replacing it
-            # (for loading multiple data sets and combining them)
-            # would have to make sure the indices are correct and no doubles are being added
 
     def save_data(self):
         """
@@ -75,15 +72,22 @@ class DataHandling:
         with open(self.data_storage, 'wb') as file:
             pickle.dump(self.projects, file)
 
-    def process_data(self, index: int):
-        """
-        ToDo: implement this class.
-        """
-        # TODO: how do process_data and validate_graph really divide labour?
+    def validate_and_export_data(self, index: int) -> tuple:
         project = self.projects[index]
-        self.validate_graph(project)
+        validation_result = self.validate_graph(project)
         graph = project.generate_rdf_graph()
         self.export_rdf(project.path, graph)
+        return validation_result
+
+    def import_project(self, path):
+        try:
+            with open(path, 'rb') as f:
+                dataset = pickle.load(f)
+                self.projects.append(dataset)
+        except Exception:
+            import traceback
+            traceback.print_exc()
+            print(f'\n\n--------\n\nCould not import file: {path}')
 
     def export_rdf(self, path, graph, show=True):
         path += '/metadata'
@@ -110,7 +114,8 @@ class DataHandling:
         if not target:
             target = dataset.path
         target_file = os.path.join(target, dataset.name)
-        # TODO: create metadata if necessary
+        # ensure that metadata is up to date  # LATER: should not be necessary, once this is done upon saving
+        self.export_rdf(dataset.path, dataset.generate_rdf_graph())
         p = dataset.path
         tmp = os.path.join(p, '.tmp')
         meta = os.path.join(p, 'metadata')
@@ -122,7 +127,8 @@ class DataHandling:
         for f in dataset.files:
             shutil.copy(os.path.join(p, f), tmp)
         shutil.copytree(meta, tmp_m, dirs_exist_ok=True)
-        with open(os.path.join(pickle_path, 'repos.data'), mode='wb') as pick:
+        shortcode = dataset.shortcode
+        with open(os.path.join(pickle_path, f'project_{shortcode}.data'), mode='wb') as pick:
             pickle.dump(dataset, pick)
         shutil.make_archive(target_file, 'zip', tmp)
         shutil.rmtree(tmp, ignore_errors=True)

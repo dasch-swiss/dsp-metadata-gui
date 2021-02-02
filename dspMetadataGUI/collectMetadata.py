@@ -10,29 +10,6 @@ from dspMetadataGUI.util.utils import Cardinality, Datatype, Validity
 from dspMetadataGUI.util.metaDataHelpers import CalendarDlg
 
 
-################# TODO List #################
-#
-# - Add some sort of 'import from RDF' functionality
-# - document all methods
-# - document distribution process etc.
-# - implement "zip and export" functionality
-# - implement "upload to dsp" functionality
-#
-# ### for publishing:
-#
-# - remove all print() statements
-# - imports in __init__.py
-# - setup.py
-# - setup.cfg
-#
-#############################################
-
-################ Idea List ##################
-#
-# - Graph visualization would be nice
-#
-#############################################
-
 def collectMetadata():
     """
     Runner function that launches the app.
@@ -77,10 +54,8 @@ class ProjectFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.__on_save, source=save_menu_item)
         menu_bar.Append(file_menu, '&File')
         options_menu = wx.Menu()
-        # LATER: add `save on tab change` option
         menu_bar.Append(options_menu, '&Options')
         options_help = wx.Menu()
-        # LATER: add `Show Help` option
         menu_bar.Append(options_help, '&Help')
         self.SetMenuBar(menu_bar)
 
@@ -95,7 +70,7 @@ class ProjectFrame(wx.Frame):
 
 
 class ProjectPanel(wx.Panel):
-    def __init__(self, parent: ProjectFrame, selection=None):
+    def __init__(self, parent: ProjectFrame):
         """
         Panel containing the contents of the application's main window.
 
@@ -106,9 +81,6 @@ class ProjectPanel(wx.Panel):
 
         Args:
             parent (ProjectFrame): The parent frame to hold this panel.
-            selection ([type], optional): [description]. Defaults to None.
-
-        TODO: remove selection param?
         """
         super().__init__(parent)
         self.folder_path = ""
@@ -127,16 +99,18 @@ class ProjectPanel(wx.Panel):
         # Create turtle preview
         bottom_sizer = wx.FlexGridSizer(1, 2, 10, 10)
         bottom_sizer.AddGrowableCol(0)
-        scroller = scrolledPanel.ScrolledPanel(self)
-        rdf_display = wx.StaticText(scroller, label="No Project selected.")
+        # scroller = scrolledPanel.ScrolledPanel(self)
+        # rdf_display = wx.TextCtrl(scroller, value="No Project selected.")
+        rdf_display = wx.TextCtrl(self, value="No Project selected.", style=wx.TE_READONLY | wx.TE_MULTILINE)
         self.rdf_display = rdf_display
-        scroller.SetMinSize((-1, 400))
-        scroller.SetAutoLayout(1)
-        scroller.SetupScrolling(scroll_x=True, scroll_y=True)
-        innermost = wx.BoxSizer()
-        innermost.Add(rdf_display, flag=wx.EXPAND)
-        scroller.SetSizer(innermost)
-        bottom_sizer.Add(scroller, flag=wx.EXPAND)
+        # scroller.SetMinSize((-1, 400))
+        # scroller.SetAutoLayout(1)
+        # scroller.SetupScrolling(scroll_x=True, scroll_y=True)
+        # innermost = wx.BoxSizer()
+        # innermost.Add(rdf_display, flag=wx.EXPAND)
+        # scroller.SetSizer(innermost)
+        bottom_sizer.Add(rdf_display, flag=wx.EXPAND)
+        # bottom_sizer.Add(scroller, flag=wx.EXPAND)
 
         # Create Buttons
         button_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -144,10 +118,14 @@ class ProjectPanel(wx.Panel):
         new_folder_button.Bind(wx.EVT_BUTTON, self.on_add_new_project)
         button_sizer.Add(new_folder_button, 0, wx.ALL | wx.EXPAND, 7)
 
-        new_folder_button = wx.Button(self, label='Remove selected Project')
-        self.project_dependent_buttons.append(new_folder_button)
-        new_folder_button.Bind(wx.EVT_BUTTON, self.on_remove_project)
-        button_sizer.Add(new_folder_button, 0, wx.ALL | wx.EXPAND, 7)
+        import_project_button = wx.Button(self, label='Import Project')
+        import_project_button.Bind(wx.EVT_BUTTON, self.on_import_project)
+        button_sizer.Add(import_project_button, 0, wx.ALL | wx.EXPAND, 7)
+
+        remove_folder_button = wx.Button(self, label='Remove selected Project')
+        self.project_dependent_buttons.append(remove_folder_button)
+        remove_folder_button.Bind(wx.EVT_BUTTON, self.on_remove_project)
+        button_sizer.Add(remove_folder_button, 0, wx.ALL | wx.EXPAND, 7)
 
         edit_tabs_button = wx.Button(self, label='Edit selected Project')
         self.project_dependent_buttons.append(edit_tabs_button)
@@ -161,7 +139,7 @@ class ProjectPanel(wx.Panel):
 
         process_xml_button = wx.Button(self, label='Export selected Project as RDF')
         self.project_dependent_buttons.append(process_xml_button)
-        process_xml_button.Bind(wx.EVT_BUTTON, self.on_process_data)
+        process_xml_button.Bind(wx.EVT_BUTTON, self.export_data)
         button_sizer.Add(process_xml_button, 0, wx.ALL | wx.EXPAND, 7)
 
         zip_and_export_btn = wx.Button(self, label='ZIP and Export Project')
@@ -175,7 +153,7 @@ class ProjectPanel(wx.Panel):
         self.SetSizer(main_sizer)
         self.Fit()
         self.create_header()
-        self.load_view()
+        self.refresh_view()
         self.Layout()
 
     def __on_zip_and_export(self, event):
@@ -202,7 +180,6 @@ class ProjectPanel(wx.Panel):
                 return
         else:
             return
-        # LATER: should be able to chose an existing project here
         title = "Choose a directory:"
         dlg = wx.DirDialog(self, title, style=wx.DD_DEFAULT_STYLE)
         if dlg.ShowModal() == wx.ID_OK:
@@ -234,9 +211,7 @@ class ProjectPanel(wx.Panel):
         self.list_ctrl.InsertColumn(3, 'List of files', width=340)
         self.list_ctrl.InsertColumn(4, 'Status', width=350)
 
-    def load_view(self):
-        # TODO: rename to refresh
-        # TODO: ensure that no remainder of a deleted project is displayed
+    def refresh_view(self):
         self.refresh_repos()
         self.display_rdf()
         self.refresh_buttons()
@@ -259,7 +234,7 @@ class ProjectPanel(wx.Panel):
             txt = project.get_turtle()
         else:
             txt = "No project selected."
-        self.rdf_display.SetLabel(txt)
+        self.rdf_display.SetValue(txt)
 
     def get_selected_project(self) -> MetaDataSet:
         selection = self.list_ctrl.GetFirstSelected()
@@ -279,12 +254,12 @@ class ProjectPanel(wx.Panel):
             window.Show()
             self.Disable()
 
-    def on_process_data(self, event):
+    def export_data(self, event):
         """ Set selection and call create_xml """
-        # TODO: what does that actually do? export data? -> rename? rework?
         selection = self.list_ctrl.GetFocusedItem()
         if selection >= 0:
-            data_handler.process_data(selection)
+            res = data_handler.validate_and_export_data(selection)
+            print(res[0])
             # LATER: let this return indication of success. display something to the user.
 
     def add_new_project(self, folder_path, shortcode):
@@ -297,7 +272,19 @@ class ProjectPanel(wx.Panel):
         if '.DS_Store' in dir_list:
             dir_list.remove('.DS_Store')
         data_handler.add_project(folder_path, shortcode, dir_list)
-        self.load_view()
+        self.refresh_view()
+
+    def on_import_project(self, event):
+        with wx.FileDialog(self, "Choose file:",
+                           style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as fd:
+            if fd.ShowModal() == wx.ID_OK:
+                f = fd.GetPath()
+                if not f.endswith('.data'):
+                    print(f'Could not import file: {f}\n  For now, only .data supported.')
+                    # LATER: allow RDF import here
+                    return
+                data_handler.import_project(f)
+                self.refresh_view()
 
     def on_remove_project(self, event):
         selected = self.get_selected_project()
@@ -306,7 +293,7 @@ class ProjectPanel(wx.Panel):
             if dlg.ShowModal() == wx.ID_YES:
                 data_handler.remove_project(selected)
                 self.list_ctrl.DeleteAllItems()
-                self.load_view()
+                self.refresh_view()
 
     def on_validate(self, event):
         repo = self.get_selected_project()
@@ -321,7 +308,7 @@ class ProjectPanel(wx.Panel):
                     dlg.ShowModal()
 
     def on_item_selected(self, event):
-        self.load_view()
+        self.refresh_view()
 
 
 class TabOne(wx.Panel):
@@ -380,7 +367,8 @@ class TabOne(wx.Panel):
         self.SetSizer(sizer)
 
     def show_help(self, evt, message, sample):
-        win = HelpPopup(self, message, sample)
+        msg = f"Description:\n{message}\n\nExample:\n{sample}"
+        win = HelpPopup(self, msg)
         btn = evt.GetEventObject()
         pos = btn.ClientToScreen((0, 0))
         sz = btn.GetSize()
@@ -821,9 +809,6 @@ class PropertyRow():
         self.validity_msg = msg
 
     def set_value(self, val):
-        """
-        # TODO: doc
-        """
         datatype = self.prop.datatype
         cardinality = self.prop.cardinality
         undefined = False
@@ -1021,15 +1006,20 @@ class DataTab(scrolledPanel.ScrolledPanel):
         """
         if not addable:  # is None
             return
-        if isinstance(widget, tuple):
+        if isinstance(widget, tuple):  # Attribution, i.e. two inputs
             role = addable[0]
             agent = addable[1]
             if not role or not agent or \
                     role.isspace() or agent.isspace() or \
                     agent == "Select to add":
                 print('invalid input')
-                # TODO: check, if already in there
                 return
+            for i in range(content_list.GetItemCount()):
+                r = content_list.GetItem(i, 0).GetText()
+                a = content_list.GetItem(i, 1).GetText()
+                if r == role and a == agent:
+                    print('Item already exists')
+                    return
             content_list.Append((role, agent))
         else:
             if str(addable).isspace() or \
@@ -1051,7 +1041,6 @@ class DataTab(scrolledPanel.ScrolledPanel):
     def remove_from_list(self, event, content_list):
         """
         remove an object from a listbox.
-
         """
         if isinstance(content_list, wx.ListCtrl):
             selection = content_list.GetFirstSelected()
@@ -1201,7 +1190,7 @@ class TabbedWindow(wx.Frame):
 
     def close(self):
         self.parent.Enable()
-        self.parent.load_view()
+        self.parent.refresh_view()
         data_handler.current_window = None
         self.Destroy()
 

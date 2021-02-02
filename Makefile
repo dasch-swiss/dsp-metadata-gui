@@ -9,10 +9,11 @@ dist: ## generate distribution package
 
 .PHONY: upload
 upload: ## upload distribution package to PyPi
+	$(MAKE) dist
 	python3 -m twine upload dist/*
 
 .PHONY: test-upload
-test-upload: ## upload distribution package to PyPi
+test-upload: ## upload distribution package to PyPi test server
 	$(MAKE) dist
 	python3 -m twine upload --repository testpypi dist/*
 

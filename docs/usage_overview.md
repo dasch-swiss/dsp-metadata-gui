@@ -4,6 +4,10 @@
 
 Be sure to have Python 3 installed.
 
+__Note:__ The application has only been tested on Python 3.9, but it might work on older versions too.
+
+__Note:__ There have been issues with `conda` installations. If this is the case, consider using a virtual environment.
+
 {==
 
 __Note:__

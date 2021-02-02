@@ -16,12 +16,6 @@ from . import utils
 from .utils import Cardinality, Datatype, Validity
 
 
-##### TODO-List #####
-#
-# - don't add person/org/etc. to graph, unless they're referenced somewhere
-#
-#####################
-
 ontology_url = "https://raw.githubusercontent.com/dasch-swiss/dsp-ontologies/main/dsp-repository/v1/dsp-repository.shacl.ttl"
 dsp_repo = Namespace("http://ns.dasch.swiss/repository#")
 prov = Namespace("http://www.w3.org/ns/prov#")
@@ -83,7 +77,7 @@ class MetaDataSet:
         self.files = []
         self.project = Project(name, shortcode, self)
         self.dataset = [Dataset(name, self.project, self)]
-        self.persons = [Person(self)]  # FIXME: persons get wiped on every load - or does it?
+        self.persons = [Person(self)]
         self.organizations = [Organization(self)]
         self.grants = [Grant(self)]
         self.update_iris()
@@ -150,7 +144,8 @@ class MetaDataSet:
         Returns:
             Graph: The RDF graph
         """
-        graph = Graph(base=dsp_repo)
+        # graph = Graph(base=dsp_repo)  # LATER: should be re-added
+        graph = Graph()
         graph.bind("dsp-repo", dsp_repo)
         graph.bind("schema", SDO)
         graph.bind("xsd", XSD)
@@ -283,7 +278,7 @@ class DataClass(ABC):
         shortcode = self.get_metadataset().project.shortcode.value
         if not shortcode:
             shortcode = "xxxx"
-        classname = '#' + shortcode + self.iri_suffix
+        classname = 'dsp-' + shortcode + self.iri_suffix
         return URIRef(dsp_repo[classname])
 
     @abstractmethod
@@ -690,6 +685,7 @@ class Person(DataClass):
 
     def __str__(self):
         classname = str(self.get_rdf_iri()).split('#')[1]
+        # classname = str(self.get_rdf_iri())
         n1 = "<first name missing>"
         if self.givenName.value:
             n1 = " ".join(self.givenName.value)
@@ -846,7 +842,7 @@ class Property():
         """
         if re.search('skos\\.um\\.es', url):
             return "SKOS UNESCO Nomenclature"
-        # TODO: more
+        # TODO: more propertyID's
         loc = urlparse(url).netloc
         if len(loc.split('.')) > 2:
             return '.'.join(loc.split('.')[1:])
@@ -916,11 +912,11 @@ class Property():
                 b1 = BNode()
                 g.add((b0, SDO.url, b1))
                 g.add((b1, RDF.type, SDO.URL))
+                g.add((b1, SDO.url, Literal(v)))
                 b2 = BNode()
                 g.add((b1, SDO.propertyID, b2))
                 g.add((b2, RDF.type, SDO.PropertyValue))
-                g.add((b2, SDO.propertyID, Literal("Geonames")))
-                g.add((b2, SDO.url, Literal(v)))
+                g.add((b2, SDO.propertyID, Literal("Geonames")))  # TODO: not always the case!
             elif datatype == Datatype.PERSON:
                 g.add((subject, self.predicate, v.get_rdf_iri()))
             elif datatype == Datatype.ORGANIZATION:
@@ -930,11 +926,11 @@ class Property():
             elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
                 if v[0] or v[1]:
                     try:
-                        dmp = URIRef(f'#{self.meta.shortcode}-dmp')
+                        dmp = URIRef(dsp_repo[f'dsp-{self.meta.shortcode}-dmp'])
                     except Exception as e:
                         print(f'Warning: DMP has non-unique IRI ({e})')
                         # LATER: this should not be necessary anymore. remove with next breaking changes
-                        dmp = URIRef('#dmp')
+                        dmp = URIRef(dsp_repo['dmp'])
                     g.add((subject, self.predicate, dmp))
                     g.add((dmp, RDF.type, dsp_repo.DataManagementPlan))
                     if v[0]:

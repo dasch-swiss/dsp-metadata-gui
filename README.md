@@ -13,6 +13,10 @@ The metadata follows the schema defined by the [dsp-ontologies](https://github.c
 
 The module provides a command line entry point to run the GUI. The only requirement is Python 3 and PIP installed and ready to use.
 
+The application has only been tested on Python 3.9, but it might work on older versions too.
+
+__Note:__ There have been issues with `conda` installations. If this is the case, consider using a virtual environment.
+
 
 ### Installation via pip
 

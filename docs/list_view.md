@@ -31,9 +31,13 @@ The RDF preview displays a turtle serialization of the metadata of the selected 
 
 The following actions can be performed:
 
+![actions](assets/images/buttons.png)
+
 - Add a new project  
   Adds a new project to the list.  
   To be able to add a project, you need to know its shortcode as well as associate a folder on your local file system with it. For details, see below.
+- Import a project  
+  Lets you import a project from binaries (see "Zip and Export") and add it to the list.
 - Remove a project  
   Removes the selected project from the list.
   _Note: This can not be undone._
