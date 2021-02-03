@@ -565,31 +565,7 @@ class PropertyRow():
                 prop.datatype == Datatype.ORGANIZATION or \
                 prop.datatype == Datatype.GRANT or \
                 prop.datatype == Datatype.CONTROLLED_VOCABULARY:
-            if prop.cardinality == Cardinality.ZERO_OR_ONE \
-                    or prop.cardinality == Cardinality.ONE:
-                choice = wx.Choice(parent)
-                choice.Bind(wx.EVT_CHOICE, lambda e: self.onValueChange(e, False))
-                self.data_widget = choice
-                self.choice_widget = choice
-                sizer.Add(choice, flag=wx.EXPAND)
-            if prop.cardinality == Cardinality.ONE_TO_UNBOUND or \
-                    prop.cardinality == Cardinality.UNBOUND:
-                inner_sizer = wx.BoxSizer()
-                box = wx.ListBox(parent)
-                self.data_widget = box
-                inner_sizer.Add(box, 1)
-                control_sizer = wx.BoxSizer(wx.VERTICAL)
-                choice = wx.Choice(parent, size=(150, -1))
-                choice.Bind(wx.EVT_CHOICE,
-                            lambda e: parent.add_to_list(e, box, choice,
-                                                         choice.GetStringSelection()))
-                self.choice_widget = choice
-                control_sizer.Add(choice)
-                remove_button = wx.Button(parent, label="Del Selected")
-                remove_button.Bind(wx.EVT_BUTTON, lambda event: parent.remove_from_list(event, box))
-                control_sizer.Add(remove_button)
-                inner_sizer.Add(control_sizer)
-                sizer.Add(inner_sizer, flag=wx.EXPAND)
+            self.__setup_dropdown(parent, sizer, prop)
         elif prop.datatype == Datatype.DATA_MANAGEMENT_PLAN:
             inner_sizer = wx.BoxSizer(wx.VERTICAL)
             cb = wx.CheckBox(parent, label='is available')
@@ -621,6 +597,38 @@ class PropertyRow():
         self.validity_widget = opt
         sizer.Add(opt)
         self.refresh_ui()
+
+    def __setup_dropdown(self, parent, sizer, prop):
+        if prop.cardinality == Cardinality.ZERO_OR_ONE \
+                or prop.cardinality == Cardinality.ONE:
+            choice = wx.Choice(parent, size=(400, -1))
+            choice.SetBackgroundColour('#004400')  # XXX: remove
+            choice.Bind(wx.EVT_CHOICE, lambda e: self.onValueChange(e, False))
+            self.data_widget = choice
+            self.choice_widget = choice
+            sizer.Add(choice, flag=wx.EXPAND)
+        if prop.cardinality == Cardinality.ONE_TO_UNBOUND or \
+                prop.cardinality == Cardinality.UNBOUND:
+            scroller = scrolledPanel.ScrolledPanel(parent)
+            inner_sizer = wx.BoxSizer()
+            box = wx.ListBox(scroller, size=(400, -1))
+            self.data_widget = box
+            inner_sizer.Add(box, 1)
+            control_sizer = wx.BoxSizer(wx.VERTICAL)
+            choice = wx.Choice(scroller, size=(150, -1))
+            choice.Bind(wx.EVT_CHOICE,
+                        lambda e: parent.add_to_list(e, box, choice,
+                                                     choice.GetStringSelection()))
+            self.choice_widget = choice
+            control_sizer.Add(choice)
+            remove_button = wx.Button(scroller, label="Del Selected")
+            remove_button.Bind(wx.EVT_BUTTON, lambda event: parent.remove_from_list(event, box))
+            control_sizer.Add(remove_button)
+            inner_sizer.Add(control_sizer)
+            scroller.Sizer = inner_sizer
+            scroller.SetupScrolling(scroll_x=True, scroll_y=False)
+            scroller.SetBackgroundColour('#004400')  # XXX: remove
+            sizer.Add(scroller, flag=wx.EXPAND)
 
     def __setup_address(self, parent, sizer):
         inner_sizer = wx.BoxSizer(wx.VERTICAL)
