@@ -487,21 +487,7 @@ class PropertyRow():
     def __setup_string(self, parent, sizer, prop):  # TODO
         if prop.cardinality == Cardinality.ONE \
                 or prop.cardinality == Cardinality.ZERO_OR_ONE:  # String or similar, exactly 1 or 0-1
-            scroller = wx.lib.scrolledpanel.ScrolledPanel(parent)
-            scroll_sizer = wx.BoxSizer(wx.VERTICAL)
-            if prop.multiline:
-                textcontrol = wx.TextCtrl(scroller, style=wx.TE_MULTILINE)
-            else:
-                textcontrol = wx.TextCtrl(scroller, style=wx.TE_PROCESS_ENTER)
-                textcontrol.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-            scroll_sizer.Add(textcontrol, flag=wx.EXPAND)
-            # scroll_sizer.Add(wx.Button(scroller, label='blahhhh'))
-            scroller.SetBackgroundColour('#004400')  # XXX: remove
-            scroller.Sizer = scroll_sizer
-            scroller.SetupScrolling(scroll_x=True, scroll_y=False)
-            sizer.Add(scroller, flag=wx.EXPAND)
-            # sizer.Add(textcontrol, flag=wx.EXPAND)
-            self.data_widget = textcontrol
+            self.__setup_string_one_card(parent, sizer, prop)
         elif prop.cardinality == Cardinality.ONE_TO_TWO:  # String or similar, 1-2
             # TODO
             inner_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -599,6 +585,22 @@ class PropertyRow():
             scroller.SetupScrolling(scroll_x=True, scroll_y=False)
             sizer.Add(scroller, flag=wx.EXPAND)
             self.data_widget = content_list
+
+    def __setup_string_one_card(self, parent, sizer, prop):
+        scroller = wx.lib.scrolledpanel.ScrolledPanel(parent)
+        scroll_sizer = wx.BoxSizer(wx.VERTICAL)
+        if prop.multiline:
+            textcontrol = wx.TextCtrl(scroller, style=wx.TE_MULTILINE)
+        else:
+            textcontrol = wx.TextCtrl(scroller, style=wx.TE_PROCESS_ENTER)
+            textcontrol.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
+        scroll_sizer.Add(textcontrol, flag=wx.EXPAND)
+        scroller.SetBackgroundColour('#004400')  # XXX: remove
+        scroller.Sizer = scroll_sizer
+        scroller.SetupScrolling(scroll_x=True, scroll_y=False)
+        sizer.Add(scroller, flag=wx.EXPAND)
+        # sizer.Add(textcontrol, flag=wx.EXPAND)
+        self.data_widget = textcontrol
 
     def __setup_dropdown(self, parent, sizer, prop):
         if prop.cardinality == Cardinality.ZERO_OR_ONE \
