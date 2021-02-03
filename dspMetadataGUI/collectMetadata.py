@@ -444,7 +444,6 @@ class PropertyRow():
                 scroller.Sizer = scroll_sizer
                 scroller.SetupScrolling(scroll_x=True, scroll_y=False)
                 sizer.Add(scroller, flag=wx.EXPAND)
-                
                 # sizer.Add(textcontrol, flag=wx.EXPAND)
                 self.data_widget = textcontrol
             elif prop.cardinality == Cardinality.ONE_TO_TWO:  # String or similar, 1-2
@@ -602,59 +601,11 @@ class PropertyRow():
             inner_sizer.Add(text, flag=wx.EXPAND)
             sizer.Add(inner_sizer, flag=wx.EXPAND)
             self.data_widget = [cb, text]
+            text.SetBackgroundColour('#004400')  # XXX: remove
         elif prop.datatype == Datatype.ADDRESS:
-            inner_sizer = wx.BoxSizer(wx.VERTICAL)
-            text1 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
-            text1.SetHint('Street')
-            text1.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-            inner_sizer.Add(text1, flag=wx.EXPAND)
-            text2 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
-            text2.SetHint('Postal Code')
-            text2.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-            inner_sizer2 = wx.BoxSizer()
-            inner_sizer2.Add(text2, 2)
-            inner_sizer2.AddSpacer(5)
-            text3 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
-            text3.SetHint('Locality')
-            text3.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-            inner_sizer2.Add(text3, 10)
-            inner_sizer.AddSpacer(5)
-            inner_sizer.Add(inner_sizer2, flag=wx.EXPAND)
-            sizer.Add(inner_sizer, flag=wx.EXPAND)
-            self.data_widget = [text1, text2, text3]
+            self.__setup_address(parent, sizer)
         elif prop.datatype == Datatype.ATTRIBUTION:
-            inner_sizer = wx.BoxSizer()
-            input_sizer = wx.BoxSizer(wx.VERTICAL)
-            textcontrol = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER, size=(200, -1))
-            textcontrol.SetHint("Role")
-            input_sizer.Add(textcontrol)
-            choice = wx.Choice(parent, size=(200, -1))
-            choice.SetToolTip("Add a Person or Organization")
-            self.choice_widget = choice
-            input_sizer.Add(choice)
-            inner_sizer.Add(input_sizer)
-            inner_sizer.AddSpacer(5)
-            button_sizer = wx.BoxSizer(wx.VERTICAL)
-            plus_button = wx.Button(parent, label="+")
-            button_sizer.Add(plus_button, flag=wx.EXPAND)
-            remove_button = wx.Button(parent, label="Del Selected")
-            button_sizer.Add(remove_button)
-            inner_sizer.Add(button_sizer)
-            inner_sizer.AddSpacer(5)
-            content_list = wx.ListCtrl(parent, -1, style=wx.LC_REPORT | wx.LC_SINGLE_SEL)
-            content_list.InsertColumn(0, 'Role')
-            content_list.InsertColumn(1, 'Agent')
-            inner_sizer.Add(content_list, 1)
-            sizer.Add(inner_sizer, flag=wx.EXPAND)
-            self.data_widget = content_list
-            remove_button.Bind(wx.EVT_BUTTON,
-                               lambda event: parent.remove_from_list(event,
-                                                                     content_list))
-            plus_button.Bind(wx.EVT_BUTTON,
-                             lambda e: parent.add_to_list(e,
-                                                          content_list,
-                                                          (textcontrol, choice),
-                                                          (textcontrol.GetValue(), choice.GetStringSelection())))
+            self.__setup_attribution(parent, sizer)
         elif prop.datatype == Datatype.SHORTCODE:
             text = wx.StaticText(parent)
             self.data_widget = text
@@ -670,6 +621,69 @@ class PropertyRow():
         self.validity_widget = opt
         sizer.Add(opt)
         self.refresh_ui()
+
+    def __setup_address(self, parent, sizer):
+        inner_sizer = wx.BoxSizer(wx.VERTICAL)
+        text1 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
+        text1.SetHint('Street')
+        text1.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
+        inner_sizer.Add(text1, flag=wx.EXPAND)
+        text2 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
+        text2.SetHint('Postal Code')
+        text2.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
+        inner_sizer2 = wx.BoxSizer()
+        inner_sizer2.Add(text2, 2)
+        inner_sizer2.AddSpacer(5)
+        text3 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
+        text3.SetHint('Locality')
+        text3.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
+        inner_sizer2.Add(text3, 10)
+        inner_sizer.AddSpacer(5)
+        inner_sizer.Add(inner_sizer2, flag=wx.EXPAND)
+        sizer.Add(inner_sizer, flag=wx.EXPAND)
+        self.data_widget = [text1, text2, text3]
+        text1.SetBackgroundColour('#004400')  # XXX: remove
+        text2.SetBackgroundColour('#004400')  # XXX: remove
+        text3.SetBackgroundColour('#004400')  # XXX: remove
+
+    def __setup_attribution(self, parent, sizer):
+        scroller = scrolledPanel.ScrolledPanel(parent)
+        inner_sizer = wx.BoxSizer()
+        input_sizer = wx.BoxSizer(wx.VERTICAL)
+        textcontrol = wx.TextCtrl(scroller, style=wx.TE_PROCESS_ENTER, size=(200, -1))
+        textcontrol.SetHint("Role")
+        input_sizer.Add(textcontrol)
+        choice = wx.Choice(scroller, size=(200, -1))
+        choice.SetToolTip("Add a Person or Organization")
+        self.choice_widget = choice
+        input_sizer.Add(choice)
+        inner_sizer.Add(input_sizer)
+        inner_sizer.AddSpacer(5)
+        button_sizer = wx.BoxSizer(wx.VERTICAL)
+        plus_button = wx.Button(scroller, label="+")
+        button_sizer.Add(plus_button, flag=wx.EXPAND)
+        remove_button = wx.Button(scroller, label="Del Selected")
+        button_sizer.Add(remove_button)
+        inner_sizer.Add(button_sizer)
+        inner_sizer.AddSpacer(5)
+        content_list = wx.ListCtrl(scroller, -1, style=wx.LC_REPORT | wx.LC_SINGLE_SEL)
+        content_list.InsertColumn(0, 'Role')
+        content_list.InsertColumn(1, 'Agent')
+        inner_sizer.Add(content_list, 1)
+        inner_sizer.Add(wx.Button(scroller))
+        scroller.Sizer = inner_sizer
+        scroller.SetupScrolling(scroll_x=True, scroll_y=False)
+        scroller.SetBackgroundColour('#004400')  # XXX: remove
+        sizer.Add(scroller, flag=wx.EXPAND)
+        self.data_widget = content_list
+        remove_button.Bind(wx.EVT_BUTTON,
+                           lambda event: parent.remove_from_list(event,
+                                                                 content_list))
+        plus_button.Bind(wx.EVT_BUTTON,
+                         lambda e: parent.add_to_list(e,
+                                                      content_list,
+                                                      (textcontrol, choice),
+                                                      (textcontrol.GetValue(), choice.GetStringSelection())))
 
     @property
     def data_class(self):
