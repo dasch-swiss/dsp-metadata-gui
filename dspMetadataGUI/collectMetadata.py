@@ -429,121 +429,7 @@ class PropertyRow():
                 or prop.datatype == Datatype.EMAIL \
                 or prop.datatype == Datatype.DOWNLOAD \
                 or prop.datatype == Datatype.PLACE:
-            if prop.cardinality == Cardinality.ONE \
-                    or prop.cardinality == Cardinality.ZERO_OR_ONE:  # String or similar, exactly 1 or 0-1
-                scroller = wx.lib.scrolledpanel.ScrolledPanel(parent)
-                scroll_sizer = wx.BoxSizer(wx.VERTICAL)
-                if prop.multiline:
-                    textcontrol = wx.TextCtrl(scroller, style=wx.TE_MULTILINE)
-                else:
-                    textcontrol = wx.TextCtrl(scroller, style=wx.TE_PROCESS_ENTER)
-                    textcontrol.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-                scroll_sizer.Add(textcontrol, flag=wx.EXPAND)
-                # scroll_sizer.Add(wx.Button(scroller, label='blahhhh'))
-                scroller.SetBackgroundColour('#004400')  # XXX: remove
-                scroller.Sizer = scroll_sizer
-                scroller.SetupScrolling(scroll_x=True, scroll_y=False)
-                sizer.Add(scroller, flag=wx.EXPAND)
-                # sizer.Add(textcontrol, flag=wx.EXPAND)
-                self.data_widget = textcontrol
-            elif prop.cardinality == Cardinality.ONE_TO_TWO:  # String or similar, 1-2
-                # TODO
-                inner_sizer = wx.BoxSizer(wx.VERTICAL)
-                textcontrol1 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
-                textcontrol1.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-                inner_sizer.Add(textcontrol1, flag=wx.EXPAND)
-                inner_sizer.AddSpacer(5)
-                textcontrol2 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
-                textcontrol2.SetHint('Second value is optional')
-                textcontrol2.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-                inner_sizer.Add(textcontrol2, flag=wx.EXPAND)
-                sizer.Add(inner_sizer, flag=wx.EXPAND)
-                self.data_widget = [textcontrol1, textcontrol2]
-            elif prop.cardinality == Cardinality.ZERO_TO_TWO:  # String or similar, 0-2
-                # TODO
-                inner_sizer = wx.BoxSizer(wx.VERTICAL)
-                textcontrol1 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
-                textcontrol1.SetHint('Optional')
-                textcontrol1.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-                inner_sizer.Add(textcontrol1, flag=wx.EXPAND)
-                inner_sizer.AddSpacer(5)
-                textcontrol2 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
-                textcontrol2.SetHint('Optional')
-                textcontrol2.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
-                inner_sizer.Add(textcontrol2, flag=wx.EXPAND)
-                sizer.Add(inner_sizer, flag=wx.EXPAND)
-                self.data_widget = [textcontrol1, textcontrol2]
-            elif prop.cardinality == Cardinality.ONE_TO_UNBOUND \
-                    or prop.cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED \
-                    or prop.cardinality == Cardinality.UNBOUND:  # String or similar, 1-n or 0-n
-                scroller = wx.lib.scrolledpanel.ScrolledPanel(parent)
-                scroll_sizer = wx.BoxSizer(wx.VERTICAL)
-                if prop.multiline:
-                    inner_sizer = wx.BoxSizer()
-                    text_sizer = wx.BoxSizer(wx.VERTICAL)
-                    textcontrol = wx.TextCtrl(scroller, style=wx.TE_PROCESS_ENTER)
-                    textcontrol.Bind(wx.EVT_TEXT_ENTER,
-                                     lambda e: parent.add_to_list(e,
-                                                                  content_list,
-                                                                  textcontrol,
-                                                                  textcontrol.GetValue()))
-                    text_sizer.Add(textcontrol, flag=wx.EXPAND)
-                    text_sizer.AddSpacer(5)
-                    content_list = wx.ListBox(scroller)
-                    text_sizer.Add(content_list, 1, flag=wx.EXPAND)
-                    inner_sizer.Add(text_sizer, 1, flag=wx.EXPAND)
-                    inner_sizer.AddSpacer(5)
-                    button_sizer = wx.BoxSizer(wx.VERTICAL)
-                    plus_button = wx.Button(scroller, label="+")
-                    plus_button.Bind(wx.EVT_BUTTON,
-                                     lambda e: parent.add_to_list(e,
-                                                                  content_list,
-                                                                  textcontrol,
-                                                                  textcontrol.GetValue()))
-                    button_sizer.Add(plus_button, flag=wx.EXPAND)
-
-                    remove_button = wx.Button(scroller, label="Del Selected")
-                    remove_button.Bind(wx.EVT_BUTTON,
-                                       lambda event: parent.remove_from_list(event,
-                                                                             content_list))
-                    button_sizer.Add(remove_button)
-                    inner_sizer.Add(button_sizer)
-                else:
-                    inner_sizer = wx.BoxSizer()
-                    textcontrol = wx.TextCtrl(scroller, style=wx.TE_PROCESS_ENTER, size=(300, -1))
-                    textcontrol.Bind(wx.EVT_TEXT_ENTER,
-                                     lambda e: parent.add_to_list(e,
-                                                                  content_list,
-                                                                  textcontrol,
-                                                                  textcontrol.GetValue()))
-                    inner_sizer.Add(textcontrol, 0)
-                    inner_sizer.AddSpacer(5)
-                    button_sizer = wx.BoxSizer(wx.VERTICAL)
-                    plus_button = wx.Button(scroller, label="+")
-                    plus_button.Bind(wx.EVT_BUTTON,
-                                     lambda e: parent.add_to_list(e,
-                                                                  content_list,
-                                                                  textcontrol,
-                                                                  textcontrol.GetValue()))
-                    button_sizer.Add(plus_button, flag=wx.EXPAND)
-
-                    remove_button = wx.Button(scroller, label="Del Selected")
-                    remove_button.Bind(wx.EVT_BUTTON,
-                                       lambda event: parent.remove_from_list(event,
-                                                                             content_list))
-                    button_sizer.Add(remove_button)
-                    inner_sizer.Add(button_sizer)
-                    inner_sizer.AddSpacer(5)
-                    content_list = wx.ListBox(scroller)
-                    inner_sizer.Add(content_list, 1, flag=wx.EXPAND)
-                # sizer.Add(inner_sizer, flag=wx.EXPAND)
-                scroll_sizer.Add(inner_sizer, flag=wx.EXPAND)
-                scroller.SetBackgroundColour('#004400')  # XXX: remove
-                scroller.Sizer = scroll_sizer
-                scroller.SetupScrolling(scroll_x=True, scroll_y=False)
-                sizer.Add(scroller, flag=wx.EXPAND)
-                self.data_widget = content_list
-        # date
+            self.__setup_string(parent, sizer, prop)
         elif prop.datatype == Datatype.DATE:
             if prop.cardinality == Cardinality.ONE \
                     or prop.cardinality == Cardinality.ZERO_OR_ONE:
@@ -597,6 +483,122 @@ class PropertyRow():
         self.validity_widget = opt
         sizer.Add(opt)
         self.refresh_ui()
+
+    def __setup_string(self, parent, sizer, prop):  # TODO
+        if prop.cardinality == Cardinality.ONE \
+                or prop.cardinality == Cardinality.ZERO_OR_ONE:  # String or similar, exactly 1 or 0-1
+            scroller = wx.lib.scrolledpanel.ScrolledPanel(parent)
+            scroll_sizer = wx.BoxSizer(wx.VERTICAL)
+            if prop.multiline:
+                textcontrol = wx.TextCtrl(scroller, style=wx.TE_MULTILINE)
+            else:
+                textcontrol = wx.TextCtrl(scroller, style=wx.TE_PROCESS_ENTER)
+                textcontrol.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
+            scroll_sizer.Add(textcontrol, flag=wx.EXPAND)
+            # scroll_sizer.Add(wx.Button(scroller, label='blahhhh'))
+            scroller.SetBackgroundColour('#004400')  # XXX: remove
+            scroller.Sizer = scroll_sizer
+            scroller.SetupScrolling(scroll_x=True, scroll_y=False)
+            sizer.Add(scroller, flag=wx.EXPAND)
+            # sizer.Add(textcontrol, flag=wx.EXPAND)
+            self.data_widget = textcontrol
+        elif prop.cardinality == Cardinality.ONE_TO_TWO:  # String or similar, 1-2
+            # TODO
+            inner_sizer = wx.BoxSizer(wx.VERTICAL)
+            textcontrol1 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
+            textcontrol1.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
+            inner_sizer.Add(textcontrol1, flag=wx.EXPAND)
+            inner_sizer.AddSpacer(5)
+            textcontrol2 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
+            textcontrol2.SetHint('Second value is optional')
+            textcontrol2.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
+            inner_sizer.Add(textcontrol2, flag=wx.EXPAND)
+            sizer.Add(inner_sizer, flag=wx.EXPAND)
+            self.data_widget = [textcontrol1, textcontrol2]
+        elif prop.cardinality == Cardinality.ZERO_TO_TWO:  # String or similar, 0-2
+            # TODO
+            inner_sizer = wx.BoxSizer(wx.VERTICAL)
+            textcontrol1 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
+            textcontrol1.SetHint('Optional')
+            textcontrol1.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
+            inner_sizer.Add(textcontrol1, flag=wx.EXPAND)
+            inner_sizer.AddSpacer(5)
+            textcontrol2 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
+            textcontrol2.SetHint('Optional')
+            textcontrol2.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
+            inner_sizer.Add(textcontrol2, flag=wx.EXPAND)
+            sizer.Add(inner_sizer, flag=wx.EXPAND)
+            self.data_widget = [textcontrol1, textcontrol2]
+        elif prop.cardinality == Cardinality.ONE_TO_UNBOUND \
+                or prop.cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED \
+                or prop.cardinality == Cardinality.UNBOUND:  # String or similar, 1-n or 0-n
+            scroller = wx.lib.scrolledpanel.ScrolledPanel(parent)
+            scroll_sizer = wx.BoxSizer(wx.VERTICAL)
+            if prop.multiline:
+                inner_sizer = wx.BoxSizer()
+                text_sizer = wx.BoxSizer(wx.VERTICAL)
+                textcontrol = wx.TextCtrl(scroller, style=wx.TE_PROCESS_ENTER)
+                textcontrol.Bind(wx.EVT_TEXT_ENTER,
+                                 lambda e: parent.add_to_list(e,
+                                                              content_list,
+                                                              textcontrol,
+                                                              textcontrol.GetValue()))
+                text_sizer.Add(textcontrol, flag=wx.EXPAND)
+                text_sizer.AddSpacer(5)
+                content_list = wx.ListBox(scroller)
+                text_sizer.Add(content_list, 1, flag=wx.EXPAND)
+                inner_sizer.Add(text_sizer, 1, flag=wx.EXPAND)
+                inner_sizer.AddSpacer(5)
+                button_sizer = wx.BoxSizer(wx.VERTICAL)
+                plus_button = wx.Button(scroller, label="+")
+                plus_button.Bind(wx.EVT_BUTTON,
+                                 lambda e: parent.add_to_list(e,
+                                                              content_list,
+                                                              textcontrol,
+                                                              textcontrol.GetValue()))
+                button_sizer.Add(plus_button, flag=wx.EXPAND)
+
+                remove_button = wx.Button(scroller, label="Del Selected")
+                remove_button.Bind(wx.EVT_BUTTON,
+                                   lambda event: parent.remove_from_list(event,
+                                                                         content_list))
+                button_sizer.Add(remove_button)
+                inner_sizer.Add(button_sizer)
+            else:
+                inner_sizer = wx.BoxSizer()
+                textcontrol = wx.TextCtrl(scroller, style=wx.TE_PROCESS_ENTER, size=(300, -1))
+                textcontrol.Bind(wx.EVT_TEXT_ENTER,
+                                 lambda e: parent.add_to_list(e,
+                                                              content_list,
+                                                              textcontrol,
+                                                              textcontrol.GetValue()))
+                inner_sizer.Add(textcontrol, 0)
+                inner_sizer.AddSpacer(5)
+                button_sizer = wx.BoxSizer(wx.VERTICAL)
+                plus_button = wx.Button(scroller, label="+")
+                plus_button.Bind(wx.EVT_BUTTON,
+                                 lambda e: parent.add_to_list(e,
+                                                              content_list,
+                                                              textcontrol,
+                                                              textcontrol.GetValue()))
+                button_sizer.Add(plus_button, flag=wx.EXPAND)
+
+                remove_button = wx.Button(scroller, label="Del Selected")
+                remove_button.Bind(wx.EVT_BUTTON,
+                                   lambda event: parent.remove_from_list(event,
+                                                                         content_list))
+                button_sizer.Add(remove_button)
+                inner_sizer.Add(button_sizer)
+                inner_sizer.AddSpacer(5)
+                content_list = wx.ListBox(scroller)
+                inner_sizer.Add(content_list, 1, flag=wx.EXPAND)
+            # sizer.Add(inner_sizer, flag=wx.EXPAND)
+            scroll_sizer.Add(inner_sizer, flag=wx.EXPAND)
+            scroller.SetBackgroundColour('#004400')  # XXX: remove
+            scroller.Sizer = scroll_sizer
+            scroller.SetupScrolling(scroll_x=True, scroll_y=False)
+            sizer.Add(scroller, flag=wx.EXPAND)
+            self.data_widget = content_list
 
     def __setup_dropdown(self, parent, sizer, prop):
         if prop.cardinality == Cardinality.ZERO_OR_ONE \
