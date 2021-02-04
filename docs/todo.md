@@ -44,19 +44,18 @@
 - [x] minimum python version
 - [x] note on issues with conda
 - [x] note on venv recommendation
-- [ ] Update UML diagram
-- [ ] Include UML diagram
 - [x] Restructure documentation
 - [x] document import pickle function
-- [ ] Write documentation files:
+- [x] Write documentation files:
     - [x] index
     - [x] Readme
     - [x] Usage_overview
     - [x] list_view
     - [x] tab_view
-    - [ ] Changelog
+    - [x] Changelog
 - [ ] fix link in readme so it works both in readme and in docs
 - [ ] document all classes (explain properties, tab by tab)
+- [ ] update doc to new tab order
 
 
 ### API Reference
