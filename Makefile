@@ -19,7 +19,7 @@ test-upload: ## upload distribution package to PyPi test server
 
 .PHONY: upgrade-dist-tools
 upgrade-dist-tools: ## upgrade packages necessary for testing, building, packaging and uploading to PyPi
-	python3 -m pip install --upgrade pip setuptools wheel tqdm twine pytest mkdocs mkdocs
+	python3 -m pip install --upgrade pip setuptools wheel tqdm twine pytest mkdocs mkdocstrings
 
 .PHONY: install-requirements
 install-requirements: ## install requirements

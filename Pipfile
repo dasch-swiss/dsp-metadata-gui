@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pyshacl = "*"
+wxPython = "*"
+
+[dev-packages]
+pipenv-setup = "*"
+pipfile-requirements = "*"
+setuptools = "*"
+wheel = "*"
+tqdm = "*"
+twine = "*"
+pytest = "*"
+mkdocs = "*"
+mkdocstrings = "*"
+
+[requires]
+python_version = "3.9"
