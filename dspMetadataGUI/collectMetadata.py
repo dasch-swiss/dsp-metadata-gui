@@ -1,6 +1,6 @@
 import wx
 import wx.lib.scrolledpanel as scrolledPanel
-import wx.lib.dialogs as dlgs
+import wx.lib.dialogs as dialogs
 import os
 import re
 
@@ -88,7 +88,8 @@ class ProjectPanel(wx.Panel):
         self.project_dependent_buttons = []
 
         # Create list for projects
-        main_sizer = wx.BoxSizer(wx.VERTICAL)
+        main_sizer = wx.FlexGridSizer(3, 1, 10, 10)
+        # main_sizer = wx.BoxSizer(wx.VERTICAL)
         title = wx.StaticText(self, label="DaSCH Service Platform - Metadata Collection")
         main_sizer.Add(title, 0, wx.ALL | wx.LEFT, 10)
         self.list_ctrl = wx.ListCtrl(self, size=(-1, 200), style=wx.LC_REPORT | wx.BORDER_SUNKEN)
@@ -99,18 +100,11 @@ class ProjectPanel(wx.Panel):
         # Create turtle preview
         bottom_sizer = wx.FlexGridSizer(1, 2, 10, 10)
         bottom_sizer.AddGrowableCol(0)
-        # scroller = scrolledPanel.ScrolledPanel(self)
-        # rdf_display = wx.TextCtrl(scroller, value="No Project selected.")
-        rdf_display = wx.TextCtrl(self, value="No Project selected.", style=wx.TE_READONLY | wx.TE_MULTILINE)
+        bottom_sizer.AddGrowableRow(0)
+        rdf_display = wx.TextCtrl(self, value="No Project selected.",
+                                  style=wx.TE_READONLY | wx.TE_MULTILINE, size=(400, -1))
         self.rdf_display = rdf_display
-        # scroller.SetMinSize((-1, 400))
-        # scroller.SetAutoLayout(1)
-        # scroller.SetupScrolling(scroll_x=True, scroll_y=True)
-        innermost = wx.BoxSizer()
-        innermost.Add(rdf_display, flag=wx.EXPAND)  # FIXME: doesn't show correctly
-        # scroller.SetSizer(innermost)
-        # bottom_sizer.Add(rdf_display, flag=wx.EXPAND)
-        bottom_sizer.Add(innermost, flag=wx.EXPAND)
+        bottom_sizer.Add(rdf_display, flag=wx.EXPAND)
 
         # Create Buttons
         button_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -150,6 +144,7 @@ class ProjectPanel(wx.Panel):
         # Layout it all
         bottom_sizer.Add(button_sizer, 0, wx.ALL, 10)
         main_sizer.Add(bottom_sizer, 0, wx.ALL | wx.EXPAND, 10)
+        main_sizer.AddGrowableRow(2)
         self.SetSizer(main_sizer)
         self.Fit()
         self.create_header()
@@ -303,8 +298,7 @@ class ProjectPanel(wx.Panel):
                 with wx.MessageDialog(self, "Validation Successful", "Validation Successful", wx.OK | wx.ICON_INFORMATION) as dlg:
                     dlg.ShowModal()
             else:
-
-                with dlgs.ScrolledMessageDialog(self, results_text, "Validation Failed", size=(800, 500)) as dlg:
+                with dialogs.ScrolledMessageDialog(self, results_text, "Validation Failed", size=(800, 500)) as dlg:
                     dlg.ShowModal()
 
     def on_item_selected(self, event):
