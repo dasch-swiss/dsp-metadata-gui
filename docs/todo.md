@@ -11,11 +11,10 @@
 - [x] relative URI of DMP is only `<DMP>` which is not unique
 - [x] change names to string instead of list
 - [x] change `@base` and IRIs to work correctly
-- [ ] layout:
-    - [ ] long abstract etc. hides buttons
-    - [ ] rethink tabs order
-    - [ ] make RDF preview scale with window size
-    - [ ] ... (anythng else?)
+- [x] layout:
+    - [x] long abstract etc. hides buttons
+    - [x] rethink tabs order
+    - [x] make RDF preview scale with window size
 
 ### medium size changes
 

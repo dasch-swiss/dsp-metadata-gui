@@ -473,7 +473,7 @@ class PropertyRow():
                                                                    self.validity_msg,
                                                                    Cardinality.as_sting(prop.cardinality)))
         self.validity_widget = opt
-        sizer.Add(opt)
+        sizer.Add(opt, flag=wx.RIGHT, border=5)
         self.refresh_ui()
 
     def __setup_string(self, parent, sizer, prop):
@@ -1154,11 +1154,11 @@ class TabbedWindow(wx.Frame):
 
         # Add the windows to tabs and name them.
         nb.AddPage(tab1, "Base Data")
-        nb.AddPage(tab2, "Project")
-        nb.AddPage(tab3, "Dataset")
-        nb.AddPage(tab4, "Person")
         nb.AddPage(tab5, "Organization")
+        nb.AddPage(tab4, "Person")
         nb.AddPage(tab6, "Grant")
+        nb.AddPage(tab3, "Dataset")
+        nb.AddPage(tab2, "Project")
 
         data_handler.tabs = [tab2, tab3, tab4, tab5, tab6]
 
