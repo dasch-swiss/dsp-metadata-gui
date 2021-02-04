@@ -103,17 +103,6 @@ All data is locally stored in the file `~/DaSCH/config/repos.data`. for more det
 {== TODO: fix this link in readme (works in doc) ==}
 
 
-## Road map
-
-### Planned or missing features
-
-- Direct import to DSP
-
-TODO: more
-
-### Known issues
-
-None
 
 ## Documentation
 
@@ -121,9 +110,5 @@ The documentation is created using `mkdocs` and `mkdocstrings` with `markdown_in
 
 To serve the documentation locally, run `make doc`. To deploy the documentation to github pages, run `make deploy-doc`.
 
-
-## Development
-
-TODO: describe
 
 

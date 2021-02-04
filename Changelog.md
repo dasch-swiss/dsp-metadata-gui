@@ -31,7 +31,20 @@ Template:
 ### Added
 - ...
 
-TODO: summarize initial release
+### Changed
+None
+
+### Removed
+None
+
+
+
+## [version 1.0.0] - xxxx-xx-xx (Initial release)
+
+TODO: Date
+
+### Added
+- GUI for entering DSP metadata.
 
 ### Changed
 None
