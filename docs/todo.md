@@ -15,6 +15,7 @@
     - [x] long abstract etc. hides buttons
     - [x] rethink tabs order
     - [x] make RDF preview scale with window size
+- [ ] feedback to user when saving
 
 ### medium size changes
 
