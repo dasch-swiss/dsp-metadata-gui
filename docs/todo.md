@@ -69,7 +69,7 @@
 ## Others
 
 - [x] get doc theme to work
-- [ ] fix issue with dependencies not installing automatically
+- [x] fix issue with dependencies not installing automatically
 - [ ] find out what the real minimum python version is (3.9 is rather high)
 - [ ] investigate issue on windows
 - [ ] investigate `ssl.SSLCertVerificationError`
