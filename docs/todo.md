@@ -57,6 +57,7 @@
 - [ ] fix link in readme so it works both in readme and in docs
 - [ ] document all classes (explain properties, tab by tab)
 - [ ] update doc to new tab order
+- [ ] remove test-pypi installation stuff
 
 
 ### API Reference
