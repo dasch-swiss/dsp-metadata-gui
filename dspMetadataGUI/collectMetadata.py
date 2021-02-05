@@ -3,11 +3,14 @@ import wx.lib.scrolledpanel as scrolledPanel
 import wx.lib.dialogs as dialogs
 import os
 import re
+import sys
 
-from dspMetadataGUI.util.dataHandling import DataHandling
-from dspMetadataGUI.util.metaDataSet import MetaDataSet
-from dspMetadataGUI.util.utils import Cardinality, Datatype, Validity
-from dspMetadataGUI.util.metaDataHelpers import CalendarDlg
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+
+from util.dataHandling import DataHandling
+from util.metaDataSet import MetaDataSet
+from util.utils import Cardinality, Datatype, Validity
+from util.metaDataHelpers import CalendarDlg
 
 
 def collectMetadata():
