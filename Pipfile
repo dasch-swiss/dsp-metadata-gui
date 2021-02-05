@@ -6,10 +6,10 @@ name = "pypi"
 [packages]
 pyshacl = "*"
 wxPython = "*"
+validators = "*"
 
 [dev-packages]
 pipenv-setup = "*"
-pipfile-requirements = "*"
 setuptools = "*"
 wheel = "*"
 tqdm = "*"

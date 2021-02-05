@@ -71,10 +71,11 @@
 - [x] get doc theme to work
 - [x] fix issue with dependencies not installing automatically
 - [ ] find out what the real minimum python version is (3.9 is rather high)
-- [ ] investigate issue on windows
+- [ ] test on windows
+- [ ] test on linux
 - [ ] investigate `ssl.SSLCertVerificationError`
 - [ ] look into `__init__.py`
-- [ ] have another look at imports and why it doesn't run directly from script, only with installation
+- [x] have another look at imports and why it doesn't run directly from script, only with installation
 
 ## Nice to Have
 - [ ] rdf graph visualization

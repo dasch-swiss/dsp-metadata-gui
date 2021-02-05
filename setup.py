@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="dsp-metadata-gui",
-    version="0.0.0-rc2",
+    version="0.0.0-rc3",
     description="Python GUI tool to collect metadata for DSP projects.",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -21,6 +21,7 @@ setup(
     ],
     python_requires=">=3.9.0",
     install_requires=[
+        "decorator==4.4.2",
         "isodate==0.6.0",
         "numpy==1.20.0; python_version >= '3.0'",
         "owlrl==5.2.1",
@@ -30,6 +31,7 @@ setup(
         "rdflib==5.0.0",
         "rdflib-jsonld==0.5.0",
         "six==1.15.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+        "validators==0.18.2",
         "wxpython==4.1.1",
     ],
     entry_points={
