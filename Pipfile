@@ -17,6 +17,10 @@ twine = "*"
 pytest = "*"
 mkdocs = "*"
 mkdocstrings = "*"
+mkdocs-material = "*"
+mkdocs-material-extensions = "*"
+pymdown-extensions = "*"
+markdown-include = "*"
 
 [requires]
 python_version = "3.9"
