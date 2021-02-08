@@ -5,7 +5,6 @@ The classes defined here aim to represent a metadata-set, closely following the 
 """
 
 from abc import ABC, abstractmethod
-from urllib.parse import urlparse
 import re
 import pyshacl
 import validators
@@ -840,15 +839,8 @@ class Property():
         Returns:
             str: a propertyID
         """
-        if re.search('skos\\.um\\.es', url):
-            return "SKOS UNESCO Nomenclature"
-        # TODO: more propertyID's
-        loc = urlparse(url).netloc
-        if len(loc.split('.')) > 2:
-            return '.'.join(loc.split('.')[1:])
-        if loc:
-            return loc
-        return url[:12]
+        # LATER: remove this method with next breaking change, and leave it to the utils entirely
+        return utils.get_url_property_id(url)
 
     def get_triples(self, subject: URIRef) -> Graph:
         """

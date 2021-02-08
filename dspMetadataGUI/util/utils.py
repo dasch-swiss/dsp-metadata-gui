@@ -1,8 +1,10 @@
 import os
+import re
 import platform
 import subprocess
 import validators
 from enum import Enum
+from urllib.parse import urlparse
 
 
 def open_file(path):
@@ -33,6 +35,46 @@ def isURL(url: str):
         # if validators.url('http://www.' + url):
         #     return True
     return False
+
+
+def get_url_property_id(url: str) -> str:
+    """
+    This method tries to guess the propetyID for a URL.
+
+    For certain pre-defined cases, a reasonable propertyID is chosen;
+    otherwise, the net location is being extracted, if possible.
+
+    Args:
+        url (str): a URL
+
+    Returns:
+        str: a propertyID
+    """
+    if re.search(r'skos\.um\.es', url):
+        return "SKOS UNESCO Nomenclature"
+    if re.search(r'geonames\.org', url):
+        return "Geonames.org"
+    if re.search(r'pleiades\.stoa\.org', url):
+        return "Pleiades"
+    if re.search(r'orcid\.org', url):
+        return "ORCID"
+    if re.search(r'viaf\.org', url):
+        return "VIAF"
+    if re.search(r'\/gnd\/', url) or re.search(r'portal\.dnb\.de', url):
+        return "GND"
+    if re.search(r'n2t\.net\/ark\:\/99152', url):
+        return "Periodo"
+    if re.search(r'chronontology\.dainst\.org', url):
+        return "ChronOntology"
+    if re.search(r'creativecommons\.', url):
+        return "Creative Commons"
+    # TODO: more propertyID's
+    loc = urlparse(url).netloc
+    if len(loc.split('.')) > 2:
+        return '.'.join(loc.split('.')[1:])
+    if loc:
+        return loc
+    return url[:12]
 
 
 def are_emails(mails: list):
