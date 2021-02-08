@@ -20,30 +20,6 @@ __Note:__ There have been issues with `conda` installations. If this is the case
 
 ### Installation via pip
 
-{==
-
-__Note:__
-
-Due to some issues with the automatic installation of dependencies, the following three packages must be installed manually, before installing the tool itself:
-
-- `validators`
-- `isodate`
-- `wxPython`
-
-To install the application from there, run:
-
-```shell
-pip install validators isodate wxPython
-```
-
-or
-
-```shell
-pip3 install validators isodate wxPython
-```
-
-==}
-
 To install the application, run:
 
 ```bash
@@ -56,32 +32,12 @@ Or respectively:
 pip3 install dsp-metadata-gui
 ```
 
-{==
-
-__Note:__
-
-Until the first release of the tool, it is available only on the [PYPI test instance](https://test.pypi.org/project/dsp-metadata-gui/).
-
-To install the application from there, run:
-
-```shell
-pip install -i https://test.pypi.org/simple/ dsp-metadata-gui
-```
-
-or
-
-```shell
-pip3 install -i https://test.pypi.org/simple/ dsp-metadata-gui
-```
-
-==}
-
 Afterwards, the program can be started by running the command `dsp-metadata` in your terminal of choice.
 
 
 ### Installation from source
 
-Clone this repo and run `make run`. If you don't use GNU Make, run the commands specified in the `Makefile` manually.
+Clone this repo and run `make make-and-run`. If you don't use GNU Make, run the commands specified in the `Makefile` manually.
 
 This will package the application, install it to your python environment and run the application.
 
@@ -104,11 +60,56 @@ All data is locally stored in the file `~/DaSCH/config/repos.data`. for more det
 
 
 
-## Documentation
+## Development
+
+### Development Environment
+
+#### Pipenv
+
+Use `pipenv` for a seamless development experience.  
+In order to have both dependencies and dev-dependencies installed from the `Pipfile`, set up the virtual environment running
+```
+pipenv instal --dev
+```
+
+`pipenv` will manage dependencies as well as a virtual environment. To install packages, use
+```
+pipenv install <package-name>
+```
+
+To create `requirements.txt`, run 
+```
+pipenv lock -r > requirements.txt
+```
+
+To bring `setup.py` up to date, run
+```
+pipenv run pipenv-setup sync
+```
+
+#### GNU Make
+
+`GNU Make` is used to automatize most tasks.  
+Run `make help` for info on the available targets.
+
+__Note:__ All make targets - except `make run` - should be run from within the `pipenv` shell:  
+Either by running
+```
+pipenv run make <target-name>
+```
+or by opening a virtual pipenv shell by running
+```
+pipenv shell
+make <target-name>
+...
+exit
+```
+
+
+### Documentation
 
 The documentation is created using `mkdocs` and `mkdocstrings` with `markdown_include.include`. To create the documentation, make sure to install all of these, using pip.
 
 To serve the documentation locally, run `make doc`. To deploy the documentation to github pages, run `make deploy-doc`.
-
 
 

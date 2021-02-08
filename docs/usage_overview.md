@@ -8,30 +8,6 @@ __Note:__ The application has only been tested on Python 3.9, but it might work 
 
 __Note:__ There have been issues with `conda` installations. If this is the case, consider using a virtual environment.
 
-{==
-
-__Note:__
-
-Due to some issues with the automatic installation of dependencies, the following three packages must be installed manually, before installing the tool itself:
-
-- `validators`
-- `isodate`
-- `wxPython`
-
-To install the application from there, run:
-
-```shell
-pip install validators isodate wxPython
-```
-
-or
-
-```shell
-pip3 install validators isodate wxPython
-```
-
-==}
-
 To install the application, run:
 
 ```bash
@@ -43,26 +19,6 @@ Or respectively:
 ```shell
 pip3 install dsp-metadata-gui
 ```
-
-{==
-
-__Note:__
-
-Until the first release of the tool, it is available only on the [PYPI test instance](https://test.pypi.org/project/dsp-metadata-gui/).
-
-To install the application from there, run:
-
-```shell
-pip install -i https://test.pypi.org/simple/ dsp-metadata-gui
-```
-
-or
-
-```shell
-pip3 install -i https://test.pypi.org/simple/ dsp-metadata-gui
-```
-
-==}
 
 
 ## Run

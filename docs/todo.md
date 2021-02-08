@@ -15,7 +15,7 @@
     - [x] long abstract etc. hides buttons
     - [x] rethink tabs order
     - [x] make RDF preview scale with window size
-- [ ] feedback to user when saving
+- [ ] feedback to user when saving (note: `wx.CallLater()`)
 
 ### medium size changes
 
@@ -71,7 +71,7 @@
 
 - [x] get doc theme to work
 - [x] fix issue with dependencies not installing automatically
-- [ ] find out what the real minimum python version is (3.9 is rather high)
+- [x] find out what the real minimum python version is (3.9 is rather high)
 - [ ] test on windows
 - [ ] test on linux
 - [ ] investigate `ssl.SSLCertVerificationError`
