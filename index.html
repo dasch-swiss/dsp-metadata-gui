@@ -10,7 +10,7 @@
       
       
       <link rel="shortcut icon" href="assets/images/dasch-favicon.ico">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.4">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.8">
     
     
       
@@ -18,10 +18,10 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.358818c7.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.cb6bc1d0.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.f0267088.min.css">
+        <link rel="stylesheet" href="assets/stylesheets/palette.39b8e14a.min.css">
         
       
     
@@ -29,7 +29,7 @@
     
       
         
-        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
         <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
       
@@ -53,6 +53,7 @@
     <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
       
   
+    
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
@@ -81,18 +82,20 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
     </label>
     <div class="md-header-nav__title" data-md-component="header-title">
-      
-        <div class="md-header-nav__ellipsis">
-          <span class="md-header-nav__topic md-ellipsis">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
             DSP-Metadata-GUI
           </span>
-          <span class="md-header-nav__topic md-ellipsis">
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
             
               Overview
             
           </span>
         </div>
-      
+      </div>
     </div>
     
       <label class="md-header-nav__button md-icon" for="__search">
@@ -103,7 +106,7 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
       <label class="md-search__icon md-icon" for="__search">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
@@ -138,10 +141,14 @@
         <div class="md-main__inner md-grid">
           
             
-              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
+
+
+
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
@@ -160,25 +167,27 @@
       
 
   
-
-
-  <li class="md-nav__item md-nav__item--active">
+  
     
-    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
       
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Overview
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
         Overview
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-    
-    <a href="." class="md-nav__link md-nav__link--active">
-      Overview
-    </a>
-    
+      </a>
       
+        
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
@@ -226,191 +235,250 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#development" class="md-nav__link">
+    Development
+  </a>
+  
+    <nav class="md-nav" aria-label="Development">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#development-environment" class="md-nav__link">
+    Development Environment
+  </a>
+  
+    <nav class="md-nav" aria-label="Development Environment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pipenv" class="md-nav__link">
+    Pipenv
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gnu-make" class="md-nav__link">
+    GNU Make
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#documentation" class="md-nav__link">
     Documentation
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
     </ul>
   
 </nav>
-    
-  </li>
+      
+    </li>
+  
 
     
       
       
       
 
-
-  <li class="md-nav__item md-nav__item--nested">
+  
+  
+  
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
-    
-    <label class="md-nav__link" for="nav-2">
-      Usage
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="Usage" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
-        <span class="md-nav__icon md-icon"></span>
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" >
+      
+      <label class="md-nav__link" for="nav-2">
         Usage
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="usage_overview/" class="md-nav__link">
-      Usage Overview
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="list_view/" class="md-nav__link">
-      Project Organization
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="tab_view/" class="md-nav__link">
-      Entering Metadata
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item md-nav__item--nested">
-    
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-4" type="checkbox" id="nav-2-4">
-    
-    <label class="md-nav__link" for="nav-2-4">
-      Metadata Classes
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="Metadata Classes" data-md-level="2">
-      <label class="md-nav__title" for="nav-2-4">
         <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Usage" data-md-level="1">
+        <label class="md-nav__title" for="nav-2">
+          <span class="md-nav__icon md-icon"></span>
+          Usage
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="usage_overview/" class="md-nav__link">
+        Usage Overview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="list_view/" class="md-nav__link">
+        Project Organization
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tab_view/" class="md-nav__link">
+        Entering Metadata
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-4" type="checkbox" id="nav-2-4" >
+      
+      <label class="md-nav__link" for="nav-2-4">
         Metadata Classes
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="project/" class="md-nav__link">
-      Project
-    </a>
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item md-nav__item--nested">
-    
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
-    
-    <label class="md-nav__link" for="nav-3">
-      API Reference
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="API Reference" data-md-level="1">
-      <label class="md-nav__title" for="nav-3">
         <span class="md-nav__icon md-icon"></span>
-        API Reference
       </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
+      <nav class="md-nav" aria-label="Metadata Classes" data-md-level="2">
+        <label class="md-nav__title" for="nav-2-4">
+          <span class="md-nav__icon md-icon"></span>
+          Metadata Classes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
           
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="project/" class="md-nav__link">
+        Project
+      </a>
+    </li>
+  
+
           
+        </ul>
+      </nav>
+    </li>
+  
 
-
-  <li class="md-nav__item">
-    <a href="reference/collectMetadata/" class="md-nav__link">
-      GUI documentation
-    </a>
-  </li>
-
-        
           
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="reference/metaDataSet/" class="md-nav__link">
-      Data Structure
-    </a>
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
+        </ul>
+      </nav>
+    </li>
+  
 
     
       
       
       
 
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" >
+      
+      <label class="md-nav__link" for="nav-3">
+        API Reference
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="nav-3">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reference/collectMetadata/" class="md-nav__link">
+        GUI documentation
+      </a>
+    </li>
+  
 
-  <li class="md-nav__item">
-    <a href="todo/" class="md-nav__link">
-      Pending Tasks
-    </a>
-  </li>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reference/metaDataSet/" class="md-nav__link">
+        Data Structure
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
 
     
       
       
       
 
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="todo/" class="md-nav__link">
+        Pending Tasks
+      </a>
+    </li>
+  
 
-  <li class="md-nav__item">
-    <a href="changelog/" class="md-nav__link">
-      Change Log
-    </a>
-  </li>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="changelog/" class="md-nav__link">
+        Change Log
+      </a>
+    </li>
+  
 
     
   </ul>
@@ -420,7 +488,8 @@
               </div>
             
             
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -471,9 +540,49 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#development" class="md-nav__link">
+    Development
+  </a>
+  
+    <nav class="md-nav" aria-label="Development">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#development-environment" class="md-nav__link">
+    Development Environment
+  </a>
+  
+    <nav class="md-nav" aria-label="Development Environment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pipenv" class="md-nav__link">
+    Pipenv
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gnu-make" class="md-nav__link">
+    GNU Make
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#documentation" class="md-nav__link">
     Documentation
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -500,40 +609,15 @@ and turn it into RDF.</p>
 <p>The application has only been tested on Python 3.9, but it might work on older versions too.</p>
 <p><strong>Note:</strong> There have been issues with <code>conda</code> installations. If this is the case, consider using a virtual environment.</p>
 <h3 id="installation-via-pip">Installation via pip</h3>
-<mark class="critic block">
-<p><strong>Note:</strong></p>
-<p>Due to some issues with the automatic installation of dependencies, the following three packages must be installed manually, before installing the tool itself:</p>
-<ul>
-<li><code>validators</code></li>
-<li><code>isodate</code></li>
-<li><code>wxPython</code></li>
-</ul>
-<p>To install the application from there, run:</p>
-<pre><code class="language-shell">pip install validators isodate wxPython
-</code></pre>
-<p>or</p>
-<pre><code class="language-shell">pip3 install validators isodate wxPython
-</code></pre>
-</mark>
 <p>To install the application, run:</p>
 <pre><code class="language-bash">pip install dsp-metadata-gui
 </code></pre>
 <p>Or respectively:</p>
 <pre><code class="language-shell">pip3 install dsp-metadata-gui
 </code></pre>
-<mark class="critic block">
-<p><strong>Note:</strong></p>
-<p>Until the first release of the tool, it is available only on the <a href="https://test.pypi.org/project/dsp-metadata-gui/">PYPI test instance</a>.</p>
-<p>To install the application from there, run:</p>
-<pre><code class="language-shell">pip install -i https://test.pypi.org/simple/ dsp-metadata-gui
-</code></pre>
-<p>or</p>
-<pre><code class="language-shell">pip3 install -i https://test.pypi.org/simple/ dsp-metadata-gui
-</code></pre>
-</mark>
 <p>Afterwards, the program can be started by running the command <code>dsp-metadata</code> in your terminal of choice.</p>
 <h3 id="installation-from-source">Installation from source</h3>
-<p>Clone this repo and run <code>make run</code>. If you don't use GNU Make, run the commands specified in the <code>Makefile</code> manually.</p>
+<p>Clone this repo and run <code>make make-and-run</code>. If you don't use GNU Make, run the commands specified in the <code>Makefile</code> manually.</p>
 <p>This will package the application, install it to your python environment and run the application.</p>
 <h2 id="usage">Usage</h2>
 <p>The Application is divided into two widows:</p>
@@ -550,7 +634,36 @@ A project is always associated with a folder on your local machine. If any files
 Once all metadata are added and valid, and the overall DRF graph of the metadata set validates against the ontology, the project can be exported for upload to the DSP.</p>
 <p>All data is locally stored in the file <code>~/DaSCH/config/repos.data</code>. for more detail, see <a href="list_view/#local-data-storage">here</a>.<br />
 <mark class="critic"> TODO: fix this link in readme (works in doc) </mark></p>
-<h2 id="documentation">Documentation</h2>
+<h2 id="development">Development</h2>
+<h3 id="development-environment">Development Environment</h3>
+<h4 id="pipenv">Pipenv</h4>
+<p>Use <code>pipenv</code> for a seamless development experience.<br />
+In order to have both dependencies and dev-dependencies installed from the <code>Pipfile</code>, set up the virtual environment running</p>
+<pre><code>pipenv instal --dev
+</code></pre>
+<p><code>pipenv</code> will manage dependencies as well as a virtual environment. To install packages, use</p>
+<pre><code>pipenv install &lt;package-name&gt;
+</code></pre>
+<p>To create <code>requirements.txt</code>, run </p>
+<pre><code>pipenv lock -r &gt; requirements.txt
+</code></pre>
+<p>To bring <code>setup.py</code> up to date, run</p>
+<pre><code>pipenv run pipenv-setup sync
+</code></pre>
+<h4 id="gnu-make">GNU Make</h4>
+<p><code>GNU Make</code> is used to automatize most tasks.<br />
+Run <code>make help</code> for info on the available targets.</p>
+<p><strong>Note:</strong> All make targets - except <code>make run</code> - should be run from within the <code>pipenv</code> shell:<br />
+Either by running</p>
+<pre><code>pipenv run make &lt;target-name&gt;
+</code></pre>
+<p>or by opening a virtual pipenv shell by running</p>
+<pre><code>pipenv shell
+make &lt;target-name&gt;
+...
+exit
+</code></pre>
+<h3 id="documentation">Documentation</h3>
 <p>The documentation is created using <code>mkdocs</code> and <code>mkdocstrings</code> with <code>markdown_include.include</code>. To create the documentation, make sure to install all of these, using pip.</p>
 <p>To serve the documentation locally, run <code>make doc</code>. To deploy the documentation to github pages, run <code>make deploy-doc</code>.</p>
                 
@@ -605,15 +718,15 @@ Once all metadata are added and valid, and the overall DRF graph of the metadata
       
     </div>
     
-      <script src="assets/javascripts/vendor.7e0ee788.min.js"></script>
-      <script src="assets/javascripts/bundle.b3a72adc.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      <script src="assets/javascripts/vendor.18f0862e.min.js"></script>
+      <script src="assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
       
       <script>
         app = initialize({
           base: ".",
           features: [],
           search: Object.assign({
-            worker: "assets/javascripts/worker/search.4ac00218.min.js"
+            worker: "assets/javascripts/worker/search.9c0e82ba.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>

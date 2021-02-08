@@ -10,7 +10,7 @@
       
       
       <link rel="shortcut icon" href="../../assets/images/dasch-favicon.ico">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.4">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.8">
     
     
       
@@ -18,10 +18,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.358818c7.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.cb6bc1d0.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.f0267088.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.39b8e14a.min.css">
         
       
     
@@ -29,7 +29,7 @@
     
       
         
-        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
         <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
       
@@ -53,6 +53,7 @@
     <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
       
   
+    
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
@@ -81,18 +82,20 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
     </label>
     <div class="md-header-nav__title" data-md-component="header-title">
-      
-        <div class="md-header-nav__ellipsis">
-          <span class="md-header-nav__topic md-ellipsis">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
             DSP-Metadata-GUI
           </span>
-          <span class="md-header-nav__topic md-ellipsis">
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
             
               Data Structure
             
           </span>
         </div>
-      
+      </div>
     </div>
     
       <label class="md-header-nav__button md-icon" for="__search">
@@ -103,7 +106,7 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
       <label class="md-search__icon md-icon" for="__search">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
@@ -138,10 +141,14 @@
         <div class="md-main__inner md-grid">
           
             
-              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
+
+
+
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
@@ -159,112 +166,122 @@
       
       
 
-
-  <li class="md-nav__item">
-    <a href="../.." class="md-nav__link">
-      Overview
-    </a>
-  </li>
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
 
     
       
       
       
 
-
-  <li class="md-nav__item md-nav__item--nested">
+  
+  
+  
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
-    
-    <label class="md-nav__link" for="nav-2">
-      Usage
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="Usage" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
-        <span class="md-nav__icon md-icon"></span>
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" >
+      
+      <label class="md-nav__link" for="nav-2">
         Usage
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../usage_overview/" class="md-nav__link">
-      Usage Overview
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../list_view/" class="md-nav__link">
-      Project Organization
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../tab_view/" class="md-nav__link">
-      Entering Metadata
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item md-nav__item--nested">
-    
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-4" type="checkbox" id="nav-2-4">
-    
-    <label class="md-nav__link" for="nav-2-4">
-      Metadata Classes
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="Metadata Classes" data-md-level="2">
-      <label class="md-nav__title" for="nav-2-4">
         <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Usage" data-md-level="1">
+        <label class="md-nav__title" for="nav-2">
+          <span class="md-nav__icon md-icon"></span>
+          Usage
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage_overview/" class="md-nav__link">
+        Usage Overview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../list_view/" class="md-nav__link">
+        Project Organization
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tab_view/" class="md-nav__link">
+        Entering Metadata
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-4" type="checkbox" id="nav-2-4" >
+      
+      <label class="md-nav__link" for="nav-2-4">
         Metadata Classes
+        <span class="md-nav__icon md-icon"></span>
       </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
+      <nav class="md-nav" aria-label="Metadata Classes" data-md-level="2">
+        <label class="md-nav__title" for="nav-2-4">
+          <span class="md-nav__icon md-icon"></span>
+          Metadata Classes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
           
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        Project
+      </a>
+    </li>
+  
+
           
+        </ul>
+      </nav>
+    </li>
+  
 
-
-  <li class="md-nav__item">
-    <a href="../../project/" class="md-nav__link">
-      Project
-    </a>
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
+          
+        </ul>
+      </nav>
+    </li>
+  
 
     
       
@@ -272,58 +289,61 @@
       
 
   
-
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+  
+  
     
-    <label class="md-nav__link" for="nav-3">
-      API Reference
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="API Reference" data-md-level="1">
-      <label class="md-nav__title" for="nav-3">
-        <span class="md-nav__icon md-icon"></span>
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+      
+      <label class="md-nav__link" for="nav-3">
         API Reference
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../collectMetadata/" class="md-nav__link">
-      GUI documentation
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-  
-
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Data Structure
         <span class="md-nav__icon md-icon"></span>
       </label>
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="nav-3">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collectMetadata/" class="md-nav__link">
+        GUI documentation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
     
-    <a href="./" class="md-nav__link md-nav__link--active">
-      Data Structure
-    </a>
-    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
       
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Data Structure
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Data Structure
+      </a>
+      
+        
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
@@ -566,37 +586,45 @@
     </ul>
   
 </nav>
-    
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
-
-    
       
-      
-      
+    </li>
+  
 
-
-  <li class="md-nav__item">
-    <a href="../../todo/" class="md-nav__link">
-      Pending Tasks
-    </a>
-  </li>
+          
+        </ul>
+      </nav>
+    </li>
+  
 
     
       
       
       
 
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../todo/" class="md-nav__link">
+        Pending Tasks
+      </a>
+    </li>
+  
 
-  <li class="md-nav__item">
-    <a href="../../changelog/" class="md-nav__link">
-      Change Log
-    </a>
-  </li>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        Change Log
+      </a>
+    </li>
+  
 
     
   </ul>
@@ -606,7 +634,8 @@
               </div>
             
             
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -870,6 +899,7 @@
         <code>metaDataSet</code>
 
 
+
       </h2>
 <div class="doc doc-contents first">
 <p>This module holds the data structure that is used for modelling metadata.</p>
@@ -881,6 +911,7 @@
         <code>DataClass</code>
 
 
+
       </h3>
 <div class="doc doc-contents ">
 <p>Abstract parent class of all classes holding data.</p>
@@ -888,8 +919,7 @@
 <div class="doc doc-object doc-method">
 <h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.DataClass.add_rdf_to_graph">
 
-        <code class="highlight language-python">
-add_rdf_to_graph<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">typename</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">add_rdf_to_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">typename</span><span class="p">)</span></code>
 
 
       </h4>
@@ -929,8 +959,7 @@ add_rdf_to_graph<span class="p">(</span><span class="bp">self</span><span class=
 <div class="doc doc-object doc-method">
 <h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.DataClass.get_metadataset">
 
-        <code class="highlight language-python">
-get_metadataset<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_metadataset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       </h4>
@@ -958,8 +987,7 @@ get_metadataset<span class="p">(</span><span class="bp">self</span><span class="
 <div class="doc doc-object doc-method">
 <h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.DataClass.get_properties">
 
-        <code class="highlight language-python">
-get_properties<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       </h4>
@@ -970,8 +998,7 @@ get_properties<span class="p">(</span><span class="bp">self</span><span class="p
 <div class="doc doc-object doc-method">
 <h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.DataClass.get_rdf_iri">
 
-        <code class="highlight language-python">
-get_rdf_iri<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_rdf_iri</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       </h4>
@@ -1006,6 +1033,7 @@ get_rdf_iri<span class="p">(</span><span class="bp">self</span><span class="p">)
         <code>Dataset</code>
 
 
+
       </h3>
 <div class="doc doc-contents ">
 <p>Dataset Shape.</p>
@@ -1014,8 +1042,7 @@ get_rdf_iri<span class="p">(</span><span class="bp">self</span><span class="p">)
 <div class="doc doc-object doc-method">
 <h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Dataset.get_properties">
 
-        <code class="highlight language-python">
-get_properties<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       </h4>
@@ -1032,6 +1059,7 @@ get_properties<span class="p">(</span><span class="bp">self</span><span class="p
         <code>Grant</code>
 
 
+
       </h3>
 <div class="doc doc-contents ">
 <p>Grant Shape.</p>
@@ -1040,8 +1068,7 @@ get_properties<span class="p">(</span><span class="bp">self</span><span class="p
 <div class="doc doc-object doc-method">
 <h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Grant.get_properties">
 
-        <code class="highlight language-python">
-get_properties<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       </h4>
@@ -1056,6 +1083,7 @@ get_properties<span class="p">(</span><span class="bp">self</span><span class="p
 <h3 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet">
 
         <code>MetaDataSet</code>
+
 
 
       </h3>
@@ -1076,8 +1104,7 @@ It holds the following properties:
 <div class="doc doc-object doc-method">
 <h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet.__init__">
 
-        <code class="highlight language-python">
-__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">shortcode</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">shortcode</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -1128,8 +1155,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <div class="doc doc-object doc-method">
 <h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet.generate_rdf_graph">
 
-        <code class="highlight language-python">
-generate_rdf_graph<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">generate_rdf_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       </h4>
@@ -1157,8 +1183,7 @@ generate_rdf_graph<span class="p">(</span><span class="bp">self</span><span clas
 <div class="doc doc-object doc-method">
 <h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet.get_all_properties">
 
-        <code class="highlight language-python">
-get_all_properties<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_all_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       </h4>
@@ -1169,8 +1194,7 @@ get_all_properties<span class="p">(</span><span class="bp">self</span><span clas
 <div class="doc doc-object doc-method">
 <h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet.update_iris">
 
-        <code class="highlight language-python">
-update_iris<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">update_iris</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       </h4>
@@ -1183,8 +1207,7 @@ to the lists holding DataClass instances (persons, etc.).</p>
 <div class="doc doc-object doc-method">
 <h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet.validate_graph">
 
-        <code class="highlight language-python">
-validate_graph<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">validate_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">)</span></code>
 
 
       </h4>
@@ -1201,6 +1224,7 @@ validate_graph<span class="p">(</span><span class="bp">self</span><span class="p
         <code>Organization</code>
 
 
+
       </h3>
 <div class="doc doc-contents ">
 <p>Organization Shape.</p>
@@ -1209,8 +1233,7 @@ validate_graph<span class="p">(</span><span class="bp">self</span><span class="p
 <div class="doc doc-object doc-method">
 <h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Organization.get_properties">
 
-        <code class="highlight language-python">
-get_properties<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       </h4>
@@ -1227,6 +1250,7 @@ get_properties<span class="p">(</span><span class="bp">self</span><span class="p
         <code>Person</code>
 
 
+
       </h3>
 <div class="doc doc-contents ">
 <p>Person Shape.</p>
@@ -1235,8 +1259,7 @@ get_properties<span class="p">(</span><span class="bp">self</span><span class="p
 <div class="doc doc-object doc-method">
 <h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Person.get_properties">
 
-        <code class="highlight language-python">
-get_properties<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       </h4>
@@ -1251,6 +1274,7 @@ get_properties<span class="p">(</span><span class="bp">self</span><span class="p
 <h3 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Project">
 
         <code>Project</code>
+
 
 
       </h3>
@@ -1290,8 +1314,7 @@ get_properties<span class="p">(</span><span class="bp">self</span><span class="p
 <div class="doc doc-object doc-method">
 <h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Project.get_properties">
 
-        <code class="highlight language-python">
-get_properties<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       </h4>
@@ -1308,6 +1331,7 @@ get_properties<span class="p">(</span><span class="bp">self</span><span class="p
         <code>Property</code>
 
 
+
       </h3>
 <div class="doc doc-contents ">
 <p>General representation of a property.</p>
@@ -1316,8 +1340,7 @@ get_properties<span class="p">(</span><span class="bp">self</span><span class="p
 <div class="doc doc-object doc-method">
 <h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Property.get_triples">
 
-        <code class="highlight language-python">
-get_triples<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_triples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">)</span></code>
 
 
       </h4>
@@ -1366,8 +1389,7 @@ get_triples<span class="p">(</span><span class="bp">self</span><span class="p">,
 <div class="doc doc-object doc-method">
 <h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Property.get_url_property_id">
 
-        <code class="highlight language-python">
-get_url_property_id<span class="p">(</span><span class="n">url</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_url_property_id</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></code>
 
 
       </h4>
@@ -1487,15 +1509,15 @@ otherwise, the net location is being extracted, if possible.</p>
       
     </div>
     
-      <script src="../../assets/javascripts/vendor.7e0ee788.min.js"></script>
-      <script src="../../assets/javascripts/bundle.b3a72adc.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      <script src="../../assets/javascripts/vendor.18f0862e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
       
       <script>
         app = initialize({
           base: "../..",
           features: [],
           search: Object.assign({
-            worker: "../../assets/javascripts/worker/search.4ac00218.min.js"
+            worker: "../../assets/javascripts/worker/search.9c0e82ba.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>
