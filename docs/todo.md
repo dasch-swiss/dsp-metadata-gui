@@ -1,87 +1,65 @@
-# Pending Tasks
+# Roadmap
 
-## Programming
+## Initial Release
 
-### minor changes / fixes
+### Programming
 
-- [x] fix layout issue in dataset tab
-- [x] unify capitalization in GUI
-- [x] make end date optional
-- [x] fix to-string of Grant class
-- [x] relative URI of DMP is only `<DMP>` which is not unique
-- [x] change names to string instead of list
-- [x] change `@base` and IRIs to work correctly
-- [x] layout:
-    - [x] long abstract etc. hides buttons
-    - [x] rethink tabs order
-    - [x] make RDF preview scale with window size
-- [x] feedback to user when saving (note: `wx.CallLater()`)
-
-### medium size changes
-
-- [x] for URLs (including place), get more reasonable propertyID values
-- [x] ensure that RDF is up to date when exporting
-- [x] store .ttl upon change/save instead of creating it on the fly all the time
 - [ ] switching qualified attribution should change role too
-- [ ] add language tag to string properties
 - [ ] allow deleting last Person/Organization/Dataset
-- [ ] rework export function: let user decide what they want (file format, where to store, entire zip, ...)
-  - [ ] check validity before export
 - [ ] avoid adding persons/etc to graph, if not referenced anywhere
-- [ ] in attribution, ensure same person can have multiple roles, rather than having multiple attributions with same person
-
-### major changes
-
-- [ ] have versioning in pickles
-- [ ] try to handle pickles from older versions
-- [ ] implement upload to DSP functionality
-- [ ] implement import from RDF functionality
 
 
-## Documentation
+### Documentation
 
-### Usage Documentation
+#### Usage Documentation
 
-- [x] minimum python version
-- [x] note on issues with conda
-- [x] note on venv recommendation
-- [x] Restructure documentation
-- [x] document import pickle function
-- [x] Write documentation files:
-    - [x] index
-    - [x] Readme
-    - [x] Usage_overview
-    - [x] list_view
-    - [x] tab_view
-    - [x] Changelog
 - [ ] fix link in readme so it works both in readme and in docs
 - [ ] document all classes (explain properties, tab by tab)
 - [ ] update doc to new tab order
-- [x] remove test-pypi installation stuff
 
-
-### API Reference
+#### API Reference
 
 - [ ] Add docstring to all classes
 - [ ] Think about how to handle private methods in documentation
 - [ ] Manually write documentation for `collectMetadata.md`
 
 
-## Others
+### Others
 
-- [x] get doc theme to work
-- [x] fix issue with dependencies not installing automatically
-- [x] find out what the real minimum python version is (3.9 is rather high)
 - [ ] test on windows
 - [ ] test on linux
 - [ ] investigate `ssl.SSLCertVerificationError`
-- [x] look into `__init__.py`
-- [x] have another look at imports and why it doesn't run directly from script, only with installation
 
-## Nice to Have
+
+
+
+## Next Major Version
+
+### Programming
+
+#### Smaller Features
+
+- [ ] remove all error-catching for backwards-compatibility
+- [ ] rework export function: let user decide what they want (file format, where to store, entire zip, ...)
+  - [ ] check validity before export
+- [ ] in attribution, ensure same person can have multiple roles, rather than having multiple attributions with same person
+- [ ] add language tag to string properties
+
+#### Bigger Features
+
+- [ ] have versioning in pickles(?)
+- [ ] try to handle pickles from older versions(?)
+- [ ] implement upload to DSP functionality
+- [ ] implement download from DSP
+- [ ] implement import from RDF functionality
+
+
+## Nice to Have / Ideas
+
 - [ ] rdf graph visualization
 - [ ] Proper Menu
   - [ ] Options
     - [ ] Save on Tab-Change
   - [ ] Help
-- [ ] when adding a project, allow selecting an existing DSP project and get metadata from there, if any.
+
+
