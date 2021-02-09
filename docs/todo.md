@@ -75,7 +75,7 @@
 - [ ] test on windows
 - [ ] test on linux
 - [ ] investigate `ssl.SSLCertVerificationError`
-- [ ] look into `__init__.py`
+- [x] look into `__init__.py`
 - [x] have another look at imports and why it doesn't run directly from script, only with installation
 
 ## Nice to Have

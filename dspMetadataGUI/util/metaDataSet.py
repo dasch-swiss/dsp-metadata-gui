@@ -143,8 +143,7 @@ class MetaDataSet:
         Returns:
             Graph: The RDF graph
         """
-        # graph = Graph(base=dsp_repo)  # LATER: should be re-added
-        graph = Graph()
+        graph = Graph(base=dsp_repo)
         graph.bind("dsp-repo", dsp_repo)
         graph.bind("schema", SDO)
         graph.bind("xsd", XSD)
@@ -259,7 +258,6 @@ class DataClass(ABC):
         """
         iri = self.get_rdf_iri()
         type = dsp_repo[typename]
-        # TODO: should be done in Project class
         graph.add((iri, RDF.type, type))
         for prop in self.get_properties():
             graph += prop.get_triples(iri)
@@ -826,7 +824,7 @@ class Property():
         self.predicate = predicate
         self.multiline = multiline
 
-    def get_url_property_id(url: str) -> str:
+    def get_url_property_id(self, url: str) -> str:
         """
         This method tries to guess the propetyID for a URL.
 
@@ -908,7 +906,7 @@ class Property():
                 b2 = BNode()
                 g.add((b1, SDO.propertyID, b2))
                 g.add((b2, RDF.type, SDO.PropertyValue))
-                g.add((b2, SDO.propertyID, Literal("Geonames")))  # TODO: not always the case!
+                g.add((b2, SDO.propertyID, Literal(self.get_url_property_id(v), datatype=XSD.string)))
             elif datatype == Datatype.PERSON:
                 g.add((subject, self.predicate, v.get_rdf_iri()))
             elif datatype == Datatype.ORGANIZATION:

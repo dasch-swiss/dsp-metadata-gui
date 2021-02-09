@@ -53,7 +53,7 @@ def get_url_property_id(url: str) -> str:
     if re.search(r'skos\.um\.es', url):
         return "SKOS UNESCO Nomenclature"
     if re.search(r'geonames\.org', url):
-        return "Geonames.org"
+        return "Geonames"
     if re.search(r'pleiades\.stoa\.org', url):
         return "Pleiades"
     if re.search(r'orcid\.org', url):
@@ -68,7 +68,7 @@ def get_url_property_id(url: str) -> str:
         return "ChronOntology"
     if re.search(r'creativecommons\.', url):
         return "Creative Commons"
-    # TODO: more propertyID's
+    # LATER: propertyID's for common institutions
     loc = urlparse(url).netloc
     if len(loc.split('.')) > 2:
         return '.'.join(loc.split('.')[1:])
