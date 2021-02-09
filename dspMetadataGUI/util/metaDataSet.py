@@ -867,7 +867,7 @@ class Property():
         self.predicate = predicate
         self.multiline = multiline
 
-    def get_url_property_id(self, url: str) -> str:
+    def get_url_property_id(url: str) -> str:
         """
         This method tries to guess the propetyID for a URL.
 
@@ -936,7 +936,7 @@ class Property():
                 b2 = BNode()
                 g.add((blank, SDO.propertyID, b2))
                 g.add((b2, RDF.type, SDO.PropertyValue))
-                g.add((b2, SDO.propertyID, Literal(Property.get_url_property_id(v))))
+                g.add((b2, SDO.propertyID, Literal(utils.get_url_property_id(url=v))))
                 g.add((blank, SDO.url, Literal(v)))
             elif datatype == Datatype.PLACE:
                 b0 = BNode()
@@ -949,7 +949,7 @@ class Property():
                 b2 = BNode()
                 g.add((b1, SDO.propertyID, b2))
                 g.add((b2, RDF.type, SDO.PropertyValue))
-                g.add((b2, SDO.propertyID, Literal(self.get_url_property_id(v), datatype=XSD.string)))
+                g.add((b2, SDO.propertyID, Literal(utils.get_url_property_id(v), datatype=XSD.string)))
             elif datatype == Datatype.PERSON:
                 g.add((subject, self.predicate, v.get_rdf_iri()))
             elif datatype == Datatype.ORGANIZATION:
