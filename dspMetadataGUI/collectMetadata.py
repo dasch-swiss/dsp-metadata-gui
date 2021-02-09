@@ -305,6 +305,8 @@ class ProjectPanel(wx.Panel):
                     dlg.ShowModal()
 
     def on_item_selected(self, event):
+        # LATER: look into why this is called twice, which makes it slow
+        # print('item selected')
         self.refresh_view()
 
 

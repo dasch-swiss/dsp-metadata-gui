@@ -70,6 +70,8 @@ class MetaDataSet:
         self.__graph = graph
         ttl = graph.serialize(format='turtle').decode("utf-8")
         self.turtle = ttl
+        val = self.validate_graph(graph)[0]
+        self.validation_result = val
 
     @property
     def turtle(self):
@@ -78,6 +80,14 @@ class MetaDataSet:
     @turtle.setter
     def turtle(self, turtle: str):
         self.__turtle = turtle
+
+    @property
+    def validation_result(self):
+        return self.__validity
+
+    @validation_result.setter
+    def validation_result(self, validity: bool):
+        self.__validity = validity
 
     def __init__(self, name: str, path: str, shortcode: str):
         """
@@ -240,7 +250,13 @@ class MetaDataSet:
             print('Warning: Could not load cached graph. Performance may be decreased')
             # LATER: remove with next breaking change
             g = self.generate_rdf_graph()
-        if self.validate_graph(g)[0]:
+        try:
+            val = self.validation_result
+        except Exception:
+            # LATER: remove with next breaking change
+            print('Warning: no cached validation result available. Performance may be decreased.')
+            val = self.validate_graph(g)[0]
+        if val:
             overall = 'Valid'
         else:
             overall = 'Invalid'
