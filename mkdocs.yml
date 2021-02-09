@@ -11,7 +11,7 @@ nav:
   - API Reference:
       - "GUI documentation": reference/collectMetadata.md
       - "Data Structure": reference/metaDataSet.md
-  - Pending Tasks: todo.md
+  - Roadmap: todo.md
   - Change Log: changelog.md
 
 theme:
