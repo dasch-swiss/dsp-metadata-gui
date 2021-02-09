@@ -1179,6 +1179,9 @@ class TabbedWindow(wx.Frame):
         button_sizer.Add(save_button, 0, wx.ALL, 5)
         button_sizer.Add(saveclose_button, 0, wx.ALL, 5)
         button_sizer.Add(cancel_button, 0, wx.ALL, 5)
+        feedback_text = wx.StaticText(panel)
+        self.feedback_text = feedback_text
+        button_sizer.Add(feedback_text, 0, wx.ALL, 5)
 
         # Set notebook in a sizer to create the layout
         sizer = wx.FlexGridSizer(1, 2, 10)
@@ -1194,6 +1197,7 @@ class TabbedWindow(wx.Frame):
 
     def on_save(self, event):
         self.save()
+        self.feedback("Saved Successfully.")
 
     def on_saveclose(self, event):
         self.save()
@@ -1219,6 +1223,14 @@ class TabbedWindow(wx.Frame):
 
     def get_organizations(self):
         return self.dataset.organizations
+
+    def feedback(self, msg, success=True):
+        if success:
+            self.feedback_text.SetForegroundColour(wx.Colour(50, 200, 50))
+        else:
+            self.feedback_text.SetForegroundColour(wx.Colour(200, 50, 50))
+        self.feedback_text.SetLabel(msg)
+        wx.CallLater(2500, lambda: self.feedback_text.SetLabel(''))
 
 
 if __name__ == '__main__':

@@ -15,7 +15,7 @@
     - [x] long abstract etc. hides buttons
     - [x] rethink tabs order
     - [x] make RDF preview scale with window size
-- [ ] feedback to user when saving (note: `wx.CallLater()`)
+- [x] feedback to user when saving (note: `wx.CallLater()`)
 
 ### medium size changes
 
