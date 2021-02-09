@@ -61,6 +61,24 @@ class MetaDataSet:
     def files(self, files: list):
         self.__files = files
 
+    @property
+    def graph(self):
+        return self.__graph
+
+    @graph.setter
+    def graph(self, graph: Graph):
+        self.__graph = graph
+        ttl = graph.serialize(format='turtle').decode("utf-8")
+        self.turtle = ttl
+
+    @property
+    def turtle(self):
+        return self.__turtle
+
+    @turtle.setter
+    def turtle(self, turtle: str):
+        self.__turtle = turtle
+
     def __init__(self, name: str, path: str, shortcode: str):
         """
         Initiates the object.
@@ -157,6 +175,11 @@ class MetaDataSet:
             org.add_rdf_to_graph(graph, "Organization")
         for i, org in enumerate(self.grants):
             org.add_rdf_to_graph(graph, "Grant")
+        try:
+            self.graph = graph
+        except Exception:
+            print('Warning: Graph could not be cached.')
+            # LATER: remove with next breaking change
         return graph
 
     def get_by_string(self, s: str):
@@ -209,7 +232,15 @@ class MetaDataSet:
             self.grants.remove(obj)
 
     def get_status(self):
-        if self.validate_graph(self.generate_rdf_graph())[0]:
+        try:
+            g = self.graph
+            if not g:
+                raise Exception('no graph')
+        except Exception:
+            print('Warning: Could not load cached graph. Performance may be decreased')
+            # LATER: remove with next breaking change
+            g = self.generate_rdf_graph()
+        if self.validate_graph(g)[0]:
             overall = 'Valid'
         else:
             overall = 'Invalid'
@@ -230,8 +261,20 @@ class MetaDataSet:
         return f"{overall}  --  {invalid + missing} Problems; {valid} Values"
 
     def get_turtle(self) -> str:
-        g = self.generate_rdf_graph()
-        return g.serialize(format='turtle').decode("utf-8")
+        try:
+            ttl = self.turtle
+            if not isinstance(ttl, str):
+                raise Exception('turtle was not a string')
+            if ttl:
+                return ttl
+            else:
+                raise Exception('no turtle found')
+        except Exception as e:
+            print('Warning: No turtle cached. Performance may be decreased.')
+            print(f'    (Exception: {e})')
+            # LATER: remove with next breaking change
+            g = self.generate_rdf_graph()
+            return g.serialize(format='turtle').decode("utf-8")
 
 
 class DataClass(ABC):

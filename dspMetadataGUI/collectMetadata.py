@@ -1208,8 +1208,8 @@ class TabbedWindow(wx.Frame):
 
     def save(self):
         data_handler.update_all()
-        data_handler.validate_graph(self.dataset)
-        data_handler.save_data()
+        # data_handler.validate_graph(self.dataset)  # TODO: why was that here again?
+        data_handler.save_data(dataset=self.dataset)
         data_handler.refresh_ui()
 
     def close(self):

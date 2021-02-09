@@ -19,14 +19,14 @@
 
 ### medium size changes
 
-- [ ] check validity before export
-- [ ] for URLs (including place), get more reasonable propertyID values
+- [x] for URLs (including place), get more reasonable propertyID values
 - [x] ensure that RDF is up to date when exporting
-- [ ] store .ttl upon change/save instead of creating it on the fly all the time
+- [x] store .ttl upon change/save instead of creating it on the fly all the time
 - [ ] switching qualified attribution should change role too
 - [ ] add language tag to string properties
 - [ ] allow deleting last Person/Organization/Dataset
 - [ ] rework export function: let user decide what they want (file format, where to store, entire zip, ...)
+  - [ ] check validity before export
 - [ ] avoid adding persons/etc to graph, if not referenced anywhere
 - [ ] in attribution, ensure same person can have multiple roles, rather than having multiple attributions with same person
 

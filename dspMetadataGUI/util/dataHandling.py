@@ -62,20 +62,30 @@ class DataHandling:
         with open(self.data_storage, 'rb') as file:
             self.projects = pickle.load(file)
 
-    def save_data(self):
+    def save_data(self, dataset: MetaDataSet = None):
         """
         Save data to disc.
 
         Currently, the data are stored under `~/DaSCH/config/repos.data`.
         """
         # LATER: could let the user decide where to store the data.
+        # TODO: export metadata here
+        if dataset:
+            dataset.generate_rdf_graph()
         with open(self.data_storage, 'wb') as file:
             pickle.dump(self.projects, file)
 
     def validate_and_export_data(self, index: int) -> tuple:
         project = self.projects[index]
         validation_result = self.validate_graph(project)
-        graph = project.generate_rdf_graph()
+        try:
+            graph = project.generate_rdf_graph()
+            if not graph:
+                raise Exception('No Graph')
+        except Exception:
+            print('Warning: could not load graph from cache. Performance may be decreased.')
+            # LATER: remove with next breaking change
+            graph = project.graph
         self.export_rdf(project.path, graph)
         return validation_result
 
@@ -114,8 +124,15 @@ class DataHandling:
         if not target:
             target = dataset.path
         target_file = os.path.join(target, dataset.name)
-        # ensure that metadata is up to date  # LATER: should not be necessary, once this is done upon saving
-        self.export_rdf(dataset.path, dataset.generate_rdf_graph())
+        try:
+            graph = dataset.generate_rdf_graph()
+            if not graph:
+                raise Exception('No Graph')
+        except Exception:
+            print('Warning: could not load graph from cache. Performance may be decreased.')
+            # LATER: remove with next breaking change
+            graph = dataset.graph
+        self.export_rdf(dataset.path, graph)
         p = dataset.path
         tmp = os.path.join(p, '.tmp')
         meta = os.path.join(p, 'metadata')
@@ -141,7 +158,15 @@ class DataHandling:
         Does not validate each of the properties separately,
         but rather generates the RDF graph, which then gets validated.
         """
-        return dataset.validate_graph(dataset.generate_rdf_graph())
+        try:
+            graph = dataset.generate_rdf_graph()
+            if not graph:
+                raise Exception('No Graph')
+        except Exception:
+            print('Warning: could not load graph from cache. Performance may be decreased.')
+            # LATER: remove with next breaking change
+            graph = dataset.graph
+        return dataset.validate_graph(graph)
 
     def update_all(self):
         """
