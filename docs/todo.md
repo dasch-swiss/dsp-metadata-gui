@@ -52,6 +52,7 @@
 - [ ] implement upload to DSP functionality
 - [ ] implement download from DSP
 - [ ] implement import from RDF functionality
+- [ ] regular json support
 
 
 ## Nice to Have / Ideas

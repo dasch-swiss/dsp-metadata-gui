@@ -678,7 +678,7 @@ class PropertyRow():
         content_list.InsertColumn(0, 'Role')
         content_list.InsertColumn(1, 'Agent')
         inner_sizer.Add(content_list, 1)
-        inner_sizer.Add(wx.Button(scroller))
+        # inner_sizer.Add(wx.Button(scroller))
         scroller.Sizer = inner_sizer
         scroller.SetupScrolling(scroll_x=True, scroll_y=False)
         sizer.Add(scroller, flag=wx.EXPAND)
