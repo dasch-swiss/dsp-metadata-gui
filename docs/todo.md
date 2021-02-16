@@ -4,8 +4,9 @@
 
 ### Programming
 
-- [ ] switching qualified attribution should change role too
-- [ ] allow deleting last Person/Organization/Dataset
+- [x] switching qualified attribution should change role too
+- [ ] fix: remove correct item when removing one of multiple of top level classes (person, organization etc.)
+- [x] allow deleting last Person/Organization/Dataset
 - [ ] avoid adding persons/etc to graph, if not referenced anywhere
 
 

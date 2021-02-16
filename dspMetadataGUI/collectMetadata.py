@@ -1012,7 +1012,10 @@ class DataTab(scrolledPanel.ScrolledPanel):
             s = listbox.GetStringSelection()
             self.metadataset.remove(self.metadataset.get_by_string(s))
             self.multiple_selection = selection - 1
-        data_handler.update_all()
+            data_handler.update_all()
+        elif listbox.GetCount() == 1:
+            s = listbox.GetStringSelection()
+            self.metadataset.remove(self.metadataset.get_by_string(s))  # TODO: more elegant!
         data_handler.refresh_ui()
 
     def change_selection(self, event):

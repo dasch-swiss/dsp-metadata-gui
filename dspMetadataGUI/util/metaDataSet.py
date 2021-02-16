@@ -222,6 +222,7 @@ class MetaDataSet:
         self.update_iris()
 
     def add_organization(self):
+        print('add org')
         new = Organization(self)
         self.organizations.append(new)
         self.update_iris()
@@ -234,12 +235,20 @@ class MetaDataSet:
     def remove(self, obj):
         if obj in self.dataset:
             self.dataset.remove(obj)
+            if not self.dataset:
+                self.add_dataset()
         if obj in self.persons:
             self.persons.remove(obj)
+            if not self.persons:
+                self.add_person()
         if obj in self.organizations:
             self.organizations.remove(obj)
+            if not self.organizations:
+                self.add_organization()
         if obj in self.grants:
             self.grants.remove(obj)
+            if not self.grants:
+                self.add_grant()
 
     def get_status(self):
         try:
