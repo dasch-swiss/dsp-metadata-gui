@@ -108,7 +108,7 @@ class MetaDataSet:
         self.persons = [Person(self)]
         self.organizations = [Organization(self)]
         self.grants = [Grant(self)]
-        self.update_iris()
+        # self.update_iris()
 
     def __str__(self):
         return str({

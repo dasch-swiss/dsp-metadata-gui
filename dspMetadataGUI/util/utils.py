@@ -183,15 +183,18 @@ class IRIFactory():
 
     @staticmethod
     def _get_all_iris(object_type: str, meta):
-        if object_type == 'dataset':
-            return [d.iri_suffix for d in meta.dataset]
-        elif object_type == 'person':
-            return [d.iri_suffix for d in meta.persons]
-        elif object_type == 'organization':
-            return [d.iri_suffix for d in meta.organizations]
-        elif object_type == 'grant':
-            return [d.iri_suffix for d in meta.grants]
-        else:
+        try:
+            if object_type == 'dataset':
+                return [d.iri_suffix for d in meta.dataset]
+            elif object_type == 'person':
+                return [d.iri_suffix for d in meta.persons]
+            elif object_type == 'organization':
+                return [d.iri_suffix for d in meta.organizations]
+            elif object_type == 'grant':
+                return [d.iri_suffix for d in meta.grants]
+            else:
+                return []
+        except Exception:
             return []
 
     @classmethod
