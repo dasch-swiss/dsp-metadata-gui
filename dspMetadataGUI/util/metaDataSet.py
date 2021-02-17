@@ -108,7 +108,6 @@ class MetaDataSet:
         self.persons = [Person(self)]
         self.organizations = [Organization(self)]
         self.grants = [Grant(self)]
-        # self.update_iris()
 
     def __str__(self):
         return str({
@@ -196,23 +195,18 @@ class MetaDataSet:
     def add_dataset(self):
         new = Dataset(self.name, self.project, self)
         self.dataset.append(new)
-        # self.update_iris()
 
     def add_person(self):
         new = Person(self)
         self.persons.append(new)
-        # self.update_iris()
 
     def add_organization(self):
-        # print('add org')
         new = Organization(self)
         self.organizations.append(new)
-        # self.update_iris()
 
     def add_grant(self):
         new = Grant(self)
         self.grants.append(new)
-        # self.update_iris()
 
     def remove(self, obj):
         if obj in self.dataset:
