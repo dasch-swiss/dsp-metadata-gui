@@ -2,10 +2,14 @@ import os
 import re
 import platform
 import subprocess
+from rdflib import Graph, Namespace, RDF, URIRef, BNode
 import validators
 import random
 from enum import Enum
 from urllib.parse import urlparse
+
+
+dsp_repo = Namespace("http://ns.dasch.swiss/repository#")
 
 
 def open_file(path):
@@ -92,6 +96,28 @@ def is_email(mail: str):
         if validators.email(mail):
             return True
     return False
+
+
+def get_coherent_graph(g: Graph) -> Graph:
+    project = list(g.subjects(RDF.type, dsp_repo.Project))[0]
+    traversed = []
+    to_visit = [project]
+
+    while to_visit:
+        x = to_visit.pop()
+        traversed.append(x)
+        for _, p, o in g.triples((x, None, None)):
+            if p != RDF.type and isinstance(o, (URIRef, BNode)) and o not in traversed:
+                to_visit.append(o)
+        for new_x in g.subjects(object=x):
+            if new_x not in traversed:
+                to_visit.append(new_x)
+
+    for s, p, o in g:
+        if s not in traversed:
+            g.remove((s, None, None))
+
+    return g
 
 
 class Validity(Enum):

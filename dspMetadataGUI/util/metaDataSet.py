@@ -167,6 +167,7 @@ class MetaDataSet:
         for i, org in enumerate(self.grants):
             org.add_rdf_to_graph(graph, "Grant")
         try:
+            graph = utils.get_coherent_graph(graph)
             self.graph = graph
         except Exception:
             print('Warning: Graph could not be cached.')
@@ -306,7 +307,6 @@ class DataClass(ABC):
         for prop in self.get_properties():
             graph += prop.get_triples(iri)
 
-    # TODO: ensure that this gets updated whenever the shortcode changes
     def get_rdf_iri(self) -> URIRef:
         """
         Return the iri of the object.
