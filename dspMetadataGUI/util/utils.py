@@ -3,6 +3,7 @@ import re
 import platform
 import subprocess
 import validators
+import random
 from enum import Enum
 from urllib.parse import urlparse
 
@@ -176,3 +177,28 @@ class Datatype(Enum):
     ORGANIZATION = 14
     DOWNLOAD = 15
     SHORTCODE = 16
+
+
+class IRIFactory():
+
+    @staticmethod
+    def _get_all_iris(object_type: str, meta):
+        if object_type == 'dataset':
+            return [d.iri_suffix for d in meta.dataset]
+        elif object_type == 'person':
+            return [d.iri_suffix for d in meta.persons]
+        elif object_type == 'organization':
+            return [d.iri_suffix for d in meta.organizations]
+        elif object_type == 'grant':
+            return [d.iri_suffix for d in meta.grants]
+        else:
+            return []
+
+    @classmethod
+    def get_unique_iri(cls, object_type: str, meta) -> str:
+        existing = cls._get_all_iris(object_type, meta)
+        for i in range(999):
+            new = f"-{object_type}-{str(i).zfill(3)}"
+            if new not in existing:
+                return new
+        return f"-{object_type}-{str(random.randint(1000,1000000)).zfill(7)}"

@@ -6,13 +6,14 @@ The classes defined here aim to represent a metadata-set, closely following the 
 
 from abc import ABC, abstractmethod
 import re
+from typing import Tuple
 import pyshacl
 import validators
 from rdflib import Graph, URIRef, RDF, Literal, Namespace, BNode
 from rdflib.namespace import SDO, XSD
 
 from . import utils
-from .utils import Cardinality, Datatype, Validity
+from .utils import Cardinality, Datatype, Validity, IRIFactory
 
 
 ontology_url = "https://raw.githubusercontent.com/dasch-swiss/dsp-ontologies/main/dsp-repository/v1/dsp-repository.shacl.ttl"
@@ -109,25 +110,6 @@ class MetaDataSet:
         self.grants = [Grant(self)]
         self.update_iris()
 
-    def update_iris(self):
-        """
-        Updates the IRIs of all DataClass fields.
-
-        This method should be called whenever something is added/removed
-        to the lists holding DataClass instances (persons, etc.).
-        """
-        # TODO: this method needs to be called whenever a person/org/dataset is added/removed
-        # TODO: ensure updating the IRIs doesn't mess up identifying objects by string
-        self.project.iri_suffix = "-project"
-        for i, ds in enumerate(self.dataset):
-            ds.iri_suffix = f"-dataset-{str(i + 1).zfill(3)}"
-        for i, person in enumerate(self.persons):
-            person.iri_suffix = f"-person-{str(i + 1).zfill(3)}"
-        for i, org in enumerate(self.organizations):
-            org.iri_suffix = f"-organization-{str(i + 1).zfill(3)}"
-        for i, g in enumerate(self.grants):
-            g.iri_suffix = f"-grant-{str(i + 1).zfill(3)}"
-
     def __str__(self):
         return str({
             "name": self.name,
@@ -214,23 +196,23 @@ class MetaDataSet:
     def add_dataset(self):
         new = Dataset(self.name, self.project, self)
         self.dataset.append(new)
-        self.update_iris()
+        # self.update_iris()
 
     def add_person(self):
         new = Person(self)
         self.persons.append(new)
-        self.update_iris()
+        # self.update_iris()
 
     def add_organization(self):
-        print('add org')
+        # print('add org')
         new = Organization(self)
         self.organizations.append(new)
-        self.update_iris()
+        # self.update_iris()
 
     def add_grant(self):
         new = Grant(self)
         self.grants.append(new)
-        self.update_iris()
+        # self.update_iris()
 
     def remove(self, obj):
         if obj in self.dataset:
@@ -372,6 +354,7 @@ class Project(DataClass):
 
     def __init__(self, name: str, shortcode: str, meta: MetaDataSet):
         self.meta = meta
+        self.iri_suffix = "-project"
         self.name = Property(meta, "Name",
                              "The name of the Project",
                              "Test Project",
@@ -525,6 +508,7 @@ class Dataset(DataClass):
 
     def __init__(self, name, project, meta):
         self.meta = meta
+        self.iri_suffix = IRIFactory.get_unique_iri('dataset', meta)
         self.title = Property(meta, "Title",
                               "Title of the dataset",
                               "Dataset-Title",
@@ -688,6 +672,7 @@ class Person(DataClass):
 
     def __init__(self, meta):
         self.meta = meta
+        self.iri_suffix = IRIFactory.get_unique_iri('person', meta)
         self.sameAs = Property(meta, "Alternative URL",
                                "Alternative URL, pointing to an authority file (ORCID, VIAF, GND, ...)",
                                "https://orcid.org/000-000-000-000",
@@ -769,6 +754,7 @@ class Organization(DataClass):
 
     def __init__(self, meta):
         self.meta = meta
+        self.iri_suffix = IRIFactory.get_unique_iri('organization', meta)
 
         self.name = Property(meta, "Legal Name",
                              "Legal name of the organization",
@@ -823,6 +809,7 @@ class Grant(DataClass):
 
     def __init__(self, meta):
         self.meta = meta
+        self.iri_suffix = IRIFactory.get_unique_iri('grant', meta)
 
         self.name = Property(meta, "Name",
                              "Name of the grant",
@@ -1036,7 +1023,7 @@ class Property():
                 print(f"{datatype}: {v}\n-> don't know how to serialize this.\n")
         return g
 
-    def validate(self) -> (Validity, str):
+    def validate(self) -> Tuple[Validity, str]:
         datatype = self.datatype
         cardinality = self.cardinality
         value = self.value
