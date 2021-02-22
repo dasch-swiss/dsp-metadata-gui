@@ -267,6 +267,54 @@
             
   
   
+  
+    <li class="md-nav__item">
+      <a href="../organization/" class="md-nav__link">
+        Organization
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../person/" class="md-nav__link">
+        Person
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../grant/" class="md-nav__link">
+        Grant
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dataset/" class="md-nav__link">
+        Dataset
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
     
   
   
@@ -357,14 +405,14 @@
       
         <li class="md-nav__item">
   <a href="#temporal-coverage" class="md-nav__link">
-    Temporal coverage
+    Temporal Coverage
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#spacial-coverage" class="md-nav__link">
-    Spacial coverage
+  <a href="#spatial-coverage" class="md-nav__link">
+    Spatial Coverage
   </a>
   
 </li>
@@ -598,14 +646,14 @@
       
         <li class="md-nav__item">
   <a href="#temporal-coverage" class="md-nav__link">
-    Temporal coverage
+    Temporal Coverage
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#spacial-coverage" class="md-nav__link">
-    Spacial coverage
+  <a href="#spatial-coverage" class="md-nav__link">
+    Spatial Coverage
   </a>
   
 </li>
@@ -667,69 +715,69 @@
                 
                 <h1 id="project-tab">Project Tab</h1>
 <p><img alt="project tab" src="../assets/images/pro_tabs_overview.png" /></p>
-<p>With tab Project you collect project specific data to describe your project. All 
-fields are specified by the ontology ( <a href="https://github.com/dasch-swiss/dsp-ontologies">dsp-ontologies</a>).
-If you are unsure, you might consult the ontology.</p>
+<p>This class represents the project itself.</p>
 <h2 id="name">Name</h2>
-<p>In the first line you enter the official name of your project. In contrast to 
-the folder name you gave to your project, here you write the official name of your
-project. Formally a string is expected. This field is mandatory. </p>
+<p>The official project name.<br />
+(Mandatory.)</p>
 <h2 id="shortcode">Shortcode</h2>
-<p>IMPORTANT! As mentioned above: <strong>Do not start until you have the short code which is provided by the DSP-Admin.
-If you need to change the shortcode, all data are useless and you will start all over...</strong></p>
-<p>Formally a four digit alphanumeric code is expected.</p>
+<p>The unique identifier assigned to the project by the DaSCH Client Services.<br />
+This needs to be entered upon project creation and can <em>not</em> be changed later on. The property is read-only.</p>
 <h2 id="url">URL</h2>
-<p>Here you enter the ARK url of your DSP-page. This URL is provided by your DSP-Admin. This field 
-you may fill in later on. </p>
-<p>In a second optional field you may enter your old project landing page. XX__correct?__XX</p>
-<p>Formally URLs are expected in both entries. </p>
+<p>The project website.<br />
+This should always be the DSP ARK URL (which will be provided by the DaSCH Client Services).<br />
+Optionally, a second URL can be entered, e.g. pointing to a project-specific website.<br />
+(Mandatory. Second value optional.)</p>
 <h2 id="description">Description</h2>
-<p>In this field describe your project briefly. XX__multiline field __XX</p>
-<p>Formally a string is expected</p>
+<p>Description of the project.<br />
+This should be the description text rather than a URL.<br />
+(Mandatory.)</p>
 <h2 id="keywords">Keywords</h2>
-<p>Here you may enter one or more keywords that describe your project by topic. You add keywords with
-the plus button and remove them with "Del Selected". Enter as many keywords as are suitable.</p>
-<p>Formally a list of strings is expected. XX_ macht das Sinn__XX</p>
+<p>Keywords/Tags describing the project.<br />
+(Mandatory. Can have multiple values.)</p>
 <h2 id="discipline">Discipline</h2>
-<p>In this field you enter your discipline. Yom may choose from the UNESCO thesaurus of controlled
-and structured terms which you find under this link 
-<a href="https://skos.um.es/unescothes/">https://skos.um.es/unescothes/</a></p>
-<p>Formally expected is a URL or a string</p>
+<p>The scholarly discipline of the project.<br />
+This should either be a link to the <a href="https://skos.um.es/unesco6/">UNESCO nomenclature for fields of science and technology</a>
+or a term from the <a href="http://www.snf.ch/SiteCollectionDocuments/allg_disziplinenliste.pdf">list provided by the SNSF</a>.<br />
+(Mandatory. Can have multiple values.)</p>
 <h2 id="start-date">Start Date</h2>
-<p>Here you pick a start date of your project. </p>
+<p>Start date of the project.<br />
+Use the date picker to select a date.<br />
+(Mandatory.)</p>
 <h2 id="end-date">End Date</h2>
-<p>Here you pick an end date of your project. If your project is still running this might be the date 
-until when your project is funded.</p>
-<h2 id="temporal-coverage">Temporal coverage</h2>
-<p>In this field you enter a temporal coverage. You find controlled terms under 
-<a href="http://perio.do.en">http://perio.do.en</a> or under 
-<a href="https://chronontology.dainst.org">https://chronontology.dainst.org</a></p>
-<p>Formally expected is a URL or a string.</p>
-<h2 id="spacial-coverage">Spacial coverage</h2>
-<p>In this field you enter a spacial coverage. Controlled terms you will find under 
-<a href="https://www.geonames.org">https://www.geonames.org</a> or under 
-<a href="https://pleiades.stoa.org/places">https://pleiades.stoa.org/places</a></p>
-<p>Formally expected is a URL or a string.</p>
+<p>End date of the project.<br />
+Use the date picker to select a date.<br />
+(Optional.)</p>
+<h2 id="temporal-coverage">Temporal Coverage</h2>
+<p>The temporal coverage of the project.<br />
+Should be a link to a term in <a href="http://perio.do/en">Periodo</a> or <a href="https://chronontology.dainst.org">Chronontology</a>.<br />
+(Mandatory. Can have multiple values.)</p>
+<h2 id="spatial-coverage">Spatial Coverage</h2>
+<p>The spatial coverage of the project.<br />
+Should be a link to a term in <a href="https://www.geonames.org">Geonames</a> or <a href="https://pleiades.stoa.org/places">Pleiades</a>.<br />
+(Mandatory. Can have multiple values.)</p>
 <h2 id="funder">Funder</h2>
-<p>Here you select the funder of your project. If this is an organization enter it first under the
-tab "Organization", and then select it here by "Select to add"</p>
+<p>The funder of the project.<br />
+Select a person or organization from the drop-down.<br />
+(Mandatory. Can have multiple values.)</p>
 <h2 id="grant">Grant</h2>
-<p>Here you select the grant by which your project is financed. Under tabs, you find "Grant". Fill in
-what applies to your Grant there and select it here.</p>
+<p>The grant by which the project is financed.<br />
+Select a grant from the drop-down.<br />
+(Optional. Can have multiple values.)</p>
 <h2 id="alternate-name">Alternate Name</h2>
-<p>Under "Alternate Name" you may fill in an abbreviated form of your project if the official 
-project name is overly long.</p>
-<p>Expected is a string.</p>
+<p>Alternative name of the project, e.g. if the project is typically referred to by a short name.<br />
+(Optional. Can have multiple values.)</p>
 <h2 id="data-management-plan">Data Management Plan</h2>
-<p>If you have a Data Management Plan, you may tick the checkbox.
-If your DMP is available as a document in the internet, give its link in the text field underneath the 
-checkbox.</p>
+<p>Data management plan of the project.<br />
+Use the checkbox to indicate if there is a data management plan at all.<br />
+Add a link to the data management plan, if available online.<br />
+(Optional.)</p>
 <h2 id="publications">Publications</h2>
-<p>If there are publications relating to your project, that have already been published fill them in here</p>
-<p>Expected is a string.</p>
+<p>Publications published during the lifetime of the project.<br />
+(Optional.)</p>
 <h2 id="contact-point">Contact Point</h2>
-<p>If your project has a person assigned as contact point, enter this person under persons, and select it 
-here, if you have a organization address, select your organization.</p>
+<p>Designated contact point for the project.<br />
+Use the drop-down to select a person or organization.<br />
+(Optional.)</p>
                 
               
               
@@ -748,7 +796,7 @@ here, if you have a organization address, select your organization.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../tab_view/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../dataset/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -757,7 +805,7 @@ here, if you have a organization address, select your organization.</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Entering Metadata
+                Dataset
               </div>
             </div>
           </a>
