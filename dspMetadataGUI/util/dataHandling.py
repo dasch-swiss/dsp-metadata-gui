@@ -69,7 +69,7 @@ class DataHandling:
         Currently, the data are stored under `~/DaSCH/config/repos.data`.
         """
         # LATER: could let the user decide where to store the data.
-        # TODO: export metadata here
+        # LATER: export metadata here, once export logic is improved
         if dataset:
             dataset.generate_rdf_graph()
         with open(self.data_storage, 'wb') as file:
