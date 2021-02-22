@@ -68,9 +68,9 @@ In this field you enter a temporal coverage. You find controlled terms under
 
 Formally expected is a URL or a string.
 
-## Spacial coverage
+## Spatial coverage
 
-In this field you enter a spacial coverage. Controlled terms you will find under 
+In this field you enter a spatial coverage. Controlled terms you will find under 
 [https://www.geonames.org](https://www.geonames.org) or under 
 [https://pleiades.stoa.org/places](https://pleiades.stoa.org/places)
 

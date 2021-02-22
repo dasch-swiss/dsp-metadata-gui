@@ -38,20 +38,12 @@ The metadata consist of instances of classes. Each complex class has a correspon
 Classes have properties, that can either be literal values (e.g. strings, URLs, etc.) or references to instances of other classes (e.g. a dataset being belonging to a project).
 
 
-### Project
 
-The project is the only class of which there can only be one, in the metadata.
-The tab therefor does not have the list of multiple instances.
+### Organization
 
-This class holds all information that is representative of the entire project.
+There can be multiple organizations.
 
-
-
-### Dataset
-
-There can be multiple datasets.
-
-A project hosted on the DSP must have one or multiple datasets.
+This class represents an organization that contributed to the project.
 
 
 
@@ -63,19 +55,27 @@ This class represents a person that contributed to the project.
 
 
 
-### Organization
-
-There can be multiple organizations.
-
-This class represents an organization that contributed to the project.
-
-
-
 ### Grant
 
 There can be multiple grants.
 
 This class represents a financial grant that was granted to the project.
+
+
+
+### Dataset
+
+There can be multiple datasets.
+
+A project hosted on the DSP must have one or multiple datasets.
+
+
+### Project
+
+The project is the only class of which there can only be one, in the metadata.
+The tab therefor does not have the list of multiple instances.
+
+This class holds all information that is representative of the entire project.
 
 
 
