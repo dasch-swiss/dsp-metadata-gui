@@ -46,6 +46,4 @@ There are multiple tabs, where data can be entered for several classes like:
 - [Dataset](dataset.md)
 - [Project](project.md)
 
-For more details, see the respective explanations [here](). <!-- TODO: links -->
-
 _Note: The order may seem counter intuitive, not starting from the project and dataset. However, following the order of the tabs is recommended, as e.g. person depends on organization, etc._
