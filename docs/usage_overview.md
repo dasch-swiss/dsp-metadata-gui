@@ -40,7 +40,12 @@ After adding at least one project, you can select a project in the list and perf
 When editing a project the [form for collecting metadata](tab_view.md) opens up.  
 There are multiple tabs, where data can be entered for several classes like:
 
-- Project
-- Dataset(s)
-- Person(s)
-- etc.
+- [Organization](organization.md)
+- [Person](person.md)
+- [Grant](grant.md)
+- [Dataset](dataset.md)
+- [Project](project.md)
+
+For more details, see the respective explanations [here](). <!-- TODO: links -->
+
+_Note: The order may seem counter intuitive, not starting from the project and dataset. However, following the order of the tabs is recommended, as e.g. person depends on organization, etc._

@@ -7,6 +7,10 @@ nav:
     - Project Organization: list_view.md
     - Entering Metadata: tab_view.md
     - Metadata Classes:
+      - Organization: organization.md
+      - Person: person.md
+      - Grant: grant.md
+      - Dataset: dataset.md
       - Project: project.md
   - API Reference:
       - "GUI documentation": reference/collectMetadata.md

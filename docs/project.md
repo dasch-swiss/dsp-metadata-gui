@@ -2,109 +2,114 @@
 
 ![project tab](assets/images/pro_tabs_overview.png)
 
-With tab Project you collect project specific data to describe your project. All 
-fields are specified by the ontology ( [dsp-ontologies](https://github.com/dasch-swiss/dsp-ontologies)).
-If you are unsure, you might consult the ontology.
+This class represents the project itself.
 
 
 ## Name
 
-In the first line you enter the official name of your project. In contrast to 
-the folder name you gave to your project, here you write the official name of your
-project. Formally a string is expected. This field is mandatory. 
+The official project name.  
+(Mandatory.)
+
 
 ## Shortcode
 
-IMPORTANT! As mentioned above: **Do not start until you have the short code which is provided by the DSP-Admin.
-If you need to change the shortcode, all data are useless and you will start all over...**
+The unique identifier assigned to the project by the DaSCH Client Services.  
+This needs to be entered upon project creation and can _not_ be changed later on. The property is read-only.
 
-Formally a four digit alphanumeric code is expected.
 
 ## URL
 
-Here you enter the ARK url of your DSP-page. This URL is provided by your DSP-Admin. This field 
-you may fill in later on. 
-
-In a second optional field you may enter your old project landing page. XX__correct?__XX
-
-Formally URLs are expected in both entries. 
+The project website.  
+This should always be the DSP ARK URL (which will be provided by the DaSCH Client Services).  
+Optionally, a second URL can be entered, e.g. pointing to a project-specific website.  
+(Mandatory. Second value optional.)
 
 
 ## Description
 
-In this field describe your project briefly. XX__multiline field __XX
+Description of the project.  
+This should be the description text rather than a URL.  
+(Mandatory.)
 
-Formally a string is expected
 
 ## Keywords
 
-Here you may enter one or more keywords that describe your project by topic. You add keywords with
-the plus button and remove them with "Del Selected". Enter as many keywords as are suitable.
+Keywords/Tags describing the project.  
+(Mandatory. Can have multiple values.)
 
-Formally a list of strings is expected. XX_ macht das Sinn__XX
 
 ## Discipline
 
-In this field you enter your discipline. Yom may choose from the UNESCO thesaurus of controlled
-and structured terms which you find under this link 
-[https://skos.um.es/unescothes/](https://skos.um.es/unescothes/)
+The scholarly discipline of the project.  
+This should either be a link to the [UNESCO nomenclature for fields of science and technology](https://skos.um.es/unesco6/)
+or a term from the [list provided by the SNSF](http://www.snf.ch/SiteCollectionDocuments/allg_disziplinenliste.pdf).  
+(Mandatory. Can have multiple values.)
 
-Formally expected is a URL or a string
 
 ## Start Date
 
-Here you pick a start date of your project. 
+Start date of the project.  
+Use the date picker to select a date.  
+(Mandatory.)
+
 
 ## End Date
 
-Here you pick an end date of your project. If your project is still running this might be the date 
-until when your project is funded.
+End date of the project.  
+Use the date picker to select a date.  
+(Optional.)
 
-## Temporal coverage
 
-In this field you enter a temporal coverage. You find controlled terms under 
-[http://perio.do.en](http://perio.do.en) or under 
-[https://chronontology.dainst.org](https://chronontology.dainst.org)
+## Temporal Coverage
 
-Formally expected is a URL or a string.
+The temporal coverage of the project.  
+Should be a link to a term in [Periodo](http://perio.do/en) or [Chronontology](https://chronontology.dainst.org).  
+(Mandatory. Can have multiple values.)
 
-## Spatial coverage
 
-In this field you enter a spatial coverage. Controlled terms you will find under 
-[https://www.geonames.org](https://www.geonames.org) or under 
-[https://pleiades.stoa.org/places](https://pleiades.stoa.org/places)
+## Spatial Coverage
 
-Formally expected is a URL or a string.
+The spatial coverage of the project.  
+Should be a link to a term in [Geonames](https://www.geonames.org) or [Pleiades](https://pleiades.stoa.org/places).  
+(Mandatory. Can have multiple values.)
+
 
 ## Funder
 
-Here you select the funder of your project. If this is an organization enter it first under the
-tab "Organization", and then select it here by "Select to add"
+The funder of the project.  
+Select a person or organization from the drop-down.  
+(Mandatory. Can have multiple values.)
+
 
 ## Grant
 
-Here you select the grant by which your project is financed. Under tabs, you find "Grant". Fill in
-what applies to your Grant there and select it here.
+The grant by which the project is financed.  
+Select a grant from the drop-down.  
+(Optional. Can have multiple values.)
+
 
 ## Alternate Name
 
-Under "Alternate Name" you may fill in an abbreviated form of your project if the official 
-project name is overly long.
+Alternative name of the project, e.g. if the project is typically referred to by a short name.  
+(Optional. Can have multiple values.)
 
-Expected is a string.
 
 ## Data Management Plan
-If you have a Data Management Plan, you may tick the checkbox.
-If your DMP is available as a document in the internet, give its link in the text field underneath the 
-checkbox.
+
+Data management plan of the project.  
+Use the checkbox to indicate if there is a data management plan at all.  
+Add a link to the data management plan, if available online.  
+(Optional.)
+
 
 ## Publications
 
-If there are publications relating to your project, that have already been published fill them in here
+Publications published during the lifetime of the project.  
+(Optional.)
 
-Expected is a string.
 
 ## Contact Point
 
-If your project has a person assigned as contact point, enter this person under persons, and select it 
-here, if you have a organization address, select your organization.
+Designated contact point for the project.  
+Use the drop-down to select a person or organization.  
+(Optional.)
