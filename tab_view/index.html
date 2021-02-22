@@ -286,15 +286,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#project" class="md-nav__link">
-    Project
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#dataset" class="md-nav__link">
-    Dataset
+  <a href="#organization" class="md-nav__link">
+    Organization
   </a>
   
 </li>
@@ -307,15 +300,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#organization" class="md-nav__link">
-    Organization
+  <a href="#grant" class="md-nav__link">
+    Grant
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#grant" class="md-nav__link">
-    Grant
+  <a href="#dataset" class="md-nav__link">
+    Dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#project" class="md-nav__link">
+    Project
   </a>
   
 </li>
@@ -477,7 +477,7 @@
   
     <li class="md-nav__item">
       <a href="../todo/" class="md-nav__link">
-        Pending Tasks
+        Roadmap
       </a>
     </li>
   
@@ -545,15 +545,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#project" class="md-nav__link">
-    Project
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#dataset" class="md-nav__link">
-    Dataset
+  <a href="#organization" class="md-nav__link">
+    Organization
   </a>
   
 </li>
@@ -566,15 +559,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#organization" class="md-nav__link">
-    Organization
+  <a href="#grant" class="md-nav__link">
+    Grant
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#grant" class="md-nav__link">
-    Grant
+  <a href="#dataset" class="md-nav__link">
+    Dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#project" class="md-nav__link">
+    Project
   </a>
   
 </li>
@@ -654,22 +654,22 @@ For some more information why the value is (in)valid, click the button.</p>
 <h2 id="classestabs">Classes/Tabs</h2>
 <p>The metadata consist of instances of classes. Each complex class has a corresponding tab in the GUI, where instances of the class can be organized and edited.</p>
 <p>Classes have properties, that can either be literal values (e.g. strings, URLs, etc.) or references to instances of other classes (e.g. a dataset being belonging to a project).</p>
+<h3 id="organization">Organization</h3>
+<p>There can be multiple organizations.</p>
+<p>This class represents an organization that contributed to the project.</p>
+<h3 id="person">Person</h3>
+<p>There can be multiple persons.</p>
+<p>This class represents a person that contributed to the project.</p>
+<h3 id="grant">Grant</h3>
+<p>There can be multiple grants.</p>
+<p>This class represents a financial grant that was granted to the project.</p>
+<h3 id="dataset">Dataset</h3>
+<p>There can be multiple datasets.</p>
+<p>A project hosted on the DSP must have one or multiple datasets.</p>
 <h3 id="project">Project</h3>
 <p>The project is the only class of which there can only be one, in the metadata.
 The tab therefor does not have the list of multiple instances.</p>
 <p>This class holds all information that is representative of the entire project.</p>
-<h3 id="dataset">Dataset</h3>
-<p>There can be multiple datasets.</p>
-<p>A project hosted on the DSP must have one or multiple datasets.</p>
-<h3 id="person">Person</h3>
-<p>There can be multiple persons.</p>
-<p>This class represents a person that contributed to the project.</p>
-<h3 id="organization">Organization</h3>
-<p>There can be multiple organizations.</p>
-<p>This class represents an organization that contributed to the project.</p>
-<h3 id="grant">Grant</h3>
-<p>There can be multiple grants.</p>
-<p>This class represents a financial grant that was granted to the project.</p>
 <h2 id="properties-cardinalities-values">Properties, Cardinalities, Values</h2>
 <h3 id="multiple-instances-of-a-class">Multiple Instances of a Class</h3>
 <p>All classes, except the project, can have multiple instances.
