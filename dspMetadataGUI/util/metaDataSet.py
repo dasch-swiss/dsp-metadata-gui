@@ -1,7 +1,8 @@
 """
 This module holds the data structure that is used for modelling metadata.
 
-The classes defined here aim to represent a metadata-set, closely following the metadata ontology.
+The classes defined here aim to represent a metadata-set, closely following the
+[metadata ontology](https://github.com/dasch-swiss/dsp-ontologies/blob/main/dsp-repository/v1/dsp-repository.shacl.ttl).
 """
 
 from abc import ABC, abstractmethod
@@ -26,16 +27,19 @@ class MetaDataSet:
 
     This class represents a data set of project metadata.
     It holds the following properties:
+
     - name: the repo/project name.
       Typically the name of the folder that was selected.
     - path: the full path of the folder that was selected.
-    - files: a list of relevant files in the folder
+    - files: a list of relevant files in the folder.
+    - graph: the RDF graph of the metadata.
+    - turtle: the turtle serialization of the overall graph.
+    - validation_result: the validation result of the current graph state.
     - project: a `metaDataSet.Project` representation of the actual metadata (as specified by the ontology).
     - dataset: a list of `metaDataSet.Dataset`
     - persons: a list of `metaDataSet.Person`
     - organizations: a list of `metaDataSet.Organization`
 
-    At a later stage, this class should be able to return a representation of its data in form of an RDF graph.
     """
 
     @property
@@ -95,9 +99,9 @@ class MetaDataSet:
         Initiates the object.
 
         Args:
-            name (str): [description]
-            path (str): [description]
-            shortcode (str): [description]
+            name (str): project name
+            path (str): path to the folder associated with the project
+            shortcode (str): 4 digit hexadecimal project shortcode
         """
         self.shortcode = shortcode
         self.name = name
@@ -126,6 +130,9 @@ class MetaDataSet:
     def get_all_properties(self) -> list:
         """
         Returns a list of all properties held by fields of this class. (person, dataset, etc.)
+
+        Returns:
+            list[Property]: a List of all properties in this metadataset.
         """
         res = self.project.get_properties()
         for p in self.dataset:
@@ -141,6 +148,9 @@ class MetaDataSet:
     def validate_graph(self, graph) -> tuple:
         """
         Validates the graph of the entire data against the SHACL ontology.
+
+        Returns:
+            tuple: The validation result.
         """
         conforms, results_graph, results_text = pyshacl.validate(graph, shacl_graph=ontology_url)
         return conforms, results_graph, results_text
@@ -158,14 +168,14 @@ class MetaDataSet:
         graph.bind("xsd", XSD)
         graph.bind("prov", prov)
         self.project.add_rdf_to_graph(graph, "Project")
-        for i, person in enumerate(self.dataset):
-            person.add_rdf_to_graph(graph, "Dataset")
-        for i, person in enumerate(self.persons):
-            person.add_rdf_to_graph(graph, "Person")
-        for i, org in enumerate(self.organizations):
-            org.add_rdf_to_graph(graph, "Organization")
-        for i, org in enumerate(self.grants):
-            org.add_rdf_to_graph(graph, "Grant")
+        for elem in self.dataset:
+            elem.add_rdf_to_graph(graph, "Dataset")
+        for elem in self.persons:
+            elem.add_rdf_to_graph(graph, "Person")
+        for elem in self.organizations:
+            elem.add_rdf_to_graph(graph, "Organization")
+        for elem in self.grants:
+            elem.add_rdf_to_graph(graph, "Grant")
         try:
             graph = utils.get_coherent_graph(graph)
             self.graph = graph
@@ -174,7 +184,19 @@ class MetaDataSet:
             # LATER: remove with next breaking change
         return graph
 
-    def get_by_string(self, s: str):
+    def get_by_string(self, s: str):  # returs DataClass
+        # LATER: if the data classes are moved to another file, and imported, then this could be typed too.
+        """
+        Get a data object by its string representation.
+
+        Checks all available objects for a matching one by its string.
+
+        Args:
+            s (str): string of the object
+
+        Returns:
+            DataClass|None: The object matching the string.
+        """
         if not s or s.isspace():
             return
         if str(self.project) == s:
@@ -194,22 +216,32 @@ class MetaDataSet:
                 return o
 
     def add_dataset(self):
+        """Add a new dataset"""
         new = Dataset(self.name, self.project, self)
         self.dataset.append(new)
 
     def add_person(self):
+        """Add a new person"""
         new = Person(self)
         self.persons.append(new)
 
     def add_organization(self):
+        """Add a new organization"""
         new = Organization(self)
         self.organizations.append(new)
 
     def add_grant(self):
+        """Add a new grant"""
         new = Grant(self)
         self.grants.append(new)
 
     def remove(self, obj):
+        """
+        remove a DataClass Object
+
+        Args:
+            obj (Dataclass): The object to remove.
+        """
         if obj in self.dataset:
             self.dataset.remove(obj)
             if not self.dataset:
@@ -227,7 +259,15 @@ class MetaDataSet:
             if not self.grants:
                 self.add_grant()
 
-    def get_status(self):
+    def get_status(self) -> str:
+        """
+        Get the status of the dataset.
+
+        Indicates if the data is valid according to the SHACL ontology, and how many properties are missing.
+
+        Returns:
+            str: description of the dataset status.
+        """
         try:
             g = self.graph
             if not g:
@@ -263,6 +303,12 @@ class MetaDataSet:
         return f"{overall}  --  {invalid + missing} Problems; {valid} Values"
 
     def get_turtle(self) -> str:
+        """
+        Get the turtle representation of the data.
+
+        Returns:
+            str: a turtle serialization of the data.
+        """
         try:
             ttl = self.turtle
             if not isinstance(ttl, str):
@@ -309,7 +355,7 @@ class DataClass(ABC):
 
     def get_rdf_iri(self) -> URIRef:
         """
-        Return the iri of the object.
+        Return the IRI of the object.
 
         This can be called to use the object as subject of an RDF triple.
 
@@ -343,6 +389,7 @@ class Project(DataClass):
 
     Args:
         name (str): The name of the project
+        shortcode (str): The project shortcode
         meta (MetaDataSet): the owning `MetaDataSet`
     """
 
@@ -470,6 +517,13 @@ class Project(DataClass):
                                      predicate=dsp_repo.hasContactPoint)
 
     def get_properties(self):
+        # LATER: if Property is in another file and imported, this can be typed
+        """
+        Get all properties held by the object.
+
+        Returns:
+            List[Property]: A list with all the Properties held by the object.
+        """
         return [
             self.name,
             self.shortcode,
@@ -629,6 +683,13 @@ class Dataset(DataClass):
                                      predicate=dsp_repo.hasDistribution)
 
     def get_properties(self):
+        # LATER: if Property is in another file and imported, this can be typed
+        """
+        Get all properties held by the object.
+
+        Returns:
+            List[Property]: A list with all the Properties held by the object.
+        """
         return [
             self.project,
             self.title,
@@ -717,6 +778,13 @@ class Person(DataClass):
                                  predicate=dsp_repo.hasJobTitle)
 
     def get_properties(self):
+        # LATER: if Property is in another file and imported, this can be typed
+        """
+        Get all properties held by the object.
+
+        Returns:
+            List[Property]: A list with all the Properties held by the object.
+        """
         return [
             self.familyName,
             self.givenName,
@@ -779,6 +847,13 @@ class Organization(DataClass):
                             predicate=dsp_repo.hasURL)
 
     def get_properties(self):
+        # LATER: if Property is in another file and imported, this can be typed
+        """
+        Get all properties held by the object.
+
+        Returns:
+            List[Property]: A list with all the Properties held by the object.
+        """
         return [
             self.name,
             self.email,
@@ -834,6 +909,13 @@ class Grant(DataClass):
                                predicate=dsp_repo.hasFunder)
 
     def get_properties(self):
+        # LATER: if Property is in another file and imported, this can be typed
+        """
+        Get all properties held by the object.
+
+        Returns:
+            List[Property]: A list with all the Properties held by the object.
+        """
         return [
             self.funder,
             self.name,
@@ -1018,6 +1100,13 @@ class Property():
         return g
 
     def validate(self) -> Tuple[Validity, str]:
+        """
+        Validates the current value of the property.
+
+        Returns:
+            Tuple[Validity, str]: Returns a tuple: First element is a value of the `Validity` enum,
+                                  the second one is a human readable validation result.
+        """
         datatype = self.datatype
         cardinality = self.cardinality
         value = self.value

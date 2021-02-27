@@ -15,6 +15,7 @@ nav:
   - API Reference:
       - "GUI documentation": reference/collectMetadata.md
       - "Data Structure": reference/metaDataSet.md
+      - "Data Handling": reference/dataHandling.md
   - Roadmap: todo.md
   - Change Log: changelog.md
 

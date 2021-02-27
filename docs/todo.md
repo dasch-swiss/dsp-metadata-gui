@@ -15,15 +15,15 @@
 #### Usage Documentation
 
 - [x] fix link in readme so it works both in readme and in docs
-- [ ] document all classes (explain properties, tab by tab)
+- [x] document all classes (explain properties, tab by tab)
 - [x] update doc to new tab order
-- [ ] update images
+- [x] update images
 
 #### API Reference
 
 - [ ] Add docstring to all classes
 - [ ] Think about how to handle private methods in documentation
-- [ ] Manually write documentation for `collectMetadata.md`
+- [x] Manually write documentation for `collectMetadata.md`
 
 
 ### Others
@@ -55,6 +55,10 @@
 - [ ] implement download from DSP
 - [ ] implement import from RDF functionality
 - [ ] regular json support
+
+
+#### Necessities
+- [ ] add unit tests
 
 
 ## Nice to Have / Ideas

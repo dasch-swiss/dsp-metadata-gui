@@ -1,6 +1,15 @@
+"""
+This module holds data handling capabilities for metadatasets.
+
+Concretely, the UI has a globally accessible data handler of type `DataHandling` that will take care of the datasets held by the GUI.
+"""
+
 import os
 import pickle
 import shutil
+from typing import List
+
+from rdflib.graph import Graph
 
 from .metaDataSet import MetaDataSet
 from .utils import open_file
@@ -20,7 +29,7 @@ class DataHandling:
 
     def __init__(self):
         self.current_window = None
-        self.projects = []
+        self.projects: List[MetaDataSet] = []
         self.tabs = []
         self.data_storage = os.path.expanduser("~") + "/DaSCH/config/repos.data"
         # LATER: path could be made customizable
@@ -45,7 +54,13 @@ class DataHandling:
         dataset.files += files
         self.save_data()
 
-    def remove_project(self, project):
+    def remove_project(self, project: MetaDataSet):
+        """
+        Removes a specific project.
+
+        Args:
+            project (MetaDataSet): The project to remove.
+        """
         if project and project in self.projects:
             self.projects.remove(project)
             self.save_data()
@@ -67,6 +82,9 @@ class DataHandling:
         Save data to disc.
 
         Currently, the data are stored under `~/DaSCH/config/repos.data`.
+
+        Args:
+            dataset (MetaDataSet, optional): A `Metadataset` to serialize before saving. Defaults to None.
         """
         # LATER: could let the user decide where to store the data.
         # LATER: export metadata here, once export logic is improved
@@ -76,6 +94,15 @@ class DataHandling:
             pickle.dump(self.projects, file)
 
     def validate_and_export_data(self, index: int) -> tuple:
+        """
+        Validate a given project and export its RDF data.
+
+        Args:
+            index (int): The index of the `MetaDataSet` to export.
+
+        Returns:
+            tuple: The result of the validation (see `MetaDataSet.validate_graph()`).
+        """
         project = self.projects[index]
         validation_result = self.validate_graph(project)
         try:
@@ -89,7 +116,13 @@ class DataHandling:
         self.export_rdf(project.path, graph)
         return validation_result
 
-    def import_project(self, path):
+    def import_project(self, path: str):
+        """
+        Import a single MetaDataSet from a pickle.
+
+        Args:
+            path (str): path to the pickle to import.
+        """
         try:
             with open(path, 'rb') as f:
                 dataset = pickle.load(f)
@@ -99,7 +132,15 @@ class DataHandling:
             traceback.print_exc()
             print(f'\n\n--------\n\nCould not import file: {path}')
 
-    def export_rdf(self, path, graph, show=True):
+    def export_rdf(self, path: str, graph: Graph, show: bool = True):
+        """
+        Export RDF serializations to local files.
+
+        Args:
+            path (str): The path where to store the files.
+            graph (Graph): The RDF graph of the data.
+            show (bool, optional): Flag true, if the folder should be opened after saving the files. Defaults to True.
+        """
         path += '/metadata'
         if not os.path.exists(path):
             os.makedirs(path)
@@ -119,6 +160,15 @@ class DataHandling:
             open_file(path)
 
     def zip_and_export(self, dataset: MetaDataSet, target: str):
+        """
+        Zips all data of a project and saves it to a file.
+
+        The ZIP archive will contain a pickle of the data, all associated files and RDF serializations of the data.
+
+        Args:
+            dataset (MetaDataSet): The dataset to export.
+            target (str): The path where to store the export.
+        """
         if not dataset:
             return
         if not target:
@@ -157,6 +207,12 @@ class DataHandling:
 
         Does not validate each of the properties separately,
         but rather generates the RDF graph, which then gets validated.
+
+        Args:
+            dataset (MetaDataSet): The dataset to validate.
+
+        Returns:
+            tuple: Validation result (see `MetaDataSet.validate_graph()`).
         """
         try:
             graph = dataset.generate_rdf_graph()
@@ -170,7 +226,7 @@ class DataHandling:
 
     def update_all(self):
         """
-        Update date from GUI.
+        Update data according to the values currently in the GUI.
 
         Calling this function iterates over each Property in the dataset
         and updates it with the value found in its corresponding GUI component.
@@ -189,7 +245,16 @@ class DataHandling:
         for tab in self.tabs:
             tab.refresh_ui()
 
-    def get_project_by_shortcode(self, shortcode):
+    def get_project_by_shortcode(self, shortcode: str) -> MetaDataSet:
+        """
+        Get the project with a specific shortcode.
+
+        Args:
+            shortcode (str): The shortcode of the project to be found.
+
+        Returns:
+            MetaDataSet: The Project with said shortcode.
+        """
         for p in self.projects:
             if p.shortcode == shortcode:
                 return p
