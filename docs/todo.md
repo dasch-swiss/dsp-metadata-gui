@@ -21,8 +21,7 @@
 
 #### API Reference
 
-- [ ] Add docstring to all classes
-- [ ] Think about how to handle private methods in documentation
+- [x] Add docstring to all classes
 - [x] Manually write documentation for `collectMetadata.md`
 
 
@@ -31,8 +30,6 @@
 - [ ] test on windows
 - [ ] test on linux
 - [ ] investigate `ssl.SSLCertVerificationError`
-
-
 
 
 ## Next Major Version
