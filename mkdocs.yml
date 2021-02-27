@@ -18,7 +18,6 @@ nav:
       - "Data Handling": reference/dataHandling.md
       - "Utils": reference/utils.md
   - Roadmap: todo.md
-  - Change Log: changelog.md
 
 theme:
   name: material
