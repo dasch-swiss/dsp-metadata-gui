@@ -314,6 +314,116 @@ class ProjectPanel(wx.Panel):
         self.refresh_view()
 
 
+class TabbedWindow(wx.Frame):
+    def __init__(self, parent, dataset: MetaDataSet):
+        """
+        This class organizes the different tabs
+        ToDo: What exactly is the metadataset?
+
+        Args:
+            parent (object): the parent object
+            dataset (object): the dataset
+            MetaDataSet (object): the metadataset
+        """
+        wx.Frame.__init__(self, parent, id=-1, title="", pos=wx.DefaultPosition,
+                          size=(1200, 600), style=wx.DEFAULT_FRAME_STYLE,
+                          name="Metadata tabs")
+        self.Bind(wx.EVT_CLOSE, self.on_close)
+        self.panel = wx.Panel(self)
+        self.parent = parent
+        self.dataset = dataset
+
+        # Create a panel and notebook (tabs holder)
+        panel = self.panel
+        nb = wx.Notebook(panel)
+        nb.SetMinSize((-1, 200))
+        nb.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.on_tab_change)
+
+        # Create the tab windows
+        tab1 = TabOne(nb, self.dataset)
+        tab2 = DataTab(nb, self.dataset, self.dataset.project, "Project")
+        tab3 = DataTab(nb, self.dataset, self.dataset.dataset, "Dataset", multiple=True)
+        tab4 = DataTab(nb, self.dataset, self.dataset.persons, "Person", multiple=True)
+        tab5 = DataTab(nb, self.dataset, self.dataset.organizations, "Organization", multiple=True)
+        tab6 = DataTab(nb, self.dataset, self.dataset.grants, "Grant", multiple=True)
+
+        # Add the windows to tabs and name them.
+        nb.AddPage(tab1, "Base Data")
+        nb.AddPage(tab5, "Organization")
+        nb.AddPage(tab4, "Person")
+        nb.AddPage(tab6, "Grant")
+        nb.AddPage(tab3, "Dataset")
+        nb.AddPage(tab2, "Project")
+
+        data_handler.tabs = [tab2, tab3, tab4, tab5, tab6]
+
+        nb_sizer = wx.BoxSizer()
+        nb_sizer.Add(nb, 1, wx.ALL | wx.EXPAND)
+
+        # Buttons
+        save_button = wx.Button(panel, label='Save')
+        save_button.Bind(wx.EVT_BUTTON, self.on_save)
+        saveclose_button = wx.Button(panel, label='Save and Close')
+        saveclose_button.Bind(wx.EVT_BUTTON, self.on_saveclose)
+        cancel_button = wx.Button(panel, label='Cancel')
+        cancel_button.Bind(wx.EVT_BUTTON, self.on_close)
+        button_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        button_sizer.Add(save_button, 0, wx.ALL, 5)
+        button_sizer.Add(saveclose_button, 0, wx.ALL, 5)
+        button_sizer.Add(cancel_button, 0, wx.ALL, 5)
+        feedback_text = wx.StaticText(panel)
+        self.feedback_text = feedback_text
+        button_sizer.Add(feedback_text, 0, wx.ALL, 5)
+
+        # Set notebook in a sizer to create the layout
+        sizer = wx.FlexGridSizer(1, 2, 10)
+        sizer.AddGrowableCol(0)
+        sizer.AddGrowableRow(0)
+        sizer.Add(nb_sizer, 0, wx.ALL | wx.EXPAND, 5)
+        sizer.Add(button_sizer, 0, wx.ALL | wx.ALIGN_BOTTOM, 5)
+        panel.SetSizer(sizer)
+        # sizer.Fit(self)
+
+    def on_tab_change(self, event):
+        data_handler.update_all()
+
+    def on_save(self, event):
+        self.save()
+        self.feedback("Saved Successfully.")
+
+    def on_saveclose(self, event):
+        self.save()
+        self.close()
+
+    def on_close(self, event):
+        self.close()
+
+    def save(self):
+        data_handler.update_all()
+        data_handler.save_data(dataset=self.dataset)
+        data_handler.refresh_ui()
+
+    def close(self):
+        self.parent.Enable()
+        self.parent.refresh_view()
+        data_handler.current_window = None
+        self.Destroy()
+
+    def get_persons(self):
+        return self.dataset.persons
+
+    def get_organizations(self):
+        return self.dataset.organizations
+
+    def feedback(self, msg, success=True):
+        if success:
+            self.feedback_text.SetForegroundColour(wx.Colour(50, 200, 50))
+        else:
+            self.feedback_text.SetForegroundColour(wx.Colour(200, 50, 50))
+        self.feedback_text.SetLabel(msg)
+        wx.CallLater(2500, lambda: self.feedback_text.SetLabel(''))
+
+
 class TabOne(wx.Panel):
 
     def __init__(self, parent: wx.Notebook, dataset: MetaDataSet):
@@ -399,6 +509,205 @@ class TabOne(wx.Panel):
             string_selected = file_list.GetString(selection)
             dataset.files.remove(string_selected)
             file_list.Delete(selection)
+
+
+class DataTab(scrolledPanel.ScrolledPanel):
+
+    def __init__(self, parent: wx.Notebook, metadataset: MetaDataSet, dataset: DataClass, title: str, multiple=False):
+        """
+        A Tab in the window displaying data.
+
+        Args:
+            parent (wx.Notebook): parent object in which the tab is placed.
+            metadataset (MetaDataSet): the Metadataset to which the data belongs.
+            dataset (DataClass): The data object to display.
+            title (str): Title of the tab.
+            multiple (bool, optional): Flag true, if there can be multiple instances of the DataClass in the Metadataset. Defaults to False.
+        """
+        scrolledPanel.ScrolledPanel.__init__(self, parent, -1)
+
+        self.parent = parent
+        self.dataset = dataset
+        self.multiple = multiple
+        self.metadataset = metadataset
+        self.rows = []
+        self.multiple_selection = 0
+        outer_sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer = wx.FlexGridSizer(4, 10, 10)
+
+        if dataset:
+            ds = dataset
+            if multiple:
+                ds = self.active_dataset
+            for i, prop in enumerate(ds.get_properties()):
+                row = PropertyRow(self, prop, sizer, i, metadataset)
+                self.rows.append(row)
+
+        sizer.AddGrowableCol(1)
+
+        if multiple:
+            dataset_sizer = wx.BoxSizer()
+            dataset_listbox = wx.ListBox(self, size=(200, -1))
+            for ds in dataset:
+                dataset_listbox.Append(str(ds))
+            dataset_listbox.Bind(
+                wx.EVT_LISTBOX, lambda e: self.change_selection(e))
+            dataset_listbox.Select(0)
+            self.multiple_listbox = dataset_listbox
+            dataset_sizer.Add(dataset_listbox, wx.EXPAND)
+            dataset_sizer.AddSpacer(5)
+            button_sizer = wx.BoxSizer(wx.VERTICAL)
+            button_add = wx.Button(self, label="Add New")
+            button_add.Bind(wx.EVT_BUTTON, lambda e: self.add_object(
+                e, dataset_listbox, title))
+            button_sizer.Add(button_add, flag=wx.EXPAND)
+            button_remove = wx.Button(self, label="Remove Selected")
+            button_remove.Bind(
+                wx.EVT_BUTTON, lambda e: self.remove_object(e, dataset_listbox))
+            button_sizer.Add(button_remove)
+            dataset_sizer.Add(button_sizer)
+            outer_sizer.Add(dataset_sizer, flag=wx.EXPAND)
+            outer_sizer.AddSpacer(20)
+        outer_sizer.Add(sizer, flag=wx.EXPAND)
+        self.SetSizer(outer_sizer)
+        self.SetupScrolling(scroll_x=False, scroll_y=True)
+        self.Fit()
+        self.Layout()
+
+    @property
+    def active_dataset(self) -> DataClass:
+        if self.multiple:
+            return self.dataset[self.multiple_selection]
+        else:
+            return self.dataset
+
+    def update_data(self):
+        for row in self.rows:
+            row.update_data()
+
+    def refresh_ui(self):
+        if self.multiple:
+            self.multiple_listbox.SetItems([str(ds) for ds in self.dataset])
+            if self.multiple_selection < 0:
+                self.multiple_selection = len(self.multiple_listbox.GetItems()) - 1
+            self.multiple_listbox.SetSelection(self.multiple_selection)
+        for row in self.rows:
+            row.refresh_ui()
+        self.Layout()
+
+    def add_object(self, event, listbox, title):
+        if title == "Person":
+            self.metadataset.add_person()
+        if title == "Dataset":
+            self.metadataset.add_dataset()
+        elif title == "Organization":
+            self.metadataset.add_organization()
+        elif title == "Grant":
+            self.metadataset.add_grant()
+        self.multiple_selection = -1
+        data_handler.refresh_ui()
+
+    def remove_object(self, event, listbox):
+        selection = listbox.GetSelection()
+        if selection < 0:
+            return
+        if listbox.GetCount() > 1:
+            self.multiple_selection = selection - 1
+        s = listbox.GetStringSelection()
+        self.metadataset.remove(self.metadataset.get_by_string(s))
+        data_handler.refresh_ui()
+
+    def change_selection(self, event):
+        sel = event.GetEventObject().GetSelection()
+        data_handler.update_all()
+        self.multiple_selection = sel
+        data_handler.refresh_ui()
+
+    def add_to_list(self, event, content_list, widget, addable):
+        """
+        add an object to a listbox.
+        """
+        if not addable:  # is None
+            return
+        if isinstance(widget, tuple):  # Attribution, i.e. two inputs
+            role = addable[0]
+            agent = addable[1]
+            if not role or not agent or \
+                    role.isspace() or agent.isspace() or \
+                    agent == "Select to add":
+                print('invalid input')
+                return
+            for i in range(content_list.GetItemCount()):
+                r = content_list.GetItem(i, 0).GetText()
+                a = content_list.GetItem(i, 1).GetText()
+                if r == role and a == agent:
+                    print('Item already exists')
+                    return
+            content_list.Append((role, agent))
+            self.reset_widget(widget)
+        else:
+            if str(addable).isspace() or \
+                    addable == "Select to add" or \
+                    str(addable) in content_list.GetStrings():
+                self.reset_widget(widget)
+                return
+            content_list.Append(str(addable))
+            self.reset_widget(widget)
+        data_handler.update_all()
+
+    def reset_widget(self, widget):
+        if isinstance(widget, wx.StaticText) or \
+                isinstance(widget, wx.TextCtrl):
+            widget.SetValue('')
+        elif isinstance(widget, wx.Choice):
+            widget.SetSelection(0)
+        elif isinstance(widget, tuple):
+            for w in widget:
+                self.reset_widget(w)
+
+    def remove_from_list(self, event, content_list):
+        """
+        remove an object from a listbox.
+        """
+        if isinstance(content_list, wx.ListCtrl):
+            selection = content_list.GetFirstSelected()
+            if selection >= 0:
+                content_list.DeleteItem(selection)
+        else:
+            selection = content_list.GetSelection()
+            if selection >= 0:
+                content_list.Delete(selection)
+        data_handler.update_all()
+
+    def show_help(self, evt, message, sample):
+        """
+        Show a help dialog
+        """
+        msg = f"Description:\n{message}\n\nExample:\n{sample}"
+        win = HelpPopup(self, msg)
+        btn = evt.GetEventObject()
+        pos = btn.ClientToScreen((0, 0))
+        sz = btn.GetSize()
+        win.Position(pos, (0, sz[1]))
+        win.Popup()
+
+    def show_validity(self, evt, val, card):
+        """
+        Show a help dialog
+        """
+        msg = f"Validation Result:\n{val}\n\nExpected Cardinality:\n{card}"
+        win = HelpPopup(self, msg)
+        btn = evt.GetEventObject()
+        pos = btn.ClientToScreen((0, 0))
+        sz = btn.GetSize()
+        win.Position(pos, (0, sz[1]))
+        win.Popup()
+
+    def pick_date(self, evt, label: wx.StaticText, prop):
+        with CalendarDlg(self, prop.name, label.GetLabel()) as dlg:
+            if dlg.ShowModal() == wx.ID_OK:
+                label.SetLabel(dlg.cal.Date.FormatISODate())
+                data_handler.update_all()
 
 
 class PropertyRow:
@@ -913,205 +1222,6 @@ class PropertyRow:
             event.GetEventObject().Navigate()
 
 
-class DataTab(scrolledPanel.ScrolledPanel):
-
-    def __init__(self, parent: wx.Notebook, metadataset: MetaDataSet, dataset: DataClass, title: str, multiple=False):
-        """
-        A Tab in the window displaying data.
-
-        Args:
-            parent (wx.Notebook): parent object in which the tab is placed.
-            metadataset (MetaDataSet): the Metadataset to which the data belongs.
-            dataset (DataClass): The data object to display.
-            title (str): Title of the tab.
-            multiple (bool, optional): Flag true, if there can be multiple instances of the DataClass in the Metadataset. Defaults to False.
-        """
-        scrolledPanel.ScrolledPanel.__init__(self, parent, -1)
-
-        self.parent = parent
-        self.dataset = dataset
-        self.multiple = multiple
-        self.metadataset = metadataset
-        self.rows = []
-        self.multiple_selection = 0
-        outer_sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer = wx.FlexGridSizer(4, 10, 10)
-
-        if dataset:
-            ds = dataset
-            if multiple:
-                ds = self.active_dataset
-            for i, prop in enumerate(ds.get_properties()):
-                row = PropertyRow(self, prop, sizer, i, metadataset)
-                self.rows.append(row)
-
-        sizer.AddGrowableCol(1)
-
-        if multiple:
-            dataset_sizer = wx.BoxSizer()
-            dataset_listbox = wx.ListBox(self, size=(200, -1))
-            for ds in dataset:
-                dataset_listbox.Append(str(ds))
-            dataset_listbox.Bind(
-                wx.EVT_LISTBOX, lambda e: self.change_selection(e))
-            dataset_listbox.Select(0)
-            self.multiple_listbox = dataset_listbox
-            dataset_sizer.Add(dataset_listbox, wx.EXPAND)
-            dataset_sizer.AddSpacer(5)
-            button_sizer = wx.BoxSizer(wx.VERTICAL)
-            button_add = wx.Button(self, label="Add New")
-            button_add.Bind(wx.EVT_BUTTON, lambda e: self.add_object(
-                e, dataset_listbox, title))
-            button_sizer.Add(button_add, flag=wx.EXPAND)
-            button_remove = wx.Button(self, label="Remove Selected")
-            button_remove.Bind(
-                wx.EVT_BUTTON, lambda e: self.remove_object(e, dataset_listbox))
-            button_sizer.Add(button_remove)
-            dataset_sizer.Add(button_sizer)
-            outer_sizer.Add(dataset_sizer, flag=wx.EXPAND)
-            outer_sizer.AddSpacer(20)
-        outer_sizer.Add(sizer, flag=wx.EXPAND)
-        self.SetSizer(outer_sizer)
-        self.SetupScrolling(scroll_x=False, scroll_y=True)
-        self.Fit()
-        self.Layout()
-
-    @property
-    def active_dataset(self) -> DataClass:
-        if self.multiple:
-            return self.dataset[self.multiple_selection]
-        else:
-            return self.dataset
-
-    def update_data(self):
-        for row in self.rows:
-            row.update_data()
-
-    def refresh_ui(self):
-        if self.multiple:
-            self.multiple_listbox.SetItems([str(ds) for ds in self.dataset])
-            if self.multiple_selection < 0:
-                self.multiple_selection = len(self.multiple_listbox.GetItems()) - 1
-            self.multiple_listbox.SetSelection(self.multiple_selection)
-        for row in self.rows:
-            row.refresh_ui()
-        self.Layout()
-
-    def add_object(self, event, listbox, title):
-        if title == "Person":
-            self.metadataset.add_person()
-        if title == "Dataset":
-            self.metadataset.add_dataset()
-        elif title == "Organization":
-            self.metadataset.add_organization()
-        elif title == "Grant":
-            self.metadataset.add_grant()
-        self.multiple_selection = -1
-        data_handler.refresh_ui()
-
-    def remove_object(self, event, listbox):
-        selection = listbox.GetSelection()
-        if selection < 0:
-            return
-        if listbox.GetCount() > 1:
-            self.multiple_selection = selection - 1
-        s = listbox.GetStringSelection()
-        self.metadataset.remove(self.metadataset.get_by_string(s))
-        data_handler.refresh_ui()
-
-    def change_selection(self, event):
-        sel = event.GetEventObject().GetSelection()
-        data_handler.update_all()
-        self.multiple_selection = sel
-        data_handler.refresh_ui()
-
-    def add_to_list(self, event, content_list, widget, addable):
-        """
-        add an object to a listbox.
-        """
-        if not addable:  # is None
-            return
-        if isinstance(widget, tuple):  # Attribution, i.e. two inputs
-            role = addable[0]
-            agent = addable[1]
-            if not role or not agent or \
-                    role.isspace() or agent.isspace() or \
-                    agent == "Select to add":
-                print('invalid input')
-                return
-            for i in range(content_list.GetItemCount()):
-                r = content_list.GetItem(i, 0).GetText()
-                a = content_list.GetItem(i, 1).GetText()
-                if r == role and a == agent:
-                    print('Item already exists')
-                    return
-            content_list.Append((role, agent))
-            self.reset_widget(widget)
-        else:
-            if str(addable).isspace() or \
-                    addable == "Select to add" or \
-                    str(addable) in content_list.GetStrings():
-                self.reset_widget(widget)
-                return
-            content_list.Append(str(addable))
-            self.reset_widget(widget)
-        data_handler.update_all()
-
-    def reset_widget(self, widget):
-        if isinstance(widget, wx.StaticText) or \
-                isinstance(widget, wx.TextCtrl):
-            widget.SetValue('')
-        elif isinstance(widget, wx.Choice):
-            widget.SetSelection(0)
-        elif isinstance(widget, tuple):
-            for w in widget:
-                self.reset_widget(w)
-
-    def remove_from_list(self, event, content_list):
-        """
-        remove an object from a listbox.
-        """
-        if isinstance(content_list, wx.ListCtrl):
-            selection = content_list.GetFirstSelected()
-            if selection >= 0:
-                content_list.DeleteItem(selection)
-        else:
-            selection = content_list.GetSelection()
-            if selection >= 0:
-                content_list.Delete(selection)
-        data_handler.update_all()
-
-    def show_help(self, evt, message, sample):
-        """
-        Show a help dialog
-        """
-        msg = f"Description:\n{message}\n\nExample:\n{sample}"
-        win = HelpPopup(self, msg)
-        btn = evt.GetEventObject()
-        pos = btn.ClientToScreen((0, 0))
-        sz = btn.GetSize()
-        win.Position(pos, (0, sz[1]))
-        win.Popup()
-
-    def show_validity(self, evt, val, card):
-        """
-        Show a help dialog
-        """
-        msg = f"Validation Result:\n{val}\n\nExpected Cardinality:\n{card}"
-        win = HelpPopup(self, msg)
-        btn = evt.GetEventObject()
-        pos = btn.ClientToScreen((0, 0))
-        sz = btn.GetSize()
-        win.Position(pos, (0, sz[1]))
-        win.Popup()
-
-    def pick_date(self, evt, label: wx.StaticText, prop):
-        with CalendarDlg(self, prop.name, label.GetLabel()) as dlg:
-            if dlg.ShowModal() == wx.ID_OK:
-                label.SetLabel(dlg.cal.Date.FormatISODate())
-                data_handler.update_all()
-
-
 class HelpPopup(wx.PopupTransientWindow):
     def __init__(self, parent, msg):
         """
@@ -1129,116 +1239,6 @@ class HelpPopup(wx.PopupTransientWindow):
         sizer.Fit(panel)
         sizer.Fit(self)
         self.Layout()
-
-
-class TabbedWindow(wx.Frame):
-    def __init__(self, parent, dataset: MetaDataSet):
-        """
-        This class organizes the different tabs
-        ToDo: What exactly is the metadataset?
-
-        Args:
-            parent (object): the parent object
-            dataset (object): the dataset
-            MetaDataSet (object): the metadataset
-        """
-        wx.Frame.__init__(self, parent, id=-1, title="", pos=wx.DefaultPosition,
-                          size=(1200, 600), style=wx.DEFAULT_FRAME_STYLE,
-                          name="Metadata tabs")
-        self.Bind(wx.EVT_CLOSE, self.on_close)
-        self.panel = wx.Panel(self)
-        self.parent = parent
-        self.dataset = dataset
-
-        # Create a panel and notebook (tabs holder)
-        panel = self.panel
-        nb = wx.Notebook(panel)
-        nb.SetMinSize((-1, 200))
-        nb.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.on_tab_change)
-
-        # Create the tab windows
-        tab1 = TabOne(nb, self.dataset)
-        tab2 = DataTab(nb, self.dataset, self.dataset.project, "Project")
-        tab3 = DataTab(nb, self.dataset, self.dataset.dataset, "Dataset", multiple=True)
-        tab4 = DataTab(nb, self.dataset, self.dataset.persons, "Person", multiple=True)
-        tab5 = DataTab(nb, self.dataset, self.dataset.organizations, "Organization", multiple=True)
-        tab6 = DataTab(nb, self.dataset, self.dataset.grants, "Grant", multiple=True)
-
-        # Add the windows to tabs and name them.
-        nb.AddPage(tab1, "Base Data")
-        nb.AddPage(tab5, "Organization")
-        nb.AddPage(tab4, "Person")
-        nb.AddPage(tab6, "Grant")
-        nb.AddPage(tab3, "Dataset")
-        nb.AddPage(tab2, "Project")
-
-        data_handler.tabs = [tab2, tab3, tab4, tab5, tab6]
-
-        nb_sizer = wx.BoxSizer()
-        nb_sizer.Add(nb, 1, wx.ALL | wx.EXPAND)
-
-        # Buttons
-        save_button = wx.Button(panel, label='Save')
-        save_button.Bind(wx.EVT_BUTTON, self.on_save)
-        saveclose_button = wx.Button(panel, label='Save and Close')
-        saveclose_button.Bind(wx.EVT_BUTTON, self.on_saveclose)
-        cancel_button = wx.Button(panel, label='Cancel')
-        cancel_button.Bind(wx.EVT_BUTTON, self.on_close)
-        button_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        button_sizer.Add(save_button, 0, wx.ALL, 5)
-        button_sizer.Add(saveclose_button, 0, wx.ALL, 5)
-        button_sizer.Add(cancel_button, 0, wx.ALL, 5)
-        feedback_text = wx.StaticText(panel)
-        self.feedback_text = feedback_text
-        button_sizer.Add(feedback_text, 0, wx.ALL, 5)
-
-        # Set notebook in a sizer to create the layout
-        sizer = wx.FlexGridSizer(1, 2, 10)
-        sizer.AddGrowableCol(0)
-        sizer.AddGrowableRow(0)
-        sizer.Add(nb_sizer, 0, wx.ALL | wx.EXPAND, 5)
-        sizer.Add(button_sizer, 0, wx.ALL | wx.ALIGN_BOTTOM, 5)
-        panel.SetSizer(sizer)
-        # sizer.Fit(self)
-
-    def on_tab_change(self, event):
-        data_handler.update_all()
-
-    def on_save(self, event):
-        self.save()
-        self.feedback("Saved Successfully.")
-
-    def on_saveclose(self, event):
-        self.save()
-        self.close()
-
-    def on_close(self, event):
-        self.close()
-
-    def save(self):
-        data_handler.update_all()
-        data_handler.save_data(dataset=self.dataset)
-        data_handler.refresh_ui()
-
-    def close(self):
-        self.parent.Enable()
-        self.parent.refresh_view()
-        data_handler.current_window = None
-        self.Destroy()
-
-    def get_persons(self):
-        return self.dataset.persons
-
-    def get_organizations(self):
-        return self.dataset.organizations
-
-    def feedback(self, msg, success=True):
-        if success:
-            self.feedback_text.SetForegroundColour(wx.Colour(50, 200, 50))
-        else:
-            self.feedback_text.SetForegroundColour(wx.Colour(200, 50, 50))
-        self.feedback_text.SetLabel(msg)
-        wx.CallLater(2500, lambda: self.feedback_text.SetLabel(''))
 
 
 class CalendarDlg(wx.Dialog):
