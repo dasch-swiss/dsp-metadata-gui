@@ -54,8 +54,10 @@
 - [ ] regular json support
 
 
-#### Necessities
+#### Maintenance
 - [ ] add unit tests
+- [ ] improve module granularity
+- [ ] rename code folder to `src` for convention's sake
 
 
 ## Nice to Have / Ideas
