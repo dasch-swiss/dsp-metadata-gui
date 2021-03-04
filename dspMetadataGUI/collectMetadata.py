@@ -10,7 +10,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
 from util.dataHandling import DataHandling
-from util.metaDataSet import DataClass, MetaDataSet
+from util.metaDataSet import DataClass, MetaDataSet, Property
 from util.utils import Cardinality, Datatype, Validity
 
 
@@ -211,12 +211,14 @@ class ProjectPanel(wx.Panel):
         self.list_ctrl.InsertColumn(4, 'Status', width=350)
 
     def refresh_view(self):
+        """refreshes the GUI after data changes"""
         self.refresh_repos()
         self.display_rdf()
         self.refresh_buttons()
         self.Layout()
 
     def refresh_buttons(self):
+        """determins which buttons should be enabled and displays them accordingly"""
         if self.get_selected_project():
             flag = True
         else:
@@ -228,6 +230,7 @@ class ProjectPanel(wx.Panel):
                 b.Disable()
 
     def display_rdf(self):
+        """displays the RDF preview"""
         project = self.get_selected_project()
         if project:
             txt = project.get_turtle()
@@ -236,6 +239,7 @@ class ProjectPanel(wx.Panel):
         self.rdf_display.SetValue(txt)
 
     def get_selected_project(self) -> Optional[MetaDataSet]:
+        """Gets the currently selected Project/Metadataset"""
         selection = self.list_ctrl.GetFirstSelected()
         if selection < 0:
             return
@@ -262,11 +266,7 @@ class ProjectPanel(wx.Panel):
             # LATER: let this return indication of success. display something to the user.
 
     def add_new_project(self, folder_path, shortcode):
-        """ Add a new project.
-
-            Where is this function called? It is called by on_add_new_project in in the Class ProjectFrame
-            What should this function do? It should get a new project, store it and then reload the project list
-        """
+        """ Add a new project."""
         dir_list = os.listdir(folder_path)
         if '.DS_Store' in dir_list:
             dir_list.remove('.DS_Store')
@@ -274,6 +274,7 @@ class ProjectPanel(wx.Panel):
         self.refresh_view()
 
     def on_import_project(self, event):
+        """handles event from 'import' button click"""
         with wx.FileDialog(self, "Choose file:",
                            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as fd:
             if fd.ShowModal() == wx.ID_OK:
@@ -286,6 +287,7 @@ class ProjectPanel(wx.Panel):
                 self.refresh_view()
 
     def on_remove_project(self, event):
+        """handles event from 'remove project' button click"""
         selected = self.get_selected_project()
         msg = f"Are you sure you want to delete the Project '{selected.name} ({selected.shortcode})'"
         with wx.MessageDialog(self, "Sure?", msg, wx.YES_NO) as dlg:
@@ -295,6 +297,7 @@ class ProjectPanel(wx.Panel):
                 self.refresh_view()
 
     def on_validate(self, event):
+        """handles event from 'validate' button click"""
         repo = self.get_selected_project()
         if repo:
             conforms, results_graph, results_text = data_handler.validate_graph(repo)
@@ -306,17 +309,15 @@ class ProjectPanel(wx.Panel):
                     dlg.ShowModal()
 
     def on_item_selected(self, event):
+        """handles event from selection change"""
         # LATER: look into why this is called twice, which makes it slow
-        # print('item selected')
         self.refresh_view()
 
 
 class TabOne(wx.Panel):
-    """
-    Tab holding the project base information
-    """
 
-    def __init__(self, parent, dataset):
+    def __init__(self, parent: wx.Notebook, dataset: MetaDataSet):
+        """Tab holding the project base information"""
         wx.Panel.__init__(self, parent)
         self.dataset = dataset
 
@@ -366,7 +367,8 @@ class TabOne(wx.Panel):
         sizer.AddGrowableCol(1)
         self.SetSizer(sizer)
 
-    def show_help(self, evt, message, sample):
+    def show_help(self, evt, message: str, sample: str):
+        """Handles events from 'help' button. Opens a help popup"""
         msg = f"Description:\n{message}\n\nExample:\n{sample}"
         win = HelpPopup(self, msg)
         btn = evt.GetEventObject()
@@ -375,7 +377,8 @@ class TabOne(wx.Panel):
         win.Position(pos, (0, sz[1]))
         win.Popup()
 
-    def add_file(self, dataset, listbox):
+    def add_file(self, dataset: MetaDataSet, listbox: wx.ListBox):
+        """Associate a file with project base data."""
         with wx.FileDialog(self, "Choose file(s):",
                            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE) as fd:
             if fd.ShowModal() == wx.ID_OK:
@@ -389,7 +392,8 @@ class TabOne(wx.Panel):
                         dataset.files.append(f)
                         listbox.Append(f)
 
-    def remove_file(self, dataset, file_list):
+    def remove_file(self, dataset: MetaDataSet, file_list: wx.ListBox):
+        """Removes a file from base information association."""
         selection = file_list.GetSelection()
         if selection >= 0:
             string_selected = file_list.GetString(selection)
@@ -399,7 +403,7 @@ class TabOne(wx.Panel):
 
 class PropertyRow:
 
-    def __init__(self, parent, prop, sizer, index, metadataset):
+    def __init__(self, parent, prop: Property, sizer, index: int, metadataset: MetaDataSet):
         """
         A row in a tab of the UI
 
@@ -409,10 +413,10 @@ class PropertyRow:
 
         Args:
             parent (wx.ScrolledWindow): The scrolled panel in which the row is to be placed.
-            data_class (Project|Dataset|List[Person]|etc.): The Class that is to be displayed
             prop (Property): The property to be displayed
             sizer (wx.Sizer): The sizer that organizes the layout of the parent component
             index (int): the row in the sizer grid
+            metadataset (MetaDataSet): the MetaDataSet, to which the property belongs.
         """
         self.prop_name = prop.name
         self.metadataset = metadataset
@@ -973,7 +977,7 @@ class DataTab(scrolledPanel.ScrolledPanel):
         self.Layout()
 
     @property
-    def active_dataset(self):
+    def active_dataset(self) -> DataClass:
         if self.multiple:
             return self.dataset[self.multiple_selection]
         else:
