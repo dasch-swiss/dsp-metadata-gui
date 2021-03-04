@@ -33,22 +33,22 @@ The following actions can be performed:
 
 ![actions](assets/images/buttons.png)
 
-- Add a new project  
+- Add new Project  
   Adds a new project to the list.  
   To be able to add a project, you need to know its shortcode as well as associate a folder on your local file system with it. For details, see below.
-- Import a project  
+- Import Project  
   Lets you import a project from binaries (see "Zip and Export") and add it to the list.
-- Remove a project  
+- Remove selected Project  
   Removes the selected project from the list.
   _Note: This can not be undone._
-- Edit a project  
+- Edit selected Project  
   Opens the [form for collecting metadata](tab_view.md).
-- Validate a project  
+- Validate selected Project  
   Validates the selected project against the [ontology](https://github.com/dasch-swiss/dsp-ontologies/blob/main/dsp-repository/v1/dsp-repository.shacl.ttl).
-- Export RDF data  
+- Export selected Project as RDF  
   Exports the selected project metadata as Turtle, RDF/XML and JSON-LD.  
   The files are stored in the folder associated with the project.
-- Zip and Export  
+- Zip and Export Project  
   This action creates a Zip archive, containing all the files associated with the project, RDF serializations of the metadata, and a binary serialization of the project for reimport into this tool.
 
 
@@ -88,7 +88,7 @@ When creating a project and associating the folder with it, all files in this fo
 
 The metadata tool stores all data (except data you export) as binary data in the file `~/DaSCH/config/repos.data`.
 
-If you want to back up your working data, be sure to make backups uf this file as well as all folders you associated with projects.
+If you want to back up your working data, be sure to make backups of this file as well as all folders you associated with projects.
 
 Deleting this file will remove all projects and cause irreversible loss of all data you have entered.
 

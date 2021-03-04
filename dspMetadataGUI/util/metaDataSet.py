@@ -184,7 +184,7 @@ class MetaDataSet:
             # LATER: remove with next breaking change
         return graph
 
-    def get_by_string(self, s: str):  # returs DataClass
+    def get_by_string(self, s: str):  # returns DataClass
         # LATER: if the data classes are moved to another file, and imported, then this could be typed too.
         """
         Get a data object by its string representation.
@@ -955,7 +955,7 @@ class Property():
         self.predicate = predicate
         self.multiline = multiline
 
-    def get_url_property_id(url: str) -> str:
+    def get_url_property_id(self, url: str) -> str:
         """
         This method tries to guess the propetyID for a URL.
 
@@ -1282,7 +1282,7 @@ class Property():
                     return Validity.OPTIONAL_VALUE_MISSING, optional
 
         print(f'behavior undefined:\ncard: {cardinality}\ntype: {datatype}\n')
-        return "", ""
+        return "", ""  # FIXME: not according to typing
 
     def __str__(self):
         if self.value:

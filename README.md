@@ -1,9 +1,8 @@
 # DSP-METADATA-GUI Metadata Module
 
-The `dsp-metadata-gui` is a GUI application written in Python for collecting project specific metadata 
-and turn it into RDF.
+The `dsp-metadata-gui` is a GUI application written in Python for collecting project specific metadata and turn it into RDF.
 
-As part of the `dsp-tools`, its aim is to enable researchers and project managers who deposit research data on the DSP (DaSCH Service Platform), to add metadata about the project and datasets to the DSP repository. By providing metadata, the project will be findable on the platform, which is an integral part of the FAIR principles.
+As part of the `dsp-tools`, its aim is to enable researchers and project managers who deposit research data on the DSP (DaSCH Service Platform), to add metadata about the project and datasets to the DSP repository. By providing metadata, the project will be searchable on the platform, which is an integral part of the FAIR principles.
 
 The metadata follows the schema defined by the [dsp-ontologies](https://github.com/dasch-swiss/dsp-ontologies).
 
@@ -45,7 +44,7 @@ This will package the application, install it to your python environment and run
 
 ## Usage
 
-The Application is divided into two widows:
+The Application is divided into two windows:
 
 1. The main window lets you organize a list of projects, for which you can collect metadata. Several actions can be performed with projects, e.g. editing or exporting the project.
 

@@ -312,7 +312,7 @@ class Datatype(Enum):
     """Shortcode"""
 
 
-class IRIFactory():
+class IRIFactory:
     """
     Factory class to generate unique IRIs.
     """

@@ -26,7 +26,7 @@ Can be the abstract text itself or a link to an abstract online.
 
 ## Language
 
-The language the dataset is primarily made up of.  
+The language the dataset is primarily written in.  
 (Mandatory. Can have multiple values.)
 
 
@@ -94,14 +94,14 @@ Use the date picker to select a date.
 
 ## Date Created
 
-The creation date of the dataset.  
+The date when the dataset was first collected.  
 Use the date picker to select a date.  
 (Optional.)
 
 
 ## Date Modified
 
-The latest modification date of the dataset.  
+The date when the dataset was last changed.  
 Use the date picker to select a date.  
 (Optional.)
 

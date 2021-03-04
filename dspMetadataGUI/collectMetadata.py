@@ -1,3 +1,4 @@
+from typing import Optional
 import wx
 import wx.lib.scrolledpanel as scrolledPanel
 import wx.lib.dialogs as dialogs
@@ -9,7 +10,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
 from util.dataHandling import DataHandling
-from util.metaDataSet import MetaDataSet
+from util.metaDataSet import DataClass, MetaDataSet
 from util.utils import Cardinality, Datatype, Validity
 
 
@@ -234,7 +235,7 @@ class ProjectPanel(wx.Panel):
             txt = "No project selected."
         self.rdf_display.SetValue(txt)
 
-    def get_selected_project(self) -> MetaDataSet:
+    def get_selected_project(self) -> Optional[MetaDataSet]:
         selection = self.list_ctrl.GetFirstSelected()
         if selection < 0:
             return
@@ -396,7 +397,7 @@ class TabOne(wx.Panel):
             file_list.Delete(selection)
 
 
-class PropertyRow():
+class PropertyRow:
 
     def __init__(self, parent, prop, sizer, index, metadataset):
         """
@@ -910,18 +911,17 @@ class PropertyRow():
 
 class DataTab(scrolledPanel.ScrolledPanel):
 
-    def __init__(self, parent, metadataset, dataset, title, multiple=False):
+    def __init__(self, parent: wx.Notebook, metadataset: MetaDataSet, dataset: DataClass, title: str, multiple=False):
         """
-        The class does the following: ToDo: Check the params, dataclass?
+        A Tab in the window displaying data.
 
         Args:
-            parent (object): to be checked
-            metadataset (object): to be checked
-            dataset (object): to be checked
-            title (str): title of the project
-            multiple (bool): false
+            parent (wx.Notebook): parent object in which the tab is placed.
+            metadataset (MetaDataSet): the Metadataset to which the data belongs.
+            dataset (DataClass): The data object to display.
+            title (str): Title of the tab.
+            multiple (bool, optional): Flag true, if there can be multiple instances of the DataClass in the Metadataset. Defaults to False.
         """
-        # wx.Panel.__init__(self, parent, style=wx.EXPAND)
         scrolledPanel.ScrolledPanel.__init__(self, parent, -1)
 
         self.parent = parent
@@ -971,7 +971,6 @@ class DataTab(scrolledPanel.ScrolledPanel):
         self.SetupScrolling(scroll_x=False, scroll_y=True)
         self.Fit()
         self.Layout()
-        # self.SetScrollbars(0, 16, 60, 15)
 
     @property
     def active_dataset(self):
@@ -1242,7 +1241,6 @@ class CalendarDlg(wx.Dialog):
     # def __init__(self, parent):
     def __init__(self, parent, title, date_str):
 
-        # wx.Dialog.__init__(self, parent, title=parent.title)
         wx.Dialog.__init__(self, parent, title=title)
         panel = wx.Panel(self, -1)
 
@@ -1252,7 +1250,6 @@ class CalendarDlg(wx.Dialog):
         date = wx.DateTime()
         date.ParseDate(date_str)
         cal = wx.adv.GenericCalendarCtrl(panel, date=date)
-        # cal = wx.adv.GenericCalendarCtrl(panel, date=parent.date)
 
         if sys.platform != 'win32':
             # gtk truncates the year - this fixes it
