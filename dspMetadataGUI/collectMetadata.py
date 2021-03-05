@@ -1166,6 +1166,9 @@ class PropertyRow:
             widget.SetForegroundColour(wx.Colour(170, 30, 30))
         elif res == Validity.OPTIONAL_VALUE_MISSING:
             widget.SetForegroundColour(wx.NullColour)
+        elif res == Validity.UNDEFINED:
+            widget.SetBackgroundColour(wx.Colour(255, 0, 0))
+            widget.SetForegroundColour(wx.Colour(0, 0, 0))
         self.validity_msg = msg
 
     def set_value(self, val):

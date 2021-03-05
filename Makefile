@@ -22,11 +22,12 @@ install-requirements: ## install requirements
 
 .PHONY: install
 install: ## install from source
-	pip3 install .
+	pip3 install . -e
 
 .PHONY: clean
 clean: ## cleans the project directory
 	@rm -rf dist/
+	@rm -rf build/
 
 .PHONY: install-and-run
 install-and-run: ## install and run from source

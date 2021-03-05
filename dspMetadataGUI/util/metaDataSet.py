@@ -300,6 +300,9 @@ class MetaDataSet:
                 optional += 1
             elif v == Validity.VALID:
                 valid += 1
+            elif v == Validity.UNDEFINED:
+                print("Warning: Unexpected Validity 'Undefined'.")
+                return "Error during validation."
         return f"{overall}  --  {invalid + missing} Problems; {valid} Values"
 
     def get_turtle(self) -> str:
@@ -1281,8 +1284,8 @@ class Property():
                 else:
                     return Validity.OPTIONAL_VALUE_MISSING, optional
 
-        print(f'behavior undefined:\ncard: {cardinality}\ntype: {datatype}\n')
-        return "", ""  # FIXME: not according to typing
+        print(f'Warning: Behavior undefined!\ncard: {cardinality}\ntype: {datatype}\n')
+        return Validity.UNDEFINED, ""
 
     def __str__(self):
         if self.value:

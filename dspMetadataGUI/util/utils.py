@@ -182,6 +182,8 @@ class Validity(Enum):
     """
     Enumeration of validity states.
     """
+    UNDEFINED = -1
+    """Undefined Value. Should never happen."""
     VALID = 0
     """Valid: The value is valid."""
     INVALID_VALUE = 1
