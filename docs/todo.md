@@ -1,37 +1,5 @@
 # Roadmap
 
-## Initial Release
-
-### Programming
-
-- [x] switching qualified attribution should change role too
-- [x] fix: remove correct item when removing one of multiple of top level classes (person, organization etc.)
-- [x] allow deleting last Person/Organization/Dataset
-- [x] avoid adding persons/etc to graph, if not referenced anywhere
-
-
-### Documentation
-
-#### Usage Documentation
-
-- [x] fix link in readme so it works both in readme and in docs
-- [x] document all classes (explain properties, tab by tab)
-- [x] update doc to new tab order
-- [x] update images
-
-#### API Reference
-
-- [x] Add docstring to all classes
-- [x] Manually write documentation for `collectMetadata.md`
-
-
-### Others
-
-- [ ] test on windows
-- [ ] test on linux
-- [ ] investigate `ssl.SSLCertVerificationError`
-
-
 ## Next Major Version
 
 ### Programming
@@ -54,7 +22,7 @@
 - [ ] regular json support
 
 
-#### Maintenance
+### Maintenance
 - [ ] add unit tests
 - [ ] improve module granularity
 - [ ] rename code folder to `src` for convention's sake
