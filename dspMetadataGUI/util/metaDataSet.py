@@ -7,7 +7,7 @@ The classes defined here aim to represent a metadata-set, closely following the
 
 from abc import ABC, abstractmethod
 import re
-from typing import Tuple
+from typing import List, Tuple
 import pyshacl
 import validators
 from rdflib import Graph, URIRef, RDF, Literal, Namespace, BNode
@@ -107,11 +107,11 @@ class MetaDataSet:
         self.name = name
         self.path = path
         self.files = []
-        self.project = Project(name, shortcode, self)
-        self.dataset = [Dataset(name, self.project, self)]
-        self.persons = [Person(self)]
-        self.organizations = [Organization(self)]
-        self.grants = [Grant(self)]
+        self.project: Project = Project(name, shortcode, self)
+        self.dataset: List[Dataset] = [Dataset(name, self.project, self)]
+        self.persons: List[Person] = [Person(self)]
+        self.organizations: List[Organization] = [Organization(self)]
+        self.grants: List[Grant] = [Grant(self)]
 
     def __str__(self):
         return str({

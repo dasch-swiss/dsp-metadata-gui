@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Tuple, Union
 import wx
 import wx.lib.scrolledpanel as scrolledPanel
 import wx.lib.dialogs as dialogs
@@ -201,9 +201,8 @@ class ProjectPanel(wx.Panel):
 
     def create_header(self):
         """
-        Here we create the header
+        creates the header
         """
-        # Construct a header
         self.list_ctrl.InsertColumn(0, 'Folder', width=300)
         self.list_ctrl.InsertColumn(1, 'Project', width=180)
         self.list_ctrl.InsertColumn(2, 'Shortcode', width=90)
@@ -315,15 +314,13 @@ class ProjectPanel(wx.Panel):
 
 
 class TabbedWindow(wx.Frame):
-    def __init__(self, parent, dataset: MetaDataSet):
+    def __init__(self, parent: ProjectPanel, dataset: MetaDataSet):
         """
-        This class organizes the different tabs
-        ToDo: What exactly is the metadataset?
+        A Window holding the different tabs
 
         Args:
-            parent (object): the parent object
-            dataset (object): the dataset
-            MetaDataSet (object): the metadataset
+            parent (ProjectPanel): the parent object
+            dataset (MetaDataSet): the dataset
         """
         wx.Frame.__init__(self, parent, id=-1, title="", pos=wx.DefaultPosition,
                           size=(1200, 600), style=wx.DEFAULT_FRAME_STYLE,
@@ -385,37 +382,46 @@ class TabbedWindow(wx.Frame):
         # sizer.Fit(self)
 
     def on_tab_change(self, event):
+        """handles 'tab changed' event"""
         data_handler.update_all()
 
     def on_save(self, event):
+        """handles 'save' event"""
         self.save()
         self.feedback("Saved Successfully.")
 
     def on_saveclose(self, event):
+        """handles 'save and close' event"""
         self.save()
         self.close()
 
     def on_close(self, event):
+        """handles 'close' event"""
         self.close()
 
     def save(self):
+        """executes the save logic"""
         data_handler.update_all()
         data_handler.save_data(dataset=self.dataset)
         data_handler.refresh_ui()
 
     def close(self):
+        """executes the close logic"""
         self.parent.Enable()
         self.parent.refresh_view()
         data_handler.current_window = None
         self.Destroy()
 
     def get_persons(self):
+        """returns the list of persons held by the MetaDataSet"""
         return self.dataset.persons
 
     def get_organizations(self):
+        """returns the list of organizations held by the MetaDataSet"""
         return self.dataset.organizations
 
     def feedback(self, msg, success=True):
+        """gives feedback to user on action (eg. 'saved successfully')"""
         if success:
             self.feedback_text.SetForegroundColour(wx.Colour(50, 200, 50))
         else:
@@ -582,10 +588,12 @@ class DataTab(scrolledPanel.ScrolledPanel):
             return self.dataset
 
     def update_data(self):
+        """Updates the data for all rows."""
         for row in self.rows:
             row.update_data()
 
     def refresh_ui(self):
+        """Refreshes all UI components."""
         if self.multiple:
             self.multiple_listbox.SetItems([str(ds) for ds in self.dataset])
             if self.multiple_selection < 0:
@@ -595,7 +603,8 @@ class DataTab(scrolledPanel.ScrolledPanel):
             row.refresh_ui()
         self.Layout()
 
-    def add_object(self, event, listbox, title):
+    def add_object(self, event, listbox, title: str):
+        """Adds an object (Person, Dataset, etc.) to the tab."""
         if title == "Person":
             self.metadataset.add_person()
         if title == "Dataset":
@@ -608,6 +617,7 @@ class DataTab(scrolledPanel.ScrolledPanel):
         data_handler.refresh_ui()
 
     def remove_object(self, event, listbox):
+        """Removes an object (Person, Dataset, etc.) from the tab."""
         selection = listbox.GetSelection()
         if selection < 0:
             return
@@ -618,14 +628,15 @@ class DataTab(scrolledPanel.ScrolledPanel):
         data_handler.refresh_ui()
 
     def change_selection(self, event):
+        """Handles selection-change event."""
         sel = event.GetEventObject().GetSelection()
         data_handler.update_all()
         self.multiple_selection = sel
         data_handler.refresh_ui()
 
-    def add_to_list(self, event, content_list, widget, addable):
+    def add_to_list(self, event, content_list: wx.ListBox, widget: Union[wx.Control, Tuple[wx.Control]], addable: str):
         """
-        add an object to a listbox.
+        add an object to a list.
         """
         if not addable:  # is None
             return
@@ -655,7 +666,8 @@ class DataTab(scrolledPanel.ScrolledPanel):
             self.reset_widget(widget)
         data_handler.update_all()
 
-    def reset_widget(self, widget):
+    def reset_widget(self, widget: Union[wx.Control, Tuple[wx.Control]]):
+        """reset widget to an empty value"""
         if isinstance(widget, wx.StaticText) or \
                 isinstance(widget, wx.TextCtrl):
             widget.SetValue('')
@@ -665,7 +677,7 @@ class DataTab(scrolledPanel.ScrolledPanel):
             for w in widget:
                 self.reset_widget(w)
 
-    def remove_from_list(self, event, content_list):
+    def remove_from_list(self, event, content_list: Union[wx.ListBox, wx.ListCtrl]):
         """
         remove an object from a listbox.
         """
@@ -679,7 +691,7 @@ class DataTab(scrolledPanel.ScrolledPanel):
                 content_list.Delete(selection)
         data_handler.update_all()
 
-    def show_help(self, evt, message, sample):
+    def show_help(self, evt, message: str, sample: str):
         """
         Show a help dialog
         """
@@ -691,7 +703,7 @@ class DataTab(scrolledPanel.ScrolledPanel):
         win.Position(pos, (0, sz[1]))
         win.Popup()
 
-    def show_validity(self, evt, val, card):
+    def show_validity(self, evt, val: str, card: str):
         """
         Show a help dialog
         """
@@ -703,7 +715,8 @@ class DataTab(scrolledPanel.ScrolledPanel):
         win.Position(pos, (0, sz[1]))
         win.Popup()
 
-    def pick_date(self, evt, label: wx.StaticText, prop):
+    def pick_date(self, evt, label: wx.StaticText, prop: Property):
+        """let user pick a date with date picker dialog"""
         with CalendarDlg(self, prop.name, label.GetLabel()) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 label.SetLabel(dlg.cal.Date.FormatISODate())
@@ -712,7 +725,7 @@ class DataTab(scrolledPanel.ScrolledPanel):
 
 class PropertyRow:
 
-    def __init__(self, parent, prop: Property, sizer, index: int, metadataset: MetaDataSet):
+    def __init__(self, parent: DataTab, prop: Property, sizer: wx.FlexGridSizer, index: int, metadataset: MetaDataSet):
         """
         A row in a tab of the UI
 
@@ -735,6 +748,7 @@ class PropertyRow:
         self.validity_msg = ""
         name_label = wx.StaticText(parent, label=prop.name + ": ")
         sizer.Add(name_label)
+        # LATER: checking the following with `Datatype.is_string_like(datatype)` would be a lot neater... add helper function
         if prop.datatype == Datatype.STRING \
                 or prop.datatype == Datatype.STRING_OR_URL \
                 or prop.datatype == Datatype.URL \
@@ -749,7 +763,7 @@ class PropertyRow:
                 date = wx.StaticText(parent, size=(100, -1))
                 pick_date_button = wx.Button(parent, label="Pick Date")
                 pick_date_button.Bind(
-                    wx.EVT_BUTTON, lambda event: parent.pick_date(event, date, self.prop))
+                    wx.EVT_BUTTON, lambda event: parent.pick_date(event, date, prop))
                 inner_sizer.Add(date)
                 inner_sizer.Add(pick_date_button)
                 sizer.Add(inner_sizer, flag=wx.EXPAND)
@@ -795,7 +809,8 @@ class PropertyRow:
         sizer.Add(opt, flag=wx.RIGHT, border=5)
         self.refresh_ui()
 
-    def __setup_string(self, parent, sizer, prop):
+    def __setup_string(self, parent: DataTab, sizer: wx.FlexGridSizer, prop: Property):
+        """Set up UI form widgets for a string-like. Delegates to different cardinalities."""
         if prop.cardinality == Cardinality.ONE \
                 or prop.cardinality == Cardinality.ZERO_OR_ONE:  # String or similar, exactly 1 or 0-1
             self.__setup_string_one_card(parent, sizer, prop)
@@ -807,7 +822,8 @@ class PropertyRow:
                 or prop.cardinality == Cardinality.UNBOUND:  # String or similar, 1-n or 0-n
             self.__setup_string_multi_card(parent, sizer, prop)
 
-    def __setup_string_multi_card(self, parent, sizer, prop):
+    def __setup_string_multi_card(self, parent: DataTab, sizer: wx.FlexGridSizer, prop: Property):
+        """Set up UI form widgets for a string-like with multi cardinality."""
         scroller = wx.lib.scrolledpanel.ScrolledPanel(parent)
         scroll_sizer = wx.BoxSizer(wx.VERTICAL)
         if prop.multiline:
@@ -875,7 +891,8 @@ class PropertyRow:
         sizer.Add(scroller, flag=wx.EXPAND)
         self.data_widget = content_list
 
-    def __setup_string_two_card(self, parent, sizer, prop):
+    def __setup_string_two_card(self, parent: DataTab, sizer: wx.FlexGridSizer, prop: Property):
+        """Set up UI form widgets for a string-like with two cardinality."""
         if prop.cardinality == Cardinality.ONE_TO_TWO:  # String or similar, 1-2
             inner_sizer = wx.BoxSizer(wx.VERTICAL)
             textcontrol1 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
@@ -902,7 +919,8 @@ class PropertyRow:
             sizer.Add(inner_sizer, flag=wx.EXPAND)
             self.data_widget = [textcontrol1, textcontrol2]
 
-    def __setup_string_one_card(self, parent, sizer, prop):
+    def __setup_string_one_card(self, parent: DataTab, sizer: wx.FlexGridSizer, prop: Property):
+        """Set up UI form widgets for a string-like with single cardinality."""
         scroller = wx.lib.scrolledpanel.ScrolledPanel(parent)
         scroll_sizer = wx.BoxSizer(wx.VERTICAL)
         if prop.multiline:
@@ -917,7 +935,8 @@ class PropertyRow:
         # sizer.Add(textcontrol, flag=wx.EXPAND)
         self.data_widget = textcontrol
 
-    def __setup_dropdown(self, parent, sizer, prop):
+    def __setup_dropdown(self, parent: DataTab, sizer: wx.FlexGridSizer, prop: Property):
+        """Set up dropdown widget"""
         if prop.cardinality == Cardinality.ZERO_OR_ONE \
                 or prop.cardinality == Cardinality.ONE:
             choice = wx.Choice(parent, size=(400, -1))
@@ -947,7 +966,8 @@ class PropertyRow:
             scroller.SetupScrolling(scroll_x=True, scroll_y=False)
             sizer.Add(scroller, flag=wx.EXPAND)
 
-    def __setup_address(self, parent, sizer):
+    def __setup_address(self, parent: DataTab, sizer: wx.FlexGridSizer):
+        """Set up widgets for address."""
         inner_sizer = wx.BoxSizer(wx.VERTICAL)
         text1 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
         text1.SetHint('Street')
@@ -968,7 +988,8 @@ class PropertyRow:
         sizer.Add(inner_sizer, flag=wx.EXPAND)
         self.data_widget = [text1, text2, text3]
 
-    def __setup_attribution(self, parent, sizer):
+    def __setup_attribution(self, parent: DataTab, sizer: wx.FlexGridSizer):
+        """Set up widgets for attribution."""
         scroller = scrolledPanel.ScrolledPanel(parent)
         inner_sizer = wx.BoxSizer()
         input_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -1010,10 +1031,11 @@ class PropertyRow:
         return self.parent.active_dataset
 
     @property
-    def prop(self):
+    def prop(self) -> Property:
         return self.data_class.get_prop_by_name(self.prop_name)
 
     def update_data(self):
+        """Update data according to the value that is currently in the UI."""
         self.prop.value = self.get_value()
 
     def get_value(self):
@@ -1107,12 +1129,14 @@ class PropertyRow:
         return "Couldn't find my value... sorry"
 
     def refresh_ui(self):
+        """Update the value in the UI according to what is stored in the property (delegator)."""
         self.set_value(self.prop.value)
         if self.choice_widget:
             self.refresh_choice()
         self.validate()
 
     def refresh_choice(self):
+        """Update dropdown menu according to currently available options."""
         options = []
         if self.prop.datatype == Datatype.GRANT:
             options = self.metadataset.grants
@@ -1131,6 +1155,7 @@ class PropertyRow:
             self.set_value(self.prop.value)
 
     def validate(self):
+        """validate current value and display the result in the UI."""
         widget = self.validity_widget
         res, msg = self.prop.validate()
         if res == Validity.VALID:
@@ -1144,6 +1169,7 @@ class PropertyRow:
         self.validity_msg = msg
 
     def set_value(self, val):
+        """Update the value in the UI according to what is stored in the property."""
         datatype = self.prop.datatype
         cardinality = self.prop.cardinality
         undefined = False
@@ -1223,7 +1249,7 @@ class PropertyRow:
 
 
 class HelpPopup(wx.PopupTransientWindow):
-    def __init__(self, parent, msg):
+    def __init__(self, parent: Union[DataTab, TabOne], msg: str):
         """
         This class provides a help message
         Args:
@@ -1242,9 +1268,8 @@ class HelpPopup(wx.PopupTransientWindow):
 
 
 class CalendarDlg(wx.Dialog):
-    # def __init__(self, parent):
-    def __init__(self, parent, title, date_str):
-
+    def __init__(self, parent: DataTab, title: str, date_str: str):
+        """A calendar picker dialog."""
         wx.Dialog.__init__(self, parent, title=title)
         panel = wx.Panel(self, -1)
 
