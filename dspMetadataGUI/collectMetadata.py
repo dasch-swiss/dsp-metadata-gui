@@ -107,6 +107,7 @@ class ProjectPanel(wx.Panel):
         bottom_sizer.AddGrowableRow(0)
         rdf_display = wx.TextCtrl(self, value="No Project selected.",
                                   style=wx.TE_READONLY | wx.TE_MULTILINE, size=(400, -1))
+        rdf_display.OSXDisableAllSmartSubstitutions()
         self.rdf_display = rdf_display
         bottom_sizer.Add(rdf_display, flag=wx.EXPAND)
 
@@ -427,7 +428,10 @@ class TabbedWindow(wx.Frame):
         else:
             self.feedback_text.SetForegroundColour(wx.Colour(200, 50, 50))
         self.feedback_text.SetLabel(msg)
-        wx.CallLater(2500, lambda: self.feedback_text.SetLabel(''))
+        try:
+            wx.CallLater(2500, lambda: self.feedback_text.SetLabel(''))
+        except Exception:
+            pass
 
 
 class TabOne(wx.Panel):

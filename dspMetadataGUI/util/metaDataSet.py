@@ -162,7 +162,8 @@ class MetaDataSet:
         Returns:
             Graph: The RDF graph
         """
-        graph = Graph(base=dsp_repo)
+        # graph = Graph(base=dsp_repo)
+        graph = Graph()
         graph.bind("dsp-repo", dsp_repo)
         graph.bind("schema", SDO)
         graph.bind("xsd", XSD)
