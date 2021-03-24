@@ -107,7 +107,11 @@ class ProjectPanel(wx.Panel):
         bottom_sizer.AddGrowableRow(0)
         rdf_display = wx.TextCtrl(self, value="No Project selected.",
                                   style=wx.TE_READONLY | wx.TE_MULTILINE, size=(400, -1))
-        rdf_display.OSXDisableAllSmartSubstitutions()
+        try:
+            rdf_display.OSXDisableAllSmartSubstitutions()
+        except Exception:
+            print("Info: Disabling smart substitutions not available. \
+                 (Should not be a problem, to be sure, check that there are no typographic quotation marks when you copy-paste the .ttl preview.)")
         self.rdf_display = rdf_display
         bottom_sizer.Add(rdf_display, flag=wx.EXPAND)
 
