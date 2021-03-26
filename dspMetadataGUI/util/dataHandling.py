@@ -145,15 +145,15 @@ class DataHandling:
         if not os.path.exists(path):
             os.makedirs(path)
         p = path + '/metadata.ttl'
-        with open(p, 'w') as f:
+        with open(p, mode='w', encoding='utf-8') as f:
             s = graph.serialize(format='turtle').decode("utf-8")
             f.write(s)
         p = path + '/metadata.json'
-        with open(p, 'w') as f:
+        with open(p, mode='w', encoding='utf-8') as f:
             s = graph.serialize(format='json-ld').decode("utf-8")
             f.write(s)
         p = path + '/metadata.xml'
-        with open(p, 'w') as f:
+        with open(p, mode='w', encoding='utf-8') as f:
             s = graph.serialize(format='xml').decode("utf-8")
             f.write(s)
         if show:
