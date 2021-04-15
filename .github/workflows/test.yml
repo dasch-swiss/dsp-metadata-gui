@@ -1,0 +1,40 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+    types: [opened]
+
+jobs:
+  test-integration:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      # run tests
+        - name: dummy
+          run: echo "should be doing tests here"
+      # - name: Checkout source
+      #   uses: actions/checkout@v2
+      #   with:
+      #     fetch-depth: 1
+
+      # - name: Set up JDK
+      #   uses: joschi/setup-jdk@v2
+      #   with:
+      #     java-version: '11' # The OpenJDK version to make available on the path
+      #     architecture: 'x64' # defaults to 'x64'
+          
+      # - name: Set up Node
+      #   uses: actions/setup-node@v1
+      #   with:
+      #     node-version: '14'
+
+      # - name: Install dependecies
+      #   uses: VaultVulp/action-pipenv@v2.0.1
+      #   with:
+      #     command: install -d # Install all dependencies, including development ones
+    
+      # - name: Test
+      #   uses: VaultVulp/action-pipenv@v2.0.1
+      #   with:
+      #     command: run test # Run custom `test` command defined in the `[scripts]` block of Pipfile
