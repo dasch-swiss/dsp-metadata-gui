@@ -8,7 +8,7 @@ on:
 jobs:
   test-integration:
     name: Integration Tests
-    runs-on: ubuntu-latest
+    runs-on: windows-latest  # TODO: should be ubuntu!
     steps:
       # run tests
       - name: Checkout source
