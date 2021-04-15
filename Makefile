@@ -5,24 +5,24 @@ CURRENT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 .PHONY: dist
 dist: ## generate distribution package
 	$(MAKE) clean
-	python3 setup.py sdist bdist_wheel
+	python setup.py sdist bdist_wheel
 
 .PHONY: upload
 upload: ## upload distribution package to PyPi
 	$(MAKE) dist
-	python3 -m twine upload dist/*
+	python -m twine upload dist/*
 
 .PHONY: upgrade-dist-tools
 upgrade-dist-tools: ## upgrade packages necessary for testing, building, packaging and uploading to PyPi
-	python3 -m pip install --upgrade pip setuptools wheel tqdm twine pytest mkdocs mkdocstrings
+	python -m pip install --upgrade pip setuptools wheel tqdm twine pytest mkdocs mkdocstrings
 
 .PHONY: install-requirements
 install-requirements: ## install requirements
-	pip3 install -r requirements.txt
+	pip install -r requirements.txt
 
 .PHONY: install
 install: ## install from source
-	pip3 install . -e
+	pip install . -e
 
 .PHONY: clean
 clean: ## cleans the project directory
