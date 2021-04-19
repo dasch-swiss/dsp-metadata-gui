@@ -79,7 +79,7 @@ This folder must hold all files you want to associate with the project. It is al
 
 #### Files
 
-If you not only want to submit project metadata, but also primary project data with it (e.g. the NIE-INE projects), this data should come in the simplest possible form. Ideally, all data should be combined into one ZIP archive.
+If you not only want to submit project metadata, but also primary project data with it (e.g. like this is done on Zenodo), this data should come in the simplest possible form. Ideally, all data should be combined into one ZIP archive.
 
 When creating a project and associating the folder with it, all files in this folder are automatically associated with the project. However, files can be added or removed at any time in the [project base data](tab_view.md#base-data), provided that the files are _in the folder_. 
 

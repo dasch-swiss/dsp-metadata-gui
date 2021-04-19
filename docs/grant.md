@@ -14,7 +14,7 @@ Select a person or organization from the drop-down menu.
 
 ## Name
 
-The name of the grant, if any (e.g. "Ambitione", "Eccellenca", etc.).  
+The name of the grant, if any (e.g. "Ambizione", "Eccellenza", etc.).  
 (Optional.)
 
 
