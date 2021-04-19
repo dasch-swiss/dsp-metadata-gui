@@ -23,7 +23,7 @@ prov = Namespace("http://www.w3.org/ns/prov#")
 
 
 class MetaDataSet:
-    """ Representation of a datset.
+    """ Representation of a dataset.
 
     This class represents a dataset of project metadata.
     It holds the following properties:
