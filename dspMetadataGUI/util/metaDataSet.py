@@ -23,9 +23,9 @@ prov = Namespace("http://www.w3.org/ns/prov#")
 
 
 class MetaDataSet:
-    """ Representation of a data set.
+    """ Representation of a dataset.
 
-    This class represents a data set of project metadata.
+    This class represents a dataset of project metadata.
     It holds the following properties:
 
     - name: the repo/project name.
@@ -157,7 +157,7 @@ class MetaDataSet:
 
     def generate_rdf_graph(self) -> Graph:
         """
-        Generates the RFD graph of the entire dataset.
+        Generates the RDF graph of the entire dataset.
 
         Returns:
             Graph: The RDF graph

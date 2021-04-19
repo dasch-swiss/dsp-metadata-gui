@@ -67,7 +67,7 @@ This class represents a financial grant that was granted to the project.
 
 There can be multiple datasets.
 
-A project hosted on the DSP must have one or multiple datasets.
+A project hosted on the DSP must have at least one dataset.
 
 
 ### Project
