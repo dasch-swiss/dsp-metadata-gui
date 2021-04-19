@@ -17,4 +17,4 @@ jobs:
           disallowed_prefixes: 'feature,hotfix,doc' # title should not start with the given prefix
           prefix_case_sensitive: true # title prefix are case insensitive
           min_length: 7 # Min length of the title
-          max_length: 60 # Max length of the title
+          max_length: 120 # Max length of the title
