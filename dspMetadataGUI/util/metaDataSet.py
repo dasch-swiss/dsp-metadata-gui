@@ -157,7 +157,7 @@ class MetaDataSet:
 
     def generate_rdf_graph(self) -> Graph:
         """
-        Generates the RFD graph of the entire dataset.
+        Generates the RDF graph of the entire dataset.
 
         Returns:
             Graph: The RDF graph
