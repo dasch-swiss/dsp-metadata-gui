@@ -1,17 +1,20 @@
-import tkinter as tk
+"""
+Runner module for the DSP metadata application.
 
-window = tk.Tk()
+Execute this as a script, or call `main()`  to run the application.
+"""
+
+from gui import mainWindow
 
 
-
-# from tkinter import Tk
-
-
-# def main():
-#     root = Tk()
+def main():
+    """
+    Runs the DSP metadata application.
     
-#     root.mainloop()
+    Calls `mainWindow.run()`
+    """
+    mainWindow.run()
 
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
