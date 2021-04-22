@@ -2,9 +2,8 @@
 This module handles the main window of the DSP metadata application.
 """
 
-from . import pickProject
+from gui import pickProject
 import tkinter as tk
-from tkinter.font import Font
 
 
 def _set_up_project(root: tk.Tk, project=None):
@@ -13,12 +12,14 @@ def _set_up_project(root: tk.Tk, project=None):
         root.withdraw()
         pickProject.pick_project(root)
         return
+    # TODO: open project
 
 
 def run():
     """
     Run the metadata application.
     """
+    # TODO: determine if a project should be opened right away
     root = tk.Tk()
     root.title("DSP Metadata")
     root.geometry('900x600+100+100')
