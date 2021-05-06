@@ -1,3 +1,6 @@
+from util.utils import Cardinality, Datatype, Validity
+from util.metaDataSet import DataClass, MetaDataSet, Property
+from util.dataHandling import DataHandling
 from typing import Optional, Tuple, Union
 import wx
 import wx.lib.scrolledpanel as scrolledPanel
@@ -8,10 +11,6 @@ import re
 import sys
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
-
-from util.dataHandling import DataHandling
-from util.metaDataSet import DataClass, MetaDataSet, Property
-from util.utils import Cardinality, Datatype, Validity
 
 
 def collectMetadata():
@@ -59,9 +58,16 @@ class ProjectFrame(wx.Frame):
         menu_bar.Append(file_menu, '&File')
         options_menu = wx.Menu()
         menu_bar.Append(options_menu, '&Options')
+        converter_menu_item = options_menu.Append(wx.ID_ANY, "Convert RDF to JSON (New Data Model)")
+        self.Bind(wx.EVT_MENU, self.__on_convert, converter_menu_item)
         options_help = wx.Menu()
         menu_bar.Append(options_help, '&Help')
         self.SetMenuBar(menu_bar)
+
+    def __on_convert(self, event):
+        dlg = ConverterDialog(None, title="JSON Converter")
+        dlg.ShowModal()
+        dlg.Destroy()
 
     def __on_save(self, event):
         """
@@ -1326,6 +1332,13 @@ class CalendarDlg(wx.Dialog):
             self.EndModal(wx.ID_CANCEL)
         else:
             evt.Skip()
+
+
+class ConverterDialog(wx.Dialog):
+    # CHORE: document
+    def __init__(self, *args, **kw):
+        super(ConverterDialog, self).__init__(*args, **kw)
+        # TODO: UI: should have an explanation label, a file picker for input, file picker for output, option to work from current project's string, ...
 
 
 if __name__ == '__main__':

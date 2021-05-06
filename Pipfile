@@ -27,3 +27,4 @@ python_version = "3.9"
 
 [scripts]
 test = "python -m unittest"
+run = "python dspMetadataGUI/collectMetadata.py"
