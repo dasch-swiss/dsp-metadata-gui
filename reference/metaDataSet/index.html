@@ -9,8 +9,8 @@
       
       
       
-      <link rel="shortcut icon" href="../../assets/images/dasch-favicon.ico">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.8">
+      <link rel="icon" href="../../assets/images/dasch-favicon.ico">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.2">
     
     
       
@@ -18,10 +18,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.cb6bc1d0.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f955dcd.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.39b8e14a.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ef6f36e2.min.css">
         
       
     
@@ -31,10 +31,12 @@
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
-        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
       
     
     
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
       <link rel="stylesheet" href="../../assets/style/theme.css">
     
@@ -51,8 +53,9 @@
     
     
     <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
-      
   
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -69,26 +72,24 @@
       
     </div>
     
-      
-
-<header class="md-header" data-md-component="header">
-  <nav class="md-header-nav md-grid" aria-label="Header">
-    <a href="../.." title="DSP-Metadata-GUI" class="md-header-nav__button md-logo" aria-label="DSP-Metadata-GUI">
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="DSP-Metadata-GUI" class="md-header__button md-logo" aria-label="DSP-Metadata-GUI" data-md-component="logo">
       
   <img src="../../assets/images/dasch-icon-white.svg" alt="logo">
 
     </a>
-    <label class="md-header-nav__button md-icon" for="__drawer">
+    <label class="md-header__button md-icon" for="__drawer">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
     </label>
-    <div class="md-header-nav__title" data-md-component="header-title">
-      <div class="md-header-nav__ellipsis">
-        <div class="md-header-nav__topic">
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
           <span class="md-ellipsis">
             DSP-Metadata-GUI
           </span>
         </div>
-        <div class="md-header-nav__topic">
+        <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
               Data Structure
@@ -98,8 +99,10 @@
       </div>
     </div>
     
-      <label class="md-header-nav__button md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
       </label>
       
 <div class="md-search" data-md-component="search" role="dialog">
@@ -108,11 +111,11 @@
     <form class="md-search__form" name="search">
       <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
       <label class="md-search__icon md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
       </label>
-      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
       </button>
     </form>
     <div class="md-search__output">
@@ -142,17 +145,15 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
 
 
-
-
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="DSP-Metadata-GUI" class="md-nav__button md-logo" aria-label="DSP-Metadata-GUI">
+    <a href="../.." title="DSP-Metadata-GUI" class="md-nav__button md-logo" aria-label="DSP-Metadata-GUI" data-md-component="logo">
       
   <img src="../../assets/images/dasch-icon-white.svg" alt="logo">
 
@@ -188,19 +189,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
       
-      <label class="md-nav__link" for="nav-2">
+      <label class="md-nav__link" for="__nav_2">
         Usage
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Usage" data-md-level="1">
-        <label class="md-nav__title" for="nav-2">
+        <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
           Usage
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
           
             
   
@@ -246,19 +246,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-4" type="checkbox" id="nav-2-4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_4" type="checkbox" id="__nav_2_4" >
       
-      <label class="md-nav__link" for="nav-2-4">
+      <label class="md-nav__link" for="__nav_2_4">
         Metadata Classes
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Metadata Classes" data-md-level="2">
-        <label class="md-nav__title" for="nav-2-4">
+        <label class="md-nav__title" for="__nav_2_4">
           <span class="md-nav__icon md-icon"></span>
           Metadata Classes
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
           
             
   
@@ -345,19 +344,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
-      <label class="md-nav__link" for="nav-3">
+      <label class="md-nav__link" for="__nav_3">
         API Reference
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="API Reference" data-md-level="1">
-        <label class="md-nav__title" for="nav-3">
+        <label class="md-nav__title" for="__nav_3">
           <span class="md-nav__icon md-icon"></span>
           API Reference
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
           
             
   
@@ -382,6 +380,7 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+      
         <label class="md-nav__link md-nav__link--active" for="__toc">
           Data Structure
           <span class="md-nav__icon md-icon"></span>
@@ -396,11 +395,12 @@
   
   
   
+  
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
-    <ul class="md-nav__list" data-md-scrollfix>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#dspMetadataGUI.util.metaDataSet" class="md-nav__link">
@@ -748,7 +748,7 @@
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -756,11 +756,12 @@
   
   
   
+  
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
-    <ul class="md-nav__list" data-md-scrollfix>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#dspMetadataGUI.util.metaDataSet" class="md-nav__link">
@@ -1055,7 +1056,7 @@
               </div>
             
           
-          <div class="md-content">
+          <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
               
                 
@@ -1063,237 +1064,381 @@
                   <h1>Data Structure</h1>
                 
                 <div class="doc doc-object doc-module">
-<h2 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet">
 
+
+
+<h2 id="dspMetadataGUI.util.metaDataSet" class="doc doc-heading">
         <code>metaDataSet</code>
 
 
 
-      </h2>
-<div class="doc doc-contents first">
-<p>This module holds the data structure that is used for modelling metadata.</p>
+</h2>
+
+    <div class="doc doc-contents first">
+
+      <p>This module holds the data structure that is used for modelling metadata.</p>
 <p>The classes defined here aim to represent a metadata-set, closely following the
 <a href="https://github.com/dasch-swiss/dsp-ontologies/blob/main/dsp-repository/v1/dsp-repository.shacl.ttl">metadata ontology</a>.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-class">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.DataClass">
 
+
+
+  <div class="doc doc-children">
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="dspMetadataGUI.util.metaDataSet.DataClass" class="doc doc-heading">
         <code>DataClass</code>
 
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Abstract parent class of all classes holding data.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.DataClass.add_rdf_to_graph">
+</h3>
 
+    <div class="doc doc-contents ">
+
+      <p>Abstract parent class of all classes holding data.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.DataClass.add_rdf_to_graph" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">add_rdf_to_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">typename</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Adds the RDF representation of this class to a graph</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Adds the RDF representation of this class to a graph</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>graph</code></td>
-<td><code>Graph</code></td>
-<td>
-<p>the <code>rdflib.Graph</code> to which the triples should be added</p>
-</td>
-<td><em>required</em></td>
-</tr>
-<tr>
-<td><code>typename</code></td>
-<td><code>str</code></td>
-<td>
-<p>the type name of this class</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>graph</code></td>
+        <td><code>Graph</code></td>
+        <td><p>the <code>rdflib.Graph</code> to which the triples should be added</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>typename</code></td>
+        <td><code>str</code></td>
+        <td><p>the type name of this class</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.DataClass.get_metadataset">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.DataClass.get_metadataset" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_metadataset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Returns the <code>MetaDataSet</code> to which this class belongs</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns the <code>MetaDataSet</code> to which this class belongs</p>
+
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>MetaDataSet</code></td>
-<td>
-<p>MetaDataSet: The owner MetaDataSet</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>MetaDataSet</code></td>
+      <td><p>MetaDataSet: The owner MetaDataSet</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.DataClass.get_properties">
+    </div>
 
+  </div>
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.DataClass.get_properties" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Return a list of all <code>Property</code> fields of this class</p>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.DataClass.get_rdf_iri">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Return a list of all <code>Property</code> fields of this class</p>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.DataClass.get_rdf_iri" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_rdf_iri</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Return the IRI of the object.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Return the IRI of the object.</p>
 <p>This can be called to use the object as subject of an RDF triple.</p>
+
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>URIRef</code></td>
-<td>
-<p>URIRef: the IRI</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>URIRef</code></td>
+      <td><p>URIRef: the IRI</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="doc doc-object doc-class">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Dataset">
+    </div>
 
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="dspMetadataGUI.util.metaDataSet.Dataset" class="doc doc-heading">
         <code>Dataset</code>
 
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Dataset Shape.</p>
-<p>Corresponds to <code>dsp-repo:Dataset</code> in the ontology.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Dataset.get_properties">
+</h3>
 
+    <div class="doc doc-contents ">
+
+      <p>Dataset Shape.</p>
+<p>Corresponds to <code>dsp-repo:Dataset</code> in the ontology.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.Dataset.get_properties" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Get all properties held by the object.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get all properties held by the object.</p>
+
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>List[Property]</code></td>
-<td>
-<p>A list with all the Properties held by the object.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[Property]</code></td>
+      <td><p>A list with all the Properties held by the object.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="doc doc-object doc-class">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Grant">
+    </div>
 
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="dspMetadataGUI.util.metaDataSet.Grant" class="doc doc-heading">
         <code>Grant</code>
 
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Grant Shape.</p>
-<p>Corresponds to <code>dsp-repo:Grant</code> in the ontology.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Grant.get_properties">
+</h3>
 
+    <div class="doc doc-contents ">
+
+      <p>Grant Shape.</p>
+<p>Corresponds to <code>dsp-repo:Grant</code> in the ontology.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.Grant.get_properties" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Get all properties held by the object.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get all properties held by the object.</p>
+
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>List[Property]</code></td>
-<td>
-<p>A list with all the Properties held by the object.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[Property]</code></td>
+      <td><p>A list with all the Properties held by the object.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="doc doc-object doc-class">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet">
+    </div>
 
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="dspMetadataGUI.util.metaDataSet.MetaDataSet" class="doc doc-heading">
         <code>MetaDataSet</code>
 
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Representation of a data set.</p>
-<p>This class represents a data set of project metadata.
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Representation of a dataset.</p>
+<p>This class represents a dataset of project metadata.
 It holds the following properties:</p>
 <ul>
 <li>name: the repo/project name.
@@ -1308,641 +1453,939 @@ It holds the following properties:</p>
 <li>persons: a list of <code>metaDataSet.Person</code></li>
 <li>organizations: a list of <code>metaDataSet.Organization</code></li>
 </ul>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet.__init__">
 
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.MetaDataSet.__init__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">shortcode</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
   </span>
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Initiates the object.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Initiates the object.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>name</code></td>
-<td><code>str</code></td>
-<td>
-<p>project name</p>
-</td>
-<td><em>required</em></td>
-</tr>
-<tr>
-<td><code>path</code></td>
-<td><code>str</code></td>
-<td>
-<p>path to the folder associated with the project</p>
-</td>
-<td><em>required</em></td>
-</tr>
-<tr>
-<td><code>shortcode</code></td>
-<td><code>str</code></td>
-<td>
-<p>4 digit hexadecimal project shortcode</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>name</code></td>
+        <td><code>str</code></td>
+        <td><p>project name</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>path</code></td>
+        <td><code>str</code></td>
+        <td><p>path to the folder associated with the project</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>shortcode</code></td>
+        <td><code>str</code></td>
+        <td><p>4 digit hexadecimal project shortcode</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet.add_dataset">
+    </div>
 
+  </div>
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.MetaDataSet.add_dataset" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">add_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Add a new dataset</p>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet.add_grant">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Add a new dataset</p>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.MetaDataSet.add_grant" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">add_grant</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Add a new grant</p>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet.add_organization">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Add a new grant</p>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.MetaDataSet.add_organization" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">add_organization</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Add a new organization</p>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet.add_person">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Add a new organization</p>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.MetaDataSet.add_person" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">add_person</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Add a new person</p>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet.generate_rdf_graph">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Add a new person</p>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.MetaDataSet.generate_rdf_graph" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">generate_rdf_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Generates the RFD graph of the entire dataset.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Generates the RDF graph of the entire dataset.</p>
+
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Graph</code></td>
-<td>
-<p>Graph: The RDF graph</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Graph</code></td>
+      <td><p>Graph: The RDF graph</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet.get_all_properties">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.MetaDataSet.get_all_properties" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_all_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Returns a list of all properties held by fields of this class. (person, dataset, etc.)</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns a list of all properties held by fields of this class. (person, dataset, etc.)</p>
+
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>list</code></td>
-<td>
-<p>list[Property]: a List of all properties in this metadataset.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list</code></td>
+      <td><p>list[Property]: a List of all properties in this metadataset.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet.get_by_string">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.MetaDataSet.get_by_string" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_by_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Get a data object by its string representation.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get a data object by its string representation.</p>
 <p>Checks all available objects for a matching one by its string.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>s</code></td>
-<td><code>str</code></td>
-<td>
-<p>string of the object</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>s</code></td>
+        <td><code>str</code></td>
+        <td><p>string of the object</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>DataClass|None</code></td>
-<td>
-<p>The object matching the string.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>DataClass|None</code></td>
+      <td><p>The object matching the string.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet.get_status">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.MetaDataSet.get_status" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Get the status of the dataset.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get the status of the dataset.</p>
 <p>Indicates if the data is valid according to the SHACL ontology, and how many properties are missing.</p>
+
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>str</code></td>
-<td>
-<p>str: description of the dataset status.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>str</code></td>
+      <td><p>str: description of the dataset status.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet.get_turtle">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.MetaDataSet.get_turtle" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_turtle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Get the turtle representation of the data.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get the turtle representation of the data.</p>
+
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>str</code></td>
-<td>
-<p>str: a turtle serialization of the data.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>str</code></td>
+      <td><p>str: a turtle serialization of the data.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet.remove">
+    </div>
 
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.MetaDataSet.remove" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>remove a DataClass Object</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>remove a DataClass Object</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>obj</code></td>
-<td><code>Dataclass</code></td>
-<td>
-<p>The object to remove.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>obj</code></td>
+        <td><code>Dataclass</code></td>
+        <td><p>The object to remove.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.MetaDataSet.validate_graph">
+    </div>
 
+  </div>
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.MetaDataSet.validate_graph" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">validate_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Validates the graph of the entire data against the SHACL ontology.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Validates the graph of the entire data against the SHACL ontology.</p>
+
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>tuple</code></td>
-<td>
-<p>tuple: The validation result.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>tuple</code></td>
+      <td><p>tuple: The validation result.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="doc doc-object doc-class">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Organization">
+    </div>
 
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="dspMetadataGUI.util.metaDataSet.Organization" class="doc doc-heading">
         <code>Organization</code>
 
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Organization Shape.</p>
-<p>Corresponds to <code>dsp-repo:Organization</code> in the ontology.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Organization.get_properties">
+</h3>
 
+    <div class="doc doc-contents ">
+
+      <p>Organization Shape.</p>
+<p>Corresponds to <code>dsp-repo:Organization</code> in the ontology.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.Organization.get_properties" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Get all properties held by the object.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get all properties held by the object.</p>
+
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>List[Property]</code></td>
-<td>
-<p>A list with all the Properties held by the object.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[Property]</code></td>
+      <td><p>A list with all the Properties held by the object.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="doc doc-object doc-class">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Person">
+    </div>
 
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="dspMetadataGUI.util.metaDataSet.Person" class="doc doc-heading">
         <code>Person</code>
 
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Person Shape.</p>
-<p>Corresponds to <code>dsp-repo:Person</code> in the ontology.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Person.get_properties">
+</h3>
 
+    <div class="doc doc-contents ">
+
+      <p>Person Shape.</p>
+<p>Corresponds to <code>dsp-repo:Person</code> in the ontology.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.Person.get_properties" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Get all properties held by the object.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get all properties held by the object.</p>
+
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>List[Property]</code></td>
-<td>
-<p>A list with all the Properties held by the object.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[Property]</code></td>
+      <td><p>A list with all the Properties held by the object.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="doc doc-object doc-class">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Project">
+    </div>
 
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="dspMetadataGUI.util.metaDataSet.Project" class="doc doc-heading">
         <code>Project</code>
 
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Project shape.</p>
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Project shape.</p>
 <p>Corresponds to <code>dsp-repo:Project</code> in our ontology.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>name</code></td>
-<td><code>str</code></td>
-<td>
-<p>The name of the project</p>
-</td>
-<td><em>required</em></td>
-</tr>
-<tr>
-<td><code>shortcode</code></td>
-<td><code>str</code></td>
-<td>
-<p>The project shortcode</p>
-</td>
-<td><em>required</em></td>
-</tr>
-<tr>
-<td><code>meta</code></td>
-<td><code>MetaDataSet</code></td>
-<td>
-<p>the owning <code>MetaDataSet</code></p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>name</code></td>
+        <td><code>str</code></td>
+        <td><p>The name of the project</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>shortcode</code></td>
+        <td><code>str</code></td>
+        <td><p>The project shortcode</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>meta</code></td>
+        <td><code>MetaDataSet</code></td>
+        <td><p>the owning <code>MetaDataSet</code></p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Project.get_properties">
 
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.Project.get_properties" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Get all properties held by the object.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get all properties held by the object.</p>
+
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>List[Property]</code></td>
-<td>
-<p>A list with all the Properties held by the object.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[Property]</code></td>
+      <td><p>A list with all the Properties held by the object.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="doc doc-object doc-class">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Property">
+    </div>
 
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="dspMetadataGUI.util.metaDataSet.Property" class="doc doc-heading">
         <code>Property</code>
 
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>General representation of a property.</p>
-<p>Corresponds to <code>sh:property</code></p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Property.get_triples">
+</h3>
 
+    <div class="doc doc-contents ">
+
+      <p>General representation of a property.</p>
+<p>Corresponds to <code>sh:property</code></p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.Property.get_triples" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_triples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Returns a Graph containing the triples that represent this property, in respect to a given subject.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns a Graph containing the triples that represent this property, in respect to a given subject.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>subject</code></td>
-<td><code>URIRef</code></td>
-<td>
-<p>the subject to which the property is object</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>subject</code></td>
+        <td><code>URIRef</code></td>
+        <td><p>the subject to which the property is object</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Graph</code></td>
-<td>
-<p>Graph: a graph containing one or multiple triples that represent the property</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Graph</code></td>
+      <td><p>Graph: a graph containing one or multiple triples that represent the property</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Property.get_url_property_id">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.Property.get_url_property_id" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_url_property_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>This method tries to guess the propetyID for a URL.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>This method tries to guess the propetyID for a URL.</p>
 <p>For certain pre-defined cases, a reasonable propertyID is chosen;
 otherwise, the net location is being extracted, if possible.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>url</code></td>
-<td><code>str</code></td>
-<td>
-<p>a URL</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>url</code></td>
+        <td><code>str</code></td>
+        <td><p>a URL</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>str</code></td>
-<td>
-<p>str: a propertyID</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>str</code></td>
+      <td><p>str: a propertyID</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.metaDataSet.Property.validate">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.metaDataSet.Property.validate" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Validates the current value of the property.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Validates the current value of the property.</p>
+
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Tuple[dspMetadataGUI.util.utils.Validity, str]</code></td>
-<td>
-<p>Tuple[Validity, str]: Returns a tuple: First element is a value of the <code>Validity</code> enum,
-                      the second one is a human readable validation result.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Tuple[dspMetadataGUI.util.utils.Validity, str]</code></td>
+      <td><p>Tuple[Validity, str]: Returns a tuple: First element is a value of the <code>Validity</code> enum,
+                      the second one is a human readable validation result.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
                 
               
               
@@ -1953,45 +2396,44 @@ otherwise, the net location is being extracted, if possible.</p>
             </article>
           </div>
         </div>
+        
       </main>
       
         
 <footer class="md-footer">
   
-    <div class="md-footer-nav">
-      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
-        
-          <a href="../collectMetadata/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
-            <div class="md-footer-nav__button md-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../collectMetadata/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              GUI documentation
             </div>
-            <div class="md-footer-nav__title">
-              <div class="md-ellipsis">
-                <span class="md-footer-nav__direction">
-                  Previous
-                </span>
-                GUI documentation
-              </div>
+          </div>
+        </a>
+      
+      
+        <a href="../dataHandling/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Data Handling
             </div>
-          </a>
-        
-        
-          <a href="../dataHandling/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-footer-nav__title">
-              <div class="md-ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                Data Handling
-              </div>
-            </div>
-            <div class="md-footer-nav__button md-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-            </div>
-          </a>
-        
-      </nav>
-    </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -2001,6 +2443,7 @@ otherwise, the net location is being extracted, if possible.</p>
         <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
           Material for MkDocs
         </a>
+        
       </div>
       
     </div>
@@ -2008,19 +2451,13 @@ otherwise, the net location is being extracted, if possible.</p>
 </footer>
       
     </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../../assets/javascripts/workers/search.fe42c31b.min.js", "version": null}</script>
     
-      <script src="../../assets/javascripts/vendor.18f0862e.min.js"></script>
-      <script src="../../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
-      
-      <script>
-        app = initialize({
-          base: "../..",
-          features: [],
-          search: Object.assign({
-            worker: "../../assets/javascripts/worker/search.9c0e82ba.min.js"
-          }, typeof search !== "undefined" && search)
-        })
-      </script>
+    
+      <script src="../../assets/javascripts/bundle.4ea5477f.min.js"></script>
       
     
   </body>

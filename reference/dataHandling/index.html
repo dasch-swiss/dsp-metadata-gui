@@ -9,8 +9,8 @@
       
       
       
-      <link rel="shortcut icon" href="../../assets/images/dasch-favicon.ico">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.8">
+      <link rel="icon" href="../../assets/images/dasch-favicon.ico">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.2">
     
     
       
@@ -18,10 +18,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.cb6bc1d0.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f955dcd.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.39b8e14a.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ef6f36e2.min.css">
         
       
     
@@ -31,10 +31,12 @@
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
-        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
       
     
     
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
       <link rel="stylesheet" href="../../assets/style/theme.css">
     
@@ -51,8 +53,9 @@
     
     
     <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
-      
   
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -69,26 +72,24 @@
       
     </div>
     
-      
-
-<header class="md-header" data-md-component="header">
-  <nav class="md-header-nav md-grid" aria-label="Header">
-    <a href="../.." title="DSP-Metadata-GUI" class="md-header-nav__button md-logo" aria-label="DSP-Metadata-GUI">
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="DSP-Metadata-GUI" class="md-header__button md-logo" aria-label="DSP-Metadata-GUI" data-md-component="logo">
       
   <img src="../../assets/images/dasch-icon-white.svg" alt="logo">
 
     </a>
-    <label class="md-header-nav__button md-icon" for="__drawer">
+    <label class="md-header__button md-icon" for="__drawer">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
     </label>
-    <div class="md-header-nav__title" data-md-component="header-title">
-      <div class="md-header-nav__ellipsis">
-        <div class="md-header-nav__topic">
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
           <span class="md-ellipsis">
             DSP-Metadata-GUI
           </span>
         </div>
-        <div class="md-header-nav__topic">
+        <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
               Data Handling
@@ -98,8 +99,10 @@
       </div>
     </div>
     
-      <label class="md-header-nav__button md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
       </label>
       
 <div class="md-search" data-md-component="search" role="dialog">
@@ -108,11 +111,11 @@
     <form class="md-search__form" name="search">
       <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
       <label class="md-search__icon md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
       </label>
-      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
       </button>
     </form>
     <div class="md-search__output">
@@ -142,17 +145,15 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
 
 
-
-
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="DSP-Metadata-GUI" class="md-nav__button md-logo" aria-label="DSP-Metadata-GUI">
+    <a href="../.." title="DSP-Metadata-GUI" class="md-nav__button md-logo" aria-label="DSP-Metadata-GUI" data-md-component="logo">
       
   <img src="../../assets/images/dasch-icon-white.svg" alt="logo">
 
@@ -188,19 +189,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
       
-      <label class="md-nav__link" for="nav-2">
+      <label class="md-nav__link" for="__nav_2">
         Usage
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Usage" data-md-level="1">
-        <label class="md-nav__title" for="nav-2">
+        <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
           Usage
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
           
             
   
@@ -246,19 +246,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-4" type="checkbox" id="nav-2-4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_4" type="checkbox" id="__nav_2_4" >
       
-      <label class="md-nav__link" for="nav-2-4">
+      <label class="md-nav__link" for="__nav_2_4">
         Metadata Classes
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Metadata Classes" data-md-level="2">
-        <label class="md-nav__title" for="nav-2-4">
+        <label class="md-nav__title" for="__nav_2_4">
           <span class="md-nav__icon md-icon"></span>
           Metadata Classes
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
           
             
   
@@ -345,19 +344,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
-      <label class="md-nav__link" for="nav-3">
+      <label class="md-nav__link" for="__nav_3">
         API Reference
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="API Reference" data-md-level="1">
-        <label class="md-nav__title" for="nav-3">
+        <label class="md-nav__title" for="__nav_3">
           <span class="md-nav__icon md-icon"></span>
           API Reference
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
           
             
   
@@ -394,6 +392,7 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+      
         <label class="md-nav__link md-nav__link--active" for="__toc">
           Data Handling
           <span class="md-nav__icon md-icon"></span>
@@ -408,11 +407,12 @@
   
   
   
+  
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
-    <ul class="md-nav__list" data-md-scrollfix>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#dspMetadataGUI.util.dataHandling" class="md-nav__link">
@@ -573,7 +573,7 @@
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -581,11 +581,12 @@
   
   
   
+  
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
-    <ul class="md-nav__list" data-md-scrollfix>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#dspMetadataGUI.util.dataHandling" class="md-nav__link">
@@ -705,7 +706,7 @@
               </div>
             
           
-          <div class="md-content">
+          <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
               
                 
@@ -713,463 +714,596 @@
                   <h1>Data Handling</h1>
                 
                 <div class="doc doc-object doc-module">
-<h2 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling">
 
+
+
+<h2 id="dspMetadataGUI.util.dataHandling" class="doc doc-heading">
         <code>dataHandling</code>
 
 
 
-      </h2>
-<div class="doc doc-contents first">
-<p>This module holds data handling capabilities for metadatasets.</p>
-<p>Concretely, the UI has a globally accessible data handler of type <code>DataHandling</code> that will take care of the datasets held by the GUI.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-class">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling">
+</h2>
 
+    <div class="doc doc-contents first">
+
+      <p>This module holds data handling capabilities for metadatasets.</p>
+<p>Concretely, the UI has a globally accessible data handler of type <code>DataHandling</code> that will take care of the datasets held by the GUI.</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="dspMetadataGUI.util.dataHandling.DataHandling" class="doc doc-heading">
         <code>DataHandling</code>
 
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>This class handles data.</p>
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>This class handles data.</p>
 <p>It checks for availability in the filesystem, and
 if not, creates the data structure. It also takes care for the storage on disk.
 The data are stored as a pickle file.</p>
 <p>The class should not be called as a static.
 Rather, there should at any given time be an instance of this class (<code>data_handler</code>) be available.
 All calls should be done on this instance, as it holds the actual data representation.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.add_project">
 
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.dataHandling.DataHandling.add_project" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">add_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">,</span> <span class="n">shortcode</span><span class="p">,</span> <span class="n">files</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Add a new project.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Add a new project.</p>
 <p>This project adds a new project folder to the collection after the user specified the folder.</p>
 <p>The Project is appended at the end of the list.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>folder_path</code></td>
-<td><code>str</code></td>
-<td>
-<p>path to the project folder</p>
-</td>
-<td><em>required</em></td>
-</tr>
-<tr>
-<td><code>shortcode</code></td>
-<td><code>str</code></td>
-<td>
-<p>the project shortcode</p>
-</td>
-<td><em>required</em></td>
-</tr>
-<tr>
-<td><code>files</code></td>
-<td><code>list</code></td>
-<td>
-<p>the files in the project folder</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>folder_path</code></td>
+        <td><code>str</code></td>
+        <td><p>path to the project folder</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>shortcode</code></td>
+        <td><code>str</code></td>
+        <td><p>the project shortcode</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>files</code></td>
+        <td><code>list</code></td>
+        <td><p>the files in the project folder</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.export_rdf">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.dataHandling.DataHandling.export_rdf" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">export_rdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Export RDF serializations to local files.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Export RDF serializations to local files.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>path</code></td>
-<td><code>str</code></td>
-<td>
-<p>The path where to store the files.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-<tr>
-<td><code>graph</code></td>
-<td><code>Graph</code></td>
-<td>
-<p>The RDF graph of the data.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-<tr>
-<td><code>show</code></td>
-<td><code>bool</code></td>
-<td>
-<p>Flag true, if the folder should be opened after saving the files. Defaults to True.</p>
-</td>
-<td><code>True</code></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>path</code></td>
+        <td><code>str</code></td>
+        <td><p>The path where to store the files.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>graph</code></td>
+        <td><code>Graph</code></td>
+        <td><p>The RDF graph of the data.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>show</code></td>
+        <td><code>bool</code></td>
+        <td><p>Flag true, if the folder should be opened after saving the files. Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.get_project_by_shortcode">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.dataHandling.DataHandling.get_project_by_shortcode" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_project_by_shortcode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shortcode</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Get the project with a specific shortcode.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get the project with a specific shortcode.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>shortcode</code></td>
-<td><code>str</code></td>
-<td>
-<p>The shortcode of the project to be found.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>shortcode</code></td>
+        <td><code>str</code></td>
+        <td><p>The shortcode of the project to be found.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>MetaDataSet</code></td>
-<td>
-<p>MetaDataSet: The Project with said shortcode.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>MetaDataSet</code></td>
+      <td><p>MetaDataSet: The Project with said shortcode.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.import_project">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.dataHandling.DataHandling.import_project" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">import_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Import a single MetaDataSet from a pickle.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Import a single MetaDataSet from a pickle.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>path</code></td>
-<td><code>str</code></td>
-<td>
-<p>path to the pickle to import.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>path</code></td>
+        <td><code>str</code></td>
+        <td><p>path to the pickle to import.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.load_data">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.dataHandling.DataHandling.load_data" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Load data from previous runtimes (if any).</p>
-<p>Currently, this checks <code>~/DaSCH/config/repos.data</code>.</p>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.refresh_ui">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Load data from previous runtimes (if any).</p>
+<p>Currently, this checks <code>~/DaSCH/config/repos.data</code>.</p>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.dataHandling.DataHandling.refresh_ui" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">refresh_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Refresh all values in the UI according to the saved values.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Refresh all values in the UI according to the saved values.</p>
 <p>This method also invokes on-the-fly validation.
 Note: Calling this method discards all changes that have not been updated in the metaDataSet.</p>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.remove_project">
 
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.dataHandling.DataHandling.remove_project" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">remove_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Removes a specific project.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Removes a specific project.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>project</code></td>
-<td><code>MetaDataSet</code></td>
-<td>
-<p>The project to remove.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>project</code></td>
+        <td><code>MetaDataSet</code></td>
+        <td><p>The project to remove.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.save_data">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.dataHandling.DataHandling.save_data" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">save_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Save data to disc.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Save data to disc.</p>
 <p>Currently, the data are stored under <code>~/DaSCH/config/repos.data</code>.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>dataset</code></td>
-<td><code>MetaDataSet</code></td>
-<td>
-<p>A <code>Metadataset</code> to serialize before saving. Defaults to None.</p>
-</td>
-<td><code>None</code></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>dataset</code></td>
+        <td><code>MetaDataSet</code></td>
+        <td><p>A <code>Metadataset</code> to serialize before saving. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.update_all">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.dataHandling.DataHandling.update_all" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">update_all</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Update data according to the values currently in the GUI.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Update data according to the values currently in the GUI.</p>
 <p>Calling this function iterates over each Property in the dataset
 and updates it with the value found in its corresponding GUI component.</p>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.validate_and_export_data">
 
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.dataHandling.DataHandling.validate_and_export_data" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">validate_and_export_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Validate a given project and export its RDF data.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Validate a given project and export its RDF data.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>index</code></td>
-<td><code>int</code></td>
-<td>
-<p>The index of the <code>MetaDataSet</code> to export.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>index</code></td>
+        <td><code>int</code></td>
+        <td><p>The index of the <code>MetaDataSet</code> to export.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>tuple</code></td>
-<td>
-<p>tuple: The result of the validation (see <code>MetaDataSet.validate_graph()</code>).</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>tuple</code></td>
+      <td><p>tuple: The result of the validation (see <code>MetaDataSet.validate_graph()</code>).</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.validate_graph">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.dataHandling.DataHandling.validate_graph" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">validate_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Validates all properties in a specific <code>MetaDataSet.</code></p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Validates all properties in a specific <code>MetaDataSet.</code></p>
 <p>Does not validate each of the properties separately,
 but rather generates the RDF graph, which then gets validated.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>dataset</code></td>
-<td><code>MetaDataSet</code></td>
-<td>
-<p>The dataset to validate.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>dataset</code></td>
+        <td><code>MetaDataSet</code></td>
+        <td><p>The dataset to validate.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>tuple</code></td>
-<td>
-<p>tuple: Validation result (see <code>MetaDataSet.validate_graph()</code>).</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>tuple</code></td>
+      <td><p>tuple: Validation result (see <code>MetaDataSet.validate_graph()</code>).</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.dataHandling.DataHandling.zip_and_export">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.dataHandling.DataHandling.zip_and_export" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">zip_and_export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Zips all data of a project and saves it to a file.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Zips all data of a project and saves it to a file.</p>
 <p>The ZIP archive will contain a pickle of the data, all associated files and RDF serializations of the data.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>dataset</code></td>
-<td><code>MetaDataSet</code></td>
-<td>
-<p>The dataset to export.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-<tr>
-<td><code>target</code></td>
-<td><code>str</code></td>
-<td>
-<p>The path where to store the export.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>dataset</code></td>
+        <td><code>MetaDataSet</code></td>
+        <td><p>The dataset to export.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>target</code></td>
+        <td><code>str</code></td>
+        <td><p>The path where to store the export.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
                 
               
               
@@ -1180,45 +1314,44 @@ but rather generates the RDF graph, which then gets validated.</p>
             </article>
           </div>
         </div>
+        
       </main>
       
         
 <footer class="md-footer">
   
-    <div class="md-footer-nav">
-      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
-        
-          <a href="../metaDataSet/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
-            <div class="md-footer-nav__button md-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../metaDataSet/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Data Structure
             </div>
-            <div class="md-footer-nav__title">
-              <div class="md-ellipsis">
-                <span class="md-footer-nav__direction">
-                  Previous
-                </span>
-                Data Structure
-              </div>
+          </div>
+        </a>
+      
+      
+        <a href="../utils/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Utils
             </div>
-          </a>
-        
-        
-          <a href="../utils/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-footer-nav__title">
-              <div class="md-ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                Utils
-              </div>
-            </div>
-            <div class="md-footer-nav__button md-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-            </div>
-          </a>
-        
-      </nav>
-    </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -1228,6 +1361,7 @@ but rather generates the RDF graph, which then gets validated.</p>
         <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
           Material for MkDocs
         </a>
+        
       </div>
       
     </div>
@@ -1235,19 +1369,13 @@ but rather generates the RDF graph, which then gets validated.</p>
 </footer>
       
     </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../../assets/javascripts/workers/search.fe42c31b.min.js", "version": null}</script>
     
-      <script src="../../assets/javascripts/vendor.18f0862e.min.js"></script>
-      <script src="../../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
-      
-      <script>
-        app = initialize({
-          base: "../..",
-          features: [],
-          search: Object.assign({
-            worker: "../../assets/javascripts/worker/search.9c0e82ba.min.js"
-          }, typeof search !== "undefined" && search)
-        })
-      </script>
+    
+      <script src="../../assets/javascripts/bundle.4ea5477f.min.js"></script>
       
     
   </body>

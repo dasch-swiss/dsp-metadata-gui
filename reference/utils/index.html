@@ -9,8 +9,8 @@
       
       
       
-      <link rel="shortcut icon" href="../../assets/images/dasch-favicon.ico">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.8">
+      <link rel="icon" href="../../assets/images/dasch-favicon.ico">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.2">
     
     
       
@@ -18,10 +18,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.cb6bc1d0.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f955dcd.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.39b8e14a.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ef6f36e2.min.css">
         
       
     
@@ -31,10 +31,12 @@
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
-        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
       
     
     
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
       <link rel="stylesheet" href="../../assets/style/theme.css">
     
@@ -51,8 +53,9 @@
     
     
     <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
-      
   
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -69,26 +72,24 @@
       
     </div>
     
-      
-
-<header class="md-header" data-md-component="header">
-  <nav class="md-header-nav md-grid" aria-label="Header">
-    <a href="../.." title="DSP-Metadata-GUI" class="md-header-nav__button md-logo" aria-label="DSP-Metadata-GUI">
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="DSP-Metadata-GUI" class="md-header__button md-logo" aria-label="DSP-Metadata-GUI" data-md-component="logo">
       
   <img src="../../assets/images/dasch-icon-white.svg" alt="logo">
 
     </a>
-    <label class="md-header-nav__button md-icon" for="__drawer">
+    <label class="md-header__button md-icon" for="__drawer">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
     </label>
-    <div class="md-header-nav__title" data-md-component="header-title">
-      <div class="md-header-nav__ellipsis">
-        <div class="md-header-nav__topic">
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
           <span class="md-ellipsis">
             DSP-Metadata-GUI
           </span>
         </div>
-        <div class="md-header-nav__topic">
+        <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
               Utils
@@ -98,8 +99,10 @@
       </div>
     </div>
     
-      <label class="md-header-nav__button md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
       </label>
       
 <div class="md-search" data-md-component="search" role="dialog">
@@ -108,11 +111,11 @@
     <form class="md-search__form" name="search">
       <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
       <label class="md-search__icon md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
       </label>
-      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
       </button>
     </form>
     <div class="md-search__output">
@@ -142,17 +145,15 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
 
 
-
-
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="DSP-Metadata-GUI" class="md-nav__button md-logo" aria-label="DSP-Metadata-GUI">
+    <a href="../.." title="DSP-Metadata-GUI" class="md-nav__button md-logo" aria-label="DSP-Metadata-GUI" data-md-component="logo">
       
   <img src="../../assets/images/dasch-icon-white.svg" alt="logo">
 
@@ -188,19 +189,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
       
-      <label class="md-nav__link" for="nav-2">
+      <label class="md-nav__link" for="__nav_2">
         Usage
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Usage" data-md-level="1">
-        <label class="md-nav__title" for="nav-2">
+        <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
           Usage
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
           
             
   
@@ -246,19 +246,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-4" type="checkbox" id="nav-2-4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_4" type="checkbox" id="__nav_2_4" >
       
-      <label class="md-nav__link" for="nav-2-4">
+      <label class="md-nav__link" for="__nav_2_4">
         Metadata Classes
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Metadata Classes" data-md-level="2">
-        <label class="md-nav__title" for="nav-2-4">
+        <label class="md-nav__title" for="__nav_2_4">
           <span class="md-nav__icon md-icon"></span>
           Metadata Classes
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
           
             
   
@@ -345,19 +344,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
-      <label class="md-nav__link" for="nav-3">
+      <label class="md-nav__link" for="__nav_3">
         API Reference
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="API Reference" data-md-level="1">
-        <label class="md-nav__title" for="nav-3">
+        <label class="md-nav__title" for="__nav_3">
           <span class="md-nav__icon md-icon"></span>
           API Reference
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
           
             
   
@@ -406,6 +404,7 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+      
         <label class="md-nav__link md-nav__link--active" for="__toc">
           Utils
           <span class="md-nav__icon md-icon"></span>
@@ -420,11 +419,12 @@
   
   
   
+  
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
-    <ul class="md-nav__list" data-md-scrollfix>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#dspMetadataGUI.util.utils" class="md-nav__link">
@@ -787,7 +787,7 @@
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -795,11 +795,12 @@
   
   
   
+  
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
-    <ul class="md-nav__list" data-md-scrollfix>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#dspMetadataGUI.util.utils" class="md-nav__link">
@@ -1133,7 +1134,7 @@
               </div>
             
           
-          <div class="md-content">
+          <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
               
                 
@@ -1141,783 +1142,1221 @@
                   <h1>Utils</h1>
                 
                 <div class="doc doc-object doc-module">
-<h2 class="doc doc-heading" id="dspMetadataGUI.util.utils">
 
+
+
+<h2 id="dspMetadataGUI.util.utils" class="doc doc-heading">
         <code>utils</code>
 
 
 
-      </h2>
-<div class="doc doc-contents first">
-<p>This module holds utility classes, functions and enums for metadata.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-function">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.utils.are_emails">
+</h2>
 
+    <div class="doc doc-contents first">
+
+      <p>This module holds utility classes, functions and enums for metadata.</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="dspMetadataGUI.util.utils.are_emails" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">are_emails</span><span class="p">(</span><span class="n">mails</span><span class="p">)</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Checks if the list contains only valid e-mail addresses.</p>
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Checks if the list contains only valid e-mail addresses.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>mails</code></td>
-<td><code>List[str]</code></td>
-<td>
-<p>A list with (potential) e-mail addresses.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>mails</code></td>
+        <td><code>List[str]</code></td>
+        <td><p>A list with (potential) e-mail addresses.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>bool</code></td>
-<td>
-<p>bool: True, if all strings are valid e-mail addresses; False otherwise.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>bool: True, if all strings are valid e-mail addresses; False otherwise.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-function">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.utils.areURLs">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="dspMetadataGUI.util.utils.areURLs" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">areURLs</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Checks if a list of strings contains only valid URLs.</p>
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Checks if a list of strings contains only valid URLs.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>urls</code></td>
-<td><code>List[str]</code></td>
-<td>
-<p>a list with (potential) URLs.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>urls</code></td>
+        <td><code>List[str]</code></td>
+        <td><p>a list with (potential) URLs.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>bool</code></td>
-<td>
-<p>bool: True, if all strings are valid URLs; false otherwise.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>bool: True, if all strings are valid URLs; false otherwise.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-class">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.utils.Cardinality">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="dspMetadataGUI.util.utils.Cardinality" class="doc doc-heading">
         <code>Cardinality</code>
 
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Enumeration of cardinalities that may be used for properties.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Cardinality.ONE">
+</h3>
 
+    <div class="doc doc-contents ">
+
+      <p>Enumeration of cardinalities that may be used for properties.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Cardinality.ONE" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">ONE</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>1</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Cardinality.ONE_TO_TWO">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>1</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Cardinality.ONE_TO_TWO" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">ONE_TO_TWO</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>1-2</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Cardinality.ONE_TO_UNBOUND">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>1-2</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Cardinality.ONE_TO_UNBOUND" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">ONE_TO_UNBOUND</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>1-n</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Cardinality.ONE_TO_UNBOUND_ORDERED">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>1-n</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Cardinality.ONE_TO_UNBOUND_ORDERED" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">ONE_TO_UNBOUND_ORDERED</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>1-n ordered</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Cardinality.UNBOUND">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>1-n ordered</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Cardinality.UNBOUND" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">UNBOUND</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>0-n</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Cardinality.ZERO_OR_ONE">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>0-n</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Cardinality.ZERO_OR_ONE" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">ZERO_OR_ONE</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>0-1</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Cardinality.ZERO_TO_TWO">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>0-1</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Cardinality.ZERO_TO_TWO" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">ZERO_TO_TWO</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>0-2</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="doc doc-object doc-class">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>0-2</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="dspMetadataGUI.util.utils.Datatype" class="doc doc-heading">
         <code>Datatype</code>
 
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Enumeration of cardinalities that may be used for properties.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype.ADDRESS">
+</h3>
 
+    <div class="doc doc-contents ">
+
+      <p>Enumeration of cardinalities that may be used for properties.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Datatype.ADDRESS" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">ADDRESS</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Postal address</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype.ATTRIBUTION">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Postal address</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Datatype.ATTRIBUTION" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">ATTRIBUTION</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Attribution (Role and Agent)</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype.CONTROLLED_VOCABULARY">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Attribution (Role and Agent)</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Datatype.CONTROLLED_VOCABULARY" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">CONTROLLED_VOCABULARY</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Controlled Vocabulary</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype.DATA_MANAGEMENT_PLAN">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Controlled Vocabulary</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Datatype.DATA_MANAGEMENT_PLAN" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">DATA_MANAGEMENT_PLAN</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Data Management Plan</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype.DATE">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Data Management Plan</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Datatype.DATE" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">DATE</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Date (yyyy-mm-dd)</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype.DOWNLOAD">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Date (yyyy-mm-dd)</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Datatype.DOWNLOAD" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">DOWNLOAD</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Download</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype.EMAIL">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Download</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Datatype.EMAIL" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">EMAIL</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>E-mail address</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype.GRANT">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>E-mail address</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Datatype.GRANT" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">GRANT</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Grant (Reference to object)</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype.ORGANIZATION">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Grant (Reference to object)</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Datatype.ORGANIZATION" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">ORGANIZATION</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Organization (reference to object)</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype.PERSON">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Organization (reference to object)</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Datatype.PERSON" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">PERSON</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Person (reference to object)</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype.PERSON_OR_ORGANIZATION">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Person (reference to object)</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Datatype.PERSON_OR_ORGANIZATION" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">PERSON_OR_ORGANIZATION</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Person or Organization (Reference to object)</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype.PLACE">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Person or Organization (Reference to object)</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Datatype.PLACE" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">PLACE</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Place (represented by URL to authority files)</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype.PROJECT">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Place (represented by URL to authority files)</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Datatype.PROJECT" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">PROJECT</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Project (reference to object)</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype.SHORTCODE">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Project (reference to object)</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Datatype.SHORTCODE" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">SHORTCODE</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Shortcode</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype.STRING">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Shortcode</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Datatype.STRING" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">STRING</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>String literal</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype.STRING_OR_URL">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>String literal</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Datatype.STRING_OR_URL" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">STRING_OR_URL</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>String or URL</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Datatype.URL">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>String or URL</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Datatype.URL" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">URL</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>URL</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="doc doc-object doc-function">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.utils.get_coherent_graph">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>URL</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="dspMetadataGUI.util.utils.get_coherent_graph" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_coherent_graph</span><span class="p">(</span><span class="n">g</span><span class="p">)</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Gets a coherent subgraph from a graph.</p>
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Gets a coherent subgraph from a graph.</p>
 <p>That is, if a Property is not connected to the main part of the graph, it will be left out.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>g</code></td>
-<td><code>Graph</code></td>
-<td>
-<p>A RDF graph, potentially not coherent.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>g</code></td>
+        <td><code>Graph</code></td>
+        <td><p>A RDF graph, potentially not coherent.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Graph</code></td>
-<td>
-<p>Graph: A coherent subgraph of the graph.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Graph</code></td>
+      <td><p>Graph: A coherent subgraph of the graph.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-function">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.utils.get_url_property_id">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="dspMetadataGUI.util.utils.get_url_property_id" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_url_property_id</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>This method tries to guess the propetyID for a URL.</p>
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>This method tries to guess the propetyID for a URL.</p>
 <p>For certain pre-defined cases, a reasonable propertyID is chosen;
 otherwise, the net location is being extracted, if possible.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>url</code></td>
-<td><code>str</code></td>
-<td>
-<p>a URL</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>url</code></td>
+        <td><code>str</code></td>
+        <td><p>a URL</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>str</code></td>
-<td>
-<p>str: a propertyID</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>str</code></td>
+      <td><p>str: a propertyID</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-class">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.utils.IRIFactory">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="dspMetadataGUI.util.utils.IRIFactory" class="doc doc-heading">
         <code>IRIFactory</code>
 
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Factory class to generate unique IRIs.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.IRIFactory.get_unique_iri">
+</h3>
 
+    <div class="doc doc-contents ">
+
+      <p>Factory class to generate unique IRIs.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.IRIFactory.get_unique_iri" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_unique_iri</span><span class="p">(</span><span class="n">object_type</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
   </span>
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Get a IRI for a object, that is unique to a MetaDataSet.</p>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Get a IRI for a object, that is unique to a MetaDataSet.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>object_type</code></td>
-<td><code>str</code></td>
-<td>
-<p>Type of the object.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-<tr>
-<td><code>meta</code></td>
-<td><code>MetaDataSet</code></td>
-<td>
-<p>The MetaDataSet to which the IRI should be unique.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>object_type</code></td>
+        <td><code>str</code></td>
+        <td><p>Type of the object.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>meta</code></td>
+        <td><code>MetaDataSet</code></td>
+        <td><p>The MetaDataSet to which the IRI should be unique.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>str</code></td>
-<td>
-<p>str: Unique IRI.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>str</code></td>
+      <td><p>str: Unique IRI.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="doc doc-object doc-function">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.utils.is_email">
+    </div>
 
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="dspMetadataGUI.util.utils.is_email" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">is_email</span><span class="p">(</span><span class="n">mail</span><span class="p">)</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Checks, if a string is a valid mail address.</p>
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Checks, if a string is a valid mail address.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>mail</code></td>
-<td><code>str</code></td>
-<td>
-<p>The (potential) e-mail address.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>mail</code></td>
+        <td><code>str</code></td>
+        <td><p>The (potential) e-mail address.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>bool</code></td>
-<td>
-<p>bool: True, if a valid e-mail address; false otherwise.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>bool: True, if a valid e-mail address; false otherwise.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-function">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.utils.isURL">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="dspMetadataGUI.util.utils.isURL" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">isURL</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Checks if a string is a valid URL.</p>
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Checks if a string is a valid URL.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>url</code></td>
-<td><code>str</code></td>
-<td>
-<p>the (potential) URL string.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>url</code></td>
+        <td><code>str</code></td>
+        <td><p>the (potential) URL string.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>bool</code></td>
-<td>
-<p>bool: True, if a valid URL; False otherwise.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool</code></td>
+      <td><p>bool: True, if a valid URL; False otherwise.</p></td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-function">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.utils.open_file">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="dspMetadataGUI.util.utils.open_file" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">open_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Open a file with default application, OS independent.</p>
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Open a file with default application, OS independent.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>path</code></td>
-<td><code>str</code></td>
-<td>
-<p>path of the file to open.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>path</code></td>
+        <td><code>str</code></td>
+        <td><p>path of the file to open.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
-</div>
-</div>
-<div class="doc doc-object doc-class">
-<h3 class="doc doc-heading" id="dspMetadataGUI.util.utils.Validity">
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="dspMetadataGUI.util.utils.Validity" class="doc doc-heading">
         <code>Validity</code>
 
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Enumeration of validity states.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Validity.INVALID_VALUE">
+</h3>
 
+    <div class="doc doc-contents ">
+
+      <p>Enumeration of validity states.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Validity.INVALID_VALUE" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">INVALID_VALUE</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Invalid: The given value is invalid.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Validity.OPTIONAL_VALUE_MISSING">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Invalid: The given value is invalid.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Validity.OPTIONAL_VALUE_MISSING" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">OPTIONAL_VALUE_MISSING</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Ignored: No value given on optional field.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Validity.REQUIRED_VALUE_MISSING">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Ignored: No value given on optional field.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Validity.REQUIRED_VALUE_MISSING" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">REQUIRED_VALUE_MISSING</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Invalid: No value given on required property.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Validity.UNDEFINED">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Invalid: No value given on required property.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Validity.UNDEFINED" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">UNDEFINED</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Undefined Value. Should never happen.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h4 class="doc doc-heading" id="dspMetadataGUI.util.utils.Validity.VALID">
+</h4>
 
+    <div class="doc doc-contents ">
+
+      <p>Undefined Value. Should never happen.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="dspMetadataGUI.util.utils.Validity.VALID" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">VALID</span></code>
 
 
-      </h4>
-<div class="doc doc-contents ">
-<p>Valid: The value is valid.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+</h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Valid: The value is valid.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
                 
               
               
@@ -1928,45 +2367,44 @@ otherwise, the net location is being extracted, if possible.</p>
             </article>
           </div>
         </div>
+        
       </main>
       
         
 <footer class="md-footer">
   
-    <div class="md-footer-nav">
-      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
-        
-          <a href="../dataHandling/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
-            <div class="md-footer-nav__button md-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../dataHandling/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Data Handling
             </div>
-            <div class="md-footer-nav__title">
-              <div class="md-ellipsis">
-                <span class="md-footer-nav__direction">
-                  Previous
-                </span>
-                Data Handling
-              </div>
+          </div>
+        </a>
+      
+      
+        <a href="../../todo/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Roadmap
             </div>
-          </a>
-        
-        
-          <a href="../../todo/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-footer-nav__title">
-              <div class="md-ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                Roadmap
-              </div>
-            </div>
-            <div class="md-footer-nav__button md-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-            </div>
-          </a>
-        
-      </nav>
-    </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -1976,6 +2414,7 @@ otherwise, the net location is being extracted, if possible.</p>
         <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
           Material for MkDocs
         </a>
+        
       </div>
       
     </div>
@@ -1983,19 +2422,13 @@ otherwise, the net location is being extracted, if possible.</p>
 </footer>
       
     </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../../assets/javascripts/workers/search.fe42c31b.min.js", "version": null}</script>
     
-      <script src="../../assets/javascripts/vendor.18f0862e.min.js"></script>
-      <script src="../../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
-      
-      <script>
-        app = initialize({
-          base: "../..",
-          features: [],
-          search: Object.assign({
-            worker: "../../assets/javascripts/worker/search.9c0e82ba.min.js"
-          }, typeof search !== "undefined" && search)
-        })
-      </script>
+    
+      <script src="../../assets/javascripts/bundle.4ea5477f.min.js"></script>
       
     
   </body>
