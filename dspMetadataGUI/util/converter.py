@@ -1,4 +1,3 @@
-from langdetect.detector_factory import detect_langs
 from rdflib import Graph
 from rdflib.namespace import Namespace, RDF, SDO
 import json
@@ -65,11 +64,11 @@ def _get_project(g: Graph):
         elif p == dsp.hasSpatialCoverage:
             res.setdefault('spatialCoverage', [])
             res['spatialCoverage'].append(_get_place(g, o))
-        #     res['spatialCoverage'] = o  # TODO: implement
-        # elif p == dsp.hasURL:
-        #     res['urls'] = o  # TODO: implement
-        # elif p == dsp.hasDataManagementPlan:
-        #     res['dataManagementPlan'] = o  # TODO: implement
+        elif p == dsp.hasURL:
+            res.setdefault('urls', [])
+            res['urls'].append(_get_url(g, o))
+        elif p == dsp.hasDataManagementPlan:
+            res['dataManagementPlan'] = o
         # elif p == dsp.datasets:  # TODO: how can I get this to work? is dataset.isPartOf
         #     res['datasets'] = []
         # elif p == dsp.hasPublication:
