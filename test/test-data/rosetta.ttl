@@ -1,0 +1,90 @@
+@prefix dsp-repo: <http://ns.dasch.swiss/repository#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix schema: <https://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dsp-repo:dsp-082E-dataset-000 a dsp-repo:Dataset ;
+    dsp-repo:hasAbstract "Rosetta is the sample project of DaSCH. It contains texts, objects, documents and images from different cultures and times. In the future the sample project will be enriched with new types of data such as audio, video and 3D-images. The downloadable file rosetta.zip contains the data model (json-file), the data itself (xml.file) as well as some documentation (pdf and csv-files). You can use these files to start creating your own data model."^^xsd:string ;
+    dsp-repo:hasConditionsOfAccess "open"^^xsd:string ;
+    dsp-repo:hasDocumentation "Added as zip-file to project (rosetta.zip)"^^xsd:string ;
+    dsp-repo:hasHowToCite "DaSCH (2021): Rosetta, DaSCH. http://ark.dasch.swiss/ark:/72163/1/082E/"^^xsd:string ;
+    dsp-repo:hasLanguage "Akkadian"^^xsd:string,
+        "Arabic"^^xsd:string,
+        "Egyptian"^^xsd:string,
+        "Englisch"^^xsd:string,
+        "French"^^xsd:string,
+        "German"^^xsd:string,
+        "Greek"^^xsd:string,
+        "Hebrew"^^xsd:string,
+        "Russian"^^xsd:string ;
+    dsp-repo:hasLicense [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "Creative Commons" ] ;
+            schema:url "https://creativecommons.org/licenses/by/4.0" ] ;
+    dsp-repo:hasQualifiedAttribution [ a prov:Attribution ;
+            dsp-repo:hasRole "creator"^^xsd:string ;
+            prov:agent dsp-repo:dsp-082E-organization-000 ] ;
+    dsp-repo:hasStatus "Ongoing"^^xsd:string ;
+    dsp-repo:hasTitle "Rosetta"^^xsd:string ;
+    dsp-repo:hasTypeOfData "Audio"^^xsd:string,
+        "Image"^^xsd:string,
+        "Movie"^^xsd:string,
+        "Text"^^xsd:string,
+        "XML"^^xsd:string ;
+    dsp-repo:isPartOf dsp-repo:dsp-082E-project .
+
+dsp-repo:dsp-082E-project a dsp-repo:Project ;
+    dsp-repo:hasContactPoint dsp-repo:dsp-082E-organization-000 ;
+    dsp-repo:hasDescription "Rosetta is the sample project of DaSCH. It contains texts, objects, documents and images from different cultures and times. In the future the sample project will be enriched with new types of data such as audio, video and 3D-images. The downloadable file rosetta.zip contains the data model (json-file), the data itself (xml.file) as well as some documentation (pdf and csv-files). You can use these files to start creating your own data model."^^xsd:string ;
+    dsp-repo:hasDiscipline [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "SKOS UNESCO Nomenclature" ] ;
+            schema:url "http://skos.um.es/unesco6/570107" ],
+        [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "SKOS UNESCO Nomenclature" ] ;
+            schema:url "http://skos.um.es/unesco6/620303" ],
+        [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "SKOS UNESCO Nomenclature" ] ;
+            schema:url "http://skos.um.es/unesco6/550501" ] ;
+    dsp-repo:hasFunder dsp-repo:dsp-082E-organization-000 ;
+    dsp-repo:hasKeywords "archaeology"^^xsd:string,
+        "art"^^xsd:string,
+        "literature"^^xsd:string ;
+    dsp-repo:hasName "Rosetta"^^xsd:string ;
+    dsp-repo:hasShortcode "082E"^^xsd:string ;
+    dsp-repo:hasSpatialCoverage [ a schema:Place ;
+            schema:url [ a schema:URL ;
+                    schema:propertyID [ a schema:PropertyValue ;
+                            schema:propertyID "Geonames"^^xsd:string ] ;
+                    schema:url "https://www.geonames.org/6255146" ] ],
+        [ a schema:Place ;
+            schema:url [ a schema:URL ;
+                    schema:propertyID [ a schema:PropertyValue ;
+                            schema:propertyID "Geonames"^^xsd:string ] ;
+                    schema:url "https://www.geonames.org/6255147" ] ],
+        [ a schema:Place ;
+            schema:url [ a schema:URL ;
+                    schema:propertyID [ a schema:PropertyValue ;
+                            schema:propertyID "Geonames"^^xsd:string ] ;
+                    schema:url "https://www.geonames.org/6255148" ] ] ;
+    dsp-repo:hasStartDate "2020-12-21"^^xsd:date ;
+    dsp-repo:hasTemporalCoverage "3rd millennium BCE to modern time"^^xsd:string ;
+    dsp-repo:hasURL [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "app.test.das" ] ;
+            schema:url "app.test.dasch.swiss" ] .
+
+dsp-repo:dsp-082E-organization-000 a dsp-repo:Organization ;
+    dsp-repo:hasAddress [ a schema:PostalAddress ;
+            schema:addressLocality "Allschwil"^^xsd:string ;
+            schema:postalCode "4123"^^xsd:string ;
+            schema:streetAddress "Gewerbestrasse 24"^^xsd:string ] ;
+    dsp-repo:hasEmail "info@dasch.swiss" ;
+    dsp-repo:hasName "Data and Service Center for the Humanities DaSCH"^^xsd:string ;
+    dsp-repo:hasURL [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "www.dasch.sw" ] ;
+            schema:url "www.dasch.swiss" ] .
+
