@@ -1,4 +1,4 @@
-import os
+from langdetect.detector_factory import detect_langs
 from rdflib import Graph
 from rdflib.namespace import Namespace, RDF, SDO
 import json
@@ -6,6 +6,8 @@ import jsonschema
 from rdflib.term import BNode
 import requests
 import time
+from langdetect import detect
+
 
 schema_url = "https://raw.githubusercontent.com/dasch-swiss/dasch-service-platform/main/docs/services/metadata/schema-metadata.json"
 dsp = Namespace("http://ns.dasch.swiss/repository#")
@@ -47,13 +49,13 @@ def _get_project(g: Graph):
             res['endDate'] = o
         elif p == dsp.hasKeywords:
             res.setdefault('keywords', [])
-            res['keywords'].append({"XXX": o})  # TODO: check language
+            res['keywords'].append(_guess_language(o))
         elif p == dsp.hasDiscipline:
             res.setdefault('disciplines', [])
             if isinstance(o, BNode):
                 res['disciplines'].append(_get_url(g, o))
             else:
-                res['disciplines'].append({"XXX": o})  # TODO: check language
+                res['disciplines'].append(_guess_language(o))  # TODO: check language
         # elif p == dsp.hasTemporalCoverage:
         #     res['temporalCoverage'] = o  # TODO: implement
         # elif p == dsp.hasSpatialCoverage:
@@ -78,6 +80,16 @@ def _get_project(g: Graph):
             print("Issue: Could not handle:", p, o)
 
     return res
+
+
+def _guess_language(text):
+    print(detect_langs(text))
+    lang = detect(str(text))
+    if lang not in ["en", "de", "fr"]:
+        lang = f"XXX - {lang}"
+    return {
+        lang: text
+    }
 
 
 def _get_url(g: Graph, iri: BNode):

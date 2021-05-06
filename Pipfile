@@ -8,6 +8,7 @@ pyshacl = "*"
 wxPython = "*"
 validators = "*"
 jsonschema = "*"
+langdetect = "*"
 
 [dev-packages]
 pipenv-setup = "*"
