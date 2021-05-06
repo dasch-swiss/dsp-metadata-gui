@@ -55,10 +55,16 @@ def _get_project(g: Graph):
             if isinstance(o, BNode):
                 res['disciplines'].append(_get_url(g, o))
             else:
-                res['disciplines'].append(_guess_language(o))  # TODO: check language
-        # elif p == dsp.hasTemporalCoverage:
-        #     res['temporalCoverage'] = o  # TODO: implement
-        # elif p == dsp.hasSpatialCoverage:
+                res['disciplines'].append(_guess_language(o))
+        elif p == dsp.hasTemporalCoverage:
+            res.setdefault('temporalCoverage', [])
+            if isinstance(o, BNode):
+                res['temporalCoverage'].append(_get_url(g, o))
+            else:
+                res['temporalCoverage'].append(_guess_language(o))
+        elif p == dsp.hasSpatialCoverage:
+            res.setdefault('spatialCoverage', [])
+            res['spatialCoverage'].append(_get_place(g, o))
         #     res['spatialCoverage'] = o  # TODO: implement
         # elif p == dsp.hasURL:
         #     res['urls'] = o  # TODO: implement
@@ -83,7 +89,6 @@ def _get_project(g: Graph):
 
 
 def _guess_language(text):
-    print(detect_langs(text))
     lang = detect(str(text))
     if lang not in ["en", "de", "fr"]:
         lang = f"XXX - {lang}"
@@ -92,10 +97,19 @@ def _guess_language(text):
     }
 
 
+def _get_place(g: Graph, iri: BNode):
+    # print(list(g.triples((iri, SDO.url, None))))
+    url = next(g.objects(iri, SDO.url))
+    return _get_url(g, url)
+    # print(place)
+    pass
+
+
 def _get_url(g: Graph, iri: BNode):
     propID_bnode = next(g.objects(iri, SDO.propertyID))
     propID = str(next(g.objects(propID_bnode, SDO.propertyID)))
     url = str(next(g.objects(iri, SDO.url)))
+    # TODO: improve text guessing
     return {
         "text": "XXX - " + propID,
         "type": _get_url_type(propID),
@@ -106,8 +120,24 @@ def _get_url(g: Graph, iri: BNode):
 def _get_url_type(propID):
     if propID.startswith("SKOS"):
         return "Skos"
-    else:  # TODO: more
-        return "url"
+    if propID.startswith("Geonames"):
+        return "Geonames"
+    if propID.startswith("Pleiades"):
+        return "Pleiades"
+    if propID.startswith("ORCID"):
+        return "ORCID"  # TODO: missing in json schema?
+    if propID.startswith("Periodo"):
+        return "Periodo"
+    if propID.startswith("ChronOntology") or propID.startswith("dainst."):
+        return "Chronontology"
+    if propID.startswith("GND"):
+        return "GND"
+    if propID.startswith("VIAF"):
+        return "VIAF"
+    if propID.startswith("Creative Commons"):
+        return "Creative Commons"
+    else:
+        return "URL"
 
 
 def validate(data):
@@ -128,6 +158,6 @@ def validate(data):
 
 
 if __name__ == "__main__":
-    # file = 'test/test-data/maximal.ttl'
-    file = 'test/test-data/rosetta.ttl'
+    file = 'test/test-data/maximal.ttl'
+    # file = 'test/test-data/rosetta.ttl'
     convert_file(file)
