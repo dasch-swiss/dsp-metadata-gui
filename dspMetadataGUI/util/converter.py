@@ -28,10 +28,45 @@ def convert_string(data):
     for ds in res.get('datasets'):
         res['project']['datasets'].append(ds.get('@id'))
     res['persons'] = _get_persons(g)
+    res['organizations'] = _get_organizations(g)
 
-    # print(json.dumps(res['person'], indent=2))
-    print(json.dumps(res, indent=4))
+    print(json.dumps(res['organizations'], indent=2))
+    # print(json.dumps(res, indent=4))
     validate(res)  # TODO: bring back
+
+
+# Organizations
+# -------------
+
+
+def _get_organizations(g: Graph):
+    orgs = g.subjects(RDF.type, dsp.Organization)
+    return [_get_organization(g, org) for org in orgs]
+
+
+def _get_organization(g: Graph, org_iri):
+    res = {"@id": org_iri,
+           "@type": "Organization",
+           "@created": str(time.time_ns()),
+           "@modified": str(time.time_ns()), }
+
+    for _, p, o in g.triples((org_iri, None, None)):
+        obj = str(o)
+        if p == dsp.hasName:
+            res['name'] = obj
+        elif p == dsp.hasURL:
+            res['url'] = _get_url(g, o)
+        elif p == dsp.hasEmail:
+            res['email'] = obj
+        elif p == dsp.hasAddress:
+            res['address'] = _get_address(g, o)
+        # default cases
+        elif p == RDF.type:
+            pass
+        else:
+            print("Issue: Could not handle in Organization:", p, obj)
+
+    return res
 
 
 # Person
