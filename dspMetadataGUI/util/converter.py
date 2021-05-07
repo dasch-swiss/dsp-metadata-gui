@@ -23,9 +23,46 @@ def convert_string(data):
     g.parse(data=data, format='ttl')
     res = {"$schema": schema_url}
     res['project'] = _get_project(g)
+    res['datasets'] = _get_datasets(g)
     # TODO: datasets need to be added to project too
     print(json.dumps(res, indent=2))
     # validate(res)  # TODO: bring back
+
+
+# Dataset
+# -------
+
+
+def _get_datasets(g: Graph):
+    datasets = g.subjects(RDF.type, dsp.Dataset)
+    return [_get_dataset(g, dataset) for dataset in datasets]
+
+
+def _get_dataset(g: Graph, dataset_iri):
+    res = {"@id": dataset_iri,
+           "@type": "Dataset",
+           "@created": time.time_ns(),
+           "@modified": time.time_ns(), }
+
+    for _, p, o in g.triples((dataset_iri, None, None)):
+        if p == dsp.hasTitle:
+            res['title'] = o
+        if p == dsp.hasConditionsOfAccess:
+            res['accessConditions'] = o
+        if p == dsp.hasHowToCite:
+            res['howToCite'] = o
+        if p == dsp.hasStatus:
+            res['status'] = o
+        elif p == RDF.type:
+            pass
+        else:
+            print("Issue: Could not handle:", p, o)
+
+    return res
+
+
+# Project
+# -------
 
 
 def _get_project(g: Graph):
@@ -85,6 +122,8 @@ def _get_project(g: Graph):
             res['funders'].append(o)
         elif p == dsp.hasContactPoint:
             res['contactPoint'] = o
+        elif p == RDF.type:
+            pass
         else:
             print("Issue: Could not handle:", p, o)
 
@@ -112,9 +151,9 @@ def _get_url(g: Graph, iri: BNode):
     propID_bnode = next(g.objects(iri, SDO.propertyID))
     propID = str(next(g.objects(propID_bnode, SDO.propertyID)))
     url = str(next(g.objects(iri, SDO.url)))
-    # TODO: improve text guessing
+    # LATER: improve text guessing
     return {
-        "text": "XXX - " + propID,
+        "text": "XXX - " + propID,  # LATER: improve display text deduction
         "type": _get_url_type(propID),
         "url": url
     }
@@ -128,7 +167,7 @@ def _get_url_type(propID):
     if propID.startswith("Pleiades"):
         return "Pleiades"
     if propID.startswith("ORCID"):
-        return "ORCID"  # TODO: missing in json schema?
+        return "ORCID"  # QUESTION: missing in json schema?
     if propID.startswith("Periodo"):
         return "Periodo"
     if propID.startswith("ChronOntology") or propID.startswith("dainst."):
