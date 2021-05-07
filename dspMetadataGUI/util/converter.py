@@ -16,7 +16,7 @@ dsp = Namespace("http://ns.dasch.swiss/repository#")
 def convert_file(file):
     with open(file, 'r+', encoding='utf-8') as f:
         s = f.read()
-    convert_string(s)
+    return convert_string(s)
 
 
 def convert_string(data):
@@ -32,8 +32,8 @@ def convert_string(data):
     res['grants'] = _get_grants(g)
     res['dataManagementPlan'] = _get_dmp(g)
 
-    print(json.dumps(res, indent=4))
     validate(res)
+    return json.dumps(res, indent=4)
 
 
 # DMP
@@ -41,7 +41,6 @@ def convert_string(data):
 
 def _get_dmp(g: Graph):
     dmp = next(g.subjects(RDF.type, dsp.DataManagementPlan))
-    print(dmp)
 
     res = {"@id": dmp,
            "@type": "DataManagementPlan",
@@ -438,4 +437,5 @@ def validate(data):
 if __name__ == "__main__":
     file = 'test/test-data/maximal.ttl'
     # file = 'test/test-data/rosetta.ttl'
-    convert_file(file)
+    s = convert_file(file)
+    print(s)
