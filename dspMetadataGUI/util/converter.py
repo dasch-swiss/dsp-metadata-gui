@@ -148,6 +148,8 @@ def _get_dataset(g: Graph, dataset_iri):
                 res['abstracts'].get('texts').append(_guess_language_of_text(obj))
         elif p == dsp.hasTypeOfData:
             res.setdefault("typeOfData", [])
+            if obj == "Movie":
+                obj = "Video"
             res['typeOfData'].append(obj)
         elif p == dsp.hasLicense:
             res.setdefault("licenses", [])
