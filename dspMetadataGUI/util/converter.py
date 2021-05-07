@@ -69,18 +69,20 @@ def _get_project(g: Graph):
             res['urls'].append(_get_url(g, o))
         elif p == dsp.hasDataManagementPlan:
             res['dataManagementPlan'] = o
-        # elif p == dsp.datasets:  # TODO: how can I get this to work? is dataset.isPartOf
-        #     res['datasets'] = []
-        # elif p == dsp.hasPublication:
-        #     res['publications'] = o  # TODO: implement
-        # elif p == dsp.hasGrant:
-        #     res['grants'] = o  # TODO: implement
+        elif p == dsp.hasPublication:
+            res.setdefault('publications', [])
+            res['publications'].append(o)
+        elif p == dsp.hasGrant:
+            res.setdefault('grants', [])
+            res['grants'].append(o)
         # elif p == dsp.hasAlternateName:
         #     res['alternativeNames'] = o  # TODO: implement
         # elif p == dsp.hasFunder:
         #     res['funders'] = o  # TODO: implement
         # elif p == dsp.hasContactPoint:
         #     res['contactPoint'] = o  # TODO: implement
+        # elif p == dsp.datasets:  # TODO: how can I get this to work? is dataset.isPartOf
+        #     res['datasets'] = []
         else:
             print("Issue: Could not handle:", p, o)
 
