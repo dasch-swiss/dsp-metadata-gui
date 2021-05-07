@@ -29,15 +29,76 @@ def convert_string(data):
         res['project']['datasets'].append(ds.get('@id'))
     res['persons'] = _get_persons(g)
     res['organizations'] = _get_organizations(g)
+    res['grants'] = _get_grants(g)
+    res['dataManagementPlan'] = _get_dmp(g)
 
-    print(json.dumps(res['organizations'], indent=2))
-    # print(json.dumps(res, indent=4))
-    validate(res)  # TODO: bring back
+    print(json.dumps(res, indent=4))
+    validate(res)
+
+
+# DMP
+# ---
+
+def _get_dmp(g: Graph):
+    dmp = next(g.subjects(RDF.type, dsp.DataManagementPlan))
+    print(dmp)
+
+    res = {"@id": dmp,
+           "@type": "DataManagementPlan",
+           "@created": str(time.time_ns()),
+           "@modified": str(time.time_ns()), }
+
+    for _, p, o in g.triples((dmp, None, None)):
+        obj = str(o)
+        if p == dsp.hasURL:
+            res['url'] = _get_url(g, o)
+        elif p == dsp.isAvailable:
+            res['available'] = obj == "true"
+        # default cases
+        elif p == RDF.type:
+            pass
+        else:
+            print("Issue: Could not handle in Grant:", p, obj)
+
+    return res
+
+
+# Grant
+# -----
+
+def _get_grants(g: Graph):
+    grants = g.subjects(RDF.type, dsp.Grant)
+    return [_get_grant(g, grant) for grant in grants]
+
+
+def _get_grant(g: Graph, grant_iri):
+    res = {"@id": grant_iri,
+           "@type": "Grant",
+           "@created": str(time.time_ns()),
+           "@modified": str(time.time_ns()), }
+
+    for _, p, o in g.triples((grant_iri, None, None)):
+        obj = str(o)
+        if p == dsp.hasFunder:
+            res.setdefault('funders', [])
+            res['funders'].append(obj)
+        elif p == dsp.hasNumber:
+            res['number'] = obj
+        elif p == dsp.hasName:
+            res['name'] = obj
+        elif p == dsp.hasURL:
+            res['url'] = _get_url(g, o)
+        # default cases
+        elif p == RDF.type:
+            pass
+        else:
+            print("Issue: Could not handle in Grant:", p, obj)
+
+    return res
 
 
 # Organizations
 # -------------
-
 
 def _get_organizations(g: Graph):
     orgs = g.subjects(RDF.type, dsp.Organization)
@@ -71,7 +132,6 @@ def _get_organization(g: Graph, org_iri):
 
 # Person
 # ------
-
 
 def _get_persons(g: Graph):
     persons = g.subjects(RDF.type, dsp.Person)
@@ -115,7 +175,6 @@ def _get_person(g: Graph, person_iri):
 
 # Dataset
 # -------
-
 
 def _get_datasets(g: Graph):
     datasets = g.subjects(RDF.type, dsp.Dataset)
@@ -196,7 +255,6 @@ def _get_dataset(g: Graph, dataset_iri):
 # Project
 # -------
 
-
 def _get_project(g: Graph):
     project_iri = next(g.triples((None, RDF.type, dsp.Project)))[0]
     res = {"@id": project_iri,
@@ -266,7 +324,6 @@ def _get_project(g: Graph):
 
 # Utils
 # -----
-
 
 def _add_attribution(g: Graph, iri: BNode, attributions: List):
     role = str(next(g.objects(iri, dsp.hasRole)))
