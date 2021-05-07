@@ -27,11 +27,11 @@ def convert_string(data):
     res['datasets'] = _get_datasets(g)
     for ds in res.get('datasets'):
         res['project']['datasets'].append(ds.get('@id'))
-    res['person'] = _get_persons(g)
+    res['persons'] = _get_persons(g)
 
     # print(json.dumps(res['person'], indent=2))
     print(json.dumps(res, indent=4))
-    # validate(res)  # TODO: bring back
+    validate(res)  # TODO: bring back
 
 
 # Person
