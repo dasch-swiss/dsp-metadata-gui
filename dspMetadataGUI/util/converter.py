@@ -23,6 +23,7 @@ def convert_string(data):
     g.parse(data=data, format='ttl')
     res = {"$schema": schema_url}
     res['project'] = _get_project(g)
+    # TODO: datasets need to be added to project too
     print(json.dumps(res, indent=2))
     # validate(res)  # TODO: bring back
 
@@ -33,7 +34,8 @@ def _get_project(g: Graph):
            "@type": "Project",
            "@created": time.time_ns(),
            "@modified": time.time_ns(),
-           "howToCite": "XXX"}
+           "howToCite": "XXX",
+           "datasets": []}
 
     for _, p, o in g.triples((project_iri, None, None)):
         if p == dsp.hasShortcode:
@@ -75,14 +77,14 @@ def _get_project(g: Graph):
         elif p == dsp.hasGrant:
             res.setdefault('grants', [])
             res['grants'].append(o)
-        # elif p == dsp.hasAlternateName:
-        #     res['alternativeNames'] = o  # TODO: implement
-        # elif p == dsp.hasFunder:
-        #     res['funders'] = o  # TODO: implement
-        # elif p == dsp.hasContactPoint:
-        #     res['contactPoint'] = o  # TODO: implement
-        # elif p == dsp.datasets:  # TODO: how can I get this to work? is dataset.isPartOf
-        #     res['datasets'] = []
+        elif p == dsp.hasAlternateName:
+            res.setdefault('alternativeNames', [])
+            res['alternativeNames'].append(_guess_language(o))
+        elif p == dsp.hasFunder:
+            res.setdefault('funders', [])
+            res['funders'].append(o)
+        elif p == dsp.hasContactPoint:
+            res['contactPoint'] = o
         else:
             print("Issue: Could not handle:", p, o)
 
