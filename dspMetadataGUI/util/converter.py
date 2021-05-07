@@ -40,7 +40,10 @@ def convert_string(data):
 # ---
 
 def _get_dmp(g: Graph):
-    dmp = next(g.subjects(RDF.type, dsp.DataManagementPlan))
+    try:
+        dmp = next(g.subjects(RDF.type, dsp.DataManagementPlan))
+    except StopIteration:
+        return None
 
     res = {"@id": dmp,
            "@type": "DataManagementPlan",
@@ -367,11 +370,20 @@ def _get_address(g: Graph, iri: BNode):
     locality = str(next(g.objects(iri, SDO.addressLocality)))
     code = str(next(g.objects(iri, SDO.postalCode)))
     street = str(next(g.objects(iri, SDO.streetAddress)))
+    country = _get_country(locality)
     return {'street': street,
             'additional': "XXX",
             'postalCode': code,
             'locality': locality,
-            'country': "XXX - Switzerland"}  # TODO: ask geonames?
+            'country': country}
+
+
+def _get_country(locality):
+    q = f"http://api.geonames.org/searchJSON?username=blandolt&name_equals={locality}&country=ch"
+    r = requests.get(q)
+    js = r.json()
+    gn = js.get('geonames')
+    return "Switzerland" if len(gn) > 0 else "XXX - Switzerland"
 
 
 def _get_place(g: Graph, iri: BNode):
@@ -435,7 +447,7 @@ def validate(data):
 
 
 if __name__ == "__main__":
-    file = 'test/test-data/maximal.ttl'
-    # file = 'test/test-data/rosetta.ttl'
+    # file = 'test/test-data/maximal.ttl'
+    file = 'test/test-data/rosetta.ttl'
     s = convert_file(file)
     print(s)
