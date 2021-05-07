@@ -27,8 +27,55 @@ def convert_string(data):
     res['datasets'] = _get_datasets(g)
     for ds in res.get('datasets'):
         res['project']['datasets'].append(ds.get('@id'))
-    # print(json.dumps(res, indent=2))
-    validate(res)  # TODO: bring back
+    res['person'] = _get_persons(g)
+
+    # print(json.dumps(res['person'], indent=2))
+    print(json.dumps(res, indent=4))
+    # validate(res)  # TODO: bring back
+
+
+# Person
+# ------
+
+
+def _get_persons(g: Graph):
+    persons = g.subjects(RDF.type, dsp.Person)
+    return [_get_person(g, person) for person in persons]
+
+
+def _get_person(g: Graph, person_iri):
+    res = {"@id": person_iri,
+           "@type": "Person",
+           "@created": str(time.time_ns()),
+           "@modified": str(time.time_ns()), }
+
+    for _, p, o in g.triples((person_iri, None, None)):
+        obj = str(o)
+        if p == dsp.hasJobTitle:
+            res.setdefault('jobTitles', [])
+            res['jobTitles'].append(obj)
+        elif p == dsp.hasGivenName:
+            res['givenNames'] = obj.split(';')
+        elif p == dsp.hasFamilyName:
+            res['familyNames'] = obj.split(';')
+        elif p == dsp.isMemberOf:
+            res.setdefault('affiliation', [])
+            res['affiliation'].append(obj)
+        elif p == dsp.hasAddress:
+            res['address'] = _get_address(g, o)
+        elif p == dsp.hasEmail:
+            res.setdefault('emails', [])
+            res['emails'].append(obj)
+        elif p == dsp.sameAs:
+            res.setdefault('authorityRefs', [])
+            res['authorityRefs'].append(_get_url(g, o))
+        # default cases
+        elif p == RDF.type:
+            pass
+        else:
+            print("Issue: Could not handle in Person:", p, obj)
+
+    return res
 
 
 # Dataset
@@ -223,12 +270,20 @@ def _guess_language_of_text(text):
     }
 
 
+def _get_address(g: Graph, iri: BNode):
+    locality = str(next(g.objects(iri, SDO.addressLocality)))
+    code = str(next(g.objects(iri, SDO.postalCode)))
+    street = str(next(g.objects(iri, SDO.streetAddress)))
+    return {'street': street,
+            'additional': "XXX",
+            'postalCode': code,
+            'locality': locality,
+            'country': "XXX - Switzerland"}  # TODO: ask geonames?
+
+
 def _get_place(g: Graph, iri: BNode):
-    # print(list(g.triples((iri, SDO.url, None))))
     url = next(g.objects(iri, SDO.url))
     return _get_url(g, url)
-    # print(place)
-    pass
 
 
 def _get_url(g: Graph, iri: BNode):
