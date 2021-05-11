@@ -7,7 +7,7 @@ import jsonschema
 from rdflib.term import BNode
 import requests
 import time
-from langdetect import detect
+from textblob import TextBlob
 
 
 schema_url = "https://raw.githubusercontent.com/dasch-swiss/dasch-service-platform/main/docs/services/metadata/schema-metadata.json"
@@ -28,10 +28,18 @@ def convert_string(data):
     res['datasets'] = _get_datasets(g)
     for ds in res.get('datasets'):
         res['project']['datasets'].append(ds.get('@id'))
-    res['persons'] = _get_persons(g)
-    res['organizations'] = _get_organizations(g)
-    res['grants'] = _get_grants(g)
-    res['dataManagementPlan'] = _get_dmp(g)
+    persons = _get_persons(g)
+    if persons:
+        res['persons'] = persons
+    orgs = _get_organizations(g)
+    if orgs:
+        res['organizations'] = orgs
+    grants = _get_grants(g)
+    if grants:
+        res['grants'] = grants
+    dmp = _get_dmp(g)
+    if dmp:
+        res['dataManagementPlan'] = dmp
 
     validate(res)
     return json.dumps(res, indent=4)
@@ -202,7 +210,7 @@ def _get_dataset(g: Graph, dataset_iri):
             res['status'] = obj
         elif p == dsp.hasAbstract:
             res.setdefault("abstracts", {})
-            if isinstance(obj, BNode):
+            if isinstance(o, BNode):
                 res['abstracts'].setdefault('urls', [])
                 res['abstracts'].get('urls').append(_get_url(g, o))
             else:
@@ -238,7 +246,7 @@ def _get_dataset(g: Graph, dataset_iri):
             res['urls'].append(_get_url(g, o))
         elif p == dsp.hasDocumentation:
             res.setdefault("documentations", {})
-            if isinstance(obj, BNode):
+            if isinstance(o, BNode):
                 res['documentations'].setdefault('urls', [])
                 res['documentations'].get('urls').append(_get_url(g, o))
             else:
@@ -274,7 +282,7 @@ def _get_project(g: Graph):
         elif p == dsp.hasName:
             res['name'] = obj
         elif p == dsp.hasDescription:
-            res['description'] = {"XX": obj}
+            res['description'] = _guess_language_of_text(obj)
         elif p == dsp.hasStartDate:
             res['startDate'] = obj
         elif p == dsp.hasEndDate:
@@ -284,13 +292,13 @@ def _get_project(g: Graph):
             res['keywords'].append(_guess_language_of_text(obj))
         elif p == dsp.hasDiscipline:
             res.setdefault('disciplines', [])
-            if isinstance(obj, BNode):
+            if isinstance(o, BNode):
                 res['disciplines'].append(_get_url(g, o))
             else:
                 res['disciplines'].append(_guess_language_of_text(obj))
         elif p == dsp.hasTemporalCoverage:
             res.setdefault('temporalCoverage', [])
-            if isinstance(obj, BNode):
+            if isinstance(o, BNode):
                 res['temporalCoverage'].append(_get_url(g, o))
             else:
                 res['temporalCoverage'].append(_guess_language_of_text(obj))
@@ -367,8 +375,14 @@ def _get_language_from_shortcode(code):
 
 
 def _guess_language_of_text(text):
-    lang = detect(str(text))
+    text = str(text)
+    try:
+        lang = TextBlob(text).detect_language()
+    except Exception:
+        print(f"Could not resolve language for {text}")
+        lang = "XX"
     if lang not in ["en", "de", "fr"]:
+        print(f"Unexpected language: {lang}  (Text: {text})")
         lang = f"XX - {lang}"
     return {
         lang: text
@@ -423,7 +437,7 @@ def _get_url_type(propID):
     if propID.startswith("Pleiades"):
         return "Pleiades"
     if propID.startswith("ORCID"):
-        return "ORCID"  # QUESTION: missing in json schema?
+        return "ORCID"
     if propID.startswith("Periodo"):
         return "Periodo"
     if propID.startswith("ChronOntology") or propID.startswith("dainst."):
@@ -439,15 +453,19 @@ def _get_url_type(propID):
 
 
 def validate(data):
-    # r = requests.get(schema_url)
-    # schema = r.json()
-    with open('test/test-data/schema.json', 'r+', encoding='utf-8') as f:
-        schema = json.loads(f.read())
+    r = requests.get(schema_url)
+    schema = r.json()
+    # with open('test/test-data/schema.json', 'r+', encoding='utf-8') as f:
+    #     schema = json.loads(f.read())
     try:
-        print("Validating:")
+        print("Validating...")
         validator = jsonschema.Draft7Validator(schema)
+        valid = True
         for e in validator.iter_errors(data):
             print(f'Validation Error: {e.message}')
+            valid = False
+        if valid:
+            print("JSON is valid.")
         # validation = jsonschema.validate(json_data, schema)
         # print("Valid!")
     except jsonschema.ValidationError as val:
