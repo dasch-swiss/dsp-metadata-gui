@@ -23,6 +23,7 @@ mkdocs-material = "*"
 mkdocs-material-extensions = "*"
 pymdown-extensions = "*"
 markdown-include = "*"
+mypy = "*"
 
 [requires]
 python_version = "3.9"

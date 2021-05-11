@@ -1,5 +1,9 @@
+"""
+Module to convert RDF serialized metadata (first datamodel) into JSON metadata (new datamodel).
+"""
+
 import re
-from typing import List
+from typing import Any, Dict, List, Union
 from rdflib import Graph
 from rdflib.namespace import Namespace, RDF, SDO, PROV
 import json
@@ -14,20 +18,38 @@ schema_url = "https://raw.githubusercontent.com/dasch-swiss/dasch-service-platfo
 dsp = Namespace("http://ns.dasch.swiss/repository#")
 
 
-def convert_file(file):
+def convert_file(file: str) -> str:
+    """Convert metadata from a file.
+
+    Convert metadata from a local .ttl file.
+
+    Args:
+        file (str): path to a .ttl file (can be relative or absolute)
+
+    Returns:
+        str: json serialized metadata
+    """
     with open(file, 'r+', encoding='utf-8') as f:
         s = f.read()
     return convert_string(s)
 
 
-def convert_string(data):
+def convert_string(data: str) -> str:
+    """Convert metadata from a string.
+
+    Args:
+        data (str): string of a turtle setrialization of metadata
+
+    Returns:
+        str: json serialized metadata.
+    """
     g = Graph()
     g.parse(data=data, format='ttl')
     res = {"$schema": schema_url}
     res['project'] = _get_project(g)
     res['datasets'] = _get_datasets(g)
-    for ds in res.get('datasets'):
-        res['project']['datasets'].append(ds.get('@id'))
+    for ds in res.get('datasets'):  # type: ignore
+        res['project']['datasets'].append(ds.get('@id'))  # type: ignore
     persons = _get_persons(g)
     if persons:
         res['persons'] = persons
@@ -48,11 +70,13 @@ def convert_string(data):
 # DMP
 # ---
 
+
 def _get_dmp(g: Graph):
+    """Get data management plan from graph"""
     try:
         dmp = next(g.subjects(RDF.type, dsp.DataManagementPlan))
     except StopIteration:
-        return None
+        return {}
 
     res = {"@id": dmp,
            "@type": "DataManagementPlan",
@@ -78,11 +102,13 @@ def _get_dmp(g: Graph):
 # -----
 
 def _get_grants(g: Graph):
+    """Get grants from graph"""
     grants = g.subjects(RDF.type, dsp.Grant)
     return [_get_grant(g, grant) for grant in grants]
 
 
-def _get_grant(g: Graph, grant_iri):
+def _get_grant(g: Graph, grant_iri) -> Dict[str, Any]:
+    """Get grant from graph"""
     res = {"@id": grant_iri,
            "@type": "Grant",
            "@created": str(time.time_ns()),
@@ -112,11 +138,13 @@ def _get_grant(g: Graph, grant_iri):
 # -------------
 
 def _get_organizations(g: Graph):
+    """Get organizations from graph"""
     orgs = g.subjects(RDF.type, dsp.Organization)
     return [_get_organization(g, org) for org in orgs]
 
 
 def _get_organization(g: Graph, org_iri):
+    """Get organization from graph"""
     res = {"@id": org_iri,
            "@type": "Organization",
            "@created": str(time.time_ns()),
@@ -145,11 +173,13 @@ def _get_organization(g: Graph, org_iri):
 # ------
 
 def _get_persons(g: Graph):
+    """Get persons from graph"""
     persons = g.subjects(RDF.type, dsp.Person)
     return [_get_person(g, person) for person in persons]
 
 
 def _get_person(g: Graph, person_iri):
+    """Get person from graph"""
     res = {"@id": person_iri,
            "@type": "Person",
            "@created": str(time.time_ns()),
@@ -188,11 +218,13 @@ def _get_person(g: Graph, person_iri):
 # -------
 
 def _get_datasets(g: Graph):
+    """Get datasets from graph"""
     datasets = g.subjects(RDF.type, dsp.Dataset)
     return [_get_dataset(g, dataset) for dataset in datasets]
 
 
 def _get_dataset(g: Graph, dataset_iri):
+    """Get dataset from graph"""
     res = {"@id": dataset_iri,
            "@type": "Dataset",
            "@created": str(time.time_ns()),
@@ -267,6 +299,7 @@ def _get_dataset(g: Graph, dataset_iri):
 # -------
 
 def _get_project(g: Graph):
+    """Get project from graph"""
     project_iri = next(g.triples((None, RDF.type, dsp.Project)))[0]
     res = {"@id": project_iri,
            "@type": "Project",
@@ -337,6 +370,7 @@ def _get_project(g: Graph):
 # -----
 
 def _add_attribution(g: Graph, iri: BNode, attributions: List):
+    """From a graph g, add an attribution defined by a blank node (i.e. all tripples that have the iri as subject), to a list."""
     role = str(next(g.objects(iri, dsp.hasRole)))
     agent = str(next(g.objects(iri, PROV.agent)))
     for att in attributions:
@@ -351,6 +385,7 @@ def _add_attribution(g: Graph, iri: BNode, attributions: List):
 
 
 def _get_language(language):
+    """Get the correct language representation according to a string describing a language (i.e. the language itself or a language shortcode)"""
     language = str(language)
     if re.match('^[a-z]{2}$', language):
         return _get_language_from_shortcode(language)
@@ -359,6 +394,7 @@ def _get_language(language):
 
 
 def _get_language_from_shortcode(code):
+    """Get language representation from a language shortcode"""
     code = str(code)
     langs = {'en': {'en': 'English',
                     'de': 'Englisch',
@@ -375,6 +411,10 @@ def _get_language_from_shortcode(code):
 
 
 def _guess_language_of_text(text):
+    """ Guess the language of a string.
+
+    Returns a dict of type multilanguage text, if possible with the correct language attribution to the text.
+    """
     text = str(text)
     try:
         lang = TextBlob(text).detect_language()
@@ -390,6 +430,7 @@ def _guess_language_of_text(text):
 
 
 def _get_address(g: Graph, iri: BNode):
+    """Get address from graph"""
     locality = str(next(g.objects(iri, SDO.addressLocality)))
     code = str(next(g.objects(iri, SDO.postalCode)))
     street = str(next(g.objects(iri, SDO.streetAddress)))
@@ -402,6 +443,10 @@ def _get_address(g: Graph, iri: BNode):
 
 
 def _get_country(locality):
+    """Get country of an address
+
+    Checks if the place is in Switzerland.
+    """
     q = f"http://api.geonames.org/searchJSON?username=blandolt&name_equals={locality}&country=ch"
     r = requests.get(q)
     js = r.json()
@@ -410,26 +455,28 @@ def _get_country(locality):
 
 
 def _get_place(g: Graph, iri: BNode):
+    """Get a place from graph"""
     url = next(g.objects(iri, SDO.url))
     return _get_url(g, url)
 
 
 def _get_url(g: Graph, iri: BNode):
+    """Get URL from graph"""
     url = str(next(g.objects(iri, SDO.url)))
     try:
         propID_bnode = next(g.objects(iri, SDO.propertyID))
         propID = str(next(g.objects(propID_bnode, SDO.propertyID)))
     except StopIteration:
         propID = url
-    # LATER: improve text guessing
     return {
-        "text": "XX - " + propID,  # LATER: improve display text deduction
+        "text": "XX - " + propID,  # TODO: improve display text deduction
         "type": _get_url_type(propID),
         "url": url
     }
 
 
 def _get_url_type(propID):
+    """Get URL type from schema.propertyID"""
     if propID.startswith("SKOS"):
         return "Skos"
     if propID.startswith("Geonames"):
@@ -453,10 +500,17 @@ def _get_url_type(propID):
 
 
 def validate(data):
+    """Validates JSON
+
+    Validates json serialized data against the schema of the API specification.  
+
+    [Schema](https://raw.githubusercontent.com/dasch-swiss/dasch-service-platform/main/docs/services/metadata/schema-metadata.json)
+
+    Args:
+        data ([type]): [description]
+    """
     r = requests.get(schema_url)
     schema = r.json()
-    # with open('test/test-data/schema.json', 'r+', encoding='utf-8') as f:
-    #     schema = json.loads(f.read())
     try:
         print("Validating...")
         validator = jsonschema.Draft7Validator(schema)
@@ -466,8 +520,6 @@ def validate(data):
             valid = False
         if valid:
             print("JSON is valid.")
-        # validation = jsonschema.validate(json_data, schema)
-        # print("Valid!")
     except jsonschema.ValidationError as val:
         print(val.message)
 
