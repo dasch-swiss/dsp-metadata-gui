@@ -1,3 +1,4 @@
+import re
 from typing import List
 from rdflib import Graph
 from rdflib.namespace import Namespace, RDF, SDO, PROV
@@ -217,7 +218,7 @@ def _get_dataset(g: Graph, dataset_iri):
             res['licenses'].append(_get_url(g, o))
         elif p == dsp.hasLanguage:
             res.setdefault("languages", [])
-            res['languages'].append(_get_language_from_shortcode(obj))
+            res['languages'].append(_get_language(obj))
         elif p == dsp.hasQualifiedAttribution:
             res.setdefault("attributions", [])
             res['attributions'] = (_add_attribution(g, o, res['attributions']))
@@ -263,7 +264,7 @@ def _get_project(g: Graph):
            "@type": "Project",
            "@created": str(time.time_ns()),
            "@modified": str(time.time_ns()),
-           "howToCite": "XXX",
+           "howToCite": "XX - new property on project level",
            "datasets": []}
 
     for _, p, o in g.triples((project_iri, None, None)):
@@ -273,7 +274,7 @@ def _get_project(g: Graph):
         elif p == dsp.hasName:
             res['name'] = obj
         elif p == dsp.hasDescription:
-            res['description'] = {"XXX": obj}
+            res['description'] = {"XX": obj}
         elif p == dsp.hasStartDate:
             res['startDate'] = obj
         elif p == dsp.hasEndDate:
@@ -341,6 +342,14 @@ def _add_attribution(g: Graph, iri: BNode, attributions: List):
     return attributions
 
 
+def _get_language(language):
+    language = str(language)
+    if re.match('^[a-z]{2}$', language):
+        return _get_language_from_shortcode(language)
+    else:
+        return _guess_language_of_text(language)
+
+
 def _get_language_from_shortcode(code):
     code = str(code)
     langs = {'en': {'en': 'English',
@@ -352,7 +361,7 @@ def _get_language_from_shortcode(code):
              'fr': {'en': 'French',
                     'de': 'Französisch',
                     'fr': 'français'}}
-    default = {code: 'XXX - ' + code}
+    default = {code: 'XX - ' + code}
     lang = langs.get(code)
     return lang if lang else default
 
@@ -360,7 +369,7 @@ def _get_language_from_shortcode(code):
 def _guess_language_of_text(text):
     lang = detect(str(text))
     if lang not in ["en", "de", "fr"]:
-        lang = f"XXX - {lang}"
+        lang = f"XX - {lang}"
     return {
         lang: text
     }
@@ -372,7 +381,7 @@ def _get_address(g: Graph, iri: BNode):
     street = str(next(g.objects(iri, SDO.streetAddress)))
     country = _get_country(locality)
     return {'street': street,
-            'additional': "XXX",
+            'additional': "XX - new Property",
             'postalCode': code,
             'locality': locality,
             'country': country}
@@ -383,7 +392,7 @@ def _get_country(locality):
     r = requests.get(q)
     js = r.json()
     gn = js.get('geonames')
-    return "Switzerland" if len(gn) > 0 else "XXX - Switzerland"
+    return "Switzerland" if len(gn) > 0 else "XX - Switzerland?"
 
 
 def _get_place(g: Graph, iri: BNode):
@@ -400,7 +409,7 @@ def _get_url(g: Graph, iri: BNode):
         propID = url
     # LATER: improve text guessing
     return {
-        "text": "XXX - " + propID,  # LATER: improve display text deduction
+        "text": "XX - " + propID,  # LATER: improve display text deduction
         "type": _get_url_type(propID),
         "url": url
     }
@@ -430,11 +439,10 @@ def _get_url_type(propID):
 
 
 def validate(data):
-    json_data = json.dumps(data)
-    r = requests.get(schema_url)
-    schema = r.json()
-    # with open('test/test-data/example.json', 'r+', encoding='utf-8') as f:
-    #     json_data = json.loads(f.read())
+    # r = requests.get(schema_url)
+    # schema = r.json()
+    with open('test/test-data/schema.json', 'r+', encoding='utf-8') as f:
+        schema = json.loads(f.read())
     try:
         print("Validating:")
         validator = jsonschema.Draft7Validator(schema)
@@ -447,7 +455,7 @@ def validate(data):
 
 
 if __name__ == "__main__":
-    # file = 'test/test-data/maximal.ttl'
-    file = 'test/test-data/rosetta.ttl'
+    file = 'test/test-data/maximal.ttl'
+    # file = 'test/test-data/rosetta.ttl'
     s = convert_file(file)
     print(s)
