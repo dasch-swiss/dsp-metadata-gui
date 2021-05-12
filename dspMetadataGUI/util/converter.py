@@ -468,11 +468,50 @@ def _get_url(g: Graph, iri: BNode):
         propID = str(next(g.objects(propID_bnode, SDO.propertyID)))
     except StopIteration:
         propID = url
+    type_ = _get_url_type(propID)
+    txt = _get_url_text(url, type_)
     return {
-        "text": "XX - " + propID,  # TODO: improve display text deduction
-        "type": _get_url_type(propID),
+        "text": txt,
+        "type": type_,
         "url": url
     }
+
+
+def _get_url_text(url, t):
+    """Get a reasonable display text for a URL of a defined type."""
+    if t == 'URL':
+        return url
+    if t == 'Skos':
+        return f"XX: Skos URL: {url}"
+    if t == 'Geonames':
+        return _get_geonames_name(url)
+    if t == 'Pleiades':
+        return f"XX: Pleiades URL: {url}"
+    if t == 'ORCID':
+        return f"XX: ORCID URL: {url}"
+    if t == 'Periodo':
+        return f"XX: Periodo URL: {url}"
+    if t == 'GND':
+        return f"XX: GND URL: {url}"
+    if t == 'VIAF':
+        return f"XX: VIAF URL: {url}"
+    if t == 'Creative Commons':
+        return f"XX: Creative Commons URL: {url}"
+    f"XX: Unknown Type for URL: {url}"
+
+
+def _get_geonames_name(url: str):
+    """Get display text for a geonames URL"""
+    if url.endswith(".html"):
+        url = url.rsplit("/", 1)[0]
+    gn_id = url.rsplit("/")[-1]
+    base = f'http://api.geonames.org/getJSON'
+    payload = {'geonameId': gn_id,
+               'username': 'blandolt'}
+    r = requests.get(base, params=payload)
+    resp = r.json()
+    name = resp.get('toponymName')
+    return name
 
 
 def _get_url_type(propID):
@@ -525,7 +564,7 @@ def validate(data):
 
 
 if __name__ == "__main__":
-    file = 'test/test-data/maximal.ttl'
-    # file = 'test/test-data/rosetta.ttl'
+    # file = 'test/test-data/maximal.ttl'
+    file = 'test/test-data/rosetta.ttl'
     s = convert_file(file)
     print(s)
