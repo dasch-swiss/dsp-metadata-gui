@@ -3,7 +3,7 @@ Module to convert RDF serialized metadata (first datamodel) into JSON metadata (
 """
 
 import re
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List
 from rdflib import Graph
 from rdflib.namespace import Namespace, RDF, SDO, PROV
 import json
@@ -12,6 +12,7 @@ from rdflib.term import BNode
 import requests
 import time
 from textblob import TextBlob
+from bs4 import BeautifulSoup
 
 
 schema_url = "https://raw.githubusercontent.com/dasch-swiss/dasch-service-platform/main/docs/services/metadata/schema-metadata.json"
@@ -482,22 +483,37 @@ def _get_url_text(url, t):
     if t == 'URL':
         return url
     if t == 'Skos':
-        return f"XX: Skos URL: {url}"
+        return f"XX: Skos URL: {url}"  # XXX
     if t == 'Geonames':
         return _get_geonames_name(url)
     if t == 'Pleiades':
-        return f"XX: Pleiades URL: {url}"
+        return f"XX: Pleiades URL: {url}"  # XXX
     if t == 'ORCID':
         return f"XX: ORCID URL: {url}"
     if t == 'Periodo':
-        return f"XX: Periodo URL: {url}"
+        return f"XX: Periodo URL: {url}"  #  XXX
     if t == 'GND':
         return f"XX: GND URL: {url}"
     if t == 'VIAF':
         return f"XX: VIAF URL: {url}"
     if t == 'Creative Commons':
-        return f"XX: Creative Commons URL: {url}"
+        return _get_cc_name(url)
+    if t == 'Chronontology':
+        return f"XX: Chronontology URL: {url}"  # XXX
     f"XX: Unknown Type for URL: {url}"
+
+
+def _get_cc_name(url: str):
+    """Get display text for a Creative Commons URL"""
+    try:
+        r = requests.get(url)
+        soup = BeautifulSoup(r.content, 'html.parser')
+        ident = soup.select_one('span.cc-license-identifier')
+        res: str = ident.get_text()
+        res = res.strip().removeprefix('(').removesuffix(')')
+        return res
+    except Exception:
+        return f'XX: CC URL: {url}'
 
 
 def _get_geonames_name(url: str):

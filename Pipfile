@@ -9,6 +9,7 @@ wxPython = "*"
 validators = "*"
 jsonschema = "*"
 textblob = "*"
+beautifulsoup4 = "*"
 
 [dev-packages]
 pipenv-setup = "*"
