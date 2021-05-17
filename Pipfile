@@ -8,8 +8,8 @@ pyshacl = "*"
 wxPython = "*"
 validators = "*"
 jsonschema = "*"
-textblob = "*"
 beautifulsoup4 = "*"
+textblob = "*"
 
 [dev-packages]
 pipenv-setup = "*"

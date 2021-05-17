@@ -3,6 +3,7 @@ Module to convert RDF serialized metadata (first datamodel) into JSON metadata (
 """
 
 import re
+import os
 from typing import Any, Dict, List
 from rdflib import Graph
 from rdflib.namespace import Namespace, RDF, SDO, PROV, SKOS
@@ -420,10 +421,10 @@ def _guess_language_of_text(text):
     try:
         lang = TextBlob(text).detect_language()
     except Exception:
-        print(f"Could not resolve language for {text}")
+        print(f"Could not resolve language for {text} - probably due to API limit... may have to retry tomorrow.")
         lang = "XX"
-    if lang not in ["en", "de", "fr"]:
-        print(f"Unexpected language: {lang}  (Text: {text})")
+    if lang not in ["en", "de", "fr", "it"]:
+        # print(f"Unexpected language: {lang}  (Text: {text})")
         lang = f"XX - {lang}"
     return {
         lang: text
@@ -488,9 +489,9 @@ def _get_url_text(url, t):
     if t == 'Pleiades':
         return f"XX: Pleiades URL: {url}"  # XXX
     if t == 'ORCID':
-        return f"XX: ORCID URL: {url}"
+        return f"ORCID URL: {url}"
     if t == 'Periodo':
-        return f"XX: Periodo URL: {url}"  #  XXX
+        return _get_periodo_name(url)
     if t == 'GND':
         return f"GND URL: {url}"
     if t == 'VIAF':
@@ -498,8 +499,29 @@ def _get_url_text(url, t):
     if t == 'Creative Commons':
         return _get_cc_name(url)
     if t == 'Chronontology':
-        return f"XX: Chronontology URL: {url}"  # XXX
+        return _get_chonontology_name(url)
     f"XX: Unknown Type for URL: {url}"
+
+
+def _get_periodo_name(url: str):
+    try:
+        r = requests.get(url + '.json')
+        data = r.json()
+        res = data.get('label')
+        return res
+    except Exception:
+        return f'XX: Periodo URL: {url}'
+
+
+def _get_chonontology_name(url: str):
+    try:
+        id_ = url.rsplit('/', maxsplit=1)[-1]
+        r = requests.get(f'https://chronontology.dainst.org/data/period/{id_}')
+        data = r.json()
+        names = data.get('resource').get('names').get('en')
+        return names[0]
+    except Exception:
+        return f'XX: Chronontology URL: {url}'
 
 
 def _get_skos_name(url: str):
@@ -519,8 +541,8 @@ def _get_skos_name(url: str):
             l: Literal = label
             if l.language == 'en':
                 return str(l)
-    except Exception as e:
-        return f'XX: CC URL: {url}'
+    except Exception:
+        return f'XX: Skos URL: {url}'
 
 
 def _get_cc_name(url: str):
@@ -538,16 +560,28 @@ def _get_cc_name(url: str):
 
 def _get_geonames_name(url: str):
     """Get display text for a geonames URL"""
-    if url.endswith(".html"):
-        url = url.rsplit("/", 1)[0]
-    gn_id = url.rsplit("/")[-1]
-    base = f'http://api.geonames.org/getJSON'
-    payload = {'geonameId': gn_id,
-               'username': 'blandolt'}
-    r = requests.get(base, params=payload)
-    resp = r.json()
-    name = resp.get('toponymName')
-    return name
+    try:
+        if re.search('\/countries\/', url):
+            r = requests.get(url)
+            soup = BeautifulSoup(r.content, 'html.parser')
+            tables = soup.select('table')
+            table = tables[1]
+            link = table.select_one('a')
+            url = link['href']
+        if url.endswith(".html"):
+            url = url.rsplit("/", 1)[0]
+        gn_id = url.rsplit("/")[-1]
+        base = f'http://api.geonames.org/getJSON'
+        payload = {'geonameId': gn_id,
+                   'username': 'blandolt'}
+        r = requests.get(base, params=payload)
+        resp = r.json()
+        name = resp.get('toponymName')
+        if not name:
+            raise Exception()
+        return name
+    except Exception:
+        return f'XX: Geonames URL: {url}'
 
 
 def _get_url_type(propID):
@@ -606,10 +640,14 @@ def validate(data, verbose=False):
 
 if __name__ == "__main__":
     files = ['maximal.ttl',
-             'rosetta.ttl',
-             'limc.ttl',
-             'awg.ttl']
+             #  'rosetta.ttl',
+             #  'limc.ttl',
+             #  'awg.ttl',
+             #  'hdm.ttl'
+             ]
     results = {}
+    if not os.path.exists('out'):
+        os.mkdir('out')
     for filename in files:
         s = convert_file(f'test/test-data/{filename}')
         results[filename] = {
@@ -617,6 +655,9 @@ if __name__ == "__main__":
             'numberOfIssues': s.count("XX"),
             'toResolve': [l.strip().replace('"', "'") for l in s.splitlines() if 'XX' in l]
         }
+        out = filename.replace('.ttl', '.json')
+        with open(f'out/{out}', mode='w+', encoding='utf-8') as f:
+            f.write(s)
     print(json.dumps(results, indent=4))
     # file = 'test/test-data/maximal.ttl'
     # file = 'test/test-data/rosetta.ttl'

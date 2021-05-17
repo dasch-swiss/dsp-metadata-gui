@@ -1,0 +1,78 @@
+@prefix dsp-repo: <http://ns.dasch.swiss/repository#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix schema: <https://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dsp-repo:dsp-081C-dataset-000 a dsp-repo:Dataset ;
+    dsp-repo:hasAbstract "The database documents the events that took place in the Hôtel de Musique in Bern between 1766 and 1905. The repertoire was constituted by different kinds of spectacles like theatre plays, operas, ballets, concerts, dance parties, acrobatic performances, conferences or magicians. The list reconstructs the lifely and colourful theatre culture of Bern in the 19th Century."^^xsd:string ;
+    dsp-repo:hasConditionsOfAccess "open"^^xsd:string ;
+    dsp-repo:hasDatePublished "2015-04-01"^^xsd:date ;
+    dsp-repo:hasHowToCite "HdM-Bern"^^xsd:string ;
+    dsp-repo:hasLanguage "German"^^xsd:string ;
+    dsp-repo:hasLicense [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "Creative Commons" ] ;
+            schema:url "https://creativecommons.org/licenses/by-nc/4.0" ] ;
+    dsp-repo:hasQualifiedAttribution [ a prov:Attribution ;
+            dsp-repo:hasRole "author"^^xsd:string ;
+            prov:agent dsp-repo:dsp-081C-organization-000 ] ;
+    dsp-repo:hasStatus "Finished"^^xsd:string ;
+    dsp-repo:hasTitle "Hôtel de Musique Bern"^^xsd:string ;
+    dsp-repo:hasTypeOfData "Text"^^xsd:string ;
+    dsp-repo:isPartOf dsp-repo:dsp-081C-project .
+
+dsp-repo:dsp-081C-project a dsp-repo:Project ;
+    dsp-repo:hasDescription "The database documents the events that took place in the Hôtel de Musique in Bern between 1766 and 1905. The repertoire was constituted by different kinds of spectacles like theatre plays, operas, ballets, concerts, dance parties, acrobatic performances, conferences or magicians. The list reconstructs the lifely and colourful theatre culture of Bern in the 19th Century."^^xsd:string ;
+    dsp-repo:hasDiscipline "10302 Schweizer Geschichte"^^xsd:string,
+        "10405 Musikologie"^^xsd:string,
+        "10406 Theater-und Filmwissenschaften"^^xsd:string,
+        "10604 Musik und Theater"^^xsd:string ;
+    dsp-repo:hasFunder dsp-repo:dsp-081C-organization-000 ;
+    dsp-repo:hasKeywords "19 Century"^^xsd:string,
+        "Bern"^^xsd:string,
+        "Concert"^^xsd:string,
+        "Music"^^xsd:string,
+        "Musicology"^^xsd:string,
+        "Opera"^^xsd:string,
+        "Spectales"^^xsd:string,
+        "Switzerland"^^xsd:string,
+        "Theater history"^^xsd:string,
+        "Theatre"^^xsd:string ;
+    dsp-repo:hasName "Hôtel de Musique Bern"^^xsd:string ;
+    dsp-repo:hasShortcode "081C"^^xsd:string ;
+    dsp-repo:hasSpatialCoverage [ a schema:Place ;
+            schema:url [ a schema:URL ;
+                    schema:propertyID [ a schema:PropertyValue ;
+                            schema:propertyID "Geonames"^^xsd:string ] ;
+                    schema:url "https://www.geonames.org/2661552" ] ] ;
+    dsp-repo:hasStartDate "2009-04-01"^^xsd:date ;
+    dsp-repo:hasTemporalCoverage [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "Periodo" ] ;
+            schema:url "http://n2t.net/ark:/99152/p06c6g3pvr5" ],
+        [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "Periodo" ] ;
+            schema:url "http://n2t.net/ark:/99152/p06c6g3p4cf" ],
+        [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "Periodo" ] ;
+            schema:url "http://n2t.net/ark:/99152/p06c6g364np" ],
+        "1766-1905"^^xsd:string ;
+    dsp-repo:hasURL [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "www.salsah.o" ] ;
+            schema:url "www.salsah.org" ] .
+
+dsp-repo:dsp-081C-organization-000 a dsp-repo:Organization ;
+    dsp-repo:hasAddress [ a schema:PostalAddress ;
+            schema:addressLocality "Bern"^^xsd:string ;
+            schema:postalCode "3011"^^xsd:string ;
+            schema:streetAddress "Mittelstr. 43"^^xsd:string ] ;
+    dsp-repo:hasEmail "urchueguia@musik.unibe.ch" ;
+    dsp-repo:hasName "Institut für Musikwissenschaft der Universität Bern"^^xsd:string ;
+    dsp-repo:hasURL [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "musik.unibe.ch" ] ;
+            schema:url "https://www.musik.unibe.ch/index_ger.html" ] .
+
