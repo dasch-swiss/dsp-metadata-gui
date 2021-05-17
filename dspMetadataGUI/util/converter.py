@@ -5,10 +5,10 @@ Module to convert RDF serialized metadata (first datamodel) into JSON metadata (
 import re
 from typing import Any, Dict, List
 from rdflib import Graph
-from rdflib.namespace import Namespace, RDF, SDO, PROV
+from rdflib.namespace import Namespace, RDF, SDO, PROV, SKOS
 import json
 import jsonschema
-from rdflib.term import BNode
+from rdflib.term import BNode, Literal
 import requests
 import time
 from textblob import TextBlob
@@ -483,7 +483,7 @@ def _get_url_text(url, t):
     if t == 'URL':
         return url
     if t == 'Skos':
-        return f"XX: Skos URL: {url}"  # XXX
+        return _get_skos_name(url)
     if t == 'Geonames':
         return _get_geonames_name(url)
     if t == 'Pleiades':
@@ -501,6 +501,27 @@ def _get_url_text(url, t):
     if t == 'Chronontology':
         return f"XX: Chronontology URL: {url}"  # XXX
     f"XX: Unknown Type for URL: {url}"
+
+
+def _get_skos_name(url: str):
+    try:
+        if re.search('\d{3,6}$', url):
+            url += '/n-triples'
+        if re.search('\d{3,6}\/$', url):
+            url += 'n-triples'
+        if url.endswith('/html'):
+            url = url.replace('/html', '/n-triples')
+        r = requests.get(url)
+        data = r.text
+        g = Graph()
+        g.parse(data=data, format='n3')
+        labels = g.objects(predicate=SKOS.prefLabel)
+        for label in labels:
+            l: Literal = label
+            if l.language == 'en':
+                return str(l)
+    except Exception as e:
+        return f'XX: CC URL: {url}'
 
 
 def _get_cc_name(url: str):
