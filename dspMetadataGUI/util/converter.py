@@ -581,6 +581,9 @@ def validate(data):
 
 if __name__ == "__main__":
     # file = 'test/test-data/maximal.ttl'
-    file = 'test/test-data/rosetta.ttl'
+    # file = 'test/test-data/rosetta.ttl'
+    file = 'test/test-data/limc.ttl'
+    # file = 'test/test-data/awg.ttl'
     s = convert_file(file)
-    print(s)
+    # print(s)
+    print(f'To resolve manually (`XX`): {s.count("XX")}')
