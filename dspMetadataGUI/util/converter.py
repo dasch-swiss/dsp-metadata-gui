@@ -437,7 +437,6 @@ def _get_address(g: Graph, iri: BNode):
     street = str(next(g.objects(iri, SDO.streetAddress)))
     country = _get_country(locality)
     return {'street': street,
-            'additional': "XX - new Property",
             'postalCode': code,
             'locality': locality,
             'country': country}
@@ -493,9 +492,9 @@ def _get_url_text(url, t):
     if t == 'Periodo':
         return f"XX: Periodo URL: {url}"  #  XXX
     if t == 'GND':
-        return f"XX: GND URL: {url}"
+        return f"GND URL: {url}"
     if t == 'VIAF':
-        return f"XX: VIAF URL: {url}"
+        return f"VIAF URL: {url}"
     if t == 'Creative Commons':
         return _get_cc_name(url)
     if t == 'Chronontology':
@@ -575,7 +574,7 @@ def _get_url_type(propID):
         return "URL"
 
 
-def validate(data):
+def validate(data, verbose=False):
     """Validates JSON
 
     Validates json serialized data against the schema of the API specification.  
@@ -588,23 +587,41 @@ def validate(data):
     r = requests.get(schema_url)
     schema = r.json()
     try:
-        print("Validating...")
+        if verbose:
+            print("Validating...")
         validator = jsonschema.Draft7Validator(schema)
         valid = True
         for e in validator.iter_errors(data):
-            print(f'Validation Error: {e.message}')
+            if verbose:
+                print(f'Validation Error: {e.message}')
             valid = False
-        if valid:
+        if valid and verbose:
             print("JSON is valid.")
+        return valid
     except jsonschema.ValidationError as val:
-        print(val.message)
+        if verbose:
+            print(val.message)
+        return False
 
 
 if __name__ == "__main__":
+    files = ['maximal.ttl',
+             'rosetta.ttl',
+             'limc.ttl',
+             'awg.ttl']
+    results = {}
+    for filename in files:
+        s = convert_file(f'test/test-data/{filename}')
+        results[filename] = {
+            'isValid': validate(s),
+            'numberOfIssues': s.count("XX"),
+            'toResolve': [l.strip().replace('"', "'") for l in s.splitlines() if 'XX' in l]
+        }
+    print(json.dumps(results, indent=4))
     # file = 'test/test-data/maximal.ttl'
     # file = 'test/test-data/rosetta.ttl'
-    file = 'test/test-data/limc.ttl'
+    # file = 'test/test-data/limc.ttl'
     # file = 'test/test-data/awg.ttl'
-    s = convert_file(file)
+    # s = convert_file(file)
     # print(s)
-    print(f'To resolve manually (`XX`): {s.count("XX")}')
+    # print(f'To resolve manually (`XX`): {s.count("XX")}')
