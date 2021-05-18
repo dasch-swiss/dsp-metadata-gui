@@ -1338,7 +1338,59 @@ class ConverterDialog(wx.Dialog):
     # CHORE: document
     def __init__(self, *args, **kw):
         super(ConverterDialog, self).__init__(*args, **kw)
+        self.Size = ((800, 550))
         # TODO: UI: should have an explanation label, a file picker for input, file picker for output, option to work from current project's string, ...
+        panel = wx.Panel(self)
+        box = wx.BoxSizer(wx.VERTICAL)
+        text = wx.StaticText(panel, label="The DSP Metadata GUI tool models project metadata " +
+                             "according to the first iteration of DSP Metadata, " +
+                             "and produces RDF data (serialized as turtle, XML and JSON-LD).\n\n" +
+                             "The second iteration introduced major changes in the data model, " +
+                             "which proved to be breaking.\n\n" +
+                             "This converter allows to convert metadata from a .ttl file in the old model to the new model " +
+                             "requiring minimal manual work.\n\n" +
+                             "Some places will definitely require manual work, these are marked with `XX` in the data " +
+                             "so that they are easy to find.\n\n" +
+                             "It is advisable however, to check all data thoroughly to ensure they are correct.")
+        text.Wrap(780)
+        box.Add(text, 0, wx.ALL | wx.EXPAND, 7)
+        box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
+        # Input
+        input_panel = wx.Panel(panel)
+        in_box = wx.BoxSizer(wx.VERTICAL)
+        txt_in_header = wx.StaticText(input_panel, label="Select Input for Conversion:")
+        in_box.Add(txt_in_header, 0, wx.ALL | wx.EXPAND, 7)
+        input_panel.SetSizer(in_box)
+        box.Add(input_panel, 0, wx.ALL | wx.EXPAND, 7)
+        # TODO: add buttons here
+        box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
+        # Output
+        output_panel = wx.Panel(panel)
+        out_box = wx.BoxSizer(wx.VERTICAL)
+        txt_out_header = wx.StaticText(output_panel, label="Select Output Directory for Conversion:")
+        out_box.Add(txt_out_header, 0, wx.ALL | wx.EXPAND, 7)
+        out_btn = wx.Button(output_panel, label="Output Directory")
+        out_box.Add(out_btn, 0, wx.ALL, 7)
+        out_path_lbl = wx.StaticText(output_panel, label="No Output Directory Selected")
+        out_box.Add(out_path_lbl, 0, wx.ALL | wx.EXPAND, 7)
+        out_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_output(out_path_lbl))
+        output_panel.SetSizer(out_box)
+        box.Add(output_panel, 0, wx.ALL | wx.EXPAND, 7)
+        box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
+        # Run Conversion
+        # TODO: implement
+        panel.SetSizer(box)
+
+    def _on_select_output(self, label: wx.StaticText):
+        with wx.DirDialog(self, "Select Output Folder") as dirDialog:
+            res = dirDialog.ShowModal()
+            if res == wx.ID_OK:
+                self.__out_dir = dirDialog.GetPath()
+                label.SetLabel(self.__out_dir)
+            else:
+                self.__out_dir = None
+                label.SetLabel("No Output Directory Selected")
+            # TODO: needs to refresh the run button state somehow
 
 
 if __name__ == '__main__':
