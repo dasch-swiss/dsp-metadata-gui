@@ -23,6 +23,20 @@ schema_url = "https://raw.githubusercontent.com/dasch-swiss/dasch-service-platfo
 dsp = Namespace("http://ns.dasch.swiss/repository#")
 
 
+def convert_files(files: List[str]) -> List[str]:
+    """Convert multiple metadata ets from a list of files.
+
+    Convert metadata from a local .ttl files.
+
+    Args:
+        files (List[str]): path to a .ttl files (can be relative or absolute)
+
+    Returns:
+        List[str]: list of json serialized metadata
+    """
+    return [convert_file(f) for f in files]
+
+
 def convert_file(file: str) -> str:
     """Convert metadata from a file.
 
@@ -37,6 +51,18 @@ def convert_file(file: str) -> str:
     with open(file, 'r+', encoding='utf-8') as f:
         s = f.read()
     return convert_string(s)
+
+
+def convert_strings(data_list: List[str]) -> List[str]:
+    """Convert multiple metadata sets from a list of strings.
+
+    Args:
+        data_list (List[str]): list of turtle serializations of metadata
+
+    Returns:
+        List[str]: list of json serialized metadata
+    """
+    return [convert_string(data) for data in data_list]
 
 
 def convert_string(data: str) -> str:
