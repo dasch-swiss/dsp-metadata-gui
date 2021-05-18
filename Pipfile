@@ -10,6 +10,10 @@ validators = "*"
 jsonschema = "*"
 beautifulsoup4 = "*"
 textblob = "*"
+guess-language-spirit = "*"
+pyenchant = "*"
+langdetect = "*"
+langid = "*"
 
 [dev-packages]
 pipenv-setup = "*"

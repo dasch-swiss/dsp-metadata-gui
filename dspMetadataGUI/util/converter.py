@@ -13,6 +13,9 @@ from rdflib.term import BNode, Literal
 import requests
 import time
 from textblob import TextBlob
+import guess_language
+import langid
+from langdetect import detect
 from bs4 import BeautifulSoup
 
 
@@ -417,18 +420,30 @@ def _guess_language_of_text(text):
 
     Returns a dict of type multilanguage text, if possible with the correct language attribution to the text.
     """
+    probables = ["en", "de", "fr"]
     text = str(text)
     try:
-        lang = TextBlob(text).detect_language()
+        lang_txtblob = TextBlob(text).detect_language()
+        if lang_txtblob in probables:
+            return {lang_txtblob: text}
     except Exception:
-        print(f"Could not resolve language for {text} - probably due to API limit... may have to retry tomorrow.")
-        lang = "XX"
-    if lang not in ["en", "de", "fr", "it"]:
-        # print(f"Unexpected language: {lang}  (Text: {text})")
-        lang = f"XX - {lang}"
-    return {
-        lang: text
-    }
+        lang_txtblob = None
+    try:
+        guess = guess_language.guess_language(text, probables)
+        if guess in probables:
+            return {guess: text}
+        if not isinstance(guess, str):
+            guess = None
+    except Exception as e:
+        guess = None
+    try:
+        la_id, _ = langid.classify(text)
+        det = detect(text)
+        if det and la_id and det == la_id and det in probables:
+            return {det: text}
+    except Exception as e:
+        det = None
+    return {"XX": text}
 
 
 def _get_address(g: Graph, iri: BNode):
@@ -487,7 +502,7 @@ def _get_url_text(url, t):
     if t == 'Geonames':
         return _get_geonames_name(url)
     if t == 'Pleiades':
-        return f"XX: Pleiades URL: {url}"  # XXX
+        return f"XX: Pleiades URL: {url}"
     if t == 'ORCID':
         return f"ORCID URL: {url}"
     if t == 'Periodo':
@@ -504,6 +519,7 @@ def _get_url_text(url, t):
 
 
 def _get_periodo_name(url: str):
+    """Get display text for a Periodo URL"""
     try:
         r = requests.get(url + '.json')
         data = r.json()
@@ -514,6 +530,7 @@ def _get_periodo_name(url: str):
 
 
 def _get_chonontology_name(url: str):
+    """Get display text for a ChronOntology URL"""
     try:
         id_ = url.rsplit('/', maxsplit=1)[-1]
         r = requests.get(f'https://chronontology.dainst.org/data/period/{id_}')
@@ -525,6 +542,7 @@ def _get_chonontology_name(url: str):
 
 
 def _get_skos_name(url: str):
+    """Get display text for a SKOS URL"""
     try:
         if re.search('\d{3,6}$', url):
             url += '/n-triples'
@@ -640,29 +658,26 @@ def validate(data, verbose=False):
 
 if __name__ == "__main__":
     files = ['maximal.ttl',
-             #  'rosetta.ttl',
-             #  'limc.ttl',
-             #  'awg.ttl',
-             #  'hdm.ttl'
+             'rosetta.ttl',
+             'limc.ttl',
+             'awg.ttl',
+             'hdm.ttl'
              ]
     results = {}
     if not os.path.exists('out'):
         os.mkdir('out')
     for filename in files:
+        print(f'Converting: {filename}...')
         s = convert_file(f'test/test-data/{filename}')
+        issues = s.count("XX")
         results[filename] = {
             'isValid': validate(s),
-            'numberOfIssues': s.count("XX"),
+            'numberOfIssues': issues,
             'toResolve': [l.strip().replace('"', "'") for l in s.splitlines() if 'XX' in l]
         }
+        print(f'Number of issues encountered: {issues}')
         out = filename.replace('.ttl', '.json')
         with open(f'out/{out}', mode='w+', encoding='utf-8') as f:
             f.write(s)
+        print(f'Saved as: {out}\nDone.\n\n----\n')
     print(json.dumps(results, indent=4))
-    # file = 'test/test-data/maximal.ttl'
-    # file = 'test/test-data/rosetta.ttl'
-    # file = 'test/test-data/limc.ttl'
-    # file = 'test/test-data/awg.ttl'
-    # s = convert_file(file)
-    # print(s)
-    # print(f'To resolve manually (`XX`): {s.count("XX")}')
