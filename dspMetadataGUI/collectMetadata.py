@@ -252,7 +252,7 @@ class ProjectPanel(wx.Panel):
         """Gets the currently selected Project/Metadataset"""
         selection = self.list_ctrl.GetFirstSelected()
         if selection < 0:
-            return
+            return None
         shortcode = self.list_ctrl.GetItem(selection, col=2).GetText()
         return data_handler.get_project_by_shortcode(shortcode)
 
@@ -1335,6 +1335,11 @@ class CalendarDlg(wx.Dialog):
 
 
 class ConverterDialog(wx.Dialog):
+    class InType:
+        SINGLE_FILE = 0
+        MULTI_FILE = 1
+        DIRECTORY = 2
+
     # CHORE: document
     def __init__(self, *args, **kw):
         super(ConverterDialog, self).__init__(*args, **kw)
@@ -1362,8 +1367,22 @@ class ConverterDialog(wx.Dialog):
         in_box.Add(txt_in_header, 0, wx.ALL | wx.EXPAND, 7)
         input_panel.SetSizer(in_box)
         box.Add(input_panel, 0, wx.ALL | wx.EXPAND, 7)
-        # TODO: add buttons here
+        buttons_panel = wx.Panel(input_panel)
+        btns_box = wx.BoxSizer(wx.HORIZONTAL)
+        buttons_panel.SetSizer(btns_box)
+        in_file_btn = wx.Button(buttons_panel, label="Single File")
+        btns_box.Add(in_file_btn, 1, wx.ALL, 7)
+        in_files_btn = wx.Button(buttons_panel, label="Multiple Files")
+        btns_box.Add(in_files_btn, 1, wx.ALL, 7)
+        in_dir_btn = wx.Button(buttons_panel, label="Directory (Bulk Transform)")
+        btns_box.Add(in_dir_btn, 1, wx.ALL, 7)
+        in_box.Add(buttons_panel, 0, wx.ALL | wx.EXPAND, 7)
+        in_lbl = wx.StaticText(input_panel, label="No Input Selected")
+        in_box.Add(in_lbl, 0, wx.ALL | wx.EXPAND, 7)
         box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
+        in_file_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, ConverterDialog.InType.SINGLE_FILE))
+        in_files_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, ConverterDialog.InType.MULTI_FILE))
+        in_dir_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, ConverterDialog.InType.DIRECTORY))
         # Output
         output_panel = wx.Panel(panel)
         out_box = wx.BoxSizer(wx.VERTICAL)
@@ -1391,6 +1410,17 @@ class ConverterDialog(wx.Dialog):
                 self.__out_dir = None
                 label.SetLabel("No Output Directory Selected")
             # TODO: needs to refresh the run button state somehow
+
+    def _on_select_input(self, label: wx.StaticText, mode):
+        if mode == ConverterDialog.InType.SINGLE_FILE:
+            print("Single File")
+            pass  # XXX: implement
+        elif mode == ConverterDialog.InType.MULTI_FILE:
+            print("Multi File")
+            pass  # XXX: implement
+        elif mode == ConverterDialog.InType.DIRECTORY:
+            print("Folder")
+            pass  # XXX: implement
 
 
 if __name__ == '__main__':
