@@ -12,6 +12,8 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
+data_handler: DataHandling
+
 
 def collectMetadata():
     """
@@ -94,7 +96,7 @@ class ProjectPanel(wx.Panel):
         """
         super().__init__(parent)
         self.folder_path = ""
-        self.row_obj_dict = {}
+        self.row_obj_dict = {}  # type: ignore
         self.project_dependent_buttons = []
 
         # Create list for projects
@@ -648,7 +650,7 @@ class DataTab(scrolledPanel.ScrolledPanel):
         self.multiple_selection = sel
         data_handler.refresh_ui()
 
-    def add_to_list(self, event, content_list: wx.ListBox, widget: Union[wx.Control, Tuple[wx.Control]], addable: str):
+    def add_to_list(self, event, content_list: wx.ListBox, widget: Union[wx.Control, Tuple[wx.Control]], addable: Union[str, Tuple[str, str]]):
         """
         add an object to a list.
         """
@@ -844,14 +846,14 @@ class PropertyRow:
             inner_sizer = wx.BoxSizer()
             text_sizer = wx.BoxSizer(wx.VERTICAL)
             textcontrol = wx.TextCtrl(scroller, style=wx.TE_PROCESS_ENTER)
+            text_sizer.Add(textcontrol, flag=wx.EXPAND)
+            text_sizer.AddSpacer(5)
+            content_list = wx.ListBox(scroller)
             textcontrol.Bind(wx.EVT_TEXT_ENTER,
                              lambda e: parent.add_to_list(e,
                                                           content_list,
                                                           textcontrol,
                                                           textcontrol.GetValue()))
-            text_sizer.Add(textcontrol, flag=wx.EXPAND)
-            text_sizer.AddSpacer(5)
-            content_list = wx.ListBox(scroller)
             text_sizer.Add(content_list, 1, flag=wx.EXPAND)
             inner_sizer.Add(text_sizer, 1, flag=wx.EXPAND)
             inner_sizer.AddSpacer(5)
