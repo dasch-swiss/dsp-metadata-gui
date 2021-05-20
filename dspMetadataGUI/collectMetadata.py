@@ -9,6 +9,7 @@ import wx.adv
 import os
 import re
 import sys
+from glob import glob
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
@@ -1345,8 +1346,9 @@ class ConverterDialog(wx.Dialog):
     # CHORE: document
     def __init__(self, *args, **kw):
         super(ConverterDialog, self).__init__(*args, **kw)
-        self.Size = ((800, 550))
-        # TODO: UI: should have an explanation label, a file picker for input, file picker for output, option to work from current project's string, ...
+        self.__in_files = None
+        self.__out_dir = None
+        self.Size = ((800, 650))
         panel = wx.Panel(self)
         box = wx.BoxSizer(wx.VERTICAL)
         text = wx.StaticText(panel, label="The DSP Metadata GUI tool models project metadata " +
@@ -1380,6 +1382,7 @@ class ConverterDialog(wx.Dialog):
         btns_box.Add(in_dir_btn, 1, wx.ALL, 7)
         in_box.Add(buttons_panel, 0, wx.ALL | wx.EXPAND, 7)
         in_lbl = wx.StaticText(input_panel, label="No Input Selected")
+        in_lbl.SetMinSize((200, 80))
         in_box.Add(in_lbl, 0, wx.ALL | wx.EXPAND, 7)
         box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
         in_file_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, ConverterDialog.InType.SINGLE_FILE))
@@ -1399,8 +1402,15 @@ class ConverterDialog(wx.Dialog):
         box.Add(output_panel, 0, wx.ALL | wx.EXPAND, 7)
         box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
         # Run Conversion
-        # TODO: implement
+        self.btn_convert = wx.Button(panel, label="Convert")
+        self.btn_convert.Bind(wx.EVT_BUTTON, lambda x: self._run_conversion())
+        box.Add(self.btn_convert, 0, wx.ALL | wx.EXPAND, 7)
         panel.SetSizer(box)
+        self._refresh()
+
+    def _run_conversion(self):
+        # XXX: implement
+        print("Convert!")
 
     def _on_select_output(self, label: wx.StaticText):
         with wx.DirDialog(self, "Select Output Folder") as dirDialog:
@@ -1411,18 +1421,44 @@ class ConverterDialog(wx.Dialog):
             else:
                 self.__out_dir = None
                 label.SetLabel("No Output Directory Selected")
-            # TODO: needs to refresh the run button state somehow
+        self._refresh()
 
     def _on_select_input(self, label: wx.StaticText, mode):
         if mode == ConverterDialog.InType.SINGLE_FILE:
-            print("Single File")
-            pass  # XXX: implement
+            with wx.FileDialog(self, "Select Input File", wildcard="*.ttl") as fileDialog:
+                res = fileDialog.ShowModal()
+                if res == wx.ID_OK:
+                    path = fileDialog.GetPath()
+                    self.__in_files = [path]
+                    label.SetLabel(str(self.__in_files))
         elif mode == ConverterDialog.InType.MULTI_FILE:
-            print("Multi File")
-            pass  # XXX: implement
+            with wx.FileDialog(self, "Select Input Files", style=wx.FD_MULTIPLE, wildcard="*.ttl") as fileDialog:
+                res = fileDialog.ShowModal()
+                if res == wx.ID_OK:
+                    paths = fileDialog.GetPaths()
+                    self.__in_files = paths
+                    if len(self.__in_files) < 6:
+                        label.SetLabel("\n".join(self.__in_files))
+                    else:
+                        label.SetLabel(f"Selected files: {len(self.__in_files)}")
         elif mode == ConverterDialog.InType.DIRECTORY:
-            print("Folder")
-            pass  # XXX: implement
+            with wx.DirDialog(self, "Select Input File") as dirDialog:
+                res = dirDialog.ShowModal()
+                if res == wx.ID_OK:
+                    path = dirDialog.GetPath()
+                    files = glob(f'{path}/*.ttl')
+                    self.__in_files = files
+                    if len(self.__in_files) < 6:
+                        label.SetLabel("\n".join(self.__in_files))
+                    else:
+                        label.SetLabel(f"Selected files: {len(self.__in_files)}")
+        self._refresh()
+
+    def _refresh(self):
+        if self.__in_files and self.__out_dir:
+            self.btn_convert.Enable()
+        else:
+            self.btn_convert.Disable()
 
 
 if __name__ == '__main__':
