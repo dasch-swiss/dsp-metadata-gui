@@ -1,6 +1,7 @@
-from util.utils import Cardinality, Datatype, Validity
+from util.utils import Cardinality, Datatype, Validity, open_file
 from util.metaDataSet import DataClass, MetaDataSet, Property
 from util.dataHandling import DataHandling
+from util import converter
 from typing import Optional, Tuple, Union
 import wx
 import wx.lib.scrolledpanel as scrolledPanel
@@ -1409,8 +1410,11 @@ class ConverterDialog(wx.Dialog):
         self._refresh()
 
     def _run_conversion(self):
-        # XXX: implement
-        print("Convert!")
+        if self.__in_files:
+            print(f'saving to: {self.__out_dir}')
+            res = converter.convert_and_save(self.__in_files, self.__out_dir)
+            print(f"Converted: {res} files")
+            open_file(self.__out_dir)
 
     def _on_select_output(self, label: wx.StaticText):
         with wx.DirDialog(self, "Select Output Folder") as dirDialog:

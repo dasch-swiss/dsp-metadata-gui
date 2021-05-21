@@ -4,6 +4,7 @@ Module to convert RDF serialized metadata (first datamodel) into JSON metadata (
 
 import re
 import os
+from pathlib import Path
 from typing import Any, Dict, List
 from rdflib import Graph
 from rdflib.namespace import Namespace, RDF, SDO, PROV, SKOS
@@ -21,6 +22,31 @@ from bs4 import BeautifulSoup
 
 schema_url = "https://raw.githubusercontent.com/dasch-swiss/dasch-service-platform/main/docs/services/metadata/schema-metadata.json"
 dsp = Namespace("http://ns.dasch.swiss/repository#")
+
+
+def convert_and_save(files: List[str], target: str) -> int:
+    """Convert and list of metadata and save to files.
+
+    Takes a list of `.ttl` files, converts each of them, and stores it to the specified target directory.
+
+    Args:
+        files (List[str]): paths to `.ttl` files that should be transformed.
+        target (str): path to the target directory where the output files should be saved.
+
+    Returns:
+        int: The number of files that were converted.
+    """
+    res = 0
+    for f in files:
+        s = convert_file(f)
+        print(f'File length: {len(s)}')
+        fpath = Path(f)
+        out = f"{target}/{fpath.stem}.json"
+        print(out)
+        with open(out, mode='w+', encoding='utf-8') as fw:
+            fw.write(s)
+        res += 1
+    return res
 
 
 def convert_files(files: List[str]) -> List[str]:
