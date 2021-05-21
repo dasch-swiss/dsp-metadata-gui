@@ -1339,13 +1339,19 @@ class CalendarDlg(wx.Dialog):
 
 
 class ConverterDialog(wx.Dialog):
+    """Dialog that lets the user select which files to convert to the new metadata format."""
     class InType:
         SINGLE_FILE = 0
         MULTI_FILE = 1
         DIRECTORY = 2
 
-    # CHORE: document
     def __init__(self, *args, **kw):
+        """Create a new Converter Dialog.
+
+        Subclass of wx.Dialog.
+
+        Should be displayed with `.ShowModal()`
+        """
         super(ConverterDialog, self).__init__(*args, **kw)
         self.__in_files = None
         self.__out_dir = None
@@ -1410,6 +1416,7 @@ class ConverterDialog(wx.Dialog):
         self._refresh()
 
     def _run_conversion(self):
+        """Button `Convert` has been clicked."""
         if self.__in_files:
             print(f'saving to: {self.__out_dir}')
             res = converter.convert_and_save(self.__in_files, self.__out_dir)
@@ -1417,6 +1424,7 @@ class ConverterDialog(wx.Dialog):
             open_file(self.__out_dir)
 
     def _on_select_output(self, label: wx.StaticText):
+        """Select output/target directory by opening a DirDialog."""
         with wx.DirDialog(self, "Select Output Folder") as dirDialog:
             res = dirDialog.ShowModal()
             if res == wx.ID_OK:
@@ -1428,6 +1436,7 @@ class ConverterDialog(wx.Dialog):
         self._refresh()
 
     def _on_select_input(self, label: wx.StaticText, mode):
+        """Select input file(s) by opening FileDialog/DirDialog, depending on the selected mode."""
         if mode == ConverterDialog.InType.SINGLE_FILE:
             with wx.FileDialog(self, "Select Input File", wildcard="*.ttl") as fileDialog:
                 res = fileDialog.ShowModal()
