@@ -27,8 +27,42 @@ The most important changes from V1 to V2 include the following additions:
 
 ## Using the Conversion
 
-TODO!
+To convert metadata from the old data model to the V2 model, follow these steps:
 
+In the menu bar, click `Options > Convert RDF to JSON`.
+
+![conversion menu item](assets/images/conversion_menu_item.png)
+
+This will open the conversion dialog.
+
+![conversion dialog](assets/images/conversion_dialog.png)
+
+Here you need to specify:
+
+1. Which files to convert.
+2. Where to save the converted files.
+
+To select the files that should be converted, you have three options:
+
+* `Single File`: Select a single Turtle file.
+* `Multiple Files`: Select multiple Turtle files; use shift-click or control-click to select multiple files.
+* `Directory (Bulk Transform)`: Select a folder and it will transform all Turtle files within this folder.
+
+As output simply select a folder. The selected input file(s) will be converted and saved to this folder.  
+The output files will retain the input file's name but the ending will be replaced from `.ttl` to `.json`.
+If the output folder already contains a file whith such a name, it will get overwritten.
+It is therefor advisable to select an empty folder.
+
+Finally, hit the `Convert` button at the very bottom of the dialog.  
+This button is greyed out als long as either the input or the output is missing. As soon as input and output are specified, the button gets enabled.
+
+The conversion may take a while (especially if multiple files are being converted), the dialog will not be clickable during this time.
+Once it's done the output folder should open up, and the conversion dialog can be closed.  
+The process should not take more than a minute per file. On the console you should get minimal indication of the progress.
+
+**NB:** The conversion requires a local `.ttl` file. It is therefor necessary to export the data after entering it, before it can be converted.
+
+**NB:** Be sure to remember to review the data after the conversion. It will require manual post-processing, as described below.
 
 
 ## Manual Post-Processing
