@@ -121,7 +121,7 @@ def convert_string(data: str) -> str:
         res['dataManagementPlan'] = dmp
 
     validate(res)
-    return json.dumps(res, indent=4)
+    return json.dumps(res, indent=4, ensure_ascii=False)
 
 
 # DMP
