@@ -646,7 +646,7 @@ def _get_geonames_name(url: str):
                    'username': 'blandolt'}
         r = requests.get(base, params=payload)
         resp = r.json()
-        name = resp.get('toponymName')
+        name = resp.get('name')
         if not name:
             raise Exception()
         return name
