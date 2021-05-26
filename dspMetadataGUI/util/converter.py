@@ -630,6 +630,8 @@ def _get_cc_name(url: str):
 
 def _get_geonames_name(url: str):
     """Get display text for a geonames URL"""
+    if url.endswith('/'):
+        url = url.removesuffix('/')
     try:
         if re.search('\/countries\/', url):
             r = requests.get(url)
@@ -709,12 +711,13 @@ def validate(data, verbose=False):
 
 
 if __name__ == "__main__":
-    files = ['maximal.ttl',
-             'rosetta.ttl',
-             'limc.ttl',
-             'awg.ttl',
-             'hdm.ttl'
-             ]
+    # files = ['maximal.ttl',
+    #          'rosetta.ttl',
+    #          'limc.ttl',
+    #          'awg.ttl',
+    #          'hdm.ttl'
+    #          ]
+    files = ['drawings-gods.ttl']
     results = {}
     if not os.path.exists('out'):
         os.mkdir('out')
