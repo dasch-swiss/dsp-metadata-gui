@@ -595,13 +595,10 @@ def _get_chonontology_name(url: str):
 
 def _get_skos_name(url: str):
     """Get display text for a SKOS URL"""
+    url = url.removesuffix('/')
+    url = url.removesuffix('/html')
     try:
-        if re.search('\d{3,6}$', url):
-            url += '/n-triples'
-        if re.search('\d{3,6}\/$', url):
-            url += 'n-triples'
-        if url.endswith('/html'):
-            url = url.replace('/html', '/n-triples')
+        url += '/n-triples'
         r = requests.get(url)
         data = r.text
         g = Graph()
@@ -717,7 +714,7 @@ if __name__ == "__main__":
     #          'awg.ttl',
     #          'hdm.ttl'
     #          ]
-    files = ['drawings-gods.ttl']
+    files = ['drawings-gods.ttl', 'awg.ttl']
     results = {}
     if not os.path.exists('out'):
         os.mkdir('out')
