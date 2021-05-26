@@ -474,6 +474,9 @@ def _guess_language_of_text(text):
     """
     probables = ["en", "de", "fr"]
     text = str(text)
+    predefined = _get_predefined_multilanguage_string(text)
+    if predefined:
+        return predefined
     try:
         lang_txtblob = TextBlob(text).detect_language()
         if lang_txtblob in probables:
@@ -543,6 +546,31 @@ def _get_url(g: Graph, iri: BNode):
         "type": type_,
         "url": url
     }
+
+
+def _get_predefined_multilanguage_string(text: str):
+    knowns: Dict[str, Dict] = {'German': {'de': 'Deutsch',
+                                          'en': 'German',
+                                          'fr': 'allemand'},
+                               'English': {'en': 'English',
+                                           'de': 'Englisch',
+                                           'fr': 'anglais'},
+                               'Latin': {'en': 'Latin',
+                                         'de': 'Latein',
+                                         'fr': 'latin'},
+                               'French': {'en': 'French',
+                                          'de': 'Französisch',
+                                          'fr': 'français'},
+                               'Italian': {'en': 'Italian',
+                                           'de': 'Italienisch',
+                                           'fr': 'italien'}}
+    known = knowns.get(text)
+    if known:
+        return known
+    if re.search('\d{4}( ?- ?\d{4})?', text):  # date
+        return {'de': text,
+                'en': text,
+                'fr': text}
 
 
 def _get_url_text(url, t):
