@@ -172,7 +172,7 @@ def _get_grant(g: Graph, grant_iri) -> Dict[str, Any]:
            "@modified": str(time.time_ns()), }
 
     for _, p, o in g.triples((grant_iri, None, None)):
-        obj = str(o)
+        obj = str(o).strip()
         if p == dsp.hasFunder:
             res.setdefault('funders', [])
             res['funders'].append(obj)
@@ -208,7 +208,7 @@ def _get_organization(g: Graph, org_iri):
            "@modified": str(time.time_ns()), }
 
     for _, p, o in g.triples((org_iri, None, None)):
-        obj = str(o)
+        obj = str(o).strip()
         if p == dsp.hasName:
             res['name'] = obj
         elif p == dsp.hasURL:
@@ -243,7 +243,7 @@ def _get_person(g: Graph, person_iri):
            "@modified": str(time.time_ns()), }
 
     for _, p, o in g.triples((person_iri, None, None)):
-        obj = str(o)
+        obj = str(o).strip()
         if p == dsp.hasJobTitle:
             res.setdefault('jobTitles', [])
             res['jobTitles'].append(obj)
@@ -288,7 +288,7 @@ def _get_dataset(g: Graph, dataset_iri):
            "@modified": str(time.time_ns()), }
 
     for _, p, o in g.triples((dataset_iri, None, None)):
-        obj = str(o)
+        obj = str(o).strip()
         if p == dsp.hasTitle:
             res['title'] = obj
         elif p == dsp.hasConditionsOfAccess:
@@ -366,7 +366,7 @@ def _get_project(g: Graph):
            "datasets": []}
 
     for _, p, o in g.triples((project_iri, None, None)):
-        obj = str(o)
+        obj = str(o).strip()
         if p == dsp.hasShortcode:
             res['shortcode'] = obj
         elif p == dsp.hasName:
@@ -533,7 +533,7 @@ def _get_place(g: Graph, iri: BNode):
 
 def _get_url(g: Graph, iri: BNode):
     """Get URL from graph"""
-    url = str(next(g.objects(iri, SDO.url)))
+    url = str(next(g.objects(iri, SDO.url))).strip()
     try:
         propID_bnode = next(g.objects(iri, SDO.propertyID))
         propID = str(next(g.objects(propID_bnode, SDO.propertyID)))
@@ -567,7 +567,7 @@ def _get_predefined_multilanguage_string(text: str):
     known = knowns.get(text)
     if known:
         return known
-    if re.search('\d{4}( ?- ?\d{4})?', text):  # date
+    if re.search('^\d{4}( ?- ?\d{4})?$', text):  # date
         return {'de': text,
                 'en': text,
                 'fr': text}
@@ -643,7 +643,7 @@ def _get_skos_name(url: str):
 def _get_cc_name(url: str):
     """Get display text for a Creative Commons URL"""
     try:
-        r = requests.get(url)
+        r = requests.get(url.strip())
         soup = BeautifulSoup(r.content, 'html.parser')
         ident = soup.select_one('span.cc-license-identifier')
         res: str = ident.get_text()
@@ -736,13 +736,13 @@ def validate(data, verbose=False):
 
 
 if __name__ == "__main__":
-    # files = ['maximal.ttl',
-    #          'rosetta.ttl',
-    #          'limc.ttl',
-    #          'awg.ttl',
-    #          'hdm.ttl'
-    #          ]
-    files = ['drawings-gods.ttl', 'awg.ttl']
+    files = ['maximal.ttl',
+             'rosetta.ttl',
+             'limc.ttl',
+             'awg.ttl',
+             'hdm.ttl',
+             'drawings-gods.ttl'
+             ]
     results = {}
     if not os.path.exists('out'):
         os.mkdir('out')
