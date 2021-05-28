@@ -1,5 +1,5 @@
 """
-Module to convert RDF serialized metadata (first datamodel) into JSON metadata (new datamodel).
+Module to convert RDF serialized metadata (first data model) into JSON metadata (new data model).
 """
 
 import re
@@ -25,7 +25,7 @@ dsp = Namespace("http://ns.dasch.swiss/repository#")
 
 
 def convert_and_save(files: List[str], target: str) -> int:
-    """Convert and list of metadata and save to files.
+    """Convert a list of metadata files and save output to files.
 
     Takes a list of `.ttl` files, converts each of them, and stores it to the specified target directory.
 
@@ -50,12 +50,12 @@ def convert_and_save(files: List[str], target: str) -> int:
 
 
 def convert_files(files: List[str]) -> List[str]:
-    """Convert multiple metadata ets from a list of files.
+    """Convert multiple metadata files from a list of files.
 
-    Convert metadata from a local .ttl files.
+    Convert metadata from local .ttl files.
 
     Args:
-        files (List[str]): path to a .ttl files (can be relative or absolute)
+        files (List[str]): paths to .ttl files (can be relative or absolute)
 
     Returns:
         List[str]: list of json serialized metadata
@@ -98,7 +98,7 @@ def convert_string(data: str) -> str:
         data (str): string of a turtle setrialization of metadata
 
     Returns:
-        str: json serialized metadata.
+        str: json serialized metadata
     """
     g = Graph()
     g.parse(data=data, format='ttl')
@@ -594,7 +594,7 @@ def _get_url_text(url, t):
     if t == 'Creative Commons':
         return _get_cc_name(url)
     if t == 'Chronontology':
-        return _get_chonontology_name(url)
+        return _get_chronontology_name(url)
     f"XX: Unknown Type for URL: {url}"
 
 
@@ -609,7 +609,7 @@ def _get_periodo_name(url: str):
         return f'XX: Periodo URL: {url}'
 
 
-def _get_chonontology_name(url: str):
+def _get_chronontology_name(url: str):
     """Get display text for a ChronOntology URL"""
     try:
         id_ = url.rsplit('/', maxsplit=1)[-1]
@@ -744,8 +744,7 @@ if __name__ == "__main__":
              'drawings-gods.ttl'
              ]
     results = {}
-    if not os.path.exists('out'):
-        os.mkdir('out')
+    os.makedirs('out', exist_ok=True)
     for filename in files:
         print(f'Converting: {filename}...')
         s = convert_file(f'test/test-data/{filename}')

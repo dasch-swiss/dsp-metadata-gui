@@ -253,7 +253,7 @@ class ProjectPanel(wx.Panel):
         self.rdf_display.SetValue(txt)
 
     def get_selected_project(self) -> Optional[MetaDataSet]:
-        """Gets the currently selected Project/Metadataset"""
+        """Gets the currently selected project/metadata set"""
         selection = self.list_ctrl.GetFirstSelected()
         if selection < 0:
             return None
@@ -653,9 +653,7 @@ class DataTab(scrolledPanel.ScrolledPanel):
         data_handler.refresh_ui()
 
     def add_to_list(self, event, content_list: wx.ListBox, widget: Union[wx.Control, Tuple[wx.Control]], addable: Union[str, Tuple[str, str]]):
-        """
-        add an object to a list.
-        """
+        """add an object to a list"""
         if not addable:  # is None
             return
         if isinstance(widget, tuple):  # Attribution, i.e. two inputs
