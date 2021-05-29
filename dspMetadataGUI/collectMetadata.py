@@ -1,3 +1,7 @@
+from util.utils import Cardinality, Datatype, Validity, open_file
+from util.metaDataSet import DataClass, MetaDataSet, Property
+from util.dataHandling import DataHandling
+from util import converter
 from typing import Optional, Tuple, Union
 import wx
 import wx.lib.scrolledpanel as scrolledPanel
@@ -6,12 +10,11 @@ import wx.adv
 import os
 import re
 import sys
+from glob import glob
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
-from util.dataHandling import DataHandling
-from util.metaDataSet import DataClass, MetaDataSet, Property
-from util.utils import Cardinality, Datatype, Validity
+data_handler: DataHandling
 
 
 def collectMetadata():
@@ -59,9 +62,16 @@ class ProjectFrame(wx.Frame):
         menu_bar.Append(file_menu, '&File')
         options_menu = wx.Menu()
         menu_bar.Append(options_menu, '&Options')
+        converter_menu_item = options_menu.Append(wx.ID_ANY, "Convert RDF to JSON (New Data Model)")
+        self.Bind(wx.EVT_MENU, self.__on_convert, converter_menu_item)
         options_help = wx.Menu()
         menu_bar.Append(options_help, '&Help')
         self.SetMenuBar(menu_bar)
+
+    def __on_convert(self, event):
+        dlg = ConverterDialog(None, title="JSON Converter")
+        dlg.ShowModal()
+        dlg.Destroy()
 
     def __on_save(self, event):
         """
@@ -88,7 +98,7 @@ class ProjectPanel(wx.Panel):
         """
         super().__init__(parent)
         self.folder_path = ""
-        self.row_obj_dict = {}
+        self.row_obj_dict = {}  # type: ignore
         self.project_dependent_buttons = []
 
         # Create list for projects
@@ -243,10 +253,10 @@ class ProjectPanel(wx.Panel):
         self.rdf_display.SetValue(txt)
 
     def get_selected_project(self) -> Optional[MetaDataSet]:
-        """Gets the currently selected Project/Metadataset"""
+        """Gets the currently selected project/metadata set"""
         selection = self.list_ctrl.GetFirstSelected()
         if selection < 0:
-            return
+            return None
         shortcode = self.list_ctrl.GetItem(selection, col=2).GetText()
         return data_handler.get_project_by_shortcode(shortcode)
 
@@ -642,10 +652,8 @@ class DataTab(scrolledPanel.ScrolledPanel):
         self.multiple_selection = sel
         data_handler.refresh_ui()
 
-    def add_to_list(self, event, content_list: wx.ListBox, widget: Union[wx.Control, Tuple[wx.Control]], addable: str):
-        """
-        add an object to a list.
-        """
+    def add_to_list(self, event, content_list: wx.ListBox, widget: Union[wx.Control, Tuple[wx.Control]], addable: Union[str, Tuple[str, str]]):
+        """add an object to a list"""
         if not addable:  # is None
             return
         if isinstance(widget, tuple):  # Attribution, i.e. two inputs
@@ -838,14 +846,14 @@ class PropertyRow:
             inner_sizer = wx.BoxSizer()
             text_sizer = wx.BoxSizer(wx.VERTICAL)
             textcontrol = wx.TextCtrl(scroller, style=wx.TE_PROCESS_ENTER)
+            text_sizer.Add(textcontrol, flag=wx.EXPAND)
+            text_sizer.AddSpacer(5)
+            content_list = wx.ListBox(scroller)
             textcontrol.Bind(wx.EVT_TEXT_ENTER,
                              lambda e: parent.add_to_list(e,
                                                           content_list,
                                                           textcontrol,
                                                           textcontrol.GetValue()))
-            text_sizer.Add(textcontrol, flag=wx.EXPAND)
-            text_sizer.AddSpacer(5)
-            content_list = wx.ListBox(scroller)
             text_sizer.Add(content_list, 1, flag=wx.EXPAND)
             inner_sizer.Add(text_sizer, 1, flag=wx.EXPAND)
             inner_sizer.AddSpacer(5)
@@ -1326,6 +1334,142 @@ class CalendarDlg(wx.Dialog):
             self.EndModal(wx.ID_CANCEL)
         else:
             evt.Skip()
+
+
+class ConverterDialog(wx.Dialog):
+    """Dialog that lets the user select which files to convert to the new metadata format."""
+    class InType:
+        SINGLE_FILE = 0
+        MULTI_FILE = 1
+        DIRECTORY = 2
+
+    def __init__(self, *args, **kw):
+        """Create a new Converter Dialog.
+
+        Subclass of wx.Dialog.
+
+        Should be displayed with `.ShowModal()`
+        """
+        super(ConverterDialog, self).__init__(*args, **kw)
+        self.__in_files = None
+        self.__out_dir = None
+        self.Size = ((800, 650))
+        panel = wx.Panel(self)
+        box = wx.BoxSizer(wx.VERTICAL)
+        text = wx.StaticText(panel, label="The DSP Metadata GUI tool models project metadata " +
+                             "according to the first iteration of DSP Metadata, " +
+                             "and produces RDF data (serialized as turtle, XML and JSON-LD).\n\n" +
+                             "The second iteration introduced major changes in the data model, " +
+                             "which proved to be breaking.\n\n" +
+                             "This converter allows to convert metadata from a .ttl file in the old model to the new model " +
+                             "requiring minimal manual work.\n\n" +
+                             "Some places will definitely require manual work, these are marked with `XX` in the data " +
+                             "so that they are easy to find.\n\n" +
+                             "It is advisable however, to check all data thoroughly to ensure they are correct.")
+        text.Wrap(780)
+        box.Add(text, 0, wx.ALL | wx.EXPAND, 7)
+        box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
+        # Input
+        input_panel = wx.Panel(panel)
+        in_box = wx.BoxSizer(wx.VERTICAL)
+        txt_in_header = wx.StaticText(input_panel, label="Select Input for Conversion:")
+        in_box.Add(txt_in_header, 0, wx.ALL | wx.EXPAND, 7)
+        input_panel.SetSizer(in_box)
+        box.Add(input_panel, 0, wx.ALL | wx.EXPAND, 7)
+        buttons_panel = wx.Panel(input_panel)
+        btns_box = wx.BoxSizer(wx.HORIZONTAL)
+        buttons_panel.SetSizer(btns_box)
+        in_file_btn = wx.Button(buttons_panel, label="Single File")
+        btns_box.Add(in_file_btn, 1, wx.ALL, 7)
+        in_files_btn = wx.Button(buttons_panel, label="Multiple Files")
+        btns_box.Add(in_files_btn, 1, wx.ALL, 7)
+        in_dir_btn = wx.Button(buttons_panel, label="Directory (Bulk Transform)")
+        btns_box.Add(in_dir_btn, 1, wx.ALL, 7)
+        in_box.Add(buttons_panel, 0, wx.ALL | wx.EXPAND, 7)
+        in_lbl = wx.StaticText(input_panel, label="No Input Selected")
+        in_lbl.SetMinSize((200, 80))
+        in_box.Add(in_lbl, 0, wx.ALL | wx.EXPAND, 7)
+        box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
+        in_file_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, ConverterDialog.InType.SINGLE_FILE))
+        in_files_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, ConverterDialog.InType.MULTI_FILE))
+        in_dir_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, ConverterDialog.InType.DIRECTORY))
+        # Output
+        output_panel = wx.Panel(panel)
+        out_box = wx.BoxSizer(wx.VERTICAL)
+        txt_out_header = wx.StaticText(output_panel, label="Select Output Directory for Conversion:")
+        out_box.Add(txt_out_header, 0, wx.ALL | wx.EXPAND, 7)
+        out_btn = wx.Button(output_panel, label="Output Directory")
+        out_box.Add(out_btn, 0, wx.ALL, 7)
+        out_path_lbl = wx.StaticText(output_panel, label="No Output Directory Selected")
+        out_box.Add(out_path_lbl, 0, wx.ALL | wx.EXPAND, 7)
+        out_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_output(out_path_lbl))
+        output_panel.SetSizer(out_box)
+        box.Add(output_panel, 0, wx.ALL | wx.EXPAND, 7)
+        box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
+        # Run Conversion
+        self.btn_convert = wx.Button(panel, label="Convert")
+        self.btn_convert.Bind(wx.EVT_BUTTON, lambda x: self._run_conversion())
+        box.Add(self.btn_convert, 0, wx.ALL | wx.EXPAND, 7)
+        panel.SetSizer(box)
+        self._refresh()
+
+    def _run_conversion(self):
+        """Button `Convert` has been clicked."""
+        if self.__in_files:
+            print(f'saving to: {self.__out_dir}')
+            res = converter.convert_and_save(self.__in_files, self.__out_dir)
+            print(f"Converted: {res} files")
+            open_file(self.__out_dir)
+
+    def _on_select_output(self, label: wx.StaticText):
+        """Select output/target directory by opening a DirDialog."""
+        with wx.DirDialog(self, "Select Output Folder") as dirDialog:
+            res = dirDialog.ShowModal()
+            if res == wx.ID_OK:
+                self.__out_dir = dirDialog.GetPath()
+                label.SetLabel(self.__out_dir)
+            else:
+                self.__out_dir = None
+                label.SetLabel("No Output Directory Selected")
+        self._refresh()
+
+    def _on_select_input(self, label: wx.StaticText, mode):
+        """Select input file(s) by opening FileDialog/DirDialog, depending on the selected mode."""
+        if mode == ConverterDialog.InType.SINGLE_FILE:
+            with wx.FileDialog(self, "Select Input File", wildcard="*.ttl") as fileDialog:
+                res = fileDialog.ShowModal()
+                if res == wx.ID_OK:
+                    path = fileDialog.GetPath()
+                    self.__in_files = [path]
+                    label.SetLabel(str(self.__in_files))
+        elif mode == ConverterDialog.InType.MULTI_FILE:
+            with wx.FileDialog(self, "Select Input Files", style=wx.FD_MULTIPLE, wildcard="*.ttl") as fileDialog:
+                res = fileDialog.ShowModal()
+                if res == wx.ID_OK:
+                    paths = fileDialog.GetPaths()
+                    self.__in_files = paths
+                    if len(self.__in_files) < 6:
+                        label.SetLabel("\n".join(self.__in_files))
+                    else:
+                        label.SetLabel(f"Selected files: {len(self.__in_files)}")
+        elif mode == ConverterDialog.InType.DIRECTORY:
+            with wx.DirDialog(self, "Select Input File") as dirDialog:
+                res = dirDialog.ShowModal()
+                if res == wx.ID_OK:
+                    path = dirDialog.GetPath()
+                    files = glob(f'{path}/*.ttl')
+                    self.__in_files = files
+                    if len(self.__in_files) < 6:
+                        label.SetLabel("\n".join(self.__in_files))
+                    else:
+                        label.SetLabel(f"Selected files: {len(self.__in_files)}")
+        self._refresh()
+
+    def _refresh(self):
+        if self.__in_files and self.__out_dir:
+            self.btn_convert.Enable()
+        else:
+            self.btn_convert.Disable()
 
 
 if __name__ == '__main__':

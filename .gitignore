@@ -1,5 +1,6 @@
 .tmp
 .DS_Store
+out/
 
 # mkdocs specifics
 site/

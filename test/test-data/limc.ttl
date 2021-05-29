@@ -1,0 +1,194 @@
+@prefix dsp-repo: <http://ns.dasch.swiss/repository#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix schema: <https://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dsp-repo:dsp-080E-dataset-000 a dsp-repo:Dataset ;
+    dsp-repo:hasAbstract "Digital LIMC makes accessible what we know about the iconography of Greek, Etruscan and Roman mythology in ancient Greek, Etruscan and Roman art as well as in the one of the neighbouring civilisations of the Mediterranean, to all people interested in classical antiquity. It contains basic information about more than 55’000 archaeological objects (e.g. vases, sculpture, gems, mosaics) which were assembled in the course of the preparation of the printed books of the LIMC and the ThesCRA from about 1970 onward. Short keyword type object descriptions and links to other research projects or museum databases will be added continuously as far as funds permit. The images of the objects are accessible online if the owning institution has given us permission for diffusion."^^xsd:string ;
+    dsp-repo:hasAlternativeTitle "Digital LIMC"^^xsd:string ;
+    dsp-repo:hasConditionsOfAccess "open"^^xsd:string ;
+    dsp-repo:hasDateCreated "2014-06-02"^^xsd:date ;
+    dsp-repo:hasDatePublished "2016-12-20"^^xsd:date ;
+    dsp-repo:hasHowToCite "Digital LIMC (2021): Digital LIMC, DaSCH. https://weblimc.org/page/home/Basel"^^xsd:string ;
+    dsp-repo:hasLanguage "English"^^xsd:string,
+        "French"^^xsd:string,
+        "German"^^xsd:string,
+        "Greek"^^xsd:string,
+        "Italian"^^xsd:string ;
+    dsp-repo:hasLicense [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "Creative Commons" ] ;
+            schema:url "https://creativecommons.org/licenses/by-nc/4.0/" ] ;
+    dsp-repo:hasQualifiedAttribution [ a prov:Attribution ;
+            dsp-repo:hasRole "publisher"^^xsd:string ;
+            prov:agent dsp-repo:dsp-080E-organization-005 ] ;
+    dsp-repo:hasStatus "Ongoing"^^xsd:string ;
+    dsp-repo:hasTitle "Dataset of Digital Lexicon Iconographicum Mythologiae Classicae (Digital LIMC)"^^xsd:string ;
+    dsp-repo:hasTypeOfData "Image"^^xsd:string,
+        "Text"^^xsd:string ;
+    dsp-repo:isPartOf dsp-repo:dsp-080E-project .
+
+dsp-repo:dsp-080E-grant-000 a dsp-repo:Grant ;
+    dsp-repo:hasFunder dsp-repo:dsp-080E-organization-000 .
+
+dsp-repo:dsp-080E-grant-001 a dsp-repo:Grant ;
+    dsp-repo:hasFunder dsp-repo:dsp-080E-organization-001 ;
+    dsp-repo:hasName "Program Support Education"^^xsd:string ;
+    dsp-repo:hasURL [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "snf.org" ] ;
+            schema:url "https://www.snf.org/en/grants/grantees/u/university-of-basel/department-of-ancient-civilisations-program-support/" ] .
+
+dsp-repo:dsp-080E-grant-002 a dsp-repo:Grant ;
+    dsp-repo:hasFunder dsp-repo:dsp-080E-organization-002 ;
+    dsp-repo:hasName "Gesuch im Bereich Bildung und Wissenschaft"^^xsd:string ;
+    dsp-repo:hasNumber "2015-2371/1.2"^^xsd:string .
+
+dsp-repo:dsp-080E-grant-003 a dsp-repo:Grant ;
+    dsp-repo:hasFunder dsp-repo:dsp-080E-organization-003 ;
+    dsp-repo:hasNumber "14/17-18"^^xsd:string .
+
+dsp-repo:dsp-080E-grant-004 a dsp-repo:Grant ;
+    dsp-repo:hasFunder dsp-repo:dsp-080E-organization-004 ;
+    dsp-repo:hasName "Gesuch im Bereich Kultur"^^xsd:string ;
+    dsp-repo:hasNumber "19-109"^^xsd:string .
+
+dsp-repo:dsp-080E-organization-001 a dsp-repo:Organization ;
+    dsp-repo:hasAddress [ a schema:PostalAddress ;
+            schema:addressLocality "Monte Carlo, Monaco"^^xsd:string ;
+            schema:postalCode "98000"^^xsd:string ;
+            schema:streetAddress "14, Avenue de Grande Bretagne, \"Le George V\" 4eme étage"^^xsd:string ] ;
+    dsp-repo:hasEmail "info@snf.org" ;
+    dsp-repo:hasName "Stavros Niarchos Foundation"^^xsd:string ;
+    dsp-repo:hasURL [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "snf.org" ] ;
+            schema:url "httpS://www.snf.org/en" ] .
+
+dsp-repo:dsp-080E-organization-005 a dsp-repo:Organization ;
+    dsp-repo:hasAddress [ a schema:PostalAddress ;
+            schema:addressLocality "Basel"^^xsd:string ;
+            schema:postalCode "4051"^^xsd:string ;
+            schema:streetAddress "Petersgraben 51"^^xsd:string ] ;
+    dsp-repo:hasEmail "martin-a.guggisberg@unibas.ch" ;
+    dsp-repo:hasName "Classical Archaeology, University of Basel"^^xsd:string ;
+    dsp-repo:hasURL [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "philhist.unibas.ch" ] ;
+            schema:url "https://klassarch.philhist.unibas.ch/de/home/" ] .
+
+dsp-repo:dsp-080E-project a dsp-repo:Project ;
+    dsp-repo:hasAlternateName "Digital LIMC"^^xsd:string ;
+    dsp-repo:hasDescription """Digital LIMC is a digital platform for Classical Mythology, it contains what we know about the iconography of Greek, Etruscan and Roman mythology, both in ancient Greek, Etruscan and Roman art as well as in the one of neighbouring Mediterranean cultures. These literary and iconographical sources of ancient mythology are key elements of the cultural heritage of mankind. The Foundation for the LIMC prepared and published 10 volumes of the Lexicon Iconographicum Mythologiae Classicae (LIMC) between 1981 and 2009. This publication project was followed by the Thesaurus Cultus et Rituum Antiquorum (ThesCRA; 10 volumes), focussing on ritual and cult in antiquity.
+
+Digital LIMC makes all data accessible which were assembled in the course of the preparation of the printed books and which are stored in the basement of a building of the University of Basel today. 
+
+"""^^xsd:string ;
+    dsp-repo:hasDiscipline [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "SKOS UNESCO Nomenclature" ] ;
+            schema:url "http://skos.um.es/unesco6/550501" ] ;
+    dsp-repo:hasFunder dsp-repo:dsp-080E-organization-000,
+        dsp-repo:dsp-080E-organization-002,
+        dsp-repo:dsp-080E-organization-003,
+        dsp-repo:dsp-080E-organization-004 ;
+    dsp-repo:hasGrant dsp-repo:dsp-080E-grant-000,
+        dsp-repo:dsp-080E-grant-001,
+        dsp-repo:dsp-080E-grant-002,
+        dsp-repo:dsp-080E-grant-003,
+        dsp-repo:dsp-080E-grant-004 ;
+    dsp-repo:hasKeywords "Archaeology"^^xsd:string,
+        "Egypt"^^xsd:string,
+        "Etruria"^^xsd:string,
+        "Greece"^^xsd:string,
+        "Mythology"^^xsd:string,
+        "Near East"^^xsd:string,
+        "Roman"^^xsd:string ;
+    dsp-repo:hasName "Digital Lexicon Iconographicum Mythologiae Classicae (Digital LIMC)"^^xsd:string ;
+    dsp-repo:hasShortcode "080E"^^xsd:string ;
+    dsp-repo:hasSpatialCoverage [ a schema:Place ;
+            schema:url [ a schema:URL ;
+                    schema:propertyID [ a schema:PropertyValue ;
+                            schema:propertyID "Geonames"^^xsd:string ] ;
+                    schema:url "https://www.geonames.org/6255148" ] ],
+        [ a schema:Place ;
+            schema:url [ a schema:URL ;
+                    schema:propertyID [ a schema:PropertyValue ;
+                            schema:propertyID "Geonames"^^xsd:string ] ;
+                    schema:url "https://www.geonames.org/7729887" ] ],
+        [ a schema:Place ;
+            schema:url [ a schema:URL ;
+                    schema:propertyID [ a schema:PropertyValue ;
+                            schema:propertyID "Geonames"^^xsd:string ] ;
+                    schema:url "https://www.geonames.org/6255147" ] ] ;
+    dsp-repo:hasStartDate "2014-06-02"^^xsd:date ;
+    dsp-repo:hasTemporalCoverage [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "ChronOntology" ] ;
+            schema:url "http://chronontology.dainst.org/period/3mQhHXhO86oj" ],
+        [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "ChronOntology" ] ;
+            schema:url "http://chronontology.dainst.org/period/yY1zReDz86zF" ],
+        [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "ChronOntology" ] ;
+            schema:url "http://chronontology.dainst.org/period/6VooUMYGJjOI" ],
+        [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "ChronOntology" ] ;
+            schema:url "http://chronontology.dainst.org/period/YOyP9TLDuhrb" ],
+        [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "ChronOntology" ] ;
+            schema:url "http://chronontology.dainst.org/period/RGbECa9kHJT4" ] ;
+    dsp-repo:hasURL [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "weblimc.org" ] ;
+            schema:url "https://weblimc.org/page/home/Basel" ] .
+
+dsp-repo:dsp-080E-organization-000 a dsp-repo:Organization ;
+    dsp-repo:hasAddress [ a schema:PostalAddress ;
+            schema:addressLocality "Bern"^^xsd:string ;
+            schema:postalCode "3001"^^xsd:string ;
+            schema:streetAddress "Effingerstrasse 15, Postfach"^^xsd:string ] ;
+    dsp-repo:hasName "swissuniversities"^^xsd:string ;
+    dsp-repo:hasURL [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "swissuniversities.ch" ] ;
+            schema:url "https://www.swissuniversities.ch/" ] .
+
+dsp-repo:dsp-080E-organization-002 a dsp-repo:Organization ;
+    dsp-repo:hasAddress [ a schema:PostalAddress ;
+            schema:addressLocality "Zug"^^xsd:string ;
+            schema:postalCode "6300"^^xsd:string ;
+            schema:streetAddress "Artherstrasse 19"^^xsd:string ] ;
+    dsp-repo:hasName "Ernst Göhner Stiftung"^^xsd:string ;
+    dsp-repo:hasURL [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "ernst-goehner-stiftung.ch" ] ;
+            schema:url "http://www.ernst-goehner-stiftung.ch/index.php/de" ] .
+
+dsp-repo:dsp-080E-organization-003 a dsp-repo:Organization ;
+    dsp-repo:hasAddress [ a schema:PostalAddress ;
+            schema:addressLocality "Basel"^^xsd:string ;
+            schema:postalCode "4002"^^xsd:string ;
+            schema:streetAddress "St. Jakobs-Strasse 7"^^xsd:string ] ;
+    dsp-repo:hasName "Ceramica Stiftung"^^xsd:string ;
+    dsp-repo:hasURL [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "ceramica-ch.ch" ] ;
+            schema:url "https://ceramica-ch.ch/" ] .
+
+dsp-repo:dsp-080E-organization-004 a dsp-repo:Organization ;
+    dsp-repo:hasAddress [ a schema:PostalAddress ;
+            schema:addressLocality "Basel"^^xsd:string ;
+            schema:postalCode "4020"^^xsd:string ;
+            schema:streetAddress "Rennweg 50"^^xsd:string ] ;
+    dsp-repo:hasEmail "contact@binding-stiftung.ch\r\r " ;
+    dsp-repo:hasName "Sophie und Karl Binding Stiftung"^^xsd:string ;
+    dsp-repo:hasURL [ a schema:URL ;
+            schema:propertyID [ a schema:PropertyValue ;
+                    schema:propertyID "binding-stiftung.ch" ] ;
+            schema:url "https://www.binding-stiftung.ch/" ] .
+

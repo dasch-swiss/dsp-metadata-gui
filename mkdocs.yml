@@ -3,35 +3,36 @@ site_name: DSP-Metadata-GUI
 nav:
   - Overview: index.md
   - Usage:
-    - Usage Overview: usage_overview.md
-    - Project Organization: list_view.md
-    - Entering Metadata: tab_view.md
-    - Metadata Classes:
-      - Organization: organization.md
-      - Person: person.md
-      - Grant: grant.md
-      - Dataset: dataset.md
-      - Project: project.md
-  - API Reference:
-      - "GUI documentation": reference/collectMetadata.md
-      - "Data Structure": reference/metaDataSet.md
-      - "Data Handling": reference/dataHandling.md
-      - "Utils": reference/utils.md
-  - Roadmap: todo.md
+      - Usage Overview: usage_overview.md
+      - Project Organization: list_view.md
+      - Entering Metadata: tab_view.md
+      - Metadata Classes:
+          - Organization: organization.md
+          - Person: person.md
+          - Grant: grant.md
+          - Dataset: dataset.md
+          - Project: project.md
+      - Data Model V2: conversion.md
+  # - API Reference:
+  #     - "GUI documentation": reference/collectMetadata.md
+  #     - "Data Structure": reference/metaDataSet.md
+  #     - "Data Handling": reference/dataHandling.md
+  #     - "Utils": reference/utils.md
+  # - Roadmap: todo.md
 
 theme:
   name: material
-  logo: 'assets/images/dasch-icon-white.svg'
-  favicon: 'assets/images/dasch-favicon.ico'
+  logo: "assets/images/dasch-icon-white.svg"
+  favicon: "assets/images/dasch-favicon.ico"
   pallette:
-    primary: 'deep purple'
-    accent: 'deep purple'
+    primary: "deep purple"
+    accent: "deep purple"
   # features:
   #   - navigation.tabs
   feature:
     tabs: false
 extra_css:
-  - 'assets/style/theme.css'
+  - "assets/style/theme.css"
 
 markdown_extensions:
   - markdown_include.include
@@ -40,19 +41,18 @@ markdown_extensions:
 
 plugins:
   - search
-  - mkdocstrings:
-      default_handler: python
-      handlers:
-        python:
-          rendering:
-            show_root_heading: true
-            show_root_full_path: false
-            # heading_level: 2
-            show_source: false
-            group_by_category: false
-            # show_if_no_docstring: true
-      watch:
-        - util/
-        - docs/
-        - ./
-
+  # - mkdocstrings:
+  #     default_handler: python
+  #     handlers:
+  #       python:
+  #         rendering:
+  #           show_root_heading: true
+  #           show_root_full_path: false
+  #           # heading_level: 2
+  #           show_source: false
+  #           group_by_category: false
+  #           # show_if_no_docstring: true
+  #     watch:
+  #       - util/
+  #       - docs/
+  #       - ./
