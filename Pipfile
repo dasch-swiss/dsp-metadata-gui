@@ -7,6 +7,13 @@ name = "pypi"
 pyshacl = "*"
 wxPython = "*"
 validators = "*"
+jsonschema = "*"
+beautifulsoup4 = "*"
+textblob = "*"
+guess-language-spirit = "*"
+pyenchant = "*"
+langdetect = "*"
+langid = "*"
 
 [dev-packages]
 pipenv-setup = "*"
@@ -21,9 +28,13 @@ mkdocs-material = "*"
 mkdocs-material-extensions = "*"
 pymdown-extensions = "*"
 markdown-include = "*"
+mypy = "*"
 
 [requires]
 python_version = "3.9"
 
 [scripts]
 test = "python -m unittest"
+run = "python dspMetadataGUI/collectMetadata.py"
+convert = "python dspMetadataGUI/util/converter.py"
+docs = "make doc"
