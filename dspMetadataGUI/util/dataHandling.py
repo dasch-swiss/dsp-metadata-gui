@@ -7,7 +7,7 @@ Concretely, the UI has a globally accessible data handler of type `DataHandling`
 import os
 import pickle
 import shutil
-from typing import List
+from typing import List, Optional
 
 from rdflib.graph import Graph
 
@@ -245,7 +245,7 @@ class DataHandling:
         for tab in self.tabs:
             tab.refresh_ui()
 
-    def get_project_by_shortcode(self, shortcode: str) -> MetaDataSet:
+    def get_project_by_shortcode(self, shortcode: str) -> Optional[MetaDataSet]:
         """
         Get the project with a specific shortcode.
 
@@ -258,3 +258,4 @@ class DataHandling:
         for p in self.projects:
             if p.shortcode == shortcode:
                 return p
+        return None
