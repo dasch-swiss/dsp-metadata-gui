@@ -342,7 +342,7 @@ class IRIFactory:
     Factory class to generate unique IRIs.
     """
 
-    @ staticmethod
+    @staticmethod
     def _get_all_iris(object_type: str, meta):
         try:
             if object_type == 'dataset':
