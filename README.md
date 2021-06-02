@@ -14,7 +14,7 @@ The module provides a command line entry point to run the GUI. The only requirem
 
 The application has only been tested on Python 3.9, but it might work on older versions too.
 
-__Note:__ There have been issues with `conda` installations. If this is the case, consider using a virtual environment.
+__Note:__ There is a number of known potential issues. See the `troubleshoot` section [here](https://dasch-swiss.github.io/dsp-metadata-gui/usage_overview/#troubleshoot).
 
 
 ### Installation via pip
