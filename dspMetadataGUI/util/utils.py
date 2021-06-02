@@ -313,6 +313,29 @@ class Datatype(Enum):
     SHORTCODE = 16
     """Shortcode"""
 
+    @classmethod
+    def is_string_like(cls, type) -> bool:
+        """Return True if type is sting or string-like"""
+        if type in [cls.STRING,
+                    cls.STRING_OR_URL,
+                    cls.URL,
+                    cls.EMAIL,
+                    cls.DOWNLOAD,
+                    cls.PLACE]:
+            return True
+        return False
+
+    @classmethod
+    def is_dropdownable(cls, type) -> bool:
+        """Return True if type is a reference to an object or controlled vocabulary (i.e. if it goes into a dropdown in the GUI)."""
+        if type in [cls.PERSON_OR_ORGANIZATION,
+                    cls.PERSON,
+                    cls.ORGANIZATION,
+                    cls.GRANT,
+                    cls.CONTROLLED_VOCABULARY]:
+            return True
+        return False
+
 
 class IRIFactory:
     """

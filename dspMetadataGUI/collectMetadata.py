@@ -764,13 +764,7 @@ class PropertyRow:
         self.validity_msg = ""
         name_label = wx.StaticText(parent, label=prop.name + ": ")
         sizer.Add(name_label)
-        # LATER: checking the following with `Datatype.is_string_like(datatype)` would be a lot neater... add helper function
-        if prop.datatype == Datatype.STRING \
-                or prop.datatype == Datatype.STRING_OR_URL \
-                or prop.datatype == Datatype.URL \
-                or prop.datatype == Datatype.EMAIL \
-                or prop.datatype == Datatype.DOWNLOAD \
-                or prop.datatype == Datatype.PLACE:
+        if Datatype.is_string_like(prop.datatype):
             self.__setup_string(parent, sizer, prop)
         elif prop.datatype == Datatype.DATE:
             if prop.cardinality == Cardinality.ONE \
@@ -788,11 +782,7 @@ class PropertyRow:
             txt = wx.StaticText(parent, label=str(prop.value))
             self.data_widget = txt
             sizer.Add(txt, flag=wx.EXPAND)
-        elif prop.datatype == Datatype.PERSON_OR_ORGANIZATION or \
-                prop.datatype == Datatype.PERSON or \
-                prop.datatype == Datatype.ORGANIZATION or \
-                prop.datatype == Datatype.GRANT or \
-                prop.datatype == Datatype.CONTROLLED_VOCABULARY:
+        elif Datatype.is_dropdownable(prop.datatype):
             self.__setup_dropdown(parent, sizer, prop)
         elif prop.datatype == Datatype.DATA_MANAGEMENT_PLAN:
             inner_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -1061,22 +1051,18 @@ class PropertyRow:
         datatype = self.prop.datatype
         cardinality = self.prop.cardinality
         # String or String/URL etc.
-        if datatype == Datatype.STRING \
-                or datatype == Datatype.STRING_OR_URL \
-                or datatype == Datatype.URL \
-                or datatype == Datatype.EMAIL \
-                or datatype == Datatype.DOWNLOAD \
-                or datatype == Datatype.PLACE:
+        if Datatype.is_string_like(datatype):
             if cardinality == Cardinality.ONE \
                     or cardinality == Cardinality.ZERO_OR_ONE:
-                return self.data_widget.GetValue()
+                return self.data_widget.GetValue().strip()
             if cardinality == Cardinality.ONE_TO_TWO \
                     or cardinality == Cardinality.ZERO_TO_TWO:
-                return [self.data_widget[0].GetValue(), self.data_widget[1].GetValue()]
+                return [self.data_widget[0].GetValue().strip(),
+                        self.data_widget[1].GetValue().strip()]
             if cardinality == Cardinality.ONE_TO_UNBOUND \
                     or cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED \
                     or cardinality == Cardinality.UNBOUND:
-                return self.data_widget.GetStrings()
+                return [s.strip() for s in self.data_widget.GetStrings()]
         elif datatype == Datatype.DATE:
             if cardinality == Cardinality.ONE \
                     or cardinality == Cardinality.ZERO_OR_ONE:
@@ -1101,15 +1087,15 @@ class PropertyRow:
         elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
             return (
                 self.data_widget[0].GetValue(),
-                self.data_widget[1].GetValue(),
+                self.data_widget[1].GetValue().strip(),
             )
         elif datatype == Datatype.PROJECT:
             return self.metadataset.project
         elif datatype == Datatype.ADDRESS:
             return (
-                self.data_widget[0].GetValue(),
-                self.data_widget[1].GetValue(),
-                self.data_widget[2].GetValue(),
+                self.data_widget[0].GetValue().strip(),
+                self.data_widget[1].GetValue().strip(),
+                self.data_widget[2].GetValue().strip(),
             )
         elif datatype == Datatype.CONTROLLED_VOCABULARY:
             if cardinality == Cardinality.ONE_TO_UNBOUND:
