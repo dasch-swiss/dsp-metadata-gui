@@ -58,6 +58,9 @@ There is a number of known issues. In these cases, please try the following work
 * In some instances (typically on Mac OS, when python has _not_ been installed with Homebrew), installation works but when running the tool, a SSL error occurs.  
 In that case you can either locate your python installation in `Applications > Python 3.9` and double-click the file `Install Certificates.command`. Alternatively, it should work if you install python via Homebrew.
 
-* On Mac M1 Silicon devices, `Pillow` may cause issues. ...
+* On Mac M1 Silicon devices, `Pillow` may cause issues when installing dsp-metadata-gui with pip. If you run into the
+  error: "The headers or library files could not be found for zlib, a required dependency when compiling Pillow from
+  source.", install `ffmpeg` or `libjpeg` with homebrew (`brew install ffmpeg` or `brew install libjpeg`).
+  Then try to install dsp-metadata-gui again. This fix was found on: [GitHub](https://github.com/python-pillow/Pillow/issues/5093).
 
 If you encounter any further issues, do not hesitate to get in touch or open a GitHub issue.
