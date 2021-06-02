@@ -358,7 +358,7 @@ class IRIFactory:
         except Exception:
             return []
 
-    @ classmethod
+    @classmethod
     def get_unique_iri(cls, object_type: str, meta) -> str:
         """
         Get a IRI for a object, that is unique to a MetaDataSet.
