@@ -13,6 +13,7 @@ import jsonschema
 from rdflib.term import BNode, Literal
 import requests
 import time
+from datetime import datetime
 from textblob import TextBlob
 import guess_language
 import langid
@@ -255,8 +256,10 @@ def _get_person(g: Graph, person_iri):
         elif p == dsp.hasAddress:
             res['address'] = _get_address(g, o)
         elif p == dsp.hasEmail:
-            res.setdefault('emails', [])
-            res['emails'].append(obj)
+            if res.get('email'):
+                res['secondaryEmail'] = obj
+            else:
+                res['email'] = obj
         elif p == dsp.sameAs:
             res.setdefault('authorityRefs', [])
             res['authorityRefs'].append(_get_url(g, o))
@@ -310,7 +313,9 @@ def _get_dataset(g: Graph, dataset_iri):
             res['typeOfData'].append(obj)
         elif p == dsp.hasLicense:
             res.setdefault("licenses", [])
-            res['licenses'].append(_get_url(g, o))
+            res['licenses'].append({"__type": "License",
+                                    "date": str(datetime.date(datetime.now())),
+                                    "license": _get_url(g, o)})
         elif p == dsp.hasLanguage:
             res.setdefault("languages", [])
             res['languages'].append(_get_language(obj))
@@ -430,12 +435,13 @@ def _add_attribution(g: Graph, iri: BNode, attributions: List):
     role = str(next(g.objects(iri, dsp.hasRole)))
     agent = str(next(g.objects(iri, PROV.agent)))
     for att in attributions:
-        p = att.get('person')
+        p = att.get('agent')
         r = att.get('roles')
         if r and p and p == agent:
             r.append(role)
             return attributions
-    attributions.append({"person": agent,
+    attributions.append({"__type": "Attribution",
+                         "agent": agent,
                          "roles": [role]})
     return attributions
 
@@ -506,7 +512,8 @@ def _get_address(g: Graph, iri: BNode):
     code = str(next(g.objects(iri, SDO.postalCode)))
     street = str(next(g.objects(iri, SDO.streetAddress)))
     country = _get_country(locality)
-    return {'street': street,
+    return {'__type': 'Address',
+            'street': street,
             'postalCode': code,
             'locality': locality,
             'country': country}
@@ -621,6 +628,7 @@ def _get_chronontology_name(url: str):
         return f'XX: Chronontology URL: {url}'
 
 
+# LATER: this should not be called "SKOS"
 def _get_skos_name(url: str):
     """Get display text for a SKOS URL"""
     url = url.removesuffix('/')
@@ -737,11 +745,11 @@ def validate(data, verbose=False):
 
 if __name__ == "__main__":
     files = ['maximal.ttl',
-             #  'rosetta.ttl',
-             #  'limc.ttl',
-             #  'awg.ttl',
-             #  'hdm.ttl',
-             #  'drawings-gods.ttl'
+             'rosetta.ttl',
+             'limc.ttl',
+             'awg.ttl',
+             'hdm.ttl',
+             'drawings-gods.ttl'
              ]
     results = {}
     os.makedirs('out', exist_ok=True)
