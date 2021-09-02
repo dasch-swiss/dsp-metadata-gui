@@ -118,9 +118,6 @@ def convert_string(data: str) -> str:
     grants = _get_grants(g)
     if grants:
         res['grants'] = grants
-    # dmp = _get_dmp(g)
-    # if dmp:
-    #     res['dataManagementPlan'] = dmp
 
     validate(res)
     return json.dumps(res, indent=4, ensure_ascii=False)
