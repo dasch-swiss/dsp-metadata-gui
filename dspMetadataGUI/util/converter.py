@@ -20,7 +20,7 @@ from langdetect import detect
 from bs4 import BeautifulSoup
 
 
-schema_url = "https://raw.githubusercontent.com/dasch-swiss/dasch-service-platform/main/docs/services/metadata/schema-metadata.json"
+schema_url = "https://raw.githubusercontent.com/dasch-swiss/dsp-meta-svc/main/docs/services/metadata/schema-metadata.json"
 dsp = Namespace("http://ns.dasch.swiss/repository#")
 
 
@@ -100,6 +100,7 @@ def convert_string(data: str) -> str:
     Returns:
         str: json serialized metadata
     """
+    data = data.replace('@prefix schema: <https://schema.org/> .', '@prefix schema: <http://schema.org/> .')
     g = Graph()
     g.parse(data=data, format='ttl')
     res = {"$schema": schema_url}
@@ -737,11 +738,11 @@ def validate(data, verbose=False):
 
 if __name__ == "__main__":
     files = ['maximal.ttl',
-             'rosetta.ttl',
-             'limc.ttl',
-             'awg.ttl',
-             'hdm.ttl',
-             'drawings-gods.ttl'
+             #  'rosetta.ttl',
+             #  'limc.ttl',
+             #  'awg.ttl',
+             #  'hdm.ttl',
+             #  'drawings-gods.ttl'
              ]
     results = {}
     os.makedirs('out', exist_ok=True)
