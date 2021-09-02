@@ -293,6 +293,7 @@ def _get_dataset(g: Graph, dataset_iri):
         if p == dsp.hasTitle:
             res['title'] = obj
         elif p == dsp.hasConditionsOfAccess:
+            obj = obj.lower()
             if obj not in ['open', 'restricted', 'closed']:
                 obj = f"XX - Access Conditions should be one of 'open', 'restricted' or 'closed', but found: {obj}"
             res['accessConditions'] = obj
@@ -537,6 +538,14 @@ def _get_place(g: Graph, iri: BNode):
     return _get_url(g, url)
 
 
+def _ensure_protocol_in_url(url: str):
+    """Tries to ensure that a url starts with a valid protocol."""
+    if url.startswith('https://') or url.startswith('http://'):
+        return url
+    else:
+        return f'http://{url}'
+
+
 def _get_url(g: Graph, iri: BNode):
     """Get URL from graph"""
     url = str(next(g.objects(iri, SDO.url))).strip()
@@ -547,12 +556,14 @@ def _get_url(g: Graph, iri: BNode):
         propID = url
     type_ = _get_url_type(propID)
     txt = _get_url_text(url, type_)
-    return {
-        "__type": "URL",
-        "text": txt,
-        "type": type_,
-        "url": url
-    }
+    url = _ensure_protocol_in_url(url)
+    res = {"__type": "URL",
+           "type": type_,
+           "url": url
+           }
+    if txt:
+        res['text'] = txt
+    return res
 
 
 def _get_predefined_multilanguage_string(text: str):
