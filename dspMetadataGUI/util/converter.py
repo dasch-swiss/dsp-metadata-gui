@@ -107,7 +107,7 @@ def convert_string(data: str) -> str:
     res['project'] = _get_project(g)
     res['datasets'] = _get_datasets(g)
     for ds in res.get('datasets'):  # type: ignore
-        res['project']['datasets'].append(ds.get('@id'))  # type: ignore
+        res['project']['datasets'].append(ds.get('__id'))  # type: ignore
     persons = _get_persons(g)
     if persons:
         res['persons'] = persons
@@ -117,9 +117,9 @@ def convert_string(data: str) -> str:
     grants = _get_grants(g)
     if grants:
         res['grants'] = grants
-    dmp = _get_dmp(g)
-    if dmp:
-        res['dataManagementPlan'] = dmp
+    # dmp = _get_dmp(g)
+    # if dmp:
+    #     res['dataManagementPlan'] = dmp
 
     validate(res)
     return json.dumps(res, indent=4, ensure_ascii=False)
@@ -136,10 +136,7 @@ def _get_dmp(g: Graph):
     except StopIteration:
         return {}
 
-    res = {"@id": dmp,
-           "@type": "DataManagementPlan",
-           "@created": str(time.time_ns()),
-           "@modified": str(time.time_ns()), }
+    res = {"__type": "DataManagementPlan"}
 
     for _, p, o in g.triples((dmp, None, None)):
         obj = str(o)
@@ -167,10 +164,10 @@ def _get_grants(g: Graph):
 
 def _get_grant(g: Graph, grant_iri) -> Dict[str, Any]:
     """Get grant from graph"""
-    res = {"@id": grant_iri,
-           "@type": "Grant",
-           "@created": str(time.time_ns()),
-           "@modified": str(time.time_ns()), }
+    res = {"__id": grant_iri,
+           "__type": "Grant",
+           "__createdAt": str(time.time_ns()),
+           "__createdBy": "dsp-metadata-gui", }
 
     for _, p, o in g.triples((grant_iri, None, None)):
         obj = str(o).strip()
@@ -203,10 +200,10 @@ def _get_organizations(g: Graph):
 
 def _get_organization(g: Graph, org_iri):
     """Get organization from graph"""
-    res = {"@id": org_iri,
-           "@type": "Organization",
-           "@created": str(time.time_ns()),
-           "@modified": str(time.time_ns()), }
+    res = {"__id": org_iri,
+           "__type": "Organization",
+           "__createdAt": str(time.time_ns()),
+           "__createdBy": "dsp-metadata-gui", }
 
     for _, p, o in g.triples((org_iri, None, None)):
         obj = str(o).strip()
@@ -238,10 +235,10 @@ def _get_persons(g: Graph):
 
 def _get_person(g: Graph, person_iri):
     """Get person from graph"""
-    res = {"@id": person_iri,
-           "@type": "Person",
-           "@created": str(time.time_ns()),
-           "@modified": str(time.time_ns()), }
+    res = {"__id": person_iri,
+           "__type": "Person",
+           "__createdAt": str(time.time_ns()),
+           "__createdBy": "dsp-metadata-gui", }
 
     for _, p, o in g.triples((person_iri, None, None)):
         obj = str(o).strip()
@@ -283,29 +280,29 @@ def _get_datasets(g: Graph):
 
 def _get_dataset(g: Graph, dataset_iri):
     """Get dataset from graph"""
-    res = {"@id": dataset_iri,
-           "@type": "Dataset",
-           "@created": str(time.time_ns()),
-           "@modified": str(time.time_ns()), }
+    res = {"__id": dataset_iri,
+           "__type": "Dataset",
+           "__createdAt": str(time.time_ns()),
+           "__createdBy": "dsp-metadata-gui", }
 
     for _, p, o in g.triples((dataset_iri, None, None)):
         obj = str(o).strip()
         if p == dsp.hasTitle:
             res['title'] = obj
         elif p == dsp.hasConditionsOfAccess:
+            if obj not in ['open', 'restricted', 'closed']:
+                obj = f"XX - Access Conditions should be one of 'open', 'restricted' or 'closed', but found: {obj}"
             res['accessConditions'] = obj
         elif p == dsp.hasHowToCite:
             res['howToCite'] = obj
         elif p == dsp.hasStatus:
             res['status'] = obj
         elif p == dsp.hasAbstract:
-            res.setdefault("abstracts", {})
+            res.setdefault("abstracts", [])
             if isinstance(o, BNode):
-                res['abstracts'].setdefault('urls', [])
-                res['abstracts'].get('urls').append(_get_url(g, o))
+                res['abstracts'].append(_get_url(g, o))
             else:
-                res['abstracts'].setdefault('texts', [])
-                res['abstracts'].get('texts').append(_guess_language_of_text(obj))
+                res['abstracts'].append(_guess_language_of_text(obj))
         elif p == dsp.hasTypeOfData:
             res.setdefault("typeOfData", [])
             if obj == "Movie":
@@ -335,13 +332,11 @@ def _get_dataset(g: Graph, dataset_iri):
             res.setdefault('urls', [])
             res['urls'].append(_get_url(g, o))
         elif p == dsp.hasDocumentation:
-            res.setdefault("documentations", {})
+            res.setdefault("additional", [])
             if isinstance(o, BNode):
-                res['documentations'].setdefault('urls', [])
-                res['documentations'].get('urls').append(_get_url(g, o))
+                res['additional'].append(_get_url(g, o))
             else:
-                res['documentations'].setdefault('texts', [])
-                res['documentations'].get('texts').append(_guess_language_of_text(obj))
+                res['additional'].append(_guess_language_of_text(obj))
         elif p == dsp.isPartOf:
             pass
         # default cases
@@ -359,11 +354,12 @@ def _get_dataset(g: Graph, dataset_iri):
 def _get_project(g: Graph):
     """Get project from graph"""
     project_iri = next(g.triples((None, RDF.type, dsp.Project)))[0]
-    res = {"@id": project_iri,
-           "@type": "Project",
-           "@created": str(time.time_ns()),
-           "@modified": str(time.time_ns()),
+    res = {"__id": project_iri,
+           "__type": "Project",
+           "__createdAt": str(time.time_ns()),
+           "__createdBy": "dsp-metadata-gui",
            "howToCite": "XX - new property on project level",
+           "teaserText": "XX - new property",
            "datasets": []}
 
     for _, p, o in g.triples((project_iri, None, None)):
@@ -397,10 +393,12 @@ def _get_project(g: Graph):
             res.setdefault('spatialCoverage', [])
             res['spatialCoverage'].append(_get_place(g, o))
         elif p == dsp.hasURL:
-            res.setdefault('urls', [])
-            res['urls'].append(_get_url(g, o))
+            if res.get('url'):
+                res['secondaryURL'] = _get_url(g, o)
+            else:
+                res['url'] = _get_url(g, o)
         elif p == dsp.hasDataManagementPlan:
-            res['dataManagementPlan'] = obj
+            res['dataManagementPlan'] = _get_dmp(g)
         elif p == dsp.hasPublication:
             res.setdefault('publications', [])
             res['publications'].append(obj)
@@ -543,6 +541,7 @@ def _get_url(g: Graph, iri: BNode):
     type_ = _get_url_type(propID)
     txt = _get_url_text(url, type_)
     return {
+        "__type": "URL",
         "text": txt,
         "type": type_,
         "url": url
