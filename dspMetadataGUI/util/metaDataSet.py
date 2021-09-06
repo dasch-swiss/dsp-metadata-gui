@@ -329,7 +329,7 @@ class MetaDataSet:
                 g = self.generate_rdf_graph()
                 res = g.serialize(format='turtle')
             except Exception as ie:
-                res = f'No RDF previe available.\n(Due to Exception: {ie})'
+                res = f'No RDF preview available.\n(Due to Exception: {ie})'
             return res
 
 
