@@ -73,7 +73,7 @@ class MetaDataSet:
     @graph.setter
     def graph(self, graph: Graph):
         self.__graph = graph
-        ttl = graph.serialize(format='turtle').decode("utf-8")
+        ttl = graph.serialize(format='turtle')
         self.turtle = ttl
         val = self.validate_graph(graph)[0]
         self.validation_result = val
@@ -325,8 +325,12 @@ class MetaDataSet:
             print('Warning: No turtle cached. Performance may be decreased.')
             print(f'    (Exception: {e})')
             # LATER: remove with next breaking change
-            g = self.generate_rdf_graph()
-            return g.serialize(format='turtle').decode("utf-8")
+            try:
+                g = self.generate_rdf_graph()
+                res = g.serialize(format='turtle')
+            except Exception as ie:
+                res = f'No RDF preview available.\n(Due to Exception: {ie})'
+            return res
 
 
 class DataClass(ABC):

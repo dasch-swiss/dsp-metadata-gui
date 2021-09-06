@@ -14,6 +14,7 @@ guess-language-spirit = "*"
 pyenchant = "*"
 langdetect = "*"
 langid = "*"
+requests = "*"
 
 [dev-packages]
 pipenv-setup = "*"

@@ -13,6 +13,7 @@ import jsonschema
 from rdflib.term import BNode, Literal
 import requests
 import time
+from datetime import datetime
 from textblob import TextBlob
 import guess_language
 import langid
@@ -20,7 +21,7 @@ from langdetect import detect
 from bs4 import BeautifulSoup
 
 
-schema_url = "https://raw.githubusercontent.com/dasch-swiss/dasch-service-platform/main/docs/services/metadata/schema-metadata.json"
+schema_url = "https://raw.githubusercontent.com/dasch-swiss/dsp-meta-svc/main/docs/services/metadata/schema-metadata.json"
 dsp = Namespace("http://ns.dasch.swiss/repository#")
 
 
@@ -100,13 +101,14 @@ def convert_string(data: str) -> str:
     Returns:
         str: json serialized metadata
     """
+    data = data.replace('@prefix schema: <https://schema.org/> .', '@prefix schema: <http://schema.org/> .')
     g = Graph()
     g.parse(data=data, format='ttl')
     res = {"$schema": schema_url}
     res['project'] = _get_project(g)
     res['datasets'] = _get_datasets(g)
     for ds in res.get('datasets'):  # type: ignore
-        res['project']['datasets'].append(ds.get('@id'))  # type: ignore
+        res['project']['datasets'].append(ds.get('__id'))  # type: ignore
     persons = _get_persons(g)
     if persons:
         res['persons'] = persons
@@ -116,9 +118,6 @@ def convert_string(data: str) -> str:
     grants = _get_grants(g)
     if grants:
         res['grants'] = grants
-    dmp = _get_dmp(g)
-    if dmp:
-        res['dataManagementPlan'] = dmp
 
     validate(res)
     return json.dumps(res, indent=4, ensure_ascii=False)
@@ -135,10 +134,7 @@ def _get_dmp(g: Graph):
     except StopIteration:
         return {}
 
-    res = {"@id": dmp,
-           "@type": "DataManagementPlan",
-           "@created": str(time.time_ns()),
-           "@modified": str(time.time_ns()), }
+    res = {"__type": "DataManagementPlan"}
 
     for _, p, o in g.triples((dmp, None, None)):
         obj = str(o)
@@ -166,10 +162,10 @@ def _get_grants(g: Graph):
 
 def _get_grant(g: Graph, grant_iri) -> Dict[str, Any]:
     """Get grant from graph"""
-    res = {"@id": grant_iri,
-           "@type": "Grant",
-           "@created": str(time.time_ns()),
-           "@modified": str(time.time_ns()), }
+    res = {"__id": grant_iri,
+           "__type": "Grant",
+           "__createdAt": str(time.time_ns()),
+           "__createdBy": "dsp-metadata-gui", }
 
     for _, p, o in g.triples((grant_iri, None, None)):
         obj = str(o).strip()
@@ -202,10 +198,10 @@ def _get_organizations(g: Graph):
 
 def _get_organization(g: Graph, org_iri):
     """Get organization from graph"""
-    res = {"@id": org_iri,
-           "@type": "Organization",
-           "@created": str(time.time_ns()),
-           "@modified": str(time.time_ns()), }
+    res = {"__id": org_iri,
+           "__type": "Organization",
+           "__createdAt": str(time.time_ns()),
+           "__createdBy": "dsp-metadata-gui", }
 
     for _, p, o in g.triples((org_iri, None, None)):
         obj = str(o).strip()
@@ -237,10 +233,10 @@ def _get_persons(g: Graph):
 
 def _get_person(g: Graph, person_iri):
     """Get person from graph"""
-    res = {"@id": person_iri,
-           "@type": "Person",
-           "@created": str(time.time_ns()),
-           "@modified": str(time.time_ns()), }
+    res = {"__id": person_iri,
+           "__type": "Person",
+           "__createdAt": str(time.time_ns()),
+           "__createdBy": "dsp-metadata-gui", }
 
     for _, p, o in g.triples((person_iri, None, None)):
         obj = str(o).strip()
@@ -257,8 +253,10 @@ def _get_person(g: Graph, person_iri):
         elif p == dsp.hasAddress:
             res['address'] = _get_address(g, o)
         elif p == dsp.hasEmail:
-            res.setdefault('emails', [])
-            res['emails'].append(obj)
+            if res.get('email'):
+                res['secondaryEmail'] = obj
+            else:
+                res['email'] = obj
         elif p == dsp.sameAs:
             res.setdefault('authorityRefs', [])
             res['authorityRefs'].append(_get_url(g, o))
@@ -282,29 +280,30 @@ def _get_datasets(g: Graph):
 
 def _get_dataset(g: Graph, dataset_iri):
     """Get dataset from graph"""
-    res = {"@id": dataset_iri,
-           "@type": "Dataset",
-           "@created": str(time.time_ns()),
-           "@modified": str(time.time_ns()), }
+    res = {"__id": dataset_iri,
+           "__type": "Dataset",
+           "__createdAt": str(time.time_ns()),
+           "__createdBy": "dsp-metadata-gui", }
 
     for _, p, o in g.triples((dataset_iri, None, None)):
         obj = str(o).strip()
         if p == dsp.hasTitle:
             res['title'] = obj
         elif p == dsp.hasConditionsOfAccess:
+            obj = obj.lower()
+            if obj not in ['open', 'restricted', 'closed']:
+                obj = f"XX - Access Conditions should be one of 'open', 'restricted' or 'closed', but found: {obj}"
             res['accessConditions'] = obj
         elif p == dsp.hasHowToCite:
             res['howToCite'] = obj
         elif p == dsp.hasStatus:
             res['status'] = obj
         elif p == dsp.hasAbstract:
-            res.setdefault("abstracts", {})
+            res.setdefault("abstracts", [])
             if isinstance(o, BNode):
-                res['abstracts'].setdefault('urls', [])
-                res['abstracts'].get('urls').append(_get_url(g, o))
+                res['abstracts'].append(_get_url(g, o))
             else:
-                res['abstracts'].setdefault('texts', [])
-                res['abstracts'].get('texts').append(_guess_language_of_text(obj))
+                res['abstracts'].append(_guess_language_of_text(obj))
         elif p == dsp.hasTypeOfData:
             res.setdefault("typeOfData", [])
             if obj == "Movie":
@@ -312,7 +311,9 @@ def _get_dataset(g: Graph, dataset_iri):
             res['typeOfData'].append(obj)
         elif p == dsp.hasLicense:
             res.setdefault("licenses", [])
-            res['licenses'].append(_get_url(g, o))
+            res['licenses'].append({"__type": "License",
+                                    "date": str(datetime.date(datetime.now())),
+                                    "license": _get_url(g, o)})
         elif p == dsp.hasLanguage:
             res.setdefault("languages", [])
             res['languages'].append(_get_language(obj))
@@ -334,13 +335,11 @@ def _get_dataset(g: Graph, dataset_iri):
             res.setdefault('urls', [])
             res['urls'].append(_get_url(g, o))
         elif p == dsp.hasDocumentation:
-            res.setdefault("documentations", {})
+            res.setdefault("additional", [])
             if isinstance(o, BNode):
-                res['documentations'].setdefault('urls', [])
-                res['documentations'].get('urls').append(_get_url(g, o))
+                res['additional'].append(_get_url(g, o))
             else:
-                res['documentations'].setdefault('texts', [])
-                res['documentations'].get('texts').append(_guess_language_of_text(obj))
+                res['additional'].append(_guess_language_of_text(obj))
         elif p == dsp.isPartOf:
             pass
         # default cases
@@ -358,11 +357,12 @@ def _get_dataset(g: Graph, dataset_iri):
 def _get_project(g: Graph):
     """Get project from graph"""
     project_iri = next(g.triples((None, RDF.type, dsp.Project)))[0]
-    res = {"@id": project_iri,
-           "@type": "Project",
-           "@created": str(time.time_ns()),
-           "@modified": str(time.time_ns()),
+    res = {"__id": project_iri,
+           "__type": "Project",
+           "__createdAt": str(time.time_ns()),
+           "__createdBy": "dsp-metadata-gui",
            "howToCite": "XX - new property on project level",
+           "teaserText": "XX - new property",
            "datasets": []}
 
     for _, p, o in g.triples((project_iri, None, None)):
@@ -396,10 +396,12 @@ def _get_project(g: Graph):
             res.setdefault('spatialCoverage', [])
             res['spatialCoverage'].append(_get_place(g, o))
         elif p == dsp.hasURL:
-            res.setdefault('urls', [])
-            res['urls'].append(_get_url(g, o))
+            if res.get('url'):
+                res['secondaryURL'] = _get_url(g, o)
+            else:
+                res['url'] = _get_url(g, o)
         elif p == dsp.hasDataManagementPlan:
-            res['dataManagementPlan'] = obj
+            res['dataManagementPlan'] = _get_dmp(g)
         elif p == dsp.hasPublication:
             res.setdefault('publications', [])
             res['publications'].append(obj)
@@ -431,12 +433,13 @@ def _add_attribution(g: Graph, iri: BNode, attributions: List):
     role = str(next(g.objects(iri, dsp.hasRole)))
     agent = str(next(g.objects(iri, PROV.agent)))
     for att in attributions:
-        p = att.get('person')
+        p = att.get('agent')
         r = att.get('roles')
         if r and p and p == agent:
             r.append(role)
             return attributions
-    attributions.append({"person": agent,
+    attributions.append({"__type": "Attribution",
+                         "agent": agent,
                          "roles": [role]})
     return attributions
 
@@ -507,7 +510,8 @@ def _get_address(g: Graph, iri: BNode):
     code = str(next(g.objects(iri, SDO.postalCode)))
     street = str(next(g.objects(iri, SDO.streetAddress)))
     country = _get_country(locality)
-    return {'street': street,
+    return {'__type': 'Address',
+            'street': street,
             'postalCode': code,
             'locality': locality,
             'country': country}
@@ -531,6 +535,14 @@ def _get_place(g: Graph, iri: BNode):
     return _get_url(g, url)
 
 
+def _ensure_protocol_in_url(url: str):
+    """Tries to ensure that a url starts with a valid protocol."""
+    if url.startswith('https://') or url.startswith('http://'):
+        return url
+    else:
+        return f'http://{url}'
+
+
 def _get_url(g: Graph, iri: BNode):
     """Get URL from graph"""
     url = str(next(g.objects(iri, SDO.url))).strip()
@@ -541,11 +553,14 @@ def _get_url(g: Graph, iri: BNode):
         propID = url
     type_ = _get_url_type(propID)
     txt = _get_url_text(url, type_)
-    return {
-        "text": txt,
-        "type": type_,
-        "url": url
-    }
+    url = _ensure_protocol_in_url(url)
+    res = {"__type": "URL",
+           "type": type_,
+           "url": url
+           }
+    if txt:
+        res['text'] = txt
+    return res
 
 
 def _get_predefined_multilanguage_string(text: str):
@@ -621,6 +636,7 @@ def _get_chronontology_name(url: str):
         return f'XX: Chronontology URL: {url}'
 
 
+# LATER: this should not be called "SKOS"
 def _get_skos_name(url: str):
     """Get display text for a SKOS URL"""
     url = url.removesuffix('/')
