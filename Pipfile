@@ -31,6 +31,7 @@ pymdown-extensions = "*"
 markdown-include = "*"
 mypy = "*"
 autopep8 = "*"
+types-requests = "*"
 
 [requires]
 python_version = "3.9"
