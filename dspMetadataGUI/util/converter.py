@@ -134,7 +134,7 @@ def _get_dmp(g: Graph):
     except StopIteration:
         return {}
 
-    res = {"__type": "DataManagementPlan"}
+    res: Dict[str, Any] = {"__type": "DataManagementPlan"}
 
     for _, p, o in g.triples((dmp, None, None)):
         obj = str(o)
