@@ -46,6 +46,15 @@ def convert_and_save(files: List[str], target: str) -> int:
 
 
 def convert_string(data_string: str, filename: str) -> Graph:
+    """Convert the string representation of a V2 JSON metadata set to an RDF graph.
+
+    Args:
+        data_string (str): A string of V2 JSON metadata
+        filename (str): the filename of the input for error logging purposes
+
+    Returns:
+        Graph: a Graph representing the RDF mapping of the input metadata
+    """
     data: Dict[str, Any] = json.loads(data_string)
     g = Graph()
     g.bind('dsp', DSP)
@@ -56,33 +65,41 @@ def convert_string(data_string: str, filename: str) -> Graph:
     project = data.get('project')
     if not project:
         raise Exception(f'Metadata set {filename} did not contain a project, which is required.')
-    get_project(g, project)
+    _get_project(g, project)
 
     datasets = data.get('datasets')
     if not datasets:
         raise Exception(f'Metadata set "{filename}.json" did not contain any datasets, at least one is required.')
     for dataset in datasets:
-        get_dataset(g, dataset)
+        _get_dataset(g, dataset)
 
     persons = data.get('persons')
     if persons:
         for p in persons:
-            get_person(g, p)
+            _get_person(g, p)
 
     organizations = data.get('organizations')
     if organizations:
         for o in organizations:
-            get_organization(g, o)
+            _get_organization(g, o)
 
     grants = data.get('grants')
     if grants:
         for gr in grants:
-            get_grant(g, gr)
+            _get_grant(g, gr)
 
     return g
 
 
 def convert_file(file: str) -> Optional[Tuple[str, str]]:
+    """Convert a file containing V2 JSON metadata set to RDF serializations.
+
+    Args:
+        file (str): path of a JSON file
+
+    Returns:
+        Optional[Tuple[str, str]]: None if the conversion failed. Otherwise a tuple with the turtle and the JSON-LD serialization of the metadata.
+    """
     filename = file.rsplit('.', 1)[0]
     try:
         with open(file, mode='r+', encoding='utf-8') as f:
@@ -99,6 +116,7 @@ def convert_file(file: str) -> Optional[Tuple[str, str]]:
 
 
 def convert_files(files: List[str]) -> None:
+    """Convert multiple files"""
     for file in files:
         convert_file(file)
 
@@ -107,7 +125,7 @@ def convert_files(files: List[str]) -> None:
 # -------------------
 
 
-def get_project(g: Graph, d: Dict[str, Any]) -> None:
+def _get_project(g: Graph, d: Dict[str, Any]) -> None:
     iri = URIRef(d['__id'])
     g.add((iri, RDF.type, DSP.Project))
 
@@ -121,7 +139,7 @@ def get_project(g: Graph, d: Dict[str, Any]) -> None:
     g.add((iri, DSP.hasHowToCite, Literal(prop, datatype=XSD.string)))
 
     prop = d['description']
-    for txt in get_multi_language_text(g, prop):
+    for txt in __get_multi_language_text(g, prop):
         g.add((iri, DSP.hasDescription, txt))
 
     prop = d['startDate']
@@ -136,30 +154,30 @@ def get_project(g: Graph, d: Dict[str, Any]) -> None:
 
     props = d['keywords']
     for prop in props:
-        for txt in get_multi_language_text(g, prop):
+        for txt in __get_multi_language_text(g, prop):
             g.add((iri, DSP.hasKeyword, txt))
 
     props = d['disciplines']
     for prop in props:
         if prop.get('__type') == 'URL':
-            bn_url = get_url(g, prop)
+            bn_url = __get_url(g, prop)
             g.add((iri, DSP.hasDiscipline, bn_url))
         else:
-            for txt in get_multi_language_text(g, prop):
+            for txt in __get_multi_language_text(g, prop):
                 g.add((iri, DSP.hasDiscipline, txt))
 
     props = d['temporalCoverage']
     for prop in props:
         if prop.get('__type') == 'URL':
-            bn_url = get_url(g, prop)
+            bn_url = __get_url(g, prop)
             g.add((iri, DSP.hasTemporalCoverage, bn_url))
         else:
-            for txt in get_multi_language_text(g, prop):
+            for txt in __get_multi_language_text(g, prop):
                 g.add((iri, DSP.hasTemporalCoverage, txt))
 
     props = d['spatialCoverage']
     for prop in props:
-        bn_url = get_url(g, prop)
+        bn_url = __get_url(g, prop)
         g.add((iri, DSP.hasSpatialCoverage, bn_url))
 
     props = d['funders']
@@ -167,12 +185,12 @@ def get_project(g: Graph, d: Dict[str, Any]) -> None:
         g.add((iri, DSP.hasFunder, URIRef(prop)))
 
     prop = d['url']
-    bn_url = get_url(g, prop)
+    bn_url = __get_url(g, prop)
     g.add((iri, DSP.hasURL, bn_url))
 
     prop = d.get('secondaryURL')
     if prop:
-        bn_url = get_url(g, prop)
+        bn_url = __get_url(g, prop)
         g.add((iri, DSP.hasSecondaryURL, bn_url))
 
     prop = d.get('dataManagementPlan')
@@ -183,7 +201,7 @@ def get_project(g: Graph, d: Dict[str, Any]) -> None:
             g.add((dmp, DSP.isAvailable, Literal(True, datatype=XSD.boolean)))
         url = prop.get('url')
         if url:
-            bn_url = get_url(g, prop)
+            bn_url = __get_url(g, prop)
             g.add((dmp, DSP.hasURL, bn_url))
         if av or url:
             g.add((dmp, RDF.type, DSP.DataManagementPlan))
@@ -210,11 +228,11 @@ def get_project(g: Graph, d: Dict[str, Any]) -> None:
     props = d.get('alternativeNames')
     if props:
         for prop in props:
-            for txt in get_multi_language_text(g, prop):
+            for txt in __get_multi_language_text(g, prop):
                 g.add((iri, DSP.hasAlternativeName, txt))
 
 
-def get_dataset(g: Graph, d: Dict[str, Any]) -> None:
+def _get_dataset(g: Graph, d: Dict[str, Any]) -> None:
     iri = URIRef(d['__id'])
     g.add((iri, RDF.type, DSP.Dataset))
 
@@ -233,10 +251,10 @@ def get_dataset(g: Graph, d: Dict[str, Any]) -> None:
     abstracts = d['abstracts']
     for abstract in abstracts:
         if abstract.get('__type') == 'URL':
-            bn_url = get_url(g, abstract)
+            bn_url = __get_url(g, abstract)
             g.add((iri, DSP.hasAbstract, bn_url))
         else:
-            for txt in get_multi_language_text(g, abstract):
+            for txt in __get_multi_language_text(g, abstract):
                 g.add((iri, DSP.hasAbstract, txt))
 
     types = d['typeOfData']
@@ -247,7 +265,7 @@ def get_dataset(g: Graph, d: Dict[str, Any]) -> None:
     for lic in licenses:
         license = BNode()
         g.add((license, RDF.type, DSP.License))
-        bn_url = get_url(g, lic['license'])
+        bn_url = __get_url(g, lic['license'])
         g.add((license, DSP.hasURL, bn_url))
         g.add((license, DSP.hasDate, Literal(lic['date'], datatype=XSD.date)))
         if lic.get('details'):
@@ -256,7 +274,7 @@ def get_dataset(g: Graph, d: Dict[str, Any]) -> None:
 
     langs = d['languages']
     for lang in langs:
-        for txt in get_multi_language_text(g, lang):
+        for txt in __get_multi_language_text(g, lang):
             g.add((iri, DSP.hasLanguage, txt))
 
     attrs = d['attributions']
@@ -290,27 +308,27 @@ def get_dataset(g: Graph, d: Dict[str, Any]) -> None:
     alt_titles = d.get('alternativeTitles')
     if alt_titles:
         for title in alt_titles:
-            for txt in get_multi_language_text(g, title):
+            for txt in __get_multi_language_text(g, title):
                 g.add((iri, DSP.hasAlternativeTitle, txt))
 
     urls = d.get('urls')
     if urls:
         for url in urls:
-            bn_url = get_url(g, url)
+            bn_url = __get_url(g, url)
             g.add((iri, DSP.hasURL, bn_url))
 
     additional = d.get('additional')
     if additional:
         for add in additional:
             if abstract.get('__type') == 'URL':
-                bn_url = get_url(g, abstract)
+                bn_url = __get_url(g, abstract)
                 g.add((iri, DSP.hasAdditional, bn_url))
             else:
-                for txt in get_multi_language_text(g, abstract):
+                for txt in __get_multi_language_text(g, abstract):
                     g.add((iri, DSP.hasAdditional, txt))
 
 
-def get_person(g: Graph, d: Dict[str, Any]) -> None:
+def _get_person(g: Graph, d: Dict[str, Any]) -> None:
     iri = URIRef(d['__id'])
     g.add((iri, RDF.type, DSP.Person))
 
@@ -332,7 +350,7 @@ def get_person(g: Graph, d: Dict[str, Any]) -> None:
 
     addr = d.get('address')
     if addr:
-        address = get_address(g, addr)
+        address = __get_address(g, addr)
         g.add((iri, DSP.hasAddress, address))
 
     email = d.get('email')
@@ -346,11 +364,11 @@ def get_person(g: Graph, d: Dict[str, Any]) -> None:
     authRefs = d.get('authorityRefs')
     if authRefs:
         for ref in authRefs:
-            bn_url = get_url(g, ref)
+            bn_url = __get_url(g, ref)
             g.add((iri, DSP.hasAuthorityFileReference, bn_url))
 
 
-def get_organization(g: Graph, d: Dict[str, Any]) -> None:
+def _get_organization(g: Graph, d: Dict[str, Any]) -> None:
     iri = URIRef(d['__id'])
     g.add((iri, RDF.type, DSP.Organization))
 
@@ -359,12 +377,12 @@ def get_organization(g: Graph, d: Dict[str, Any]) -> None:
 
     url = d.get('url')
     if url:
-        bn_url = get_url(g, url)
+        bn_url = __get_url(g, url)
         g.add((iri, DSP.hasURL, bn_url))
 
     addr = d.get('address')
     if addr:
-        address = get_address(g, addr)
+        address = __get_address(g, addr)
         g.add((iri, DSP.hasAddress, address))
 
     email = d.get('email')
@@ -374,17 +392,17 @@ def get_organization(g: Graph, d: Dict[str, Any]) -> None:
     names = d.get('alternativeNames')
     if names:
         for n_multilang in names:
-            for txt in get_multi_language_text(g, n_multilang):
+            for txt in __get_multi_language_text(g, n_multilang):
                 g.add((iri, DSP.hasAbstract, txt))
 
     authRefs = d.get('authorityRefs')
     if authRefs:
         for ref in authRefs:
-            bn_url = get_url(g, ref)
+            bn_url = __get_url(g, ref)
             g.add((iri, DSP.hasAuthorityFileReference, bn_url))
 
 
-def get_grant(g: Graph, d: Dict[str, Any]) -> None:
+def _get_grant(g: Graph, d: Dict[str, Any]) -> None:
     iri = URIRef(d['__id'])
     g.add((iri, RDF.type, DSP.Grant))
 
@@ -402,7 +420,7 @@ def get_grant(g: Graph, d: Dict[str, Any]) -> None:
 
     url = d.get('url')
     if url:
-        bn_url = get_url(g, url)
+        bn_url = __get_url(g, url)
         g.add((iri, DSP.hasURL, bn_url))
 
 
@@ -410,7 +428,7 @@ def get_grant(g: Graph, d: Dict[str, Any]) -> None:
 # --------------
 
 
-def get_url(g: Graph, d: Dict[str, Any]) -> BNode:
+def __get_url(g: Graph, d: Dict[str, Any]) -> BNode:
     text = d.get('text')
     url = d.get('url')
     bn_url = BNode()
@@ -424,7 +442,7 @@ def get_url(g: Graph, d: Dict[str, Any]) -> BNode:
     return bn_url
 
 
-def get_address(g: Graph, d: Dict[str, Any]) -> BNode:
+def __get_address(g: Graph, d: Dict[str, Any]) -> BNode:
     bn_addr = BNode()
     g.add((bn_addr, RDF.type, SDO.PostalAddress))
     g.add((bn_addr, SDO.streetAddress, Literal(d['street'], datatype=XSD.string)))
@@ -438,7 +456,7 @@ def get_address(g: Graph, d: Dict[str, Any]) -> BNode:
     return bn_addr
 
 
-def get_multi_language_text(g: Graph, d: Dict[str, Any]) -> Generator[Literal, None, None]:
+def __get_multi_language_text(g: Graph, d: Dict[str, Any]) -> Generator[Literal, None, None]:
     for lang in d.keys():
         txt = d[lang]
         yield Literal(txt, lang=lang)
@@ -449,15 +467,16 @@ def get_multi_language_text(g: Graph, d: Dict[str, Any]) -> Generator[Literal, N
 
 
 def validate_files(files: List[str]) -> None:
+    """Validate multiple files"""
     for file in files:
         validate_file(file)
 
 
 def validate_file(file: str) -> None:
+    """Validate a V2 RDF metadata file against the SHACL ontology"""
     shacl = "https://raw.githubusercontent.com/dasch-swiss/dsp-meta-svc/main/docs/services/metadata/schema-metadata.shacl"
-    # shacl = "scripts/schema.shacl"
     print(file)
-    conforms, result_graph, result_text = validate(data_graph=f'out-rdf/{file}',
+    conforms, result_graph, result_text = validate(data_graph=file,
                                                    shacl_graph=shacl,
                                                    inference='none')
     print(result_text)
