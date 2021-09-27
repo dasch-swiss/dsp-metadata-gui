@@ -1,7 +1,7 @@
 from util.utils import Cardinality, Datatype, Validity, open_file
 from util.metaDataSet import DataClass, MetaDataSet, Property
 from util.dataHandling import DataHandling
-from util import converter
+from util import converter, rdfConverter
 from typing import Optional, Tuple, Union
 import wx
 import wx.lib.scrolledpanel as scrolledPanel
@@ -62,14 +62,21 @@ class ProjectFrame(wx.Frame):
         menu_bar.Append(file_menu, '&File')
         options_menu = wx.Menu()
         menu_bar.Append(options_menu, '&Options')
-        converter_menu_item = options_menu.Append(wx.ID_ANY, "Convert RDF to JSON (New Data Model)")
-        self.Bind(wx.EVT_MENU, self.__on_convert, converter_menu_item)
+        json_converter_menu_item = options_menu.Append(wx.ID_ANY, "Convert RDF to JSON (Old RDF -> New JSON Model)")
+        self.Bind(wx.EVT_MENU, self.__on_convert, json_converter_menu_item)
+        rdf_converter_menu_item = options_menu.Append(wx.ID_ANY, "Convert JSON to RDF (New JSON -> New RDF Model)")
+        self.Bind(wx.EVT_MENU, self.__on_rdf_convert, rdf_converter_menu_item)
         options_help = wx.Menu()
         menu_bar.Append(options_help, '&Help')
         self.SetMenuBar(menu_bar)
 
     def __on_convert(self, event):
-        dlg = ConverterDialog(None, title="JSON Converter")
+        dlg = JSONConverterDialog(None, title="JSON Converter")
+        dlg.ShowModal()
+        dlg.Destroy()
+
+    def __on_rdf_convert(self, event):
+        dlg = RDFConverterDialog(None, title="RDF Converter")
         dlg.ShowModal()
         dlg.Destroy()
 
@@ -1322,8 +1329,8 @@ class CalendarDlg(wx.Dialog):
             evt.Skip()
 
 
-class ConverterDialog(wx.Dialog):
-    """Dialog that lets the user select which files to convert to the new metadata format."""
+class JSONConverterDialog(wx.Dialog):
+    """Dialog that lets the user select which files to convert to the new metadata format in json."""
     class InType:
         SINGLE_FILE = 0
         MULTI_FILE = 1
@@ -1336,7 +1343,7 @@ class ConverterDialog(wx.Dialog):
 
         Should be displayed with `.ShowModal()`
         """
-        super(ConverterDialog, self).__init__(*args, **kw)
+        super(JSONConverterDialog, self).__init__(*args, **kw)
         self.__in_files = None
         self.__out_dir = None
         self.Size = ((800, 650))
@@ -1376,9 +1383,9 @@ class ConverterDialog(wx.Dialog):
         in_lbl.SetMinSize((200, 80))
         in_box.Add(in_lbl, 0, wx.ALL | wx.EXPAND, 7)
         box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
-        in_file_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, ConverterDialog.InType.SINGLE_FILE))
-        in_files_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, ConverterDialog.InType.MULTI_FILE))
-        in_dir_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, ConverterDialog.InType.DIRECTORY))
+        in_file_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, JSONConverterDialog.InType.SINGLE_FILE))
+        in_files_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, JSONConverterDialog.InType.MULTI_FILE))
+        in_dir_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, JSONConverterDialog.InType.DIRECTORY))
         # Output
         output_panel = wx.Panel(panel)
         out_box = wx.BoxSizer(wx.VERTICAL)
@@ -1421,14 +1428,14 @@ class ConverterDialog(wx.Dialog):
 
     def _on_select_input(self, label: wx.StaticText, mode):
         """Select input file(s) by opening FileDialog/DirDialog, depending on the selected mode."""
-        if mode == ConverterDialog.InType.SINGLE_FILE:
+        if mode == JSONConverterDialog.InType.SINGLE_FILE:
             with wx.FileDialog(self, "Select Input File", wildcard="*.ttl") as fileDialog:
                 res = fileDialog.ShowModal()
                 if res == wx.ID_OK:
                     path = fileDialog.GetPath()
                     self.__in_files = [path]
                     label.SetLabel(str(self.__in_files))
-        elif mode == ConverterDialog.InType.MULTI_FILE:
+        elif mode == JSONConverterDialog.InType.MULTI_FILE:
             with wx.FileDialog(self, "Select Input Files", style=wx.FD_MULTIPLE, wildcard="*.ttl") as fileDialog:
                 res = fileDialog.ShowModal()
                 if res == wx.ID_OK:
@@ -1438,12 +1445,141 @@ class ConverterDialog(wx.Dialog):
                         label.SetLabel("\n".join(self.__in_files))
                     else:
                         label.SetLabel(f"Selected files: {len(self.__in_files)}")
-        elif mode == ConverterDialog.InType.DIRECTORY:
+        elif mode == JSONConverterDialog.InType.DIRECTORY:
             with wx.DirDialog(self, "Select Input File") as dirDialog:
                 res = dirDialog.ShowModal()
                 if res == wx.ID_OK:
                     path = dirDialog.GetPath()
                     files = glob(f'{path}/*.ttl')
+                    self.__in_files = files
+                    if len(self.__in_files) < 6:
+                        label.SetLabel("\n".join(self.__in_files))
+                    else:
+                        label.SetLabel(f"Selected files: {len(self.__in_files)}")
+        self._refresh()
+
+    def _refresh(self):
+        if self.__in_files and self.__out_dir:
+            self.btn_convert.Enable()
+        else:
+            self.btn_convert.Disable()
+
+
+class RDFConverterDialog(wx.Dialog):
+    """Dialog that lets the user select which files to convert from json to RDF in the new data format."""
+    class InType:
+        SINGLE_FILE = 0
+        MULTI_FILE = 1
+        DIRECTORY = 2
+
+    def __init__(self, *args, **kw):
+        """Create a new Converter Dialog.
+
+        Subclass of wx.Dialog.
+
+        Should be displayed with `.ShowModal()`
+        """
+        super(RDFConverterDialog, self).__init__(*args, **kw)
+        self.__in_files = None
+        self.__out_dir = None
+        self.Size = ((800, 650))
+        panel = wx.Panel(self)
+        box = wx.BoxSizer(wx.VERTICAL)
+        text = wx.StaticText(panel,
+                             label="This requires metadata converted to JSON already. (See menu 'option' > 'Convert RDF to JSON')\n\n" +
+                             "First, clean up the JSON data. Once this is sound and finished, it can be converted to RDF here.")
+        text.Wrap(780)
+        box.Add(text, 0, wx.ALL | wx.EXPAND, 7)
+        box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
+        # Input
+        input_panel = wx.Panel(panel)
+        in_box = wx.BoxSizer(wx.VERTICAL)
+        txt_in_header = wx.StaticText(input_panel, label="Select Input for Conversion:")
+        in_box.Add(txt_in_header, 0, wx.ALL | wx.EXPAND, 7)
+        input_panel.SetSizer(in_box)
+        box.Add(input_panel, 0, wx.ALL | wx.EXPAND, 7)
+        buttons_panel = wx.Panel(input_panel)
+        btns_box = wx.BoxSizer(wx.HORIZONTAL)
+        buttons_panel.SetSizer(btns_box)
+        in_file_btn = wx.Button(buttons_panel, label="Single File")
+        btns_box.Add(in_file_btn, 1, wx.ALL, 7)
+        in_files_btn = wx.Button(buttons_panel, label="Multiple Files")
+        btns_box.Add(in_files_btn, 1, wx.ALL, 7)
+        in_dir_btn = wx.Button(buttons_panel, label="Directory (Bulk Transform)")
+        btns_box.Add(in_dir_btn, 1, wx.ALL, 7)
+        in_box.Add(buttons_panel, 0, wx.ALL | wx.EXPAND, 7)
+        in_lbl = wx.StaticText(input_panel, label="No Input Selected")
+        in_lbl.SetMinSize((200, 80))
+        in_box.Add(in_lbl, 0, wx.ALL | wx.EXPAND, 7)
+        box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
+        in_file_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, RDFConverterDialog.InType.SINGLE_FILE))
+        in_files_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, RDFConverterDialog.InType.MULTI_FILE))
+        in_dir_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, RDFConverterDialog.InType.DIRECTORY))
+        # Output
+        output_panel = wx.Panel(panel)
+        out_box = wx.BoxSizer(wx.VERTICAL)
+        txt_out_header = wx.StaticText(output_panel, label="Select Output Directory for Conversion:")
+        out_box.Add(txt_out_header, 0, wx.ALL | wx.EXPAND, 7)
+        out_btn = wx.Button(output_panel, label="Output Directory")
+        out_box.Add(out_btn, 0, wx.ALL, 7)
+        out_path_lbl = wx.StaticText(output_panel, label="No Output Directory Selected")
+        out_box.Add(out_path_lbl, 0, wx.ALL | wx.EXPAND, 7)
+        out_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_output(out_path_lbl))
+        output_panel.SetSizer(out_box)
+        box.Add(output_panel, 0, wx.ALL | wx.EXPAND, 7)
+        box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
+        # Run Conversion
+        self.btn_convert = wx.Button(panel, label="Convert")
+        self.btn_convert.Bind(wx.EVT_BUTTON, lambda x: self._run_conversion())
+        box.Add(self.btn_convert, 0, wx.ALL | wx.EXPAND, 7)
+        panel.SetSizer(box)
+        self._refresh()
+
+    def _run_conversion(self):
+        """Button `Convert` has been clicked."""
+        if self.__in_files:
+            print(f'saving to: {self.__out_dir}')
+            res = rdfConverter.convert_and_save(self.__in_files, self.__out_dir)
+            print(f"Converted: {res} files")
+            open_file(self.__out_dir)
+
+    def _on_select_output(self, label: wx.StaticText):
+        """Select output/target directory by opening a DirDialog."""
+        with wx.DirDialog(self, "Select Output Folder") as dirDialog:
+            res = dirDialog.ShowModal()
+            if res == wx.ID_OK:
+                self.__out_dir = dirDialog.GetPath()
+                label.SetLabel(self.__out_dir)
+            else:
+                self.__out_dir = None
+                label.SetLabel("No Output Directory Selected")
+        self._refresh()
+
+    def _on_select_input(self, label: wx.StaticText, mode):
+        """Select input file(s) by opening FileDialog/DirDialog, depending on the selected mode."""
+        if mode == JSONConverterDialog.InType.SINGLE_FILE:
+            with wx.FileDialog(self, "Select Input File", wildcard="*.json") as fileDialog:
+                res = fileDialog.ShowModal()
+                if res == wx.ID_OK:
+                    path = fileDialog.GetPath()
+                    self.__in_files = [path]
+                    label.SetLabel(str(self.__in_files))
+        elif mode == JSONConverterDialog.InType.MULTI_FILE:
+            with wx.FileDialog(self, "Select Input Files", style=wx.FD_MULTIPLE, wildcard="*.json") as fileDialog:
+                res = fileDialog.ShowModal()
+                if res == wx.ID_OK:
+                    paths = fileDialog.GetPaths()
+                    self.__in_files = paths
+                    if len(self.__in_files) < 6:
+                        label.SetLabel("\n".join(self.__in_files))
+                    else:
+                        label.SetLabel(f"Selected files: {len(self.__in_files)}")
+        elif mode == JSONConverterDialog.InType.DIRECTORY:
+            with wx.DirDialog(self, "Select Input File") as dirDialog:
+                res = dirDialog.ShowModal()
+                if res == wx.ID_OK:
+                    path = dirDialog.GetPath()
+                    files = glob(f'{path}/*.json')
                     self.__in_files = files
                     if len(self.__in_files) < 6:
                         label.SetLabel("\n".join(self.__in_files))
