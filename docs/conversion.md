@@ -23,17 +23,27 @@ The most important changes from V1 to V2 include the following additions:
 
 - JSON schema validation
 
+A detailed, formal specification of the model can be found [here](https://github.com/dasch-swiss/dsp-meta-svc/tree/main/docs/services/metadata).
+
 
 
 ## Using the Conversion
 
-To convert metadata from the old data model to the V2 model, follow these steps:
+Converting to the V2 data model is a multi step process:
+
+1. Collect and export the data model with the GUI tool, as previousely.
+2. Convert the exportet V1 `.ttl` data to V2 JSON data.
+3. Clean and post-process the JSON data manually.
+4. Convert the V2 JSON data to V2 RDF (`.jsonld` and `.ttl`) data.
+
+
+### Convert V1 RDF to V2 JSON
 
 In the menu bar, click `Options > Convert RDF to JSON`.
 
 ![conversion menu item](assets/images/conversion_menu_item.png)
 
-This will open the conversion dialog.
+This will open the JSON conversion dialog.
 
 ![conversion dialog](assets/images/conversion_dialog.png)
 
@@ -65,7 +75,7 @@ The process should not take more than a minute per file. On the console you shou
 **NB:** Be sure to remember to review the data after the conversion. It will require manual post-processing, as described below.
 
 
-## Manual Post-Processing
+### Manual Post-Processing
 
 The conversion can not be fully automated, as the model V2 is more rich in information than V1.
 
@@ -83,3 +93,19 @@ This will highlight potential issues with the data.
 > Note: The schema validates URLs as URIs. It will therefore consider URLs without scheme as invalid,
 > i.e. `meta.dasch.swiss` will be highlighted as invalid, whereas `https://meta.dasch.swiss` will be valid.  
 > These warnings can safely be ignored, or the schemes can be added to get rid of the warnings.
+
+
+### Convert V2 JSON to V2 RDF
+
+Once the JSON data is fully cleaned, it can be converted to V2 RDF (both turtle and JSON-LD) using another conversion tool in the GUI:
+
+In the menu bar, click `Options > Convert JSON to RDF`.
+
+![conversion menu item](assets/images/conversion_menu_item.png)
+
+This will open the RDF conversion dialog.
+
+![conversion dialog](assets/images/conversion_dialog_rdf.png)
+
+Similarly to the first conversion, you need to specify input and output, and then hit `convert`.
+

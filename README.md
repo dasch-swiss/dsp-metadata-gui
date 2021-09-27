@@ -73,6 +73,8 @@ In the mean time until the web interface for editing metadata is implemented, th
 > For convenience, the conversion adds the string `XX` wherever the output can not be determined with sufficient confidence. __Please check those instances manually.__  
 > The conversion also does some "guessing" work, as e.g. the language of literal values or the display text for URLs. If the output can be determined with a sufficient level of confidence, the conversion will ___not___ add `XX`. __However it is still advisable to check the entirety of the output for potential errors.__
 
+V2 JSON metadata can again be converted to V2 RDF metadata, using another script. This should not require any additional data cleaning.
+
 The most important changes from V1 to V2 include the following additions:
 
 - Support for multi-language literals
