@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/dasch-swiss/dsp-metadata-gui/compare/v1.1.0...v1.2.0) (2021-09-28)
+
+
+### Enhancements
+
+* **data-model-v2:** add conversion from json to rdf for new data model (DSP-1731) ([#19](https://www.github.com/dasch-swiss/dsp-metadata-gui/issues/19)) ([46993e2](https://www.github.com/dasch-swiss/dsp-metadata-gui/commit/46993e284487f9821d420ef310579df24e2427d5))
+* **datamodel-v2:** change conversion according to new data model (DSP-1731) ([#17](https://www.github.com/dasch-swiss/dsp-metadata-gui/issues/17)) ([6741397](https://www.github.com/dasch-swiss/dsp-metadata-gui/commit/6741397d3ba8a44587de0d3d5a99ba7b6eea4091))
+
 ## [1.1.0](https://www.github.com/dasch-swiss/dsp-metadata-gui/compare/v1.0.4...v1.1.0) (2021-06-02)
 
 
