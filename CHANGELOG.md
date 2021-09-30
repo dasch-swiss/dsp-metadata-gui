@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/dasch-swiss/dsp-metadata-gui/compare/v1.2.0...v1.2.1) (2021-09-30)
+
+
+### Bug Fixes
+
+* module not found when installing from PyPI (DSP-1731) ([#20](https://www.github.com/dasch-swiss/dsp-metadata-gui/issues/20)) ([097bf24](https://www.github.com/dasch-swiss/dsp-metadata-gui/commit/097bf2475ef33541285f7563ae279a534d43daec))
+
 ## [1.2.0](https://www.github.com/dasch-swiss/dsp-metadata-gui/compare/v1.1.0...v1.2.0) (2021-09-28)
 
 
