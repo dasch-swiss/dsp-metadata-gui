@@ -32,6 +32,7 @@ markdown-include = "*"
 mypy = "*"
 autopep8 = "*"
 types-requests = "*"
+chardet = "*"
 
 [requires]
 python_version = "3.9"
