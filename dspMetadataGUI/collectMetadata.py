@@ -1,3 +1,6 @@
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from util.utils import Cardinality, Datatype, Validity, open_file
 from util.metaDataSet import DataClass, MetaDataSet, Property
 from util.dataHandling import DataHandling
@@ -7,12 +10,9 @@ import wx
 import wx.lib.scrolledpanel as scrolledPanel
 import wx.lib.dialogs as dialogs
 import wx.adv
-import os
 import re
-import sys
 from glob import glob
 
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
 data_handler: DataHandling
 
