@@ -29,23 +29,20 @@ def convert_and_save(files: List[str], target: str) -> int:
     Returns:
         int: The number of files that were converted.
     """
+    def __write(path: str, data: str) -> None:
+        with open(path, mode='w+', encoding='utf-8') as fw:
+            fw.write(data)
+
     res = 0
     for f in files:
-        tup = convert_file(f)
-        if not tup:
+        serializations = convert_file(f)
+        if not serializations:
             continue
-        ttl, jsonld, xml = tup
-        print(f'File length: {len(ttl)}')
-        fpath = Path(f)
-        out_ttl = f"{target}/{fpath.stem}.ttl"
-        out_jsonld = f"{target}/{fpath.stem}.jsonld"
-        out_xml = f"{target}/{fpath.stem}.xml"
-        with open(out_ttl, mode='w+', encoding='utf-8') as fw:
-            fw.write(ttl)
-        with open(out_jsonld, mode='w+', encoding='utf-8') as fw:
-            fw.write(jsonld)
-        with open(out_xml, mode='w+', encoding='utf-8') as fw:
-            fw.write(xml)
+        ttl, jsonld, xml = serializations
+        path_file = f'{target}/{Path(f).stem}'
+        __write(f'{path_file}.ttl', ttl)
+        __write(f'{path_file}.jsonld', jsonld)
+        __write(f'{path_file}.xml', xml)
         res += 1
     return res
 
