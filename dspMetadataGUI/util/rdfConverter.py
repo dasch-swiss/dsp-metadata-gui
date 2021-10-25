@@ -1,4 +1,6 @@
 import os
+import sys
+import argparse
 from typing import Any, Dict, Generator, List, Optional, Tuple
 import json
 from rdflib import Graph, Literal, Namespace, RDF, URIRef
@@ -32,15 +34,18 @@ def convert_and_save(files: List[str], target: str) -> int:
         tup = convert_file(f)
         if not tup:
             continue
-        ttl, jsonld = tup
+        ttl, jsonld, xml = tup
         print(f'File length: {len(ttl)}')
         fpath = Path(f)
         out_ttl = f"{target}/{fpath.stem}.ttl"
         out_jsonld = f"{target}/{fpath.stem}.jsonld"
+        out_xml = f"{target}/{fpath.stem}.xml"
         with open(out_ttl, mode='w+', encoding='utf-8') as fw:
             fw.write(ttl)
         with open(out_jsonld, mode='w+', encoding='utf-8') as fw:
             fw.write(jsonld)
+        with open(out_xml, mode='w+', encoding='utf-8') as fw:
+            fw.write(xml)
         res += 1
     return res
 
@@ -91,7 +96,7 @@ def convert_string(data_string: str, filename: str) -> Graph:
     return g
 
 
-def convert_file(file: str) -> Optional[Tuple[str, str]]:
+def convert_file(file: str) -> Optional[Tuple[str, str, str]]:
     """Convert a file containing V2 JSON metadata set to RDF serializations.
 
     Args:
@@ -109,7 +114,9 @@ def convert_file(file: str) -> Optional[Tuple[str, str]]:
         ttl = ttl.replace('<http://schema.org/>', '<https://schema.org/>')
         jsonld = graph.serialize(format='json-ld')
         jsonld = jsonld.replace('<http://schema.org/>', '<https://schema.org/>')
-        return ttl, jsonld
+        xml = graph.serialize(format='pretty-xml')
+        xml = xml.replace('http://schema.org/', 'https://schema.org/')
+        return ttl, jsonld, xml
     except Exception as e:
         print(f'WARNING: failed to convert file {file}! ({type(e).__name__} caused by: {e})')
         return None
@@ -481,3 +488,36 @@ def validate_file(file: str) -> None:
                                                    inference='none')
     print(result_text)
     print('\n-------------\n\n')
+
+
+# CLI entry point
+# ---------------
+
+def cli():
+    parser = argparse.ArgumentParser(description='Convert a JSON metadata file to RDF')
+    parser.add_argument('path', help='path of the JSON file or folder to be converted')
+    parser.add_argument('-d', '--dir', action="store_true",
+                        help='indicates that the selected path is a directory, not a file, and should be used for bulk conversion')
+    args = parser.parse_args()
+    f = args.path
+    isDir = args.dir
+    if not os.path.exists(f):
+        print(f'Error: The specified file/path {f} does not exist.')
+        sys.exit(1)
+    if isDir:
+        if not os.path.isdir(f):
+            print(f'Error: The specified file/path {f} does not exist.')
+            sys.exit(1)
+        path = Path(f)
+        ff = glob.glob(f'{path}/*.json')
+        if not ff:
+            print(f'Error: No JSON files in the specified directory {f}')
+            sys.exit(1)
+        convert_and_save(ff, path)
+    else:
+        out = Path(f).parent
+        convert_and_save([f], out)
+
+
+if __name__ == "__main__":
+    cli()
