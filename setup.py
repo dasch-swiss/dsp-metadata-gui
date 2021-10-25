@@ -57,7 +57,7 @@ setup(
     entry_points={
         "console_scripts": [
             "dsp-metadata=dspMetadataGUI.collectMetadata:collectMetadata",
-            "dsp-metadata-convert=dspMetadataGUI.util.rdfConverter:cli"
+            "dsp-metadata-convert=dspMetadataGUI.util.rdfConverter:cli",
         ],
     },
     include_package_data=True,
