@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/dasch-swiss/dsp-metadata-gui/compare/v1.2.1...v1.3.0) (2021-10-25)
+
+
+### Enhancements
+
+* make RDF conversion accessible thorugh CLI entry point ([#22](https://www.github.com/dasch-swiss/dsp-metadata-gui/issues/22)) ([aebb6ca](https://www.github.com/dasch-swiss/dsp-metadata-gui/commit/aebb6cab232e4ed6c1bce892be2b3db3df7a8aed))
+
 ### [1.2.1](https://www.github.com/dasch-swiss/dsp-metadata-gui/compare/v1.2.0...v1.2.1) (2021-09-30)
 
 
