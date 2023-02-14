@@ -4,7 +4,7 @@
 
 Be sure to have Python 3 installed.
 
-__Note:__ The application has only been tested on Python 3.9, but it might work on older versions too.
+__Note:__ The application has only been tested on Python 3.10.
 
 If you encounter any issues, see the troubleshoot section [below](#troubleshoot).
 
@@ -56,7 +56,7 @@ There is a number of known issues. In these cases, please try the following work
 * There have been issues with `conda` installations. If this is the case, consider using a virtual environment.
 
 * In some instances (typically on Mac OS, when python has _not_ been installed with Homebrew), installation works but when running the tool, a SSL error occurs.  
-In that case you can either locate your python installation in `Applications > Python 3.9` and double-click the file `Install Certificates.command`. Alternatively, it should work if you install python via Homebrew.
+In that case you can either locate your python installation in `Applications > Python 3.10` and double-click the file `Install Certificates.command`. Alternatively, it should work if you install python via Homebrew.
 
 * On Mac M1 Silicon devices, `Pillow` may cause issues when installing dsp-metadata-gui with pip. If you run into the
   error: "The headers or library files could not be found for zlib, a required dependency when compiling Pillow from

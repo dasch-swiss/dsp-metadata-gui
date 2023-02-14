@@ -12,7 +12,7 @@ The metadata follows the schema defined by the [dsp-ontologies](https://github.c
 
 The module provides a command line entry point to run the GUI. The only requirement is Python 3 and PIP.
 
-The application has only been tested on Python 3.9, but it might work on older versions too.
+The application has only been tested on Python 3.10.
 
 __Note:__ There is a number of known potential issues. See the `troubleshoot` section [here](https://dasch-swiss.github.io/dsp-metadata-gui/usage_overview/#troubleshoot).
 

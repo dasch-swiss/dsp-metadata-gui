@@ -20,7 +20,7 @@ setup(
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.9.0",
+    python_requires=">=3.10.0",
     install_requires=[
         "attrs==21.2.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
         "beautifulsoup4==4.10.0",
