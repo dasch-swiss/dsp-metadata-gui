@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.2](https://www.github.com/dasch-swiss/dsp-metadata-gui/compare/v1.3.1...v1.3.2) (2023-02-14)
+
+
+### Bug Fixes
+
+* installation still fails on later pip versions ([#26](https://www.github.com/dasch-swiss/dsp-metadata-gui/issues/26)) ([0eb253a](https://www.github.com/dasch-swiss/dsp-metadata-gui/commit/0eb253a7ccd1772e1d8689c0065578ef8b95150d))
+
 ### [1.3.1](https://www.github.com/dasch-swiss/dsp-metadata-gui/compare/v1.3.0...v1.3.1) (2023-02-14)
 
 
