@@ -18,7 +18,7 @@ upgrade-dist-tools: ## upgrade packages necessary for testing, building, packagi
 
 .PHONY: prepare-release
 prepare-release: ## prepare everythign for relaese
-	pipenv lock --requirements > requirements.txt
+	pipenv requirements > requirements.txt
 	pipenv-setup sync
 
 .PHONY: install-requirements
