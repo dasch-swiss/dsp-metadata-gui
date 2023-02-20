@@ -7,7 +7,8 @@ import os
 from pathlib import Path
 from typing import Any, Dict, List
 from rdflib import Graph
-from rdflib.namespace import Namespace, RDF, SDO, PROV, SKOS
+from rdflib import RDF, SDO, PROV, SKOS
+from rdflib.namespace import Namespace
 import json
 import jsonschema
 from rdflib.term import BNode, Literal
@@ -101,7 +102,6 @@ def convert_string(data: str) -> str:
     Returns:
         str: json serialized metadata
     """
-    data = data.replace('@prefix schema: <https://schema.org/> .', '@prefix schema: <http://schema.org/> .')
     g = Graph()
     g.parse(data=data, format='ttl')
     res = {"$schema": schema_url}
