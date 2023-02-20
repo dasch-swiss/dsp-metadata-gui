@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.3](https://www.github.com/dasch-swiss/dsp-metadata-gui/compare/v1.3.2...v1.3.3) (2023-02-20)
+
+
+### Bug Fixes
+
+* issues with RDF to json conversion ([#28](https://www.github.com/dasch-swiss/dsp-metadata-gui/issues/28)) ([4801f95](https://www.github.com/dasch-swiss/dsp-metadata-gui/commit/4801f95cf82035fffb815cd9a2e034ad1034c52d))
+
 ### [1.3.2](https://www.github.com/dasch-swiss/dsp-metadata-gui/compare/v1.3.1...v1.3.2) (2023-02-14)
 
 
