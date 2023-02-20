@@ -102,7 +102,6 @@ def convert_string(data: str) -> str:
     Returns:
         str: json serialized metadata
     """
-    data = data.replace('@prefix schema: <https://schema.org/> .', '@prefix schema: <http://schema.org/> .')
     g = Graph()
     g.parse(data=data, format='ttl')
     res = {"$schema": schema_url}
