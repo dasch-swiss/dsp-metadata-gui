@@ -7,7 +7,8 @@ import os
 from pathlib import Path
 from typing import Any, Dict, List
 from rdflib import Graph
-from rdflib.namespace import Namespace, RDF, SDO, PROV, SKOS
+from rdflib import RDF, SDO, PROV, SKOS
+from rdflib.namespace import Namespace
 import json
 import jsonschema
 from rdflib.term import BNode, Literal
