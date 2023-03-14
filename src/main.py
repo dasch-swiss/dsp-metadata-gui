@@ -1,10 +1,9 @@
-from models import LangString
+from controller.app import App
 
 
 def main() -> None:
-    print("hello")
-    LangString({"ab": "b"})
-    pass
+    app = App()
+    app.run()
 
 
 if __name__ == "__main__":
