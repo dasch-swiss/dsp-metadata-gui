@@ -17,13 +17,14 @@ pymdown-extensions = "*"
 setuptools = "*"
 twine = "*"
 wheel = "*"
+mkdocs-include-markdown-plugin = "*"
 
 [requires]
 python_version = "3.11"
 
 [scripts]
 # convert = "python dspMetadataGUI/util/converter.py"
-# docs = "make doc"
+docs = "make doc"
 # rdf = "python dspMetadataGUI/util/rdfConverter.py"
 # run = "python dspMetadataGUI/collectMetadata.py"
 # test = "python -m unittest"

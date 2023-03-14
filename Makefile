@@ -15,7 +15,6 @@ upload: ## upload distribution package to PyPi
 .PHONY: prepare-release
 prepare-release: ## prepare everythign for relaese
 	pipenv requirements > requirements.txt
-	pipenv-setup sync
 
 .PHONY: install
 install: ## install from source
