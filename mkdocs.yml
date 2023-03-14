@@ -2,57 +2,38 @@ site_name: DSP-Metadata-GUI
 
 nav:
   - Overview: index.md
-  - Usage:
-      - Usage Overview: usage_overview.md
-      - Project Organization: list_view.md
-      - Entering Metadata: tab_view.md
-      - Metadata Classes:
-          - Organization: organization.md
-          - Person: person.md
-          - Grant: grant.md
-          - Dataset: dataset.md
-          - Project: project.md
-      - Data Model V2: conversion.md
-  # - API Reference:
-  #     - "GUI documentation": reference/collectMetadata.md
-  #     - "Data Structure": reference/metaDataSet.md
-  #     - "Data Handling": reference/dataHandling.md
-  #     - "Utils": reference/utils.md
-  # - Roadmap: todo.md
+  # - Usage:
+  #     - Usage Overview: usage_overview.md
+  #     - Project Organization: list_view.md
+  #     - Entering Metadata: tab_view.md
+  #     - Metadata Classes:
+  #         - Organization: organization.md
+  #         - Person: person.md
+  #         - Grant: grant.md
+  #         - Dataset: dataset.md
+  #         - Project: project.md
+  #     - Data Model V2: conversion.md
 
 theme:
   name: material
-  logo: "assets/images/dasch-icon-white.svg"
-  favicon: "assets/images/dasch-favicon.ico"
-  pallette:
-    primary: "deep purple"
-    accent: "deep purple"
-  # features:
-  #   - navigation.tabs
-  feature:
-    tabs: false
-extra_css:
-  - "assets/style/theme.css"
+  logo: "https://raw.githubusercontent.com/dasch-swiss/dsp-docs/main/docs/assets/images/logo_bw.svg"
+  favicon: "https://raw.githubusercontent.com/dasch-swiss/dsp-docs/main/docs/assets/images/logo_bw.svg"
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - search.suggest
+    - search.highlight
 
-markdown_extensions:
-  - markdown_include.include
-  - pymdownx.tasklist
-  - pymdownx.critic
+extra_css:
+  - "https://raw.githubusercontent.com/dasch-swiss/dsp-docs/main/docs/assets/style/theme.css"
 
 plugins:
   - search
-  # - mkdocstrings:
-  #     default_handler: python
-  #     handlers:
-  #       python:
-  #         rendering:
-  #           show_root_heading: true
-  #           show_root_full_path: false
-  #           # heading_level: 2
-  #           show_source: false
-  #           group_by_category: false
-  #           # show_if_no_docstring: true
-  #     watch:
-  #       - util/
-  #       - docs/
-  #       - ./
+  - include-markdown

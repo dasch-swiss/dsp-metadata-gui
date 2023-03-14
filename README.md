@@ -1,20 +1,13 @@
 # DSP-METADATA-GUI Metadata Module
 
-The `dsp-metadata-gui` is a GUI application written in Python for collecting project specific metadata and turn it into RDF.
-
-As part of the `dsp-tools`, its aim is to enable researchers and project managers who deposit research data on the DaSCH Service Platform (DSP), to add metadata about the project and datasets to the DSP repository. By providing metadata, the project will be searchable on the platform, which is an integral part of the FAIR principles.
-
-The metadata follows the schema defined by the [dsp-ontologies](https://github.com/dasch-swiss/dsp-ontologies).
-
+The `dsp-metadata-gui` is a GUI application written in Python for collecting project specific metadata.
 
 
 ## Install and run
 
 The module provides a command line entry point to run the GUI. The only requirement is Python 3 and PIP.
 
-The application has only been tested on Python 3.10.
-
-__Note:__ There is a number of known potential issues. See the `troubleshoot` section [here](https://dasch-swiss.github.io/dsp-metadata-gui/usage_overview/#troubleshoot).
+The application has only been tested on Python 3.11.
 
 
 ### Installation via pip
@@ -25,22 +18,10 @@ To install the application, run:
 pip install dsp-metadata-gui
 ```
 
-Or respectively:
-
-```shell
-pip3 install dsp-metadata-gui
-```
-
 Afterwards, the program can be started by running the command `dsp-metadata` in your terminal of choice.
 
 
-### Installation from source
-
-Clone [this repo](https://github.com/dasch-swiss/dsp-metadata-gui) and run `make make-and-run`. If you don't use GNU Make, run the commands specified in the `Makefile` manually.
-
-This will package the application, install it to your python environment and run the application.
-
-
+<!-- 
 
 ## Usage
 
@@ -142,4 +123,4 @@ The documentation is created using `mkdocs` and `mkdocstrings` with `markdown_in
 
 To serve the documentation locally, run `make doc`. To deploy the documentation to github pages, run `make deploy-doc`.
 
-
+ -->

@@ -12,18 +12,10 @@ upload: ## upload distribution package to PyPi
 	$(MAKE) dist
 	python -m twine upload dist/*
 
-.PHONY: upgrade-dist-tools
-upgrade-dist-tools: ## upgrade packages necessary for testing, building, packaging and uploading to PyPi
-	python -m pip install --upgrade pip setuptools wheel tqdm twine pytest mkdocs mkdocstrings
-
 .PHONY: prepare-release
 prepare-release: ## prepare everythign for relaese
 	pipenv requirements > requirements.txt
 	pipenv-setup sync
-
-.PHONY: install-requirements
-install-requirements: ## install requirements
-	pip install -r requirements.txt
 
 .PHONY: install
 install: ## install from source
@@ -41,19 +33,10 @@ install-and-run: ## install and run from source
 	$(MAKE) install
 	dsp-metadata
 
-.PHONY: run
-run: ## run as script
-	pipenv run python dspMetadataGUI/collectMetadata.py
-
 .PHONY: doc
 doc: ## build and serve doc
 	mkdocs build
 	mkdocs serve
-
-.PHONY: doc-deploy
-doc-deploy: ## deploy doc to github pages
-	mkdocs gh-deploy
-
 
 .PHONY: help
 help: ## this help
