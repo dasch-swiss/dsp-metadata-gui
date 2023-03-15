@@ -10,6 +10,7 @@ pysimplegui = "*"
 autopep8 = "*"
 markdown-include = "*"
 mkdocs = "*"
+mkdocs-include-markdown-plugin = "*"
 mkdocs-material = "*"
 mkdocs-material-extensions = "*"
 mkdocstrings = "*"
@@ -18,14 +19,10 @@ pymdown-extensions = "*"
 setuptools = "*"
 twine = "*"
 wheel = "*"
-mkdocs-include-markdown-plugin = "*"
 
 [requires]
 python_version = "3.11"
 
 [scripts]
-# convert = "python dspMetadataGUI/util/converter.py"
 docs = "make doc"
-# rdf = "python dspMetadataGUI/util/rdfConverter.py"
-# run = "python dspMetadataGUI/collectMetadata.py"
-# test = "python -m unittest"
+run = "python src/main.py"
