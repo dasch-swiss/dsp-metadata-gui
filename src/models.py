@@ -50,3 +50,10 @@ class Organization:
     email: str | None = None
     alternative_names: list[LangString] = field(default_factory=list)
     authority_refs: list[Url] = field(default_factory=list)
+
+
+@dataclass
+class Project:
+    shortcode: str
+    name: str
+    description: str
