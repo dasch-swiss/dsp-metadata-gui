@@ -5,6 +5,7 @@ verify_ssl = true
 
 [packages]
 pysimplegui = "*"
+tinydb = "*"
 
 [dev-packages]
 autopep8 = "*"
