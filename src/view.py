@@ -47,9 +47,19 @@ class View:
         return rows
 
     def _make_new_project_window(self) -> sg.Window:
+        layout = [
+            [
+                sg.Button("blah")
+            ],
+            [
+                sg.Button("Back"),
+                sg.ProgressBar(100, expand_x=True),
+                sg.Button("Back"),
+            ]
+        ]
         return sg.Window(
             title="DSP Metadata",
-            layout=[[sg.Button("blah")]],
+            layout=layout,
             margins=(50, 30),
             font=font,
             element_padding=10,
