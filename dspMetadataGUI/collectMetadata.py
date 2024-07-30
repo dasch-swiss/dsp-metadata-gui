@@ -192,6 +192,7 @@ class ProjectPanel(wx.Panel):
                 path = dlg.GetPath()
                 print(path)
                 data_handler.export_as_json(self.get_selected_project(), path)
+        print("Export as JSON... done.")
 
     def __on_zip_and_export(self, event):
         """

@@ -6,6 +6,7 @@ import json
 import os
 import re
 import time
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
@@ -409,7 +410,7 @@ def _get_project(g: Graph):
             res["dataManagementPlan"] = _get_dmp(g)
         elif p == dsp.hasPublication:
             res.setdefault("publications", [])
-            res["publications"].append(obj)
+            res["publications"].append(_update_publication(obj))
         elif p == dsp.hasGrant:
             res.setdefault("grants", [])
             res["grants"].append(obj)
@@ -432,6 +433,67 @@ def _get_project(g: Graph):
 
 # Utils
 # -----
+
+
+@dataclass
+class Url:
+    __type: str
+    type: str
+    url: str
+    text: str
+
+    def to_json(self):
+        res = {
+            "__type": self.__type,
+            "type": self.type,
+            "url": self.url,
+            "text": self.text,
+        }
+        return res
+
+
+def _update_publication(pub: str):
+    pub_links: list[Url] = []
+    pub_text = ""
+    if "DOI: " in pub and "https://" not in pub:
+        pub = pub.replace("DOI: ", "ADOI:")
+    pub = pub.replace("DOI: ", "DOI:")
+    words = pub.split()
+    for w in words:
+        # if it is a link, check if its doi and format it, else just use the link
+        if w.__contains__("https://"):
+            # remove possible ',' and '.' at the end
+            if w.endswith((",", ".")):
+                w = w[:-1]
+            if "doi" in w:
+                link_text = w
+                if w.startswith("https://doi.org/"):
+                    link_text = f'DOI: {link_text.replace("https://doi.org/", "")}'
+                if w.startswith("https://www."):
+                    link_text = link_text.replace("https://www.", "")
+                if w.startswith("https://"):
+                    link_text = link_text.replace("https://", "")
+                url = Url("URL", "DOI", w, link_text)
+            else:
+                url = Url("URL", "URL", w, w)
+            pub_links.append(url)
+
+        # case where there is just a DOI string, generate the link
+        elif w.startswith("ADOI:"):
+            link = f'https://doi.org/{w.split(":")[1]}'
+            link_text = f'{w.split(":")[0][1:]}: {w.split(":")[1]}'
+            url = Url("URL", "DOI", link, link_text)
+            pub_links.append(url)
+
+        # add word to text string
+        else:
+            if "DOI:" not in w:
+                pub_text = pub_text + f" {w}"
+    publication = {"text": pub_text}
+    links_converted = [url.to_json() for url in pub_links]
+    if links_converted:
+        publication["url"] = links_converted
+    return publication
 
 
 def _add_attribution(g: Graph, iri: BNode, attributions: List):
