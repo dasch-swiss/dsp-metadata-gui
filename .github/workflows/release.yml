@@ -48,12 +48,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           REQUIREMENTS: docs/requirements.txt
 
-  notification:
-    name: Google chat notification about release and published version
-    needs: [release-pypi, release-docs]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Send notification to google chat room "DSP releases"
-        uses: lakto/google-chat-action@main
-        with:
-          url: ${{ secrets.GOOGLE_CHAT_DSP_RELEASES_WEBHOOK_URL }}

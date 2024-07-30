@@ -63,3 +63,4 @@ venv.bak/
 # bazel
 /bazel-*
 /.ijwb/
+.python-version
