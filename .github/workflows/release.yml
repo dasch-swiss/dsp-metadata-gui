@@ -34,8 +34,8 @@ jobs:
           poetry install
       - name: build wheel
         run: |
-          rm -rf dist/ build/
-          poetry build
+          make upgrade-dist-tools
+          make dist
       - name: publish new version to PyPI
         run: poetry publish
 
