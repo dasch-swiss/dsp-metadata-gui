@@ -294,7 +294,6 @@ class TabbedWindow(wx.Frame):
         nb.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.on_tab_change)
 
         # Create the tab windows
-        tab1 = TabOne(nb, self.dataset)
         tab2 = DataTab(nb, self.dataset, self.dataset.project, "Project")
         tab3 = DataTab(nb, self.dataset, self.dataset.dataset, "Dataset", multiple=True)
         tab4 = DataTab(nb, self.dataset, self.dataset.persons, "Person", multiple=True)
@@ -302,7 +301,6 @@ class TabbedWindow(wx.Frame):
         tab6 = DataTab(nb, self.dataset, self.dataset.grants, "Grant", multiple=True)
 
         # Add the windows to tabs and name them.
-        nb.AddPage(tab1, "Base Data")
         nb.AddPage(tab5, "Organization")
         nb.AddPage(tab4, "Person")
         nb.AddPage(tab6, "Grant")
@@ -384,95 +382,14 @@ class TabbedWindow(wx.Frame):
         else:
             self.feedback_text.SetForegroundColour(wx.Colour(200, 50, 50))
         self.feedback_text.SetLabel(msg)
+        wx.CallLater(2500, self.__reset_label)
+
+    def __reset_label(self) -> None:
+        """reset the label to an empty value"""
         try:
-            wx.CallLater(2500, lambda: self.feedback_text.SetLabel(""))
+            self.feedback_text.SetLabel("")
         except Exception:
             pass
-
-
-class TabOne(wx.Panel):
-    def __init__(self, parent: wx.Notebook, dataset: MetaDataSet):
-        """Tab holding the project base information"""
-        wx.Panel.__init__(self, parent)
-        self.dataset = dataset
-
-        # Project name as caption
-        sizer = wx.GridBagSizer(10, 10)
-        project_label = wx.StaticText(self, label="Current Project:")
-        project_name = wx.StaticText(self, label=self.dataset.name)
-        sizer.Add(project_label, pos=(0, 0))
-        sizer.Add(project_name, pos=(0, 1))
-
-        # Path to folder
-        path_label = wx.StaticText(self, label="Path: ")
-        sizer.Add(path_label, pos=(1, 0))
-        path_field = wx.TextCtrl(self, style=wx.TE_READONLY, size=(550, -1))
-        path_field.SetValue(self.dataset.path)
-        sizer.Add(path_field, pos=(1, 1))
-        path_help = wx.Button(self, label="?")
-        path_help.Bind(
-            wx.EVT_BUTTON,
-            lambda event: self.show_help(event, "Path to the folder with the data", "/some/path/to/folder"),
-        )
-        sizer.Add(path_help, pos=(1, 2))
-
-        # Files
-        files_label = wx.StaticText(self, label="Files: ")
-        sizer.Add(files_label, pos=(2, 0))
-        data_sizer = wx.BoxSizer()
-        file_list = wx.ListBox(self, size=(550, -1))
-        for f in dataset.files:
-            file_list.Append(f)
-        data_sizer.Add(file_list)
-        button_sizer = wx.BoxSizer(wx.VERTICAL)
-        btn_add = wx.Button(self, label="Add File(s)")
-        btn_add.Bind(wx.EVT_BUTTON, lambda event: self.add_file(dataset, file_list))
-        btn_del = wx.Button(self, label="Remove Selected")
-        btn_del.Bind(wx.EVT_BUTTON, lambda event: self.remove_file(dataset, file_list))
-        button_sizer.Add(btn_add, flag=wx.EXPAND)
-        button_sizer.Add(btn_del, flag=wx.EXPAND)
-        data_sizer.Add(button_sizer)
-        sizer.Add(data_sizer, pos=(2, 1))
-        path_help = wx.Button(self, label="?")
-        path_help.Bind(
-            wx.EVT_BUTTON,
-            lambda event: self.show_help(event, "Files associated with the project", "sample_project.zip"),
-        )
-        sizer.Add(path_help, pos=(2, 2))
-        sizer.AddGrowableCol(1)
-        self.SetSizer(sizer)
-
-    def show_help(self, evt, message: str, sample: str):
-        """Handles events from 'help' button. Opens a help popup"""
-        msg = f"Description:\n{message}\n\nExample:\n{sample}"
-        win = HelpPopup(self, msg)
-        btn = evt.GetEventObject()
-        pos = btn.ClientToScreen((0, 0))
-        sz = btn.GetSize()
-        win.Position(pos, (0, sz[1]))
-        win.Popup()
-
-    def add_file(self, dataset: MetaDataSet, listbox: wx.ListBox):
-        """Associate a file with project base data."""
-        with wx.FileDialog(self, "Choose file(s):", style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE) as fd:
-            if fd.ShowModal() == wx.ID_OK:
-                for p in fd.GetPaths():
-                    f = str(p)
-                    if f.startswith(dataset.path):
-                        f = f.replace(f"{dataset.path}/", "")
-                    else:
-                        continue
-                    if f and f not in dataset.files:
-                        dataset.files.append(f)
-                        listbox.Append(f)
-
-    def remove_file(self, dataset: MetaDataSet, file_list: wx.ListBox):
-        """Removes a file from base information association."""
-        selection = file_list.GetSelection()
-        if selection >= 0:
-            string_selected = file_list.GetString(selection)
-            dataset.files.remove(string_selected)
-            file_list.Delete(selection)
 
 
 class DataTab(scrolledPanel.ScrolledPanel):
@@ -1192,7 +1109,7 @@ class PropertyRow:
 
 
 class HelpPopup(wx.PopupTransientWindow):
-    def __init__(self, parent: Union[DataTab, TabOne], msg: str):
+    def __init__(self, parent: DataTab, msg: str):
         """
         This class provides a help message
         Args:
