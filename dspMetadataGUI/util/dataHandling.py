@@ -83,28 +83,19 @@ class DataHandling:
         Args:
             dataset (MetaDataSet, optional): A `Metadataset` to serialize before saving. Defaults to None.
         """
-        # LATER: could let the user decide where to store the data.
-        # LATER: export metadata here, once export logic is improved
         if dataset:
             dataset.generate_rdf_graph()
         with open(self.data_storage, "wb") as file:
             pickle.dump(self.projects, file)
 
-    def export_as_json(self, dataset: MetaDataSet, target: str):  # XXX
-        if not dataset:
-            return
+    def export_as_json(self, dataset: MetaDataSet, target: str):
         if not target:
             return
         if not os.path.exists(target):
             os.makedirs(target)
-        target_file = os.path.join(target, dataset.name + ".json")
-        try:
-            graph = dataset.generate_rdf_graph()
-            if not graph:
-                raise Exception("No Graph")
-        except Exception:
-            print("Warning: could not load graph from cache. Performance may be decreased.")
-            # LATER: remove with next breaking change
+        target_file = os.path.join(target, dataset.shortcode + ".json")
+        graph = dataset.generate_rdf_graph()
+        if not graph:
             graph = dataset.graph
         turtle_str = graph.serialize(format="turtle")
         json_str = convert_string(turtle_str)
