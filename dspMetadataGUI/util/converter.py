@@ -3,11 +3,9 @@ Module to convert RDF serialized metadata (first data model) into JSON metadata 
 """
 
 import json
-import os
 import re
 from dataclasses import dataclass
 from datetime import datetime
-from pathlib import Path
 from typing import Any, Dict, List
 
 import guess_language  # type: ignore
@@ -25,73 +23,6 @@ schema_url = (
     "https://raw.githubusercontent.com/dasch-swiss/dsp-meta-svc/main/docs/services/metadata/schema-metadata.json"
 )
 dsp = Namespace("http://ns.dasch.swiss/repository#")
-
-
-def convert_and_save(files: List[str], target: str) -> int:
-    """Convert a list of metadata files and save output to files.
-
-    Takes a list of `.ttl` files, converts each of them, and stores it to the specified target directory.
-
-    Args:
-        files (List[str]): paths to `.ttl` files that should be transformed.
-        target (str): path to the target directory where the output files should be saved.
-
-    Returns:
-        int: The number of files that were converted.
-    """
-    res = 0
-    for f in files:
-        s = convert_file(f)
-        print(f"File length: {len(s)}")
-        fpath = Path(f)
-        out = f"{target}/{fpath.stem}.json"
-        print(out)
-        with open(out, mode="w+", encoding="utf-8") as fw:
-            fw.write(s)
-        res += 1
-    return res
-
-
-def convert_files(files: List[str]) -> List[str]:
-    """Convert multiple metadata files from a list of files.
-
-    Convert metadata from local .ttl files.
-
-    Args:
-        files (List[str]): paths to .ttl files (can be relative or absolute)
-
-    Returns:
-        List[str]: list of json serialized metadata
-    """
-    return [convert_file(f) for f in files]
-
-
-def convert_file(file: str) -> str:
-    """Convert metadata from a file.
-
-    Convert metadata from a local .ttl file.
-
-    Args:
-        file (str): path to a .ttl file (can be relative or absolute)
-
-    Returns:
-        str: json serialized metadata
-    """
-    with open(file, "r+", encoding="utf-8") as f:
-        s = f.read()
-    return convert_string(s)
-
-
-def convert_strings(data_list: List[str]) -> List[str]:
-    """Convert multiple metadata sets from a list of strings.
-
-    Args:
-        data_list (List[str]): list of turtle serializations of metadata
-
-    Returns:
-        List[str]: list of json serialized metadata
-    """
-    return [convert_string(data) for data in data_list]
 
 
 def convert_string(data: str) -> str:
@@ -791,24 +722,3 @@ def validate(data, verbose=False):
         if verbose:
             print(val.message)
         return False
-
-
-if __name__ == "__main__":
-    files = ["maximal.ttl", "rosetta.ttl", "limc.ttl", "awg.ttl", "hdm.ttl", "drawings-gods.ttl"]
-    results = {}
-    os.makedirs("out", exist_ok=True)
-    for filename in files:
-        print(f"Converting: {filename}...")
-        s = convert_file(f"test/test-data/{filename}")
-        issues = s.count("XX")
-        results[filename] = {
-            "isValid": validate(s),
-            "numberOfIssues": issues,
-            "toResolve": [ll.strip().replace('"', "'") for ll in s.splitlines() if "XX" in ll],
-        }
-        print(f"Number of issues encountered: {issues}")
-        out = filename.replace(".ttl", ".json")
-        with open(f"out/{out}", mode="w+", encoding="utf-8") as f:
-            f.write(s)
-        print(f"Saved as: {out}\nDone.\n\n----\n")
-    print(json.dumps(results, indent=4))
