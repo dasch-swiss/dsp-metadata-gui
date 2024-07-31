@@ -96,6 +96,8 @@ The most important changes from V1 to V2 include the following additions:
 
 #### Pipenv
 
+--> The repo is in the process of being switched from pipenv to poetry.
+
 Use `pipenv` for a seamless development experience.  
 In order to have both dependencies and dev-dependencies installed from the `Pipfile`, set up the virtual environment running
 ```
