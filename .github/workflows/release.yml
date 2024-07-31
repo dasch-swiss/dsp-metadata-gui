@@ -7,8 +7,8 @@ on:
 # set environment variables
 env:
   TOKEN: ${{ secrets.GH_TOKEN }}
-  TWINE_USERNAME: ${{ secrets.PYPI_USER }}
-  TWINE_PASSWORD: ${{ secrets.PYPI_PW }}
+  POETRY_HTTP_BASIC_PYPI_USERNAME: __token__
+  POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_DASCHBOT_TOKEN }}
 
 jobs:
   # release to PyPI
@@ -19,7 +19,7 @@ jobs:
       id-token: write
     steps:
       # check out repo
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
       # install python
@@ -30,18 +30,14 @@ jobs:
       # install pythonn dependencies
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-        # pip install -r requirements.txt  # will this break? avoid installing wPython!
-      # release new version to PyPI
-      - name: generate distribution package
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry install
+      - name: build wheel
         run: |
-          make upgrade-dist-tools
-          make dist
-      - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_PW }}
+          rm -rf dist/ build/
+          poetry build
+      - name: publish new version to PyPI
+        run: poetry publish
 
   release-docs:
     name: Release Docs
