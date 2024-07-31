@@ -11,16 +11,16 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
 
-import guess_language
-import jsonschema
-import langid
-import requests
-from bs4 import BeautifulSoup
-from langdetect import detect
-from rdflib import PROV, RDF, SDO, SKOS, Graph
-from rdflib.namespace import Namespace
-from rdflib.term import BNode, Literal
-from textblob import TextBlob
+import guess_language  # type: ignore
+import jsonschema  # type: ignore
+import langid  # type: ignore
+import requests  # type: ignore
+from bs4 import BeautifulSoup  # type: ignore
+from langdetect import detect  # type: ignore
+from rdflib import PROV, RDF, SDO, SKOS, Graph  # type: ignore
+from rdflib.namespace import Namespace  # type: ignore
+from rdflib.term import BNode, Literal  # type: ignore
+from textblob import TextBlob  # type: ignore
 
 schema_url = (
     "https://raw.githubusercontent.com/dasch-swiss/dsp-meta-svc/main/docs/services/metadata/schema-metadata.json"
@@ -141,7 +141,7 @@ def _get_dmp(g: Graph):
     for _, p, o in g.triples((dmp, None, None)):
         obj = str(o)
         if p == dsp.hasURL:
-            res["url"] = _get_url(g, o)
+            res["url"] = _get_url(g, o)  # type: ignore
         elif p == dsp.isAvailable:
             res["available"] = obj == "true"
         # default cases
@@ -385,41 +385,41 @@ def _get_project(g: Graph):
             res["endDate"] = obj
         elif p == dsp.hasKeywords:
             res.setdefault("keywords", [])
-            res["keywords"].append(_guess_language_of_text(obj))
+            res["keywords"].append(_guess_language_of_text(obj))  # type: ignore
         elif p == dsp.hasDiscipline:
             res.setdefault("disciplines", [])
             if isinstance(o, BNode):
-                res["disciplines"].append(_get_url(g, o))
+                res["disciplines"].append(_get_url(g, o))  # type: ignore
             else:
-                res["disciplines"].append(_guess_language_of_text(obj))
+                res["disciplines"].append(_guess_language_of_text(obj))  # type: ignore
         elif p == dsp.hasTemporalCoverage:
             res.setdefault("temporalCoverage", [])
             if isinstance(o, BNode):
-                res["temporalCoverage"].append(_get_url(g, o))
+                res["temporalCoverage"].append(_get_url(g, o))  # type: ignore
             else:
-                res["temporalCoverage"].append(_guess_language_of_text(obj))
+                res["temporalCoverage"].append(_guess_language_of_text(obj))  # type: ignore
         elif p == dsp.hasSpatialCoverage:
             res.setdefault("spatialCoverage", [])
-            res["spatialCoverage"].append(_get_place(g, o))
+            res["spatialCoverage"].append(_get_place(g, o))  # type: ignore
         elif p == dsp.hasURL:
             if res.get("url"):
-                res["secondaryURL"] = _get_url(g, o)
+                res["secondaryURL"] = _get_url(g, o)  # type: ignore
             else:
-                res["url"] = _get_url(g, o)
+                res["url"] = _get_url(g, o)  # type: ignore
         elif p == dsp.hasDataManagementPlan:
             res["dataManagementPlan"] = _get_dmp(g)
         elif p == dsp.hasPublication:
             res.setdefault("publications", [])
-            res["publications"].append(_update_publication(obj))
+            res["publications"].append(_update_publication(obj))  # type: ignore
         elif p == dsp.hasGrant:
             res.setdefault("grants", [])
-            res["grants"].append(obj)
+            res["grants"].append(obj)  # type: ignore
         elif p == dsp.hasAlternateName:
             res.setdefault("alternativeNames", [])
-            res["alternativeNames"].append(_guess_language_of_text(obj))
+            res["alternativeNames"].append(_guess_language_of_text(obj))  # type: ignore
         elif p == dsp.hasFunder:
             res.setdefault("funders", [])
-            res["funders"].append(obj)
+            res["funders"].append(obj)  # type: ignore
         elif p == dsp.hasContactPoint:
             res["contactPoint"] = obj
         # default cases
@@ -489,7 +489,7 @@ def _update_publication(pub: str):
         else:
             if "DOI:" not in w:
                 pub_text = pub_text + f" {w}"
-    publication = {"text": pub_text}
+    publication: dict[str, Any] = {"text": pub_text}
     links_converted = [url.to_json() for url in pub_links]
     if links_converted:
         publication["url"] = links_converted
@@ -590,7 +590,7 @@ def _get_country(locality):
 def _get_place(g: Graph, iri: BNode):
     """Get a place from graph"""
     url = next(g.objects(iri, SDO.url))
-    return _get_url(g, url)
+    return _get_url(g, url)  # type: ignore
 
 
 def _ensure_protocol_in_url(url: str):
@@ -694,7 +694,7 @@ def _get_skos_name(url: str):
         g.parse(data=data, format="n3")
         labels = g.objects(predicate=SKOS.prefLabel)
         for label in labels:
-            l: Literal = label
+            l: Literal = label  # type: ignore
             if l.language == "en":
                 return str(l)
     except Exception:

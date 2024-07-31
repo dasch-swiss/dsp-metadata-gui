@@ -36,7 +36,7 @@ class DataHandling:
         # LATER: path could be made customizable
         self.load_data()
 
-    def add_project(self, folder_path: str, shortcode: str, files: list):
+    def add_project(self, shortcode: str):
         """
         Add a new project.
 
@@ -49,10 +49,9 @@ class DataHandling:
             shortcode (str): the project shortcode
             files (list): the files in the project folder
         """
-        folder_name = os.path.basename(folder_path)
-        dataset = MetaDataSet(folder_name, folder_path, shortcode)
+        folder_name = ""
+        dataset = MetaDataSet(folder_name, shortcode)
         self.projects.append(dataset)
-        dataset.files += files
         self.save_data()
 
     def remove_project(self, project: MetaDataSet):
@@ -78,7 +77,7 @@ class DataHandling:
         with open(self.data_storage, "rb") as file:
             self.projects = pickle.load(file)
 
-    def save_data(self, dataset: MetaDataSet = None):
+    def save_data(self, dataset: MetaDataSet | None = None):
         """
         Save data to disc.
 

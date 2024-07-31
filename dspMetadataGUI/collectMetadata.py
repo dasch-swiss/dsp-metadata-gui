@@ -9,10 +9,10 @@ from typing import Optional, Tuple, Union
 import wx  # type: ignore
 import wx.adv  # type: ignore
 import wx.lib.scrolledpanel as scrolledPanel  # type: ignore
-from util import converter, rdfConverter
-from util.dataHandling import DataHandling
-from util.metaDataSet import DataClass, MetaDataSet, Property
-from util.utils import Cardinality, Datatype, Validity, open_file
+from util import converter, rdfConverter  # type: ignore
+from util.dataHandling import DataHandling  # type: ignore
+from util.metaDataSet import DataClass, MetaDataSet, Property  # type: ignore
+from util.utils import Cardinality, Datatype, Validity, open_file  # type: ignore
 
 data_handler: DataHandling
 
@@ -169,10 +169,7 @@ class ProjectPanel(wx.Panel):
                 return
         else:
             return
-        title = "Choose a directory:"
-        dlg = wx.DirDialog(self, title, style=wx.DD_DEFAULT_STYLE)
-        if dlg.ShowModal() == wx.ID_OK:
-            self.__add_new_project(dlg.GetPath(), shortcode)
+        self.__add_new_project(shortcode)
         dlg.Destroy()
 
     def __refresh_repos(self):
@@ -246,12 +243,9 @@ class ProjectPanel(wx.Panel):
             window.Show()
             self.Disable()
 
-    def __add_new_project(self, folder_path, shortcode):
+    def __add_new_project(self, shortcode):
         """Add a new project."""
-        dir_list = os.listdir(folder_path)
-        if ".DS_Store" in dir_list:
-            dir_list.remove(".DS_Store")
-        data_handler.add_project(folder_path, shortcode, dir_list)
+        data_handler.add_project(shortcode)
         self.refresh_view()
 
     def __on_remove_project(self, event):
