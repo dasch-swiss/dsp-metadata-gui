@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.2](https://www.github.com/dasch-swiss/dsp-metadata-gui/compare/v1.4.1...v1.4.2) (2024-07-31)
+
+
+### Maintenance
+
+* replace pipenv with poetry ([#34](https://www.github.com/dasch-swiss/dsp-metadata-gui/issues/34)) ([17e1dd2](https://www.github.com/dasch-swiss/dsp-metadata-gui/commit/17e1dd28f71d0acc850db879b7ec715dfea1dc6c))
+
 ### [1.4.1](https://www.github.com/dasch-swiss/dsp-metadata-gui/compare/v1.4.0...v1.4.1) (2024-07-31)
 
 
