@@ -3,16 +3,14 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 import re
-from glob import glob
 from typing import Optional, Tuple, Union
 
-import wx
-import wx.adv
-import wx.lib.scrolledpanel as scrolledPanel
-from util import converter, rdfConverter
-from util.dataHandling import DataHandling
-from util.metaDataSet import DataClass, MetaDataSet, Property
-from util.utils import Cardinality, Datatype, Validity, open_file
+import wx  # type: ignore
+import wx.adv  # type: ignore
+import wx.lib.scrolledpanel as scrolledPanel  # type: ignore
+from util.dataHandling import DataHandling  # type: ignore
+from util.metaDataSet import DataClass, MetaDataSet, Property  # type: ignore
+from util.utils import Cardinality, Datatype, Validity  # type: ignore
 
 data_handler: DataHandling
 
@@ -55,7 +53,7 @@ class ProjectFrame(wx.Frame):
         menu_bar = wx.MenuBar()
         file_menu = wx.Menu()
         open_folder_menu_item = file_menu.Append(wx.ID_NEW, "Add new Project", "Open a folder with project files")
-        self.Bind(event=wx.EVT_MENU, handler=self.panel.__on_add_new_project, source=open_folder_menu_item)
+        self.Bind(event=wx.EVT_MENU, handler=self.panel.on_add_new_project, source=open_folder_menu_item)
         save_menu_item = file_menu.Append(wx.ID_SAVE, "&Save")
         self.Bind(wx.EVT_MENU, self.__on_save, source=save_menu_item)
         menu_bar.Append(file_menu, "&File")
@@ -119,7 +117,7 @@ class ProjectPanel(wx.Panel):
         # Create Buttons
         button_sizer = wx.BoxSizer(wx.VERTICAL)
         new_folder_button = wx.Button(self, label="Add new Project")
-        new_folder_button.Bind(wx.EVT_BUTTON, self.__on_add_new_project)
+        new_folder_button.Bind(wx.EVT_BUTTON, self.on_add_new_project)
         button_sizer.Add(new_folder_button, 0, wx.ALL | wx.EXPAND, 7)
 
         remove_folder_button = wx.Button(self, label="Remove selected Project")
@@ -156,7 +154,7 @@ class ProjectPanel(wx.Panel):
                 data_handler.export_as_json(self.__get_selected_project(), path)
         print("Export as JSON... done.")
 
-    def __on_add_new_project(self, event):
+    def on_add_new_project(self, event):
         """
         Open a new folder and add it to projects.
         """
@@ -169,10 +167,7 @@ class ProjectPanel(wx.Panel):
                 return
         else:
             return
-        title = "Choose a directory:"
-        dlg = wx.DirDialog(self, title, style=wx.DD_DEFAULT_STYLE)
-        if dlg.ShowModal() == wx.ID_OK:
-            self.__add_new_project(dlg.GetPath(), shortcode)
+        self.__add_new_project(shortcode)
         dlg.Destroy()
 
     def __refresh_repos(self):
@@ -246,12 +241,9 @@ class ProjectPanel(wx.Panel):
             window.Show()
             self.Disable()
 
-    def __add_new_project(self, folder_path, shortcode):
+    def __add_new_project(self, shortcode):
         """Add a new project."""
-        dir_list = os.listdir(folder_path)
-        if ".DS_Store" in dir_list:
-            dir_list.remove(".DS_Store")
-        data_handler.add_project(folder_path, shortcode, dir_list)
+        data_handler.add_project(shortcode)
         self.refresh_view()
 
     def __on_remove_project(self, event):
@@ -300,7 +292,6 @@ class TabbedWindow(wx.Frame):
         nb.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.on_tab_change)
 
         # Create the tab windows
-        tab1 = TabOne(nb, self.dataset)
         tab2 = DataTab(nb, self.dataset, self.dataset.project, "Project")
         tab3 = DataTab(nb, self.dataset, self.dataset.dataset, "Dataset", multiple=True)
         tab4 = DataTab(nb, self.dataset, self.dataset.persons, "Person", multiple=True)
@@ -308,7 +299,6 @@ class TabbedWindow(wx.Frame):
         tab6 = DataTab(nb, self.dataset, self.dataset.grants, "Grant", multiple=True)
 
         # Add the windows to tabs and name them.
-        nb.AddPage(tab1, "Base Data")
         nb.AddPage(tab5, "Organization")
         nb.AddPage(tab4, "Person")
         nb.AddPage(tab6, "Grant")
@@ -390,95 +380,14 @@ class TabbedWindow(wx.Frame):
         else:
             self.feedback_text.SetForegroundColour(wx.Colour(200, 50, 50))
         self.feedback_text.SetLabel(msg)
+        wx.CallLater(2500, self.__reset_label)
+
+    def __reset_label(self) -> None:
+        """reset the label to an empty value"""
         try:
-            wx.CallLater(2500, lambda: self.feedback_text.SetLabel(""))
+            self.feedback_text.SetLabel("")
         except Exception:
             pass
-
-
-class TabOne(wx.Panel):
-    def __init__(self, parent: wx.Notebook, dataset: MetaDataSet):
-        """Tab holding the project base information"""
-        wx.Panel.__init__(self, parent)
-        self.dataset = dataset
-
-        # Project name as caption
-        sizer = wx.GridBagSizer(10, 10)
-        project_label = wx.StaticText(self, label="Current Project:")
-        project_name = wx.StaticText(self, label=self.dataset.name)
-        sizer.Add(project_label, pos=(0, 0))
-        sizer.Add(project_name, pos=(0, 1))
-
-        # Path to folder
-        path_label = wx.StaticText(self, label="Path: ")
-        sizer.Add(path_label, pos=(1, 0))
-        path_field = wx.TextCtrl(self, style=wx.TE_READONLY, size=(550, -1))
-        path_field.SetValue(self.dataset.path)
-        sizer.Add(path_field, pos=(1, 1))
-        path_help = wx.Button(self, label="?")
-        path_help.Bind(
-            wx.EVT_BUTTON,
-            lambda event: self.show_help(event, "Path to the folder with the data", "/some/path/to/folder"),
-        )
-        sizer.Add(path_help, pos=(1, 2))
-
-        # Files
-        files_label = wx.StaticText(self, label="Files: ")
-        sizer.Add(files_label, pos=(2, 0))
-        data_sizer = wx.BoxSizer()
-        file_list = wx.ListBox(self, size=(550, -1))
-        for f in dataset.files:
-            file_list.Append(f)
-        data_sizer.Add(file_list)
-        button_sizer = wx.BoxSizer(wx.VERTICAL)
-        btn_add = wx.Button(self, label="Add File(s)")
-        btn_add.Bind(wx.EVT_BUTTON, lambda event: self.add_file(dataset, file_list))
-        btn_del = wx.Button(self, label="Remove Selected")
-        btn_del.Bind(wx.EVT_BUTTON, lambda event: self.remove_file(dataset, file_list))
-        button_sizer.Add(btn_add, flag=wx.EXPAND)
-        button_sizer.Add(btn_del, flag=wx.EXPAND)
-        data_sizer.Add(button_sizer)
-        sizer.Add(data_sizer, pos=(2, 1))
-        path_help = wx.Button(self, label="?")
-        path_help.Bind(
-            wx.EVT_BUTTON,
-            lambda event: self.show_help(event, "Files associated with the project", "sample_project.zip"),
-        )
-        sizer.Add(path_help, pos=(2, 2))
-        sizer.AddGrowableCol(1)
-        self.SetSizer(sizer)
-
-    def show_help(self, evt, message: str, sample: str):
-        """Handles events from 'help' button. Opens a help popup"""
-        msg = f"Description:\n{message}\n\nExample:\n{sample}"
-        win = HelpPopup(self, msg)
-        btn = evt.GetEventObject()
-        pos = btn.ClientToScreen((0, 0))
-        sz = btn.GetSize()
-        win.Position(pos, (0, sz[1]))
-        win.Popup()
-
-    def add_file(self, dataset: MetaDataSet, listbox: wx.ListBox):
-        """Associate a file with project base data."""
-        with wx.FileDialog(self, "Choose file(s):", style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE) as fd:
-            if fd.ShowModal() == wx.ID_OK:
-                for p in fd.GetPaths():
-                    f = str(p)
-                    if f.startswith(dataset.path):
-                        f = f.replace(f"{dataset.path}/", "")
-                    else:
-                        continue
-                    if f and f not in dataset.files:
-                        dataset.files.append(f)
-                        listbox.Append(f)
-
-    def remove_file(self, dataset: MetaDataSet, file_list: wx.ListBox):
-        """Removes a file from base information association."""
-        selection = file_list.GetSelection()
-        if selection >= 0:
-            string_selected = file_list.GetString(selection)
-            dataset.files.remove(string_selected)
-            file_list.Delete(selection)
 
 
 class DataTab(scrolledPanel.ScrolledPanel):
@@ -1198,7 +1107,7 @@ class PropertyRow:
 
 
 class HelpPopup(wx.PopupTransientWindow):
-    def __init__(self, parent: Union[DataTab, TabOne], msg: str):
+    def __init__(self, parent: DataTab, msg: str):
         """
         This class provides a help message
         Args:
@@ -1264,278 +1173,6 @@ class CalendarDlg(wx.Dialog):
             self.EndModal(wx.ID_CANCEL)
         else:
             evt.Skip()
-
-
-class JSONConverterDialog(wx.Dialog):
-    """Dialog that lets the user select which files to convert to the new metadata format in json."""
-
-    class InType:
-        SINGLE_FILE = 0
-        MULTI_FILE = 1
-        DIRECTORY = 2
-
-    def __init__(self, *args, **kw):
-        """Create a new Converter Dialog.
-
-        Subclass of wx.Dialog.
-
-        Should be displayed with `.ShowModal()`
-        """
-        super(JSONConverterDialog, self).__init__(*args, **kw)
-        self.__in_files = None
-        self.__out_dir = None
-        self.Size = (800, 650)
-        panel = wx.Panel(self)
-        box = wx.BoxSizer(wx.VERTICAL)
-        text = wx.StaticText(
-            panel,
-            label="The DSP Metadata GUI tool models project metadata "
-            + "according to the first iteration of DSP Metadata, "
-            + "and produces RDF data (serialized as turtle, XML and JSON-LD).\n\n"
-            + "The second iteration introduced major changes in the data model, "
-            + "which proved to be breaking.\n\n"
-            + "This converter allows to convert metadata from a .ttl file in the old model to the new model "
-            + "requiring minimal manual work.\n\n"
-            + "Some places will definitely require manual work, these are marked with `XX` in the data "
-            + "so that they are easy to find.\n\n"
-            + "It is advisable however, to check all data thoroughly to ensure they are correct.",
-        )
-        text.Wrap(780)
-        box.Add(text, 0, wx.ALL | wx.EXPAND, 7)
-        box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
-        # Input
-        input_panel = wx.Panel(panel)
-        in_box = wx.BoxSizer(wx.VERTICAL)
-        txt_in_header = wx.StaticText(input_panel, label="Select Input for Conversion:")
-        in_box.Add(txt_in_header, 0, wx.ALL | wx.EXPAND, 7)
-        input_panel.SetSizer(in_box)
-        box.Add(input_panel, 0, wx.ALL | wx.EXPAND, 7)
-        buttons_panel = wx.Panel(input_panel)
-        btns_box = wx.BoxSizer(wx.HORIZONTAL)
-        buttons_panel.SetSizer(btns_box)
-        in_file_btn = wx.Button(buttons_panel, label="Single File")
-        btns_box.Add(in_file_btn, 1, wx.ALL, 7)
-        in_files_btn = wx.Button(buttons_panel, label="Multiple Files")
-        btns_box.Add(in_files_btn, 1, wx.ALL, 7)
-        in_dir_btn = wx.Button(buttons_panel, label="Directory (Bulk Transform)")
-        btns_box.Add(in_dir_btn, 1, wx.ALL, 7)
-        in_box.Add(buttons_panel, 0, wx.ALL | wx.EXPAND, 7)
-        in_lbl = wx.StaticText(input_panel, label="No Input Selected")
-        in_lbl.SetMinSize((200, 80))
-        in_box.Add(in_lbl, 0, wx.ALL | wx.EXPAND, 7)
-        box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
-        in_file_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, JSONConverterDialog.InType.SINGLE_FILE))
-        in_files_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, JSONConverterDialog.InType.MULTI_FILE))
-        in_dir_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, JSONConverterDialog.InType.DIRECTORY))
-        # Output
-        output_panel = wx.Panel(panel)
-        out_box = wx.BoxSizer(wx.VERTICAL)
-        txt_out_header = wx.StaticText(output_panel, label="Select Output Directory for Conversion:")
-        out_box.Add(txt_out_header, 0, wx.ALL | wx.EXPAND, 7)
-        out_btn = wx.Button(output_panel, label="Output Directory")
-        out_box.Add(out_btn, 0, wx.ALL, 7)
-        out_path_lbl = wx.StaticText(output_panel, label="No Output Directory Selected")
-        out_box.Add(out_path_lbl, 0, wx.ALL | wx.EXPAND, 7)
-        out_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_output(out_path_lbl))
-        output_panel.SetSizer(out_box)
-        box.Add(output_panel, 0, wx.ALL | wx.EXPAND, 7)
-        box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
-        # Run Conversion
-        self.btn_convert = wx.Button(panel, label="Convert")
-        self.btn_convert.Bind(wx.EVT_BUTTON, lambda x: self._run_conversion())
-        box.Add(self.btn_convert, 0, wx.ALL | wx.EXPAND, 7)
-        panel.SetSizer(box)
-        self._refresh()
-
-    def _run_conversion(self):
-        """Button `Convert` has been clicked."""
-        if self.__in_files:
-            print(f"saving to: {self.__out_dir}")
-            res = converter.convert_and_save(self.__in_files, self.__out_dir)
-            print(f"Converted: {res} files")
-            open_file(self.__out_dir)
-
-    def _on_select_output(self, label: wx.StaticText):
-        """Select output/target directory by opening a DirDialog."""
-        with wx.DirDialog(self, "Select Output Folder") as dirDialog:
-            res = dirDialog.ShowModal()
-            if res == wx.ID_OK:
-                self.__out_dir = dirDialog.GetPath()
-                label.SetLabel(self.__out_dir)
-            else:
-                self.__out_dir = None
-                label.SetLabel("No Output Directory Selected")
-        self._refresh()
-
-    def _on_select_input(self, label: wx.StaticText, mode):
-        """Select input file(s) by opening FileDialog/DirDialog, depending on the selected mode."""
-        if mode == JSONConverterDialog.InType.SINGLE_FILE:
-            with wx.FileDialog(self, "Select Input File", wildcard="*.ttl") as fileDialog:
-                res = fileDialog.ShowModal()
-                if res == wx.ID_OK:
-                    path = fileDialog.GetPath()
-                    self.__in_files = [path]
-                    label.SetLabel(str(self.__in_files))
-        elif mode == JSONConverterDialog.InType.MULTI_FILE:
-            with wx.FileDialog(self, "Select Input Files", style=wx.FD_MULTIPLE, wildcard="*.ttl") as fileDialog:
-                res = fileDialog.ShowModal()
-                if res == wx.ID_OK:
-                    paths = fileDialog.GetPaths()
-                    self.__in_files = paths
-                    if len(self.__in_files) < 6:
-                        label.SetLabel("\n".join(self.__in_files))
-                    else:
-                        label.SetLabel(f"Selected files: {len(self.__in_files)}")
-        elif mode == JSONConverterDialog.InType.DIRECTORY:
-            with wx.DirDialog(self, "Select Input File") as dirDialog:
-                res = dirDialog.ShowModal()
-                if res == wx.ID_OK:
-                    path = dirDialog.GetPath()
-                    files = glob(f"{path}/*.ttl")
-                    self.__in_files = files
-                    if len(self.__in_files) < 6:
-                        label.SetLabel("\n".join(self.__in_files))
-                    else:
-                        label.SetLabel(f"Selected files: {len(self.__in_files)}")
-        self._refresh()
-
-    def _refresh(self):
-        if self.__in_files and self.__out_dir:
-            self.btn_convert.Enable()
-        else:
-            self.btn_convert.Disable()
-
-
-class RDFConverterDialog(wx.Dialog):
-    """Dialog that lets the user select which files to convert from json to RDF in the new data format."""
-
-    class InType:
-        SINGLE_FILE = 0
-        MULTI_FILE = 1
-        DIRECTORY = 2
-
-    def __init__(self, *args, **kw):
-        """Create a new Converter Dialog.
-
-        Subclass of wx.Dialog.
-
-        Should be displayed with `.ShowModal()`
-        """
-        super(RDFConverterDialog, self).__init__(*args, **kw)
-        self.__in_files = None
-        self.__out_dir = None
-        self.Size = (800, 650)
-        panel = wx.Panel(self)
-        box = wx.BoxSizer(wx.VERTICAL)
-        text = wx.StaticText(
-            panel,
-            label="This requires metadata converted to JSON already. (See menu 'option' > 'Convert RDF to JSON')\n\n"
-            + "First, clean up the JSON data. Once this is sound and finished, it can be converted to RDF here.",
-        )
-        text.Wrap(780)
-        box.Add(text, 0, wx.ALL | wx.EXPAND, 7)
-        box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
-        # Input
-        input_panel = wx.Panel(panel)
-        in_box = wx.BoxSizer(wx.VERTICAL)
-        txt_in_header = wx.StaticText(input_panel, label="Select Input for Conversion:")
-        in_box.Add(txt_in_header, 0, wx.ALL | wx.EXPAND, 7)
-        input_panel.SetSizer(in_box)
-        box.Add(input_panel, 0, wx.ALL | wx.EXPAND, 7)
-        buttons_panel = wx.Panel(input_panel)
-        btns_box = wx.BoxSizer(wx.HORIZONTAL)
-        buttons_panel.SetSizer(btns_box)
-        in_file_btn = wx.Button(buttons_panel, label="Single File")
-        btns_box.Add(in_file_btn, 1, wx.ALL, 7)
-        in_files_btn = wx.Button(buttons_panel, label="Multiple Files")
-        btns_box.Add(in_files_btn, 1, wx.ALL, 7)
-        in_dir_btn = wx.Button(buttons_panel, label="Directory (Bulk Transform)")
-        btns_box.Add(in_dir_btn, 1, wx.ALL, 7)
-        in_box.Add(buttons_panel, 0, wx.ALL | wx.EXPAND, 7)
-        in_lbl = wx.StaticText(input_panel, label="No Input Selected")
-        in_lbl.SetMinSize((200, 80))
-        in_box.Add(in_lbl, 0, wx.ALL | wx.EXPAND, 7)
-        box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
-        in_file_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, RDFConverterDialog.InType.SINGLE_FILE))
-        in_files_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, RDFConverterDialog.InType.MULTI_FILE))
-        in_dir_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_input(in_lbl, RDFConverterDialog.InType.DIRECTORY))
-        # Output
-        output_panel = wx.Panel(panel)
-        out_box = wx.BoxSizer(wx.VERTICAL)
-        txt_out_header = wx.StaticText(output_panel, label="Select Output Directory for Conversion:")
-        out_box.Add(txt_out_header, 0, wx.ALL | wx.EXPAND, 7)
-        out_btn = wx.Button(output_panel, label="Output Directory")
-        out_box.Add(out_btn, 0, wx.ALL, 7)
-        out_path_lbl = wx.StaticText(output_panel, label="No Output Directory Selected")
-        out_box.Add(out_path_lbl, 0, wx.ALL | wx.EXPAND, 7)
-        out_btn.Bind(wx.EVT_BUTTON, lambda x: self._on_select_output(out_path_lbl))
-        output_panel.SetSizer(out_box)
-        box.Add(output_panel, 0, wx.ALL | wx.EXPAND, 7)
-        box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
-        # Run Conversion
-        self.btn_convert = wx.Button(panel, label="Convert")
-        self.btn_convert.Bind(wx.EVT_BUTTON, lambda x: self._run_conversion())
-        box.Add(self.btn_convert, 0, wx.ALL | wx.EXPAND, 7)
-        panel.SetSizer(box)
-        self._refresh()
-
-    def _run_conversion(self):
-        """Button `Convert` has been clicked."""
-        if self.__in_files:
-            print(f"saving to: {self.__out_dir}")
-            res = rdfConverter.convert_and_save(self.__in_files, self.__out_dir)
-            print(f"Converted: {res} files")
-            open_file(self.__out_dir)
-
-    def _on_select_output(self, label: wx.StaticText):
-        """Select output/target directory by opening a DirDialog."""
-        with wx.DirDialog(self, "Select Output Folder") as dirDialog:
-            res = dirDialog.ShowModal()
-            if res == wx.ID_OK:
-                self.__out_dir = dirDialog.GetPath()
-                label.SetLabel(self.__out_dir)
-            else:
-                self.__out_dir = None
-                label.SetLabel("No Output Directory Selected")
-        self._refresh()
-
-    def _on_select_input(self, label: wx.StaticText, mode):
-        """Select input file(s) by opening FileDialog/DirDialog, depending on the selected mode."""
-        if mode == JSONConverterDialog.InType.SINGLE_FILE:
-            with wx.FileDialog(self, "Select Input File", wildcard="*.json") as fileDialog:
-                res = fileDialog.ShowModal()
-                if res == wx.ID_OK:
-                    path = fileDialog.GetPath()
-                    self.__in_files = [path]
-                    label.SetLabel(str(self.__in_files))
-        elif mode == JSONConverterDialog.InType.MULTI_FILE:
-            with wx.FileDialog(self, "Select Input Files", style=wx.FD_MULTIPLE, wildcard="*.json") as fileDialog:
-                res = fileDialog.ShowModal()
-                if res == wx.ID_OK:
-                    paths = fileDialog.GetPaths()
-                    self.__in_files = paths
-                    if len(self.__in_files) < 6:
-                        label.SetLabel("\n".join(self.__in_files))
-                    else:
-                        label.SetLabel(f"Selected files: {len(self.__in_files)}")
-        elif mode == JSONConverterDialog.InType.DIRECTORY:
-            with wx.DirDialog(self, "Select Input File") as dirDialog:
-                res = dirDialog.ShowModal()
-                if res == wx.ID_OK:
-                    path = dirDialog.GetPath()
-                    files = glob(f"{path}/*.json")
-                    self.__in_files = files
-                    if len(self.__in_files) < 6:
-                        label.SetLabel("\n".join(self.__in_files))
-                    else:
-                        label.SetLabel(f"Selected files: {len(self.__in_files)}")
-        self._refresh()
-
-    def _refresh(self):
-        if self.__in_files and self.__out_dir:
-            self.btn_convert.Enable()
-        else:
-            self.btn_convert.Disable()
 
 
 if __name__ == "__main__":

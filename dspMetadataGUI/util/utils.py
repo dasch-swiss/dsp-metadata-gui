@@ -2,34 +2,16 @@
 This module holds utility classes, functions and enums for metadata.
 """
 
-import os
-import re
-import platform
-import subprocess
-from typing import List
-from rdflib import Graph, Namespace, RDF, URIRef, BNode
-import validators
 import random
+import re
 from enum import Enum
+from typing import List
 from urllib.parse import urlparse
 
+import validators
+from rdflib import RDF, BNode, Graph, Namespace, URIRef
 
 dsp_repo = Namespace("http://ns.dasch.swiss/repository#")
-
-
-def open_file(path: str):
-    """
-    Open a file with default application, OS independent.
-
-    Args:
-        path (str): path of the file to open.
-    """
-    if platform.system() == "Windows":
-        os.startfile(path)
-    elif platform.system() == "Darwin":
-        subprocess.Popen(["open", path])
-    else:
-        subprocess.Popen(["xdg-open", path])
 
 
 def areURLs(urls: List[str]) -> bool:
@@ -63,7 +45,7 @@ def isURL(url: str) -> bool:
     if url and not url.isspace():
         if validators.url(url):
             return True
-        if validators.url('http://' + url):
+        if validators.url("http://" + url):
             return True
         # LATER: good enough?
         # if validators.url('http://www.' + url):
@@ -84,28 +66,27 @@ def get_url_property_id(url: str) -> str:
     Returns:
         str: a propertyID
     """
-    if re.search(r'skos\.um\.es', url):
+    if re.search(r"skos\.um\.es", url):
         return "SKOS UNESCO Nomenclature"
-    if re.search(r'geonames\.org', url):
+    if re.search(r"geonames\.org", url):
         return "Geonames"
-    if re.search(r'pleiades\.stoa\.org', url):
+    if re.search(r"pleiades\.stoa\.org", url):
         return "Pleiades"
-    if re.search(r'orcid\.org', url):
+    if re.search(r"orcid\.org", url):
         return "ORCID"
-    if re.search(r'viaf\.org', url):
+    if re.search(r"viaf\.org", url):
         return "VIAF"
-    if re.search(r'\/gnd\/', url) or re.search(r'portal\.dnb\.de', url):
+    if re.search(r"\/gnd\/", url) or re.search(r"portal\.dnb\.de", url):
         return "GND"
-    if re.search(r'n2t\.net\/ark\:\/99152', url):
+    if re.search(r"n2t\.net\/ark\:\/99152", url):
         return "Periodo"
-    if re.search(r'chronontology\.dainst\.org', url):
+    if re.search(r"chronontology\.dainst\.org", url):
         return "ChronOntology"
-    if re.search(r'creativecommons\.', url):
+    if re.search(r"creativecommons\.", url):
         return "Creative Commons"
-    # LATER: propertyID's for common institutions
     loc = urlparse(url).netloc
-    if len(loc.split('.')) > 2:
-        return '.'.join(loc.split('.')[1:])
+    if len(loc.split(".")) > 2:
+        return ".".join(loc.split(".")[1:])
     if loc:
         return loc
     return url[:12]
@@ -182,6 +163,7 @@ class Validity(Enum):
     """
     Enumeration of validity states.
     """
+
     UNDEFINED = -1
     """Undefined Value. Should never happen."""
     VALID = 0
@@ -198,6 +180,7 @@ class Cardinality(Enum):
     """
     Enumeration of cardinalities that may be used for properties.
     """
+
     UNBOUND = 0
     """0-n"""
     ONE = 1
@@ -238,14 +221,14 @@ class Cardinality(Enum):
         Returns:
             bool: True, if mandatory; false, if optional.
         """
-        if card == Cardinality.ONE \
-                or card == Cardinality.ONE_TO_TWO \
-                or card == Cardinality.ONE_TO_UNBOUND \
-                or card == Cardinality.ONE_TO_UNBOUND_ORDERED:
+        if (
+            card == Cardinality.ONE
+            or card == Cardinality.ONE_TO_TWO
+            or card == Cardinality.ONE_TO_UNBOUND
+            or card == Cardinality.ONE_TO_UNBOUND_ORDERED
+        ):
             return True
-        if card == Cardinality.UNBOUND \
-                or card == Cardinality.ZERO_OR_ONE \
-                or card == Cardinality.ZERO_TO_TWO:
+        if card == Cardinality.UNBOUND or card == Cardinality.ZERO_OR_ONE or card == Cardinality.ZERO_TO_TWO:
             return False
 
     def as_sting(card) -> str:
@@ -278,6 +261,7 @@ class Datatype(Enum):
     """
     Enumeration of cardinalities that may be used for properties.
     """
+
     STRING = 0
     """String literal"""
     DATE = 1
@@ -316,23 +300,14 @@ class Datatype(Enum):
     @classmethod
     def is_string_like(cls, type) -> bool:
         """Return True if type is sting or string-like"""
-        if type in [cls.STRING,
-                    cls.STRING_OR_URL,
-                    cls.URL,
-                    cls.EMAIL,
-                    cls.DOWNLOAD,
-                    cls.PLACE]:
+        if type in [cls.STRING, cls.STRING_OR_URL, cls.URL, cls.EMAIL, cls.DOWNLOAD, cls.PLACE]:
             return True
         return False
 
     @classmethod
     def is_dropdownable(cls, type) -> bool:
         """Return True if type is a reference to an object or controlled vocabulary (i.e. if it goes into a dropdown in the GUI)."""
-        if type in [cls.PERSON_OR_ORGANIZATION,
-                    cls.PERSON,
-                    cls.ORGANIZATION,
-                    cls.GRANT,
-                    cls.CONTROLLED_VOCABULARY]:
+        if type in [cls.PERSON_OR_ORGANIZATION, cls.PERSON, cls.ORGANIZATION, cls.GRANT, cls.CONTROLLED_VOCABULARY]:
             return True
         return False
 
@@ -345,13 +320,13 @@ class IRIFactory:
     @staticmethod
     def _get_all_iris(object_type: str, meta):
         try:
-            if object_type == 'dataset':
+            if object_type == "dataset":
                 return [d.iri_suffix for d in meta.dataset]
-            elif object_type == 'person':
+            elif object_type == "person":
                 return [d.iri_suffix for d in meta.persons]
-            elif object_type == 'organization':
+            elif object_type == "organization":
                 return [d.iri_suffix for d in meta.organizations]
-            elif object_type == 'grant':
+            elif object_type == "grant":
                 return [d.iri_suffix for d in meta.grants]
             else:
                 return []

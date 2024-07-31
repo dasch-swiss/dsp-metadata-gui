@@ -3,96 +3,26 @@ Module to convert RDF serialized metadata (first data model) into JSON metadata 
 """
 
 import json
-import os
 import re
-import time
 from dataclasses import dataclass
 from datetime import datetime
-from pathlib import Path
 from typing import Any, Dict, List
 
-import guess_language
-import jsonschema
-import langid
-import requests
-from bs4 import BeautifulSoup
-from langdetect import detect
-from rdflib import PROV, RDF, SDO, SKOS, Graph
-from rdflib.namespace import Namespace
-from rdflib.term import BNode, Literal
-from textblob import TextBlob
+import guess_language  # type: ignore
+import jsonschema  # type: ignore
+import langid  # type: ignore
+import requests  # type: ignore
+from bs4 import BeautifulSoup  # type: ignore
+from langdetect import detect  # type: ignore
+from rdflib import PROV, RDF, SDO, SKOS, Graph  # type: ignore
+from rdflib.namespace import Namespace  # type: ignore
+from rdflib.term import BNode, Literal  # type: ignore
+from textblob import TextBlob  # type: ignore
 
 schema_url = (
     "https://raw.githubusercontent.com/dasch-swiss/dsp-meta-svc/main/docs/services/metadata/schema-metadata.json"
 )
 dsp = Namespace("http://ns.dasch.swiss/repository#")
-
-
-def convert_and_save(files: List[str], target: str) -> int:
-    """Convert a list of metadata files and save output to files.
-
-    Takes a list of `.ttl` files, converts each of them, and stores it to the specified target directory.
-
-    Args:
-        files (List[str]): paths to `.ttl` files that should be transformed.
-        target (str): path to the target directory where the output files should be saved.
-
-    Returns:
-        int: The number of files that were converted.
-    """
-    res = 0
-    for f in files:
-        s = convert_file(f)
-        print(f"File length: {len(s)}")
-        fpath = Path(f)
-        out = f"{target}/{fpath.stem}.json"
-        print(out)
-        with open(out, mode="w+", encoding="utf-8") as fw:
-            fw.write(s)
-        res += 1
-    return res
-
-
-def convert_files(files: List[str]) -> List[str]:
-    """Convert multiple metadata files from a list of files.
-
-    Convert metadata from local .ttl files.
-
-    Args:
-        files (List[str]): paths to .ttl files (can be relative or absolute)
-
-    Returns:
-        List[str]: list of json serialized metadata
-    """
-    return [convert_file(f) for f in files]
-
-
-def convert_file(file: str) -> str:
-    """Convert metadata from a file.
-
-    Convert metadata from a local .ttl file.
-
-    Args:
-        file (str): path to a .ttl file (can be relative or absolute)
-
-    Returns:
-        str: json serialized metadata
-    """
-    with open(file, "r+", encoding="utf-8") as f:
-        s = f.read()
-    return convert_string(s)
-
-
-def convert_strings(data_list: List[str]) -> List[str]:
-    """Convert multiple metadata sets from a list of strings.
-
-    Args:
-        data_list (List[str]): list of turtle serializations of metadata
-
-    Returns:
-        List[str]: list of json serialized metadata
-    """
-    return [convert_string(data) for data in data_list]
 
 
 def convert_string(data: str) -> str:
@@ -141,7 +71,7 @@ def _get_dmp(g: Graph):
     for _, p, o in g.triples((dmp, None, None)):
         obj = str(o)
         if p == dsp.hasURL:
-            res["url"] = _get_url(g, o)
+            res["url"] = _get_url(g, o)  # type: ignore
         elif p == dsp.isAvailable:
             res["available"] = obj == "true"
         # default cases
@@ -385,41 +315,41 @@ def _get_project(g: Graph):
             res["endDate"] = obj
         elif p == dsp.hasKeywords:
             res.setdefault("keywords", [])
-            res["keywords"].append(_guess_language_of_text(obj))
+            res["keywords"].append(_guess_language_of_text(obj))  # type: ignore
         elif p == dsp.hasDiscipline:
             res.setdefault("disciplines", [])
             if isinstance(o, BNode):
-                res["disciplines"].append(_get_url(g, o))
+                res["disciplines"].append(_get_url(g, o))  # type: ignore
             else:
-                res["disciplines"].append(_guess_language_of_text(obj))
+                res["disciplines"].append(_guess_language_of_text(obj))  # type: ignore
         elif p == dsp.hasTemporalCoverage:
             res.setdefault("temporalCoverage", [])
             if isinstance(o, BNode):
-                res["temporalCoverage"].append(_get_url(g, o))
+                res["temporalCoverage"].append(_get_url(g, o))  # type: ignore
             else:
-                res["temporalCoverage"].append(_guess_language_of_text(obj))
+                res["temporalCoverage"].append(_guess_language_of_text(obj))  # type: ignore
         elif p == dsp.hasSpatialCoverage:
             res.setdefault("spatialCoverage", [])
-            res["spatialCoverage"].append(_get_place(g, o))
+            res["spatialCoverage"].append(_get_place(g, o))  # type: ignore
         elif p == dsp.hasURL:
             if res.get("url"):
-                res["secondaryURL"] = _get_url(g, o)
+                res["secondaryURL"] = _get_url(g, o)  # type: ignore
             else:
-                res["url"] = _get_url(g, o)
+                res["url"] = _get_url(g, o)  # type: ignore
         elif p == dsp.hasDataManagementPlan:
             res["dataManagementPlan"] = _get_dmp(g)
         elif p == dsp.hasPublication:
             res.setdefault("publications", [])
-            res["publications"].append(_update_publication(obj))
+            res["publications"].append(_update_publication(obj))  # type: ignore
         elif p == dsp.hasGrant:
             res.setdefault("grants", [])
-            res["grants"].append(obj)
+            res["grants"].append(obj)  # type: ignore
         elif p == dsp.hasAlternateName:
             res.setdefault("alternativeNames", [])
-            res["alternativeNames"].append(_guess_language_of_text(obj))
+            res["alternativeNames"].append(_guess_language_of_text(obj))  # type: ignore
         elif p == dsp.hasFunder:
             res.setdefault("funders", [])
-            res["funders"].append(obj)
+            res["funders"].append(obj)  # type: ignore
         elif p == dsp.hasContactPoint:
             res["contactPoint"] = obj
         # default cases
@@ -489,7 +419,7 @@ def _update_publication(pub: str):
         else:
             if "DOI:" not in w:
                 pub_text = pub_text + f" {w}"
-    publication = {"text": pub_text}
+    publication: dict[str, Any] = {"text": pub_text}
     links_converted = [url.to_json() for url in pub_links]
     if links_converted:
         publication["url"] = links_converted
@@ -554,14 +484,14 @@ def _guess_language_of_text(text):
             return {guess: text}
         if not isinstance(guess, str):
             guess = None
-    except Exception as e:
+    except Exception:
         guess = None
     try:
         la_id, _ = langid.classify(text)
         det = detect(text)
         if det and la_id and det == la_id and det in probables:
             return {det: text}
-    except Exception as e:
+    except Exception:
         det = None
     return {"XX": text}
 
@@ -590,7 +520,7 @@ def _get_country(locality):
 def _get_place(g: Graph, iri: BNode):
     """Get a place from graph"""
     url = next(g.objects(iri, SDO.url))
-    return _get_url(g, url)
+    return _get_url(g, url)  # type: ignore
 
 
 def _ensure_protocol_in_url(url: str):
@@ -681,7 +611,6 @@ def _get_chronontology_name(url: str):
         return f"XX: Chronontology URL: {url}"
 
 
-# LATER: this should not be called "SKOS"
 def _get_skos_name(url: str):
     """Get display text for a SKOS URL"""
     url = url.removesuffix("/")
@@ -694,9 +623,9 @@ def _get_skos_name(url: str):
         g.parse(data=data, format="n3")
         labels = g.objects(predicate=SKOS.prefLabel)
         for label in labels:
-            l: Literal = label
-            if l.language == "en":
-                return str(l)
+            lit: Literal = label  # type: ignore
+            if lit.language == "en":
+                return str(lit)
     except Exception:
         return f"XX: Skos URL: {url}"
 
@@ -729,7 +658,7 @@ def _get_geonames_name(url: str):
         if url.endswith(".html"):
             url = url.rsplit("/", 1)[0]
         gn_id = url.rsplit("/")[-1]
-        base = f"http://api.geonames.org/getJSON"
+        base = "http://api.geonames.org/getJSON"
         payload = {"geonameId": gn_id, "username": "blandolt"}
         r = requests.get(base, params=payload)
         resp = r.json()
@@ -793,24 +722,3 @@ def validate(data, verbose=False):
         if verbose:
             print(val.message)
         return False
-
-
-if __name__ == "__main__":
-    files = ["maximal.ttl", "rosetta.ttl", "limc.ttl", "awg.ttl", "hdm.ttl", "drawings-gods.ttl"]
-    results = {}
-    os.makedirs("out", exist_ok=True)
-    for filename in files:
-        print(f"Converting: {filename}...")
-        s = convert_file(f"test/test-data/{filename}")
-        issues = s.count("XX")
-        results[filename] = {
-            "isValid": validate(s),
-            "numberOfIssues": issues,
-            "toResolve": [l.strip().replace('"', "'") for l in s.splitlines() if "XX" in l],
-        }
-        print(f"Number of issues encountered: {issues}")
-        out = filename.replace(".ttl", ".json")
-        with open(f"out/{out}", mode="w+", encoding="utf-8") as f:
-            f.write(s)
-        print(f"Saved as: {out}\nDone.\n\n----\n")
-    print(json.dumps(results, indent=4))
