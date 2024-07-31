@@ -11,14 +11,7 @@ env:
   POETRY_HTTP_BASIC_PYPI_USERNAME: __token__
   POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_DASCHBOT_TOKEN }}
 
-jobs:
-  no-op:
-    name: No-op
-    runs-on: ubuntu-latest
-    steps:
-      - name: No-op
-        run: echo "No-op"
-        
+jobs:   
   # release to PyPI
   release-pypi:
     name: Release to PyPI
