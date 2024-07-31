@@ -7,7 +7,7 @@ on:
 
 jobs:
   test-integration:
-    name: Integration Tests
+    name: Tests (ensures setup is working)
     runs-on: ubuntu-latest
     steps:
       # run tests

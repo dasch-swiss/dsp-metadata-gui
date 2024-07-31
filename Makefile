@@ -43,7 +43,7 @@ install-and-run: ## install and run from source
 
 .PHONY: run
 run: ## run as script
-	pipenv run python dspMetadataGUI/collectMetadata.py
+	poetry run python dspMetadataGUI/collectMetadata.py
 
 .PHONY: doc
 doc: ## build and serve doc
