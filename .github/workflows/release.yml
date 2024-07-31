@@ -15,6 +15,8 @@ jobs:
   release-pypi:
     name: Release to PyPI
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       # check out repo
       - uses: actions/checkout@v2
@@ -31,9 +33,15 @@ jobs:
           python -m pip install --upgrade pip
         # pip install -r requirements.txt  # will this break? avoid installing wPython!
       # release new version to PyPI
-      - run: |
+      - name: generate distribution package
+        run: |
           make upgrade-dist-tools
-          make upload
+          make dist
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_PW }}
 
   release-docs:
     name: Release Docs
