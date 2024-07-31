@@ -5,7 +5,6 @@ Module to convert RDF serialized metadata (first data model) into JSON metadata 
 import json
 import os
 import re
-import time
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -554,14 +553,14 @@ def _guess_language_of_text(text):
             return {guess: text}
         if not isinstance(guess, str):
             guess = None
-    except Exception as e:
+    except Exception:
         guess = None
     try:
         la_id, _ = langid.classify(text)
         det = detect(text)
         if det and la_id and det == la_id and det in probables:
             return {det: text}
-    except Exception as e:
+    except Exception:
         det = None
     return {"XX": text}
 
@@ -681,7 +680,6 @@ def _get_chronontology_name(url: str):
         return f"XX: Chronontology URL: {url}"
 
 
-# LATER: this should not be called "SKOS"
 def _get_skos_name(url: str):
     """Get display text for a SKOS URL"""
     url = url.removesuffix("/")
@@ -694,9 +692,9 @@ def _get_skos_name(url: str):
         g.parse(data=data, format="n3")
         labels = g.objects(predicate=SKOS.prefLabel)
         for label in labels:
-            l: Literal = label  # type: ignore
-            if l.language == "en":
-                return str(l)
+            lit: Literal = label  # type: ignore
+            if lit.language == "en":
+                return str(lit)
     except Exception:
         return f"XX: Skos URL: {url}"
 
@@ -729,7 +727,7 @@ def _get_geonames_name(url: str):
         if url.endswith(".html"):
             url = url.rsplit("/", 1)[0]
         gn_id = url.rsplit("/")[-1]
-        base = f"http://api.geonames.org/getJSON"
+        base = "http://api.geonames.org/getJSON"
         payload = {"geonameId": gn_id, "username": "blandolt"}
         r = requests.get(base, params=payload)
         resp = r.json()
@@ -806,7 +804,7 @@ if __name__ == "__main__":
         results[filename] = {
             "isValid": validate(s),
             "numberOfIssues": issues,
-            "toResolve": [l.strip().replace('"', "'") for l in s.splitlines() if "XX" in l],
+            "toResolve": [ll.strip().replace('"', "'") for ll in s.splitlines() if "XX" in ll],
         }
         print(f"Number of issues encountered: {issues}")
         out = filename.replace(".ttl", ".json")
