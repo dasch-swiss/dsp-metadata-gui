@@ -22,6 +22,7 @@ jobs:
       # install pythonn dependencies
       - name: Install dependencies
         run: |
+          sudo apt-get install python3-wxgtk4.0
           curl -sSL https://install.python-poetry.org | python3 -
           poetry install
 
