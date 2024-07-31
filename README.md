@@ -1,8 +1,8 @@
 # DSP-METADATA-GUI Metadata Module
 
-The `dsp-metadata-gui` is a GUI application written in Python for collecting project specific metadata and turn it into RDF.
+The `dsp-metadata-gui` is a GUI application written in Python for collecting project specific metadata.
 
-As part of the `dsp-tools`, its aim is to enable researchers and project managers who deposit research data on the DaSCH Service Platform (DSP), to add metadata about the project and datasets to the DSP repository. By providing metadata, the project will be searchable on the platform, which is an integral part of the FAIR principles.
+Its aim is to enable researchers and project managers who deposit research data on the DaSCH Service Platform (DSP), to add metadata about the project and datasets to the DSP repository. By providing metadata, the project will be searchable on the platform, which is an integral part of the FAIR principles.
 
 The metadata follows the schema defined by the [dsp-ontologies](https://github.com/dasch-swiss/dsp-ontologies).
 
@@ -10,11 +10,11 @@ The metadata follows the schema defined by the [dsp-ontologies](https://github.c
 
 ## Install and run
 
-The module provides a command line entry point to run the GUI. The only requirement is Python 3 and PIP.
-
 The application has only been tested on Python 3.10.
 
 __Note:__ There is a number of known potential issues. See the `troubleshoot` section [here](https://dasch-swiss.github.io/dsp-metadata-gui/usage_overview/#troubleshoot).
+
+To be able to use Python 3.10, you may want to use a tool such as pyenv to manage your Python versions.
 
 
 ### Installation via pip
@@ -25,21 +25,12 @@ To install the application, run:
 pip install dsp-metadata-gui
 ```
 
-Or respectively:
-
-```shell
-pip3 install dsp-metadata-gui
-```
-
 Afterwards, the program can be started by running the command `dsp-metadata` in your terminal of choice.
 
 
 ### Installation from source
 
-Clone [this repo](https://github.com/dasch-swiss/dsp-metadata-gui) and run `make make-and-run`. If you don't use GNU Make, run the commands specified in the `Makefile` manually.
-
-This will package the application, install it to your python environment and run the application.
-
+Clone [this repo](https://github.com/dasch-swiss/dsp-metadata-gui), install all requirements as described below and run `make run`.
 
 
 ## Usage
@@ -87,55 +78,29 @@ The most important changes from V1 to V2 include the following additions:
 
 - JSON schema validation
 
-
+> NB: A new button has been added to run the JSON conversions in the GUI without having to export first.
 
 
 ## Development
 
 ### Development Environment
 
-#### Pipenv
+#### Poetry
 
---> The repo is in the process of being switched from pipenv to poetry. (More information will follow.)
+Ensure you have poetry installed.
 
-Use `pipenv` for a seamless development experience.  
-In order to have both dependencies and dev-dependencies installed from the `Pipfile`, set up the virtual environment running
-```
-pipenv instal --dev
-```
+to install all requirements, run 
 
-`pipenv` will manage dependencies as well as a virtual environment. To install packages, use
 ```
-pipenv install <package-name>
+poetry install
 ```
 
-To create `requirements.txt`, run 
+To install packages, use
+
 ```
-pipenv lock -r > requirements.txt
+poetry add <package-name>
 ```
 
-To bring `setup.py` up to date, run
-```
-pipenv run pipenv-setup sync
-```
-
-#### GNU Make
-
-`GNU Make` is used to automatize most tasks.  
-Run `make help` for info on the available targets.
-
-__Note:__ All make targets - except `make run` - should be run from within the `pipenv` shell:  
-Either by running
-```
-pipenv run make <target-name>
-```
-or by opening a virtual pipenv shell by running
-```
-pipenv shell
-make <target-name>
-...
-exit
-```
 
 
 ### Documentation
@@ -145,3 +110,9 @@ The documentation is created using `mkdocs` and `mkdocstrings` with `markdown_in
 To serve the documentation locally, run `make doc`. To deploy the documentation to github pages, run `make deploy-doc`.
 
 
+
+### Release
+
+Automated releases can be created using `release-please`.
+
+Automatically publish a new release to PyPI does not work. Run the `release` GitHub Action manually.
