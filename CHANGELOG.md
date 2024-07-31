@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://www.github.com/dasch-swiss/dsp-metadata-gui/compare/v1.3.3...v1.4.0) (2024-07-31)
+
+
+### Enhancements
+
+* simplify JSON model ([#30](https://www.github.com/dasch-swiss/dsp-metadata-gui/issues/30)) ([1a57de8](https://www.github.com/dasch-swiss/dsp-metadata-gui/commit/1a57de89b31df0c12f9bee5b7177a169b188a4e4))
+
 ### [1.3.3](https://www.github.com/dasch-swiss/dsp-metadata-gui/compare/v1.3.2...v1.3.3) (2023-02-20)
 
 
