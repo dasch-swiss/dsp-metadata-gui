@@ -110,3 +110,9 @@ The documentation is created using `mkdocs` and `mkdocstrings` with `markdown_in
 To serve the documentation locally, run `make doc`. To deploy the documentation to github pages, run `make deploy-doc`.
 
 
+
+### Release
+
+Automated releases can be created using `release-please`.
+
+Automatically publish a new release to PyPI does not work. Run the `release` GitHub Action manually.
