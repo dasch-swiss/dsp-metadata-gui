@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.4.3](https://github.com/dasch-swiss/dsp-metadata-gui/compare/v8.4.2...v8.4.3) (2024-07-31)
+
+
+### Maintenance
+
+* attempt to fix release ([#43](https://github.com/dasch-swiss/dsp-metadata-gui/issues/43)) ([7443eb1](https://github.com/dasch-swiss/dsp-metadata-gui/commit/7443eb1c82be9c06fc03e95ca6e6a515932c95e8))
+
 ## [8.4.2](https://github.com/dasch-swiss/dsp-metadata-gui/compare/v8.4.1...v8.4.2) (2024-07-31)
 
 
