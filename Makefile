@@ -16,31 +16,6 @@ upload: ## upload distribution package to PyPi
 upgrade-dist-tools: ## upgrade packages necessary for testing, building, packaging and uploading to PyPi
 	python -m pip install --upgrade pip setuptools wheel tqdm twine pytest mkdocs mkdocstrings
 
-.PHONY: prepare-release
-prepare-release: ## prepare everythign for relaese
-	pipenv requirements > requirements.txt
-	pipenv-setup sync
-
-.PHONY: install-requirements
-install-requirements: ## install requirements
-	pip install -r requirements.txt
-
-.PHONY: install
-install: ## install from source
-	pip install . -e
-
-.PHONY: clean
-clean: ## cleans the project directory
-	@rm -rf dist/
-	@rm -rf build/
-
-.PHONY: install-and-run
-install-and-run: ## install and run from source
-	$(MAKE) clean
-	$(MAKE) dist
-	$(MAKE) install
-	dsp-metadata
-
 .PHONY: run
 run: ## run as script
 	poetry run python dspMetadataGUI/collectMetadata.py
