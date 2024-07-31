@@ -8,7 +8,6 @@ from typing import Optional, Tuple, Union
 
 import wx
 import wx.adv
-import wx.lib.dialogs as dialogs
 import wx.lib.scrolledpanel as scrolledPanel
 from util import converter, rdfConverter
 from util.dataHandling import DataHandling
@@ -56,29 +55,11 @@ class ProjectFrame(wx.Frame):
         menu_bar = wx.MenuBar()
         file_menu = wx.Menu()
         open_folder_menu_item = file_menu.Append(wx.ID_NEW, "Add new Project", "Open a folder with project files")
-        self.Bind(event=wx.EVT_MENU, handler=self.panel.on_add_new_project, source=open_folder_menu_item)
+        self.Bind(event=wx.EVT_MENU, handler=self.panel.__on_add_new_project, source=open_folder_menu_item)
         save_menu_item = file_menu.Append(wx.ID_SAVE, "&Save")
         self.Bind(wx.EVT_MENU, self.__on_save, source=save_menu_item)
         menu_bar.Append(file_menu, "&File")
-        options_menu = wx.Menu()
-        menu_bar.Append(options_menu, "&Options")
-        json_converter_menu_item = options_menu.Append(wx.ID_ANY, "Convert RDF to JSON (Old RDF -> New JSON Model)")
-        self.Bind(wx.EVT_MENU, self.__on_convert, json_converter_menu_item)
-        rdf_converter_menu_item = options_menu.Append(wx.ID_ANY, "Convert JSON to RDF (New JSON -> New RDF Model)")
-        self.Bind(wx.EVT_MENU, self.__on_rdf_convert, rdf_converter_menu_item)
-        options_help = wx.Menu()
-        menu_bar.Append(options_help, "&Help")
         self.SetMenuBar(menu_bar)
-
-    def __on_convert(self, event):
-        dlg = JSONConverterDialog(None, title="JSON Converter")
-        dlg.ShowModal()
-        dlg.Destroy()
-
-    def __on_rdf_convert(self, event):
-        dlg = RDFConverterDialog(None, title="RDF Converter")
-        dlg.ShowModal()
-        dlg.Destroy()
 
     def __on_save(self, event):
         """
@@ -114,8 +95,8 @@ class ProjectPanel(wx.Panel):
         title = wx.StaticText(self, label="DaSCH Service Platform - Metadata Collection")
         main_sizer.Add(title, 0, wx.ALL | wx.LEFT, 10)
         self.list_ctrl = wx.ListCtrl(self, size=(-1, 200), style=wx.LC_REPORT | wx.BORDER_SUNKEN)
-        self.list_ctrl.Bind(wx.EVT_LIST_ITEM_SELECTED, self.on_item_selected)
-        self.list_ctrl.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.on_item_selected)
+        self.list_ctrl.Bind(wx.EVT_LIST_ITEM_SELECTED, self.__on_item_selected)
+        self.list_ctrl.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.__on_item_selected)
         main_sizer.Add(self.list_ctrl, 0, wx.ALL | wx.EXPAND, 10)
 
         # Create turtle preview
@@ -138,37 +119,18 @@ class ProjectPanel(wx.Panel):
         # Create Buttons
         button_sizer = wx.BoxSizer(wx.VERTICAL)
         new_folder_button = wx.Button(self, label="Add new Project")
-        new_folder_button.Bind(wx.EVT_BUTTON, self.on_add_new_project)
+        new_folder_button.Bind(wx.EVT_BUTTON, self.__on_add_new_project)
         button_sizer.Add(new_folder_button, 0, wx.ALL | wx.EXPAND, 7)
-
-        import_project_button = wx.Button(self, label="Import Project")
-        import_project_button.Bind(wx.EVT_BUTTON, self.on_import_project)
-        button_sizer.Add(import_project_button, 0, wx.ALL | wx.EXPAND, 7)
 
         remove_folder_button = wx.Button(self, label="Remove selected Project")
         self.project_dependent_buttons.append(remove_folder_button)
-        remove_folder_button.Bind(wx.EVT_BUTTON, self.on_remove_project)
+        remove_folder_button.Bind(wx.EVT_BUTTON, self.__on_remove_project)
         button_sizer.Add(remove_folder_button, 0, wx.ALL | wx.EXPAND, 7)
 
         edit_tabs_button = wx.Button(self, label="Edit selected Project")
         self.project_dependent_buttons.append(edit_tabs_button)
-        edit_tabs_button.Bind(wx.EVT_BUTTON, self.on_edit_tabbed)
+        edit_tabs_button.Bind(wx.EVT_BUTTON, self.__on_edit_tabbed)
         button_sizer.Add(edit_tabs_button, 0, wx.ALL | wx.EXPAND, 7)
-
-        validate_button = wx.Button(self, label="Validate selected Project")
-        self.project_dependent_buttons.append(validate_button)
-        validate_button.Bind(wx.EVT_BUTTON, self.on_validate)
-        button_sizer.Add(validate_button, 0, wx.ALL | wx.EXPAND, 7)
-
-        process_xml_button = wx.Button(self, label="Export selected Project as RDF")
-        self.project_dependent_buttons.append(process_xml_button)
-        process_xml_button.Bind(wx.EVT_BUTTON, self.export_data)
-        button_sizer.Add(process_xml_button, 0, wx.ALL | wx.EXPAND, 7)
-
-        zip_and_export_btn = wx.Button(self, label="ZIP and Export Project")
-        self.project_dependent_buttons.append(zip_and_export_btn)
-        zip_and_export_btn.Bind(wx.EVT_BUTTON, self.__on_zip_and_export)
-        button_sizer.Add(zip_and_export_btn, 0, wx.ALL | wx.EXPAND, 7)
 
         export_as_json_btn = wx.Button(self, label="Export selected as JSON")
         self.project_dependent_buttons.append(export_as_json_btn)
@@ -181,7 +143,7 @@ class ProjectPanel(wx.Panel):
         main_sizer.AddGrowableRow(2)
         self.SetSizer(main_sizer)
         self.Fit()
-        self.create_header()
+        self.__create_header()
         self.refresh_view()
         self.Layout()
 
@@ -191,21 +153,10 @@ class ProjectPanel(wx.Panel):
             if dlg.ShowModal() == wx.ID_OK:
                 path = dlg.GetPath()
                 print(path)
-                data_handler.export_as_json(self.get_selected_project(), path)
+                data_handler.export_as_json(self.__get_selected_project(), path)
         print("Export as JSON... done.")
 
-    def __on_zip_and_export(self, event):
-        """
-        Export a ZIP archive containing the selected files, metadata and a pickle with the binaries.
-        """
-        title = "Where to export to?"
-        with wx.DirDialog(self, title, style=wx.DD_DEFAULT_STYLE) as dlg:
-            if dlg.ShowModal() == wx.ID_OK:
-                path = dlg.GetPath()
-                print(path)
-                data_handler.zip_and_export(self.get_selected_project(), path)
-
-    def on_add_new_project(self, event):
+    def __on_add_new_project(self, event):
         """
         Open a new folder and add it to projects.
         """
@@ -221,10 +172,10 @@ class ProjectPanel(wx.Panel):
         title = "Choose a directory:"
         dlg = wx.DirDialog(self, title, style=wx.DD_DEFAULT_STYLE)
         if dlg.ShowModal() == wx.ID_OK:
-            self.add_new_project(dlg.GetPath(), shortcode)
+            self.__add_new_project(dlg.GetPath(), shortcode)
         dlg.Destroy()
 
-    def refresh_repos(self):
+    def __refresh_repos(self):
         """
         Refresh all loaded repos in the list.
         """
@@ -238,7 +189,7 @@ class ProjectPanel(wx.Panel):
             self.list_ctrl.SetItem(i, 3, str(project.files))
             self.list_ctrl.SetItem(i, 4, project.get_status())
 
-    def create_header(self):
+    def __create_header(self):
         """
         creates the header
         """
@@ -250,14 +201,14 @@ class ProjectPanel(wx.Panel):
 
     def refresh_view(self):
         """refreshes the GUI after data changes"""
-        self.refresh_repos()
-        self.display_rdf()
-        self.refresh_buttons()
+        self.__refresh_repos()
+        self.__display_rdf()
+        self.__refresh_buttons()
         self.Layout()
 
-    def refresh_buttons(self):
+    def __refresh_buttons(self):
         """determins which buttons should be enabled and displays them accordingly"""
-        if self.get_selected_project():
+        if self.__get_selected_project():
             flag = True
         else:
             flag = False
@@ -267,16 +218,16 @@ class ProjectPanel(wx.Panel):
             else:
                 b.Disable()
 
-    def display_rdf(self):
+    def __display_rdf(self):
         """displays the RDF preview"""
-        project = self.get_selected_project()
+        project = self.__get_selected_project()
         if project:
             txt = project.get_turtle()
         else:
             txt = "No project selected."
         self.rdf_display.SetValue(txt)
 
-    def get_selected_project(self) -> Optional[MetaDataSet]:
+    def __get_selected_project(self) -> Optional[MetaDataSet]:
         """Gets the currently selected project/metadata set"""
         selection = self.list_ctrl.GetFirstSelected()
         if selection < 0:
@@ -284,26 +235,18 @@ class ProjectPanel(wx.Panel):
         shortcode = self.list_ctrl.GetItem(selection, col=2).GetText()
         return data_handler.get_project_by_shortcode(shortcode)
 
-    def on_edit_tabbed(self, event):
+    def __on_edit_tabbed(self, event):
         """
         This function calls the EditBaseDialog and hands over pFiles, a list.
         """
-        repo = self.get_selected_project()
+        repo = self.__get_selected_project()
         if repo:
             window = TabbedWindow(self, repo)
             data_handler.current_window = window
             window.Show()
             self.Disable()
 
-    def export_data(self, event):
-        """Set selection and call create_xml"""
-        selection = self.list_ctrl.GetFocusedItem()
-        if selection >= 0:
-            res = data_handler.validate_and_export_data(selection)
-            print(res[0])
-            # LATER: let this return indication of success. display something to the user.
-
-    def add_new_project(self, folder_path, shortcode):
+    def __add_new_project(self, folder_path, shortcode):
         """Add a new project."""
         dir_list = os.listdir(folder_path)
         if ".DS_Store" in dir_list:
@@ -311,21 +254,9 @@ class ProjectPanel(wx.Panel):
         data_handler.add_project(folder_path, shortcode, dir_list)
         self.refresh_view()
 
-    def on_import_project(self, event):
-        """handles event from 'import' button click"""
-        with wx.FileDialog(self, "Choose file:", style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as fd:
-            if fd.ShowModal() == wx.ID_OK:
-                f = fd.GetPath()
-                if not f.endswith(".data"):
-                    print(f"Could not import file: {f}\n  For now, only .data supported.")
-                    # LATER: allow RDF import here
-                    return
-                data_handler.import_project(f)
-                self.refresh_view()
-
-    def on_remove_project(self, event):
+    def __on_remove_project(self, event):
         """handles event from 'remove project' button click"""
-        selected = self.get_selected_project()
+        selected = self.__get_selected_project()
         msg = f"Are you sure you want to delete the Project '{selected.name} ({selected.shortcode})'"
         with wx.MessageDialog(self, "Sure?", msg, wx.YES_NO) as dlg:
             if dlg.ShowModal() == wx.ID_YES:
@@ -333,23 +264,8 @@ class ProjectPanel(wx.Panel):
                 self.list_ctrl.DeleteAllItems()
                 self.refresh_view()
 
-    def on_validate(self, event):
-        """handles event from 'validate' button click"""
-        repo = self.get_selected_project()
-        if repo:
-            conforms, results_graph, results_text = data_handler.validate_graph(repo)
-            if conforms:
-                with wx.MessageDialog(
-                    self, "Validation Successful", "Validation Successful", wx.OK | wx.ICON_INFORMATION
-                ) as dlg:
-                    dlg.ShowModal()
-            else:
-                with dialogs.ScrolledMessageDialog(self, results_text, "Validation Failed", size=(800, 500)) as dlg:
-                    dlg.ShowModal()
-
-    def on_item_selected(self, event):
+    def __on_item_selected(self, event):
         """handles event from selection change"""
-        # LATER: look into why this is called twice, which makes it slow
         self.refresh_view()
 
 
