@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.1](https://www.github.com/dasch-swiss/dsp-metadata-gui/compare/v1.4.0...v1.4.1) (2024-07-31)
+
+
+### Maintenance
+
+* attempt to fix PyPI release ([#32](https://www.github.com/dasch-swiss/dsp-metadata-gui/issues/32)) ([d226321](https://www.github.com/dasch-swiss/dsp-metadata-gui/commit/d22632153f5ebe7ea56ef7c41c447f604e39e490))
+
 ## [1.4.0](https://www.github.com/dasch-swiss/dsp-metadata-gui/compare/v1.3.3...v1.4.0) (2024-07-31)
 
 
