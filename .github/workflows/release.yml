@@ -11,6 +11,13 @@ env:
   POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_DASCHBOT_TOKEN }}
 
 jobs:
+  no-op:
+    name: No-op
+    runs-on: ubuntu-latest
+    steps:
+      - name: No-op
+        run: echo "No-op"
+        
   # release to PyPI
   release-pypi:
     name: Release to PyPI
@@ -24,7 +31,7 @@ jobs:
           fetch-depth: 1
       # install python
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
       # install pythonn dependencies
