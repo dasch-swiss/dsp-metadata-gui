@@ -2,6 +2,11 @@ THIS_FILE := $(lastword $(MAKEFILE_LIST))
 CURRENT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 
+.PHONY: clean
+clean: ## cleans the project directory
+	@rm -rf dist/
+	@rm -rf build/
+
 .PHONY: dist
 dist: ## generate distribution package
 	$(MAKE) clean
