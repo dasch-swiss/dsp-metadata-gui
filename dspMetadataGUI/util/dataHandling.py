@@ -11,12 +11,13 @@ from typing import List, Optional
 
 from rdflib.graph import Graph
 
+from .converter import convert_string
 from .metaDataSet import MetaDataSet
 from .utils import open_file
 
 
 class DataHandling:
-    """ This class handles data.
+    """This class handles data.
 
     It checks for availability in the filesystem, and
     if not, creates the data structure. It also takes care for the storage on disk.
@@ -74,7 +75,7 @@ class DataHandling:
         if not os.path.exists(self.data_storage):
             os.makedirs(os.path.dirname(self.data_storage), exist_ok=True)
             return
-        with open(self.data_storage, 'rb') as file:
+        with open(self.data_storage, "rb") as file:
             self.projects = pickle.load(file)
 
     def save_data(self, dataset: MetaDataSet = None):
@@ -90,7 +91,7 @@ class DataHandling:
         # LATER: export metadata here, once export logic is improved
         if dataset:
             dataset.generate_rdf_graph()
-        with open(self.data_storage, 'wb') as file:
+        with open(self.data_storage, "wb") as file:
             pickle.dump(self.projects, file)
 
     def validate_and_export_data(self, index: int) -> tuple:
@@ -108,9 +109,9 @@ class DataHandling:
         try:
             graph = project.generate_rdf_graph()
             if not graph:
-                raise Exception('No Graph')
+                raise Exception("No Graph")
         except Exception:
-            print('Warning: could not load graph from cache. Performance may be decreased.')
+            print("Warning: could not load graph from cache. Performance may be decreased.")
             # LATER: remove with next breaking change
             graph = project.graph
         self.export_rdf(project.path, graph)
@@ -124,13 +125,14 @@ class DataHandling:
             path (str): path to the pickle to import.
         """
         try:
-            with open(path, 'rb') as f:
+            with open(path, "rb") as f:
                 dataset = pickle.load(f)
                 self.projects.append(dataset)
         except Exception:
             import traceback
+
             traceback.print_exc()
-            print(f'\n\n--------\n\nCould not import file: {path}')
+            print(f"\n\n--------\n\nCould not import file: {path}")
 
     def export_rdf(self, path: str, graph: Graph, show: bool = True):
         """
@@ -141,23 +143,44 @@ class DataHandling:
             graph (Graph): The RDF graph of the data.
             show (bool, optional): Flag true, if the folder should be opened after saving the files. Defaults to True.
         """
-        path += '/metadata'
+        path += "/metadata"
         if not os.path.exists(path):
             os.makedirs(path)
-        p = path + '/metadata.ttl'
-        with open(p, mode='w', encoding='utf-8') as f:
-            s = graph.serialize(format='turtle')
+        p = path + "/metadata.ttl"
+        with open(p, mode="w", encoding="utf-8") as f:
+            s = graph.serialize(format="turtle")
             f.write(s)
-        p = path + '/metadata.json'
-        with open(p, mode='w', encoding='utf-8') as f:
-            s = graph.serialize(format='json-ld')
+        p = path + "/metadata.json"
+        with open(p, mode="w", encoding="utf-8") as f:
+            s = graph.serialize(format="json-ld")
             f.write(s)
-        p = path + '/metadata.xml'
-        with open(p, mode='w', encoding='utf-8') as f:
-            s = graph.serialize(format='xml')
+        p = path + "/metadata.xml"
+        with open(p, mode="w", encoding="utf-8") as f:
+            s = graph.serialize(format="xml")
             f.write(s)
         if show:
             open_file(path)
+
+    def export_as_json(self, dataset: MetaDataSet, target: str):  # XXX
+        if not dataset:
+            return
+        if not target:
+            return
+        if not os.path.exists(target):
+            os.makedirs(target)
+        target_file = os.path.join(target, dataset.name + ".json")
+        try:
+            graph = dataset.generate_rdf_graph()
+            if not graph:
+                raise Exception("No Graph")
+        except Exception:
+            print("Warning: could not load graph from cache. Performance may be decreased.")
+            # LATER: remove with next breaking change
+            graph = dataset.graph
+        turtle_str = graph.serialize(format="turtle")
+        json_str = convert_string(turtle_str)
+        with open(target_file, mode="w", encoding="utf-8") as f:
+            f.write(json_str)
 
     def zip_and_export(self, dataset: MetaDataSet, target: str):
         """
@@ -177,27 +200,27 @@ class DataHandling:
         try:
             graph = dataset.generate_rdf_graph()
             if not graph:
-                raise Exception('No Graph')
+                raise Exception("No Graph")
         except Exception:
-            print('Warning: could not load graph from cache. Performance may be decreased.')
+            print("Warning: could not load graph from cache. Performance may be decreased.")
             # LATER: remove with next breaking change
             graph = dataset.graph
         self.export_rdf(dataset.path, graph)
         p = dataset.path
-        tmp = os.path.join(p, '.tmp')
-        meta = os.path.join(p, 'metadata')
+        tmp = os.path.join(p, ".tmp")
+        meta = os.path.join(p, "metadata")
         os.makedirs(tmp, exist_ok=True)
-        tmp_m = os.path.join(tmp, 'metadata')
+        tmp_m = os.path.join(tmp, "metadata")
         os.makedirs(tmp_m, exist_ok=True)
-        pickle_path = os.path.join(tmp, 'binary')
+        pickle_path = os.path.join(tmp, "binary")
         os.makedirs(pickle_path, exist_ok=True)
         for f in dataset.files:
             shutil.copy(os.path.join(p, f), tmp)
         shutil.copytree(meta, tmp_m, dirs_exist_ok=True)
         shortcode = dataset.shortcode
-        with open(os.path.join(pickle_path, f'project_{shortcode}.data'), mode='wb') as pick:
+        with open(os.path.join(pickle_path, f"project_{shortcode}.data"), mode="wb") as pick:
             pickle.dump(dataset, pick)
-        shutil.make_archive(target_file, 'zip', tmp)
+        shutil.make_archive(target_file, "zip", tmp)
         shutil.rmtree(tmp, ignore_errors=True)
         open_file(target)
 
@@ -217,9 +240,9 @@ class DataHandling:
         try:
             graph = dataset.generate_rdf_graph()
             if not graph:
-                raise Exception('No Graph')
+                raise Exception("No Graph")
         except Exception:
-            print('Warning: could not load graph from cache. Performance may be decreased.')
+            print("Warning: could not load graph from cache. Performance may be decreased.")
             # LATER: remove with next breaking change
             graph = dataset.graph
         return dataset.validate_graph(graph)

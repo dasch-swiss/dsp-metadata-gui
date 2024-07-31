@@ -1,18 +1,19 @@
 import os
 import sys
+
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
-from util.utils import Cardinality, Datatype, Validity, open_file
-from util.metaDataSet import DataClass, MetaDataSet, Property
-from util.dataHandling import DataHandling
-from util import converter, rdfConverter
-from typing import Optional, Tuple, Union
-import wx
-import wx.lib.scrolledpanel as scrolledPanel
-import wx.lib.dialogs as dialogs
-import wx.adv
 import re
 from glob import glob
+from typing import Optional, Tuple, Union
 
+import wx
+import wx.adv
+import wx.lib.dialogs as dialogs
+import wx.lib.scrolledpanel as scrolledPanel
+from util import converter, rdfConverter
+from util.dataHandling import DataHandling
+from util.metaDataSet import DataClass, MetaDataSet, Property
+from util.utils import Cardinality, Datatype, Validity, open_file
 
 data_handler: DataHandling
 
@@ -43,8 +44,7 @@ class ProjectFrame(wx.Frame):
         """
         This class holds the frame of the main application window.
         """
-        super().__init__(parent=None,
-                         title='Project Data Editor', size=(1100, 750))
+        super().__init__(parent=None, title="Project Data Editor", size=(1100, 750))
         self.panel = ProjectPanel(self)
         self.__create_menu()
         self.Show()
@@ -55,19 +55,19 @@ class ProjectFrame(wx.Frame):
         """
         menu_bar = wx.MenuBar()
         file_menu = wx.Menu()
-        open_folder_menu_item = file_menu.Append(wx.ID_NEW, 'Add new Project', 'Open a folder with project files')
+        open_folder_menu_item = file_menu.Append(wx.ID_NEW, "Add new Project", "Open a folder with project files")
         self.Bind(event=wx.EVT_MENU, handler=self.panel.on_add_new_project, source=open_folder_menu_item)
         save_menu_item = file_menu.Append(wx.ID_SAVE, "&Save")
         self.Bind(wx.EVT_MENU, self.__on_save, source=save_menu_item)
-        menu_bar.Append(file_menu, '&File')
+        menu_bar.Append(file_menu, "&File")
         options_menu = wx.Menu()
-        menu_bar.Append(options_menu, '&Options')
+        menu_bar.Append(options_menu, "&Options")
         json_converter_menu_item = options_menu.Append(wx.ID_ANY, "Convert RDF to JSON (Old RDF -> New JSON Model)")
         self.Bind(wx.EVT_MENU, self.__on_convert, json_converter_menu_item)
         rdf_converter_menu_item = options_menu.Append(wx.ID_ANY, "Convert JSON to RDF (New JSON -> New RDF Model)")
         self.Bind(wx.EVT_MENU, self.__on_rdf_convert, rdf_converter_menu_item)
         options_help = wx.Menu()
-        menu_bar.Append(options_help, '&Help')
+        menu_bar.Append(options_help, "&Help")
         self.SetMenuBar(menu_bar)
 
     def __on_convert(self, event):
@@ -122,50 +122,58 @@ class ProjectPanel(wx.Panel):
         bottom_sizer = wx.FlexGridSizer(1, 2, 10, 10)
         bottom_sizer.AddGrowableCol(0)
         bottom_sizer.AddGrowableRow(0)
-        rdf_display = wx.TextCtrl(self, value="No Project selected.",
-                                  style=wx.TE_READONLY | wx.TE_MULTILINE, size=(400, -1))
+        rdf_display = wx.TextCtrl(
+            self, value="No Project selected.", style=wx.TE_READONLY | wx.TE_MULTILINE, size=(400, -1)
+        )
         try:
             rdf_display.OSXDisableAllSmartSubstitutions()
         except Exception:
-            print("Info: Disabling smart substitutions not available. \
-                 (Should not be a problem, to be sure, check that there are no typographic quotation marks when you copy-paste the .ttl preview.)")
+            print(
+                "Info: Disabling smart substitutions not available. \
+                 (Should not be a problem, to be sure, check that there are no typographic quotation marks when you copy-paste the .ttl preview.)"
+            )
         self.rdf_display = rdf_display
         bottom_sizer.Add(rdf_display, flag=wx.EXPAND)
 
         # Create Buttons
         button_sizer = wx.BoxSizer(wx.VERTICAL)
-        new_folder_button = wx.Button(self, label='Add new Project')
+        new_folder_button = wx.Button(self, label="Add new Project")
         new_folder_button.Bind(wx.EVT_BUTTON, self.on_add_new_project)
         button_sizer.Add(new_folder_button, 0, wx.ALL | wx.EXPAND, 7)
 
-        import_project_button = wx.Button(self, label='Import Project')
+        import_project_button = wx.Button(self, label="Import Project")
         import_project_button.Bind(wx.EVT_BUTTON, self.on_import_project)
         button_sizer.Add(import_project_button, 0, wx.ALL | wx.EXPAND, 7)
 
-        remove_folder_button = wx.Button(self, label='Remove selected Project')
+        remove_folder_button = wx.Button(self, label="Remove selected Project")
         self.project_dependent_buttons.append(remove_folder_button)
         remove_folder_button.Bind(wx.EVT_BUTTON, self.on_remove_project)
         button_sizer.Add(remove_folder_button, 0, wx.ALL | wx.EXPAND, 7)
 
-        edit_tabs_button = wx.Button(self, label='Edit selected Project')
+        edit_tabs_button = wx.Button(self, label="Edit selected Project")
         self.project_dependent_buttons.append(edit_tabs_button)
         edit_tabs_button.Bind(wx.EVT_BUTTON, self.on_edit_tabbed)
         button_sizer.Add(edit_tabs_button, 0, wx.ALL | wx.EXPAND, 7)
 
-        validate_button = wx.Button(self, label='Validate selected Project')
+        validate_button = wx.Button(self, label="Validate selected Project")
         self.project_dependent_buttons.append(validate_button)
         validate_button.Bind(wx.EVT_BUTTON, self.on_validate)
         button_sizer.Add(validate_button, 0, wx.ALL | wx.EXPAND, 7)
 
-        process_xml_button = wx.Button(self, label='Export selected Project as RDF')
+        process_xml_button = wx.Button(self, label="Export selected Project as RDF")
         self.project_dependent_buttons.append(process_xml_button)
         process_xml_button.Bind(wx.EVT_BUTTON, self.export_data)
         button_sizer.Add(process_xml_button, 0, wx.ALL | wx.EXPAND, 7)
 
-        zip_and_export_btn = wx.Button(self, label='ZIP and Export Project')
+        zip_and_export_btn = wx.Button(self, label="ZIP and Export Project")
         self.project_dependent_buttons.append(zip_and_export_btn)
         zip_and_export_btn.Bind(wx.EVT_BUTTON, self.__on_zip_and_export)
         button_sizer.Add(zip_and_export_btn, 0, wx.ALL | wx.EXPAND, 7)
+
+        export_as_json_btn = wx.Button(self, label="Export selected as JSON")
+        self.project_dependent_buttons.append(export_as_json_btn)
+        export_as_json_btn.Bind(wx.EVT_BUTTON, self.__on_export_as_json)
+        button_sizer.Add(export_as_json_btn, 0, wx.ALL | wx.EXPAND, 7)
 
         # Layout it all
         bottom_sizer.Add(button_sizer, 0, wx.ALL, 10)
@@ -176,6 +184,15 @@ class ProjectPanel(wx.Panel):
         self.create_header()
         self.refresh_view()
         self.Layout()
+
+    def __on_export_as_json(self, event):
+        title = "Where to export to?"
+        with wx.DirDialog(self, title, style=wx.DD_DEFAULT_STYLE) as dlg:
+            if dlg.ShowModal() == wx.ID_OK:
+                path = dlg.GetPath()
+                print(path)
+                data_handler.export_as_json(self.get_selected_project(), path)
+        print("Export as JSON... done.")
 
     def __on_zip_and_export(self, event):
         """
@@ -196,7 +213,7 @@ class ProjectPanel(wx.Panel):
         dlg = wx.TextEntryDialog(self, message=title, caption="Enter Shortcode")
         if dlg.ShowModal() == wx.ID_OK:
             shortcode = dlg.GetValue()
-            if not re.match('[a-zA-Z0-9]{4}$', shortcode):
+            if not re.match("[a-zA-Z0-9]{4}$", shortcode):
                 print("Invalid shortcode entered.")
                 return
         else:
@@ -225,11 +242,11 @@ class ProjectPanel(wx.Panel):
         """
         creates the header
         """
-        self.list_ctrl.InsertColumn(0, 'Folder', width=300)
-        self.list_ctrl.InsertColumn(1, 'Project', width=180)
-        self.list_ctrl.InsertColumn(2, 'Shortcode', width=90)
-        self.list_ctrl.InsertColumn(3, 'List of files', width=340)
-        self.list_ctrl.InsertColumn(4, 'Status', width=350)
+        self.list_ctrl.InsertColumn(0, "Folder", width=300)
+        self.list_ctrl.InsertColumn(1, "Project", width=180)
+        self.list_ctrl.InsertColumn(2, "Shortcode", width=90)
+        self.list_ctrl.InsertColumn(3, "List of files", width=340)
+        self.list_ctrl.InsertColumn(4, "Status", width=350)
 
     def refresh_view(self):
         """refreshes the GUI after data changes"""
@@ -279,7 +296,7 @@ class ProjectPanel(wx.Panel):
             self.Disable()
 
     def export_data(self, event):
-        """ Set selection and call create_xml """
+        """Set selection and call create_xml"""
         selection = self.list_ctrl.GetFocusedItem()
         if selection >= 0:
             res = data_handler.validate_and_export_data(selection)
@@ -287,21 +304,20 @@ class ProjectPanel(wx.Panel):
             # LATER: let this return indication of success. display something to the user.
 
     def add_new_project(self, folder_path, shortcode):
-        """ Add a new project."""
+        """Add a new project."""
         dir_list = os.listdir(folder_path)
-        if '.DS_Store' in dir_list:
-            dir_list.remove('.DS_Store')
+        if ".DS_Store" in dir_list:
+            dir_list.remove(".DS_Store")
         data_handler.add_project(folder_path, shortcode, dir_list)
         self.refresh_view()
 
     def on_import_project(self, event):
         """handles event from 'import' button click"""
-        with wx.FileDialog(self, "Choose file:",
-                           style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as fd:
+        with wx.FileDialog(self, "Choose file:", style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as fd:
             if fd.ShowModal() == wx.ID_OK:
                 f = fd.GetPath()
-                if not f.endswith('.data'):
-                    print(f'Could not import file: {f}\n  For now, only .data supported.')
+                if not f.endswith(".data"):
+                    print(f"Could not import file: {f}\n  For now, only .data supported.")
                     # LATER: allow RDF import here
                     return
                 data_handler.import_project(f)
@@ -323,7 +339,9 @@ class ProjectPanel(wx.Panel):
         if repo:
             conforms, results_graph, results_text = data_handler.validate_graph(repo)
             if conforms:
-                with wx.MessageDialog(self, "Validation Successful", "Validation Successful", wx.OK | wx.ICON_INFORMATION) as dlg:
+                with wx.MessageDialog(
+                    self, "Validation Successful", "Validation Successful", wx.OK | wx.ICON_INFORMATION
+                ) as dlg:
                     dlg.ShowModal()
             else:
                 with dialogs.ScrolledMessageDialog(self, results_text, "Validation Failed", size=(800, 500)) as dlg:
@@ -344,9 +362,16 @@ class TabbedWindow(wx.Frame):
             parent (ProjectPanel): the parent object
             dataset (MetaDataSet): the dataset
         """
-        wx.Frame.__init__(self, parent, id=-1, title="", pos=wx.DefaultPosition,
-                          size=(1200, 600), style=wx.DEFAULT_FRAME_STYLE,
-                          name="Metadata tabs")
+        wx.Frame.__init__(
+            self,
+            parent,
+            id=-1,
+            title="",
+            pos=wx.DefaultPosition,
+            size=(1200, 600),
+            style=wx.DEFAULT_FRAME_STYLE,
+            name="Metadata tabs",
+        )
         self.Bind(wx.EVT_CLOSE, self.on_close)
         self.panel = wx.Panel(self)
         self.parent = parent
@@ -380,11 +405,11 @@ class TabbedWindow(wx.Frame):
         nb_sizer.Add(nb, 1, wx.ALL | wx.EXPAND)
 
         # Buttons
-        save_button = wx.Button(panel, label='Save')
+        save_button = wx.Button(panel, label="Save")
         save_button.Bind(wx.EVT_BUTTON, self.on_save)
-        saveclose_button = wx.Button(panel, label='Save and Close')
+        saveclose_button = wx.Button(panel, label="Save and Close")
         saveclose_button.Bind(wx.EVT_BUTTON, self.on_saveclose)
-        cancel_button = wx.Button(panel, label='Cancel')
+        cancel_button = wx.Button(panel, label="Cancel")
         cancel_button.Bind(wx.EVT_BUTTON, self.on_close)
         button_sizer = wx.BoxSizer(wx.HORIZONTAL)
         button_sizer.Add(save_button, 0, wx.ALL, 5)
@@ -450,13 +475,12 @@ class TabbedWindow(wx.Frame):
             self.feedback_text.SetForegroundColour(wx.Colour(200, 50, 50))
         self.feedback_text.SetLabel(msg)
         try:
-            wx.CallLater(2500, lambda: self.feedback_text.SetLabel(''))
+            wx.CallLater(2500, lambda: self.feedback_text.SetLabel(""))
         except Exception:
             pass
 
 
 class TabOne(wx.Panel):
-
     def __init__(self, parent: wx.Notebook, dataset: MetaDataSet):
         """Tab holding the project base information"""
         wx.Panel.__init__(self, parent)
@@ -476,9 +500,10 @@ class TabOne(wx.Panel):
         path_field.SetValue(self.dataset.path)
         sizer.Add(path_field, pos=(1, 1))
         path_help = wx.Button(self, label="?")
-        path_help.Bind(wx.EVT_BUTTON, lambda event: self.show_help(event,
-                                                                   "Path to the folder with the data",
-                                                                   "/some/path/to/folder"))
+        path_help.Bind(
+            wx.EVT_BUTTON,
+            lambda event: self.show_help(event, "Path to the folder with the data", "/some/path/to/folder"),
+        )
         sizer.Add(path_help, pos=(1, 2))
 
         # Files
@@ -491,19 +516,18 @@ class TabOne(wx.Panel):
         data_sizer.Add(file_list)
         button_sizer = wx.BoxSizer(wx.VERTICAL)
         btn_add = wx.Button(self, label="Add File(s)")
-        btn_add.Bind(wx.EVT_BUTTON, lambda event: self.add_file(
-            dataset, file_list))
+        btn_add.Bind(wx.EVT_BUTTON, lambda event: self.add_file(dataset, file_list))
         btn_del = wx.Button(self, label="Remove Selected")
-        btn_del.Bind(wx.EVT_BUTTON, lambda event: self.remove_file(
-            dataset, file_list))
+        btn_del.Bind(wx.EVT_BUTTON, lambda event: self.remove_file(dataset, file_list))
         button_sizer.Add(btn_add, flag=wx.EXPAND)
         button_sizer.Add(btn_del, flag=wx.EXPAND)
         data_sizer.Add(button_sizer)
         sizer.Add(data_sizer, pos=(2, 1))
         path_help = wx.Button(self, label="?")
-        path_help.Bind(wx.EVT_BUTTON, lambda event: self.show_help(event,
-                                                                   "Files associated with the project",
-                                                                   "sample_project.zip"))
+        path_help.Bind(
+            wx.EVT_BUTTON,
+            lambda event: self.show_help(event, "Files associated with the project", "sample_project.zip"),
+        )
         sizer.Add(path_help, pos=(2, 2))
         sizer.AddGrowableCol(1)
         self.SetSizer(sizer)
@@ -520,13 +544,12 @@ class TabOne(wx.Panel):
 
     def add_file(self, dataset: MetaDataSet, listbox: wx.ListBox):
         """Associate a file with project base data."""
-        with wx.FileDialog(self, "Choose file(s):",
-                           style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE) as fd:
+        with wx.FileDialog(self, "Choose file(s):", style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE) as fd:
             if fd.ShowModal() == wx.ID_OK:
                 for p in fd.GetPaths():
                     f = str(p)
                     if f.startswith(dataset.path):
-                        f = f.replace(f'{dataset.path}/', '')
+                        f = f.replace(f"{dataset.path}/", "")
                     else:
                         continue
                     if f and f not in dataset.files:
@@ -543,7 +566,6 @@ class TabOne(wx.Panel):
 
 
 class DataTab(scrolledPanel.ScrolledPanel):
-
     def __init__(self, parent: wx.Notebook, metadataset: MetaDataSet, dataset: DataClass, title: str, multiple=False):
         """
         A Tab in the window displaying data.
@@ -581,20 +603,17 @@ class DataTab(scrolledPanel.ScrolledPanel):
             dataset_listbox = wx.ListBox(self, size=(200, -1))
             for ds in dataset:
                 dataset_listbox.Append(str(ds))
-            dataset_listbox.Bind(
-                wx.EVT_LISTBOX, lambda e: self.change_selection(e))
+            dataset_listbox.Bind(wx.EVT_LISTBOX, lambda e: self.change_selection(e))
             dataset_listbox.Select(0)
             self.multiple_listbox = dataset_listbox
             dataset_sizer.Add(dataset_listbox, wx.EXPAND)
             dataset_sizer.AddSpacer(5)
             button_sizer = wx.BoxSizer(wx.VERTICAL)
             button_add = wx.Button(self, label="Add New")
-            button_add.Bind(wx.EVT_BUTTON, lambda e: self.add_object(
-                e, dataset_listbox, title))
+            button_add.Bind(wx.EVT_BUTTON, lambda e: self.add_object(e, dataset_listbox, title))
             button_sizer.Add(button_add, flag=wx.EXPAND)
             button_remove = wx.Button(self, label="Remove Selected")
-            button_remove.Bind(
-                wx.EVT_BUTTON, lambda e: self.remove_object(e, dataset_listbox))
+            button_remove.Bind(wx.EVT_BUTTON, lambda e: self.remove_object(e, dataset_listbox))
             button_sizer.Add(button_remove)
             dataset_sizer.Add(button_sizer)
             outer_sizer.Add(dataset_sizer, flag=wx.EXPAND)
@@ -659,30 +678,32 @@ class DataTab(scrolledPanel.ScrolledPanel):
         self.multiple_selection = sel
         data_handler.refresh_ui()
 
-    def add_to_list(self, event, content_list: wx.ListBox, widget: Union[wx.Control, Tuple[wx.Control]], addable: Union[str, Tuple[str, str]]):
+    def add_to_list(
+        self,
+        event,
+        content_list: wx.ListBox,
+        widget: Union[wx.Control, Tuple[wx.Control]],
+        addable: Union[str, Tuple[str, str]],
+    ):
         """add an object to a list"""
         if not addable:  # is None
             return
         if isinstance(widget, tuple):  # Attribution, i.e. two inputs
             role = addable[0]
             agent = addable[1]
-            if not role or not agent or \
-                    role.isspace() or agent.isspace() or \
-                    agent == "Select to add":
-                print('invalid input')
+            if not role or not agent or role.isspace() or agent.isspace() or agent == "Select to add":
+                print("invalid input")
                 return
             for i in range(content_list.GetItemCount()):
                 r = content_list.GetItem(i, 0).GetText()
                 a = content_list.GetItem(i, 1).GetText()
                 if r == role and a == agent:
-                    print('Item already exists')
+                    print("Item already exists")
                     return
             content_list.Append((role, agent))
             self.reset_widget(widget)
         else:
-            if str(addable).isspace() or \
-                    addable == "Select to add" or \
-                    str(addable) in content_list.GetStrings():
+            if str(addable).isspace() or addable == "Select to add" or str(addable) in content_list.GetStrings():
                 self.reset_widget(widget)
                 return
             content_list.Append(str(addable))
@@ -691,9 +712,8 @@ class DataTab(scrolledPanel.ScrolledPanel):
 
     def reset_widget(self, widget: Union[wx.Control, Tuple[wx.Control]]):
         """reset widget to an empty value"""
-        if isinstance(widget, wx.StaticText) or \
-                isinstance(widget, wx.TextCtrl):
-            widget.SetValue('')
+        if isinstance(widget, wx.StaticText) or isinstance(widget, wx.TextCtrl):
+            widget.SetValue("")
         elif isinstance(widget, wx.Choice):
             widget.SetSelection(0)
         elif isinstance(widget, tuple):
@@ -747,7 +767,6 @@ class DataTab(scrolledPanel.ScrolledPanel):
 
 
 class PropertyRow:
-
     def __init__(self, parent: DataTab, prop: Property, sizer: wx.FlexGridSizer, index: int, metadataset: MetaDataSet):
         """
         A row in a tab of the UI
@@ -774,13 +793,11 @@ class PropertyRow:
         if Datatype.is_string_like(prop.datatype):
             self.__setup_string(parent, sizer, prop)
         elif prop.datatype == Datatype.DATE:
-            if prop.cardinality == Cardinality.ONE \
-                    or prop.cardinality == Cardinality.ZERO_OR_ONE:
+            if prop.cardinality == Cardinality.ONE or prop.cardinality == Cardinality.ZERO_OR_ONE:
                 inner_sizer = wx.BoxSizer()
                 date = wx.StaticText(parent, size=(100, -1))
                 pick_date_button = wx.Button(parent, label="Pick Date")
-                pick_date_button.Bind(
-                    wx.EVT_BUTTON, lambda event: parent.pick_date(event, date, prop))
+                pick_date_button.Bind(wx.EVT_BUTTON, lambda event: parent.pick_date(event, date, prop))
                 inner_sizer.Add(date)
                 inner_sizer.Add(pick_date_button)
                 sizer.Add(inner_sizer, flag=wx.EXPAND)
@@ -793,11 +810,11 @@ class PropertyRow:
             self.__setup_dropdown(parent, sizer, prop)
         elif prop.datatype == Datatype.DATA_MANAGEMENT_PLAN:
             inner_sizer = wx.BoxSizer(wx.VERTICAL)
-            cb = wx.CheckBox(parent, label='is available')
+            cb = wx.CheckBox(parent, label="is available")
             cb.Bind(wx.EVT_CHECKBOX, lambda e: data_handler.update_all())
             inner_sizer.Add(cb, flag=wx.EXPAND)
             text = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
-            text.SetHint('Optional URL')
+            text.SetHint("Optional URL")
             text.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
             inner_sizer.Add(text, flag=wx.EXPAND)
             sizer.Add(inner_sizer, flag=wx.EXPAND)
@@ -815,24 +832,27 @@ class PropertyRow:
         btn.Bind(wx.EVT_BUTTON, lambda event: parent.show_help(event, prop.description, prop.example))
         sizer.Add(btn)
         opt = wx.Button(parent, label=Cardinality.get_optionality_string(prop.cardinality))
-        opt.Bind(wx.EVT_BUTTON, lambda event: parent.show_validity(event,
-                                                                   self.validity_msg,
-                                                                   Cardinality.as_sting(prop.cardinality)))
+        opt.Bind(
+            wx.EVT_BUTTON,
+            lambda event: parent.show_validity(event, self.validity_msg, Cardinality.as_sting(prop.cardinality)),
+        )
         self.validity_widget = opt
         sizer.Add(opt, flag=wx.RIGHT, border=5)
         self.refresh_ui()
 
     def __setup_string(self, parent: DataTab, sizer: wx.FlexGridSizer, prop: Property):
         """Set up UI form widgets for a string-like. Delegates to different cardinalities."""
-        if prop.cardinality == Cardinality.ONE \
-                or prop.cardinality == Cardinality.ZERO_OR_ONE:  # String or similar, exactly 1 or 0-1
+        if (
+            prop.cardinality == Cardinality.ONE or prop.cardinality == Cardinality.ZERO_OR_ONE
+        ):  # String or similar, exactly 1 or 0-1
             self.__setup_string_one_card(parent, sizer, prop)
-        elif prop.cardinality == Cardinality.ONE_TO_TWO \
-                or prop.cardinality == Cardinality.ZERO_TO_TWO:
+        elif prop.cardinality == Cardinality.ONE_TO_TWO or prop.cardinality == Cardinality.ZERO_TO_TWO:
             self.__setup_string_two_card(parent, sizer, prop)
-        elif prop.cardinality == Cardinality.ONE_TO_UNBOUND \
-                or prop.cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED \
-                or prop.cardinality == Cardinality.UNBOUND:  # String or similar, 1-n or 0-n
+        elif (
+            prop.cardinality == Cardinality.ONE_TO_UNBOUND
+            or prop.cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED
+            or prop.cardinality == Cardinality.UNBOUND
+        ):  # String or similar, 1-n or 0-n
             self.__setup_string_multi_card(parent, sizer, prop)
 
     def __setup_string_multi_card(self, parent: DataTab, sizer: wx.FlexGridSizer, prop: Property):
@@ -846,52 +866,40 @@ class PropertyRow:
             text_sizer.Add(textcontrol, flag=wx.EXPAND)
             text_sizer.AddSpacer(5)
             content_list = wx.ListBox(scroller)
-            textcontrol.Bind(wx.EVT_TEXT_ENTER,
-                             lambda e: parent.add_to_list(e,
-                                                          content_list,
-                                                          textcontrol,
-                                                          textcontrol.GetValue()))
+            textcontrol.Bind(
+                wx.EVT_TEXT_ENTER, lambda e: parent.add_to_list(e, content_list, textcontrol, textcontrol.GetValue())
+            )
             text_sizer.Add(content_list, 1, flag=wx.EXPAND)
             inner_sizer.Add(text_sizer, 1, flag=wx.EXPAND)
             inner_sizer.AddSpacer(5)
             button_sizer = wx.BoxSizer(wx.VERTICAL)
             plus_button = wx.Button(scroller, label="+")
-            plus_button.Bind(wx.EVT_BUTTON,
-                             lambda e: parent.add_to_list(e,
-                                                          content_list,
-                                                          textcontrol,
-                                                          textcontrol.GetValue()))
+            plus_button.Bind(
+                wx.EVT_BUTTON, lambda e: parent.add_to_list(e, content_list, textcontrol, textcontrol.GetValue())
+            )
             button_sizer.Add(plus_button, flag=wx.EXPAND)
 
             remove_button = wx.Button(scroller, label="Del Selected")
-            remove_button.Bind(wx.EVT_BUTTON,
-                               lambda event: parent.remove_from_list(event,
-                                                                     content_list))
+            remove_button.Bind(wx.EVT_BUTTON, lambda event: parent.remove_from_list(event, content_list))
             button_sizer.Add(remove_button)
             inner_sizer.Add(button_sizer)
         else:
             inner_sizer = wx.BoxSizer()
             textcontrol = wx.TextCtrl(scroller, style=wx.TE_PROCESS_ENTER, size=(300, -1))
-            textcontrol.Bind(wx.EVT_TEXT_ENTER,
-                             lambda e: parent.add_to_list(e,
-                                                          content_list,
-                                                          textcontrol,
-                                                          textcontrol.GetValue()))
+            textcontrol.Bind(
+                wx.EVT_TEXT_ENTER, lambda e: parent.add_to_list(e, content_list, textcontrol, textcontrol.GetValue())
+            )
             inner_sizer.Add(textcontrol, 0)
             inner_sizer.AddSpacer(5)
             button_sizer = wx.BoxSizer(wx.VERTICAL)
             plus_button = wx.Button(scroller, label="+")
-            plus_button.Bind(wx.EVT_BUTTON,
-                             lambda e: parent.add_to_list(e,
-                                                          content_list,
-                                                          textcontrol,
-                                                          textcontrol.GetValue()))
+            plus_button.Bind(
+                wx.EVT_BUTTON, lambda e: parent.add_to_list(e, content_list, textcontrol, textcontrol.GetValue())
+            )
             button_sizer.Add(plus_button, flag=wx.EXPAND)
 
             remove_button = wx.Button(scroller, label="Del Selected")
-            remove_button.Bind(wx.EVT_BUTTON,
-                               lambda event: parent.remove_from_list(event,
-                                                                     content_list))
+            remove_button.Bind(wx.EVT_BUTTON, lambda event: parent.remove_from_list(event, content_list))
             button_sizer.Add(remove_button)
             inner_sizer.Add(button_sizer)
             inner_sizer.AddSpacer(5)
@@ -913,7 +921,7 @@ class PropertyRow:
             inner_sizer.Add(textcontrol1, flag=wx.EXPAND)
             inner_sizer.AddSpacer(5)
             textcontrol2 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
-            textcontrol2.SetHint('Second value is optional')
+            textcontrol2.SetHint("Second value is optional")
             textcontrol2.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
             inner_sizer.Add(textcontrol2, flag=wx.EXPAND)
             sizer.Add(inner_sizer, flag=wx.EXPAND)
@@ -921,12 +929,12 @@ class PropertyRow:
         elif prop.cardinality == Cardinality.ZERO_TO_TWO:  # String or similar, 0-2
             inner_sizer = wx.BoxSizer(wx.VERTICAL)
             textcontrol1 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
-            textcontrol1.SetHint('Optional')
+            textcontrol1.SetHint("Optional")
             textcontrol1.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
             inner_sizer.Add(textcontrol1, flag=wx.EXPAND)
             inner_sizer.AddSpacer(5)
             textcontrol2 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
-            textcontrol2.SetHint('Optional')
+            textcontrol2.SetHint("Optional")
             textcontrol2.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
             inner_sizer.Add(textcontrol2, flag=wx.EXPAND)
             sizer.Add(inner_sizer, flag=wx.EXPAND)
@@ -950,15 +958,13 @@ class PropertyRow:
 
     def __setup_dropdown(self, parent: DataTab, sizer: wx.FlexGridSizer, prop: Property):
         """Set up dropdown widget"""
-        if prop.cardinality == Cardinality.ZERO_OR_ONE \
-                or prop.cardinality == Cardinality.ONE:
+        if prop.cardinality == Cardinality.ZERO_OR_ONE or prop.cardinality == Cardinality.ONE:
             choice = wx.Choice(parent, size=(400, -1))
             choice.Bind(wx.EVT_CHOICE, lambda e: self.onValueChange(e, False))
             self.data_widget = choice
             self.choice_widget = choice
             sizer.Add(choice, flag=wx.EXPAND)
-        if prop.cardinality == Cardinality.ONE_TO_UNBOUND or \
-                prop.cardinality == Cardinality.UNBOUND:
+        if prop.cardinality == Cardinality.ONE_TO_UNBOUND or prop.cardinality == Cardinality.UNBOUND:
             scroller = scrolledPanel.ScrolledPanel(parent)
             inner_sizer = wx.BoxSizer()
             box = wx.ListBox(scroller, size=(400, -1))
@@ -966,9 +972,7 @@ class PropertyRow:
             inner_sizer.Add(box, 1)
             control_sizer = wx.BoxSizer(wx.VERTICAL)
             choice = wx.Choice(scroller, size=(150, -1))
-            choice.Bind(wx.EVT_CHOICE,
-                        lambda e: parent.add_to_list(e, box, choice,
-                                                     choice.GetStringSelection()))
+            choice.Bind(wx.EVT_CHOICE, lambda e: parent.add_to_list(e, box, choice, choice.GetStringSelection()))
             self.choice_widget = choice
             control_sizer.Add(choice)
             remove_button = wx.Button(scroller, label="Del Selected")
@@ -983,17 +987,17 @@ class PropertyRow:
         """Set up widgets for address."""
         inner_sizer = wx.BoxSizer(wx.VERTICAL)
         text1 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
-        text1.SetHint('Street')
+        text1.SetHint("Street")
         text1.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
         inner_sizer.Add(text1, flag=wx.EXPAND)
         text2 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
-        text2.SetHint('Postal Code')
+        text2.SetHint("Postal Code")
         text2.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
         inner_sizer2 = wx.BoxSizer()
         inner_sizer2.Add(text2, 2)
         inner_sizer2.AddSpacer(5)
         text3 = wx.TextCtrl(parent, style=wx.TE_PROCESS_ENTER)
-        text3.SetHint('Locality')
+        text3.SetHint("Locality")
         text3.Bind(wx.EVT_TEXT_ENTER, self.onValueChange)
         inner_sizer2.Add(text3, 10)
         inner_sizer.AddSpacer(5)
@@ -1023,21 +1027,20 @@ class PropertyRow:
         inner_sizer.Add(button_sizer)
         inner_sizer.AddSpacer(5)
         content_list = wx.ListCtrl(scroller, -1, style=wx.LC_REPORT | wx.LC_SINGLE_SEL)
-        content_list.InsertColumn(0, 'Role')
-        content_list.InsertColumn(1, 'Agent')
+        content_list.InsertColumn(0, "Role")
+        content_list.InsertColumn(1, "Agent")
         inner_sizer.Add(content_list, 1)
         scroller.Sizer = inner_sizer
         scroller.SetupScrolling(scroll_x=True, scroll_y=False)
         sizer.Add(scroller, flag=wx.EXPAND)
         self.data_widget = content_list
-        remove_button.Bind(wx.EVT_BUTTON,
-                           lambda event: parent.remove_from_list(event,
-                                                                 content_list))
-        plus_button.Bind(wx.EVT_BUTTON,
-                         lambda e: parent.add_to_list(e,
-                                                      content_list,
-                                                      (textcontrol, choice),
-                                                      (textcontrol.GetValue(), choice.GetStringSelection())))
+        remove_button.Bind(wx.EVT_BUTTON, lambda event: parent.remove_from_list(event, content_list))
+        plus_button.Bind(
+            wx.EVT_BUTTON,
+            lambda e: parent.add_to_list(
+                e, content_list, (textcontrol, choice), (textcontrol.GetValue(), choice.GetStringSelection())
+            ),
+        )
 
     @property
     def data_class(self):
@@ -1059,24 +1062,24 @@ class PropertyRow:
         cardinality = self.prop.cardinality
         # String or String/URL etc.
         if Datatype.is_string_like(datatype):
-            if cardinality == Cardinality.ONE \
-                    or cardinality == Cardinality.ZERO_OR_ONE:
+            if cardinality == Cardinality.ONE or cardinality == Cardinality.ZERO_OR_ONE:
                 return self.data_widget.GetValue().strip()
-            if cardinality == Cardinality.ONE_TO_TWO \
-                    or cardinality == Cardinality.ZERO_TO_TWO:
-                return [self.data_widget[0].GetValue().strip(),
-                        self.data_widget[1].GetValue().strip()]
-            if cardinality == Cardinality.ONE_TO_UNBOUND \
-                    or cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED \
-                    or cardinality == Cardinality.UNBOUND:
+            if cardinality == Cardinality.ONE_TO_TWO or cardinality == Cardinality.ZERO_TO_TWO:
+                return [self.data_widget[0].GetValue().strip(), self.data_widget[1].GetValue().strip()]
+            if (
+                cardinality == Cardinality.ONE_TO_UNBOUND
+                or cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED
+                or cardinality == Cardinality.UNBOUND
+            ):
                 return [s.strip() for s in self.data_widget.GetStrings()]
         elif datatype == Datatype.DATE:
-            if cardinality == Cardinality.ONE \
-                    or cardinality == Cardinality.ZERO_OR_ONE:
+            if cardinality == Cardinality.ONE or cardinality == Cardinality.ZERO_OR_ONE:
                 return self.data_widget.GetLabel()
-        elif datatype == Datatype.PERSON_OR_ORGANIZATION or \
-                datatype == Datatype.PERSON or \
-                datatype == Datatype.ORGANIZATION:
+        elif (
+            datatype == Datatype.PERSON_OR_ORGANIZATION
+            or datatype == Datatype.PERSON
+            or datatype == Datatype.ORGANIZATION
+        ):
             if cardinality == Cardinality.ZERO_OR_ONE:
                 selection = self.data_widget.GetSelection()
                 if selection < 0:
@@ -1130,7 +1133,12 @@ class PropertyRow:
                     t = w.GetItem(i, 0).GetText()
                     o = self.metadataset.get_by_string(w.GetItem(i, 1).GetText())
                     if t and not t.isspace() and o:
-                        res.append((t, o,))
+                        res.append(
+                            (
+                                t,
+                                o,
+                            )
+                        )
                 return res
         elif datatype == Datatype.SHORTCODE:
             return self.data_widget.GetLabel()
@@ -1155,8 +1163,7 @@ class PropertyRow:
             options = self.prop.value_options
         elif self.prop.datatype == Datatype.ORGANIZATION:
             options = self.metadataset.organizations
-        elif self.prop.datatype == Datatype.PERSON_OR_ORGANIZATION or \
-                self.prop.datatype == Datatype.ATTRIBUTION:
+        elif self.prop.datatype == Datatype.PERSON_OR_ORGANIZATION or self.prop.datatype == Datatype.ATTRIBUTION:
             options = self.metadataset.persons + self.metadataset.organizations
         options_strs = ["Select to add"] + [str(o) for o in options]
         self.choice_widget.SetItems(options_strs)
@@ -1187,65 +1194,79 @@ class PropertyRow:
         undefined = False
         if not val:
             undefined = True
-            if cardinality == Cardinality.ONE \
-                    or cardinality == Cardinality.ZERO_OR_ONE:
+            if cardinality == Cardinality.ONE or cardinality == Cardinality.ZERO_OR_ONE:
                 val = ""
-            elif cardinality == Cardinality.ONE_TO_TWO \
-                    or cardinality == Cardinality.ZERO_TO_TWO:
-                val = ("", "",)
+            elif cardinality == Cardinality.ONE_TO_TWO or cardinality == Cardinality.ZERO_TO_TWO:
+                val = (
+                    "",
+                    "",
+                )
             else:
                 val = []
         # String or String/URL etc.
-        if datatype == Datatype.STRING \
-                or datatype == Datatype.STRING_OR_URL \
-                or datatype == Datatype.URL \
-                or datatype == Datatype.EMAIL \
-                or datatype == Datatype.DOWNLOAD \
-                or datatype == Datatype.PLACE:
-            if cardinality == Cardinality.ONE \
-                    or cardinality == Cardinality.ZERO_OR_ONE:
+        if (
+            datatype == Datatype.STRING
+            or datatype == Datatype.STRING_OR_URL
+            or datatype == Datatype.URL
+            or datatype == Datatype.EMAIL
+            or datatype == Datatype.DOWNLOAD
+            or datatype == Datatype.PLACE
+        ):
+            if cardinality == Cardinality.ONE or cardinality == Cardinality.ZERO_OR_ONE:
                 self.data_widget.SetValue(val)
-            if cardinality == Cardinality.ONE_TO_TWO \
-                    or cardinality == Cardinality.ZERO_TO_TWO:
+            if cardinality == Cardinality.ONE_TO_TWO or cardinality == Cardinality.ZERO_TO_TWO:
                 self.data_widget[0].SetValue(val[0])
                 self.data_widget[1].SetValue(val[1])
-            if cardinality == Cardinality.ONE_TO_UNBOUND \
-                    or cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED \
-                    or cardinality == Cardinality.UNBOUND:
+            if (
+                cardinality == Cardinality.ONE_TO_UNBOUND
+                or cardinality == Cardinality.ONE_TO_UNBOUND_ORDERED
+                or cardinality == Cardinality.UNBOUND
+            ):
                 self.data_widget.SetItems(val)
         elif datatype == Datatype.DATE:
-            if cardinality == Cardinality.ONE \
-                    or cardinality == Cardinality.ZERO_OR_ONE:
+            if cardinality == Cardinality.ONE or cardinality == Cardinality.ZERO_OR_ONE:
                 self.data_widget.SetLabel(val)
         elif datatype == Datatype.PROJECT:
             self.data_widget.SetLabel(str(val))
-        elif datatype == Datatype.CONTROLLED_VOCABULARY or \
-                datatype == Datatype.GRANT or \
-                datatype == Datatype.PERSON_OR_ORGANIZATION or \
-                datatype == Datatype.PERSON or \
-                datatype == Datatype.ORGANIZATION:
-            if cardinality == Cardinality.ZERO_OR_ONE \
-                    or cardinality == Cardinality.ONE:
-                self.data_widget.SetSelection(
-                    self.data_widget.FindString(str(val)))
+        elif (
+            datatype == Datatype.CONTROLLED_VOCABULARY
+            or datatype == Datatype.GRANT
+            or datatype == Datatype.PERSON_OR_ORGANIZATION
+            or datatype == Datatype.PERSON
+            or datatype == Datatype.ORGANIZATION
+        ):
+            if cardinality == Cardinality.ZERO_OR_ONE or cardinality == Cardinality.ONE:
+                self.data_widget.SetSelection(self.data_widget.FindString(str(val)))
             if cardinality == Cardinality.ONE_TO_UNBOUND:
                 self.data_widget.SetItems([str(v) for v in val])
             if cardinality == Cardinality.UNBOUND:
                 self.data_widget.SetItems([str(v) for v in val])
         elif datatype == Datatype.DATA_MANAGEMENT_PLAN:
             if undefined:
-                val = (False, "",)
+                val = (
+                    False,
+                    "",
+                )
             self.data_widget[0].SetValue(val[0])
             self.data_widget[1].SetValue(val[1])
         elif datatype == Datatype.ADDRESS:
             if undefined:
-                val = ("", "", "",)
+                val = (
+                    "",
+                    "",
+                    "",
+                )
             self.data_widget[0].SetValue(val[0])
             self.data_widget[1].SetValue(val[1])
             self.data_widget[2].SetValue(val[2])
         elif datatype == Datatype.ATTRIBUTION:
             if undefined:
-                val = [("", "",)]
+                val = [
+                    (
+                        "",
+                        "",
+                    )
+                ]
             self.data_widget.DeleteAllItems()
             for v in val:
                 self.data_widget.Append((v[0], str(v[1])))
@@ -1292,7 +1313,7 @@ class CalendarDlg(wx.Dialog):
         date.ParseDate(date_str)
         cal = wx.adv.GenericCalendarCtrl(panel, date=date)
 
-        if sys.platform != 'win32':
+        if sys.platform != "win32":
             # gtk truncates the year - this fixes it
             w, h = cal.Size
             cal.Size = (w + 15, h + 85)
@@ -1331,6 +1352,7 @@ class CalendarDlg(wx.Dialog):
 
 class JSONConverterDialog(wx.Dialog):
     """Dialog that lets the user select which files to convert to the new metadata format in json."""
+
     class InType:
         SINGLE_FILE = 0
         MULTI_FILE = 1
@@ -1346,19 +1368,22 @@ class JSONConverterDialog(wx.Dialog):
         super(JSONConverterDialog, self).__init__(*args, **kw)
         self.__in_files = None
         self.__out_dir = None
-        self.Size = ((800, 650))
+        self.Size = (800, 650)
         panel = wx.Panel(self)
         box = wx.BoxSizer(wx.VERTICAL)
-        text = wx.StaticText(panel, label="The DSP Metadata GUI tool models project metadata " +
-                             "according to the first iteration of DSP Metadata, " +
-                             "and produces RDF data (serialized as turtle, XML and JSON-LD).\n\n" +
-                             "The second iteration introduced major changes in the data model, " +
-                             "which proved to be breaking.\n\n" +
-                             "This converter allows to convert metadata from a .ttl file in the old model to the new model " +
-                             "requiring minimal manual work.\n\n" +
-                             "Some places will definitely require manual work, these are marked with `XX` in the data " +
-                             "so that they are easy to find.\n\n" +
-                             "It is advisable however, to check all data thoroughly to ensure they are correct.")
+        text = wx.StaticText(
+            panel,
+            label="The DSP Metadata GUI tool models project metadata "
+            + "according to the first iteration of DSP Metadata, "
+            + "and produces RDF data (serialized as turtle, XML and JSON-LD).\n\n"
+            + "The second iteration introduced major changes in the data model, "
+            + "which proved to be breaking.\n\n"
+            + "This converter allows to convert metadata from a .ttl file in the old model to the new model "
+            + "requiring minimal manual work.\n\n"
+            + "Some places will definitely require manual work, these are marked with `XX` in the data "
+            + "so that they are easy to find.\n\n"
+            + "It is advisable however, to check all data thoroughly to ensure they are correct.",
+        )
         text.Wrap(780)
         box.Add(text, 0, wx.ALL | wx.EXPAND, 7)
         box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
@@ -1409,7 +1434,7 @@ class JSONConverterDialog(wx.Dialog):
     def _run_conversion(self):
         """Button `Convert` has been clicked."""
         if self.__in_files:
-            print(f'saving to: {self.__out_dir}')
+            print(f"saving to: {self.__out_dir}")
             res = converter.convert_and_save(self.__in_files, self.__out_dir)
             print(f"Converted: {res} files")
             open_file(self.__out_dir)
@@ -1450,7 +1475,7 @@ class JSONConverterDialog(wx.Dialog):
                 res = dirDialog.ShowModal()
                 if res == wx.ID_OK:
                     path = dirDialog.GetPath()
-                    files = glob(f'{path}/*.ttl')
+                    files = glob(f"{path}/*.ttl")
                     self.__in_files = files
                     if len(self.__in_files) < 6:
                         label.SetLabel("\n".join(self.__in_files))
@@ -1467,6 +1492,7 @@ class JSONConverterDialog(wx.Dialog):
 
 class RDFConverterDialog(wx.Dialog):
     """Dialog that lets the user select which files to convert from json to RDF in the new data format."""
+
     class InType:
         SINGLE_FILE = 0
         MULTI_FILE = 1
@@ -1482,12 +1508,14 @@ class RDFConverterDialog(wx.Dialog):
         super(RDFConverterDialog, self).__init__(*args, **kw)
         self.__in_files = None
         self.__out_dir = None
-        self.Size = ((800, 650))
+        self.Size = (800, 650)
         panel = wx.Panel(self)
         box = wx.BoxSizer(wx.VERTICAL)
-        text = wx.StaticText(panel,
-                             label="This requires metadata converted to JSON already. (See menu 'option' > 'Convert RDF to JSON')\n\n" +
-                             "First, clean up the JSON data. Once this is sound and finished, it can be converted to RDF here.")
+        text = wx.StaticText(
+            panel,
+            label="This requires metadata converted to JSON already. (See menu 'option' > 'Convert RDF to JSON')\n\n"
+            + "First, clean up the JSON data. Once this is sound and finished, it can be converted to RDF here.",
+        )
         text.Wrap(780)
         box.Add(text, 0, wx.ALL | wx.EXPAND, 7)
         box.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 10)
@@ -1538,7 +1566,7 @@ class RDFConverterDialog(wx.Dialog):
     def _run_conversion(self):
         """Button `Convert` has been clicked."""
         if self.__in_files:
-            print(f'saving to: {self.__out_dir}')
+            print(f"saving to: {self.__out_dir}")
             res = rdfConverter.convert_and_save(self.__in_files, self.__out_dir)
             print(f"Converted: {res} files")
             open_file(self.__out_dir)
@@ -1579,7 +1607,7 @@ class RDFConverterDialog(wx.Dialog):
                 res = dirDialog.ShowModal()
                 if res == wx.ID_OK:
                     path = dirDialog.GetPath()
-                    files = glob(f'{path}/*.json')
+                    files = glob(f"{path}/*.json")
                     self.__in_files = files
                     if len(self.__in_files) < 6:
                         label.SetLabel("\n".join(self.__in_files))
@@ -1594,5 +1622,5 @@ class RDFConverterDialog(wx.Dialog):
             self.btn_convert.Disable()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     collectMetadata()

@@ -2,27 +2,29 @@
 Module to convert RDF serialized metadata (first data model) into JSON metadata (new data model).
 """
 
-import re
+import json
 import os
+import re
+import time
+from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
-from rdflib import Graph
-from rdflib import RDF, SDO, PROV, SKOS
-from rdflib.namespace import Namespace
-import json
-import jsonschema
-from rdflib.term import BNode, Literal
-import requests
-import time
-from datetime import datetime
-from textblob import TextBlob
+
 import guess_language
+import jsonschema
 import langid
-from langdetect import detect
+import requests
 from bs4 import BeautifulSoup
+from langdetect import detect
+from rdflib import PROV, RDF, SDO, SKOS, Graph
+from rdflib.namespace import Namespace
+from rdflib.term import BNode, Literal
+from textblob import TextBlob
 
-
-schema_url = "https://raw.githubusercontent.com/dasch-swiss/dsp-meta-svc/main/docs/services/metadata/schema-metadata.json"
+schema_url = (
+    "https://raw.githubusercontent.com/dasch-swiss/dsp-meta-svc/main/docs/services/metadata/schema-metadata.json"
+)
 dsp = Namespace("http://ns.dasch.swiss/repository#")
 
 
@@ -41,11 +43,11 @@ def convert_and_save(files: List[str], target: str) -> int:
     res = 0
     for f in files:
         s = convert_file(f)
-        print(f'File length: {len(s)}')
+        print(f"File length: {len(s)}")
         fpath = Path(f)
         out = f"{target}/{fpath.stem}.json"
         print(out)
-        with open(out, mode='w+', encoding='utf-8') as fw:
+        with open(out, mode="w+", encoding="utf-8") as fw:
             fw.write(s)
         res += 1
     return res
@@ -76,7 +78,7 @@ def convert_file(file: str) -> str:
     Returns:
         str: json serialized metadata
     """
-    with open(file, 'r+', encoding='utf-8') as f:
+    with open(file, "r+", encoding="utf-8") as f:
         s = f.read()
     return convert_string(s)
 
@@ -103,21 +105,21 @@ def convert_string(data: str) -> str:
         str: json serialized metadata
     """
     g = Graph()
-    g.parse(data=data, format='ttl')
+    g.parse(data=data, format="ttl")
     res = {"$schema": schema_url}
-    res['project'] = _get_project(g)
-    res['datasets'] = _get_datasets(g)
-    for ds in res.get('datasets'):  # type: ignore
-        res['project']['datasets'].append(ds.get('__id'))  # type: ignore
+    res["project"] = _get_project(g)
+    res["datasets"] = _get_datasets(g)
+    for ds in res.get("datasets"):  # type: ignore
+        res["project"]["datasets"].append(ds.get("__id"))  # type: ignore
     persons = _get_persons(g)
     if persons:
-        res['persons'] = persons
+        res["persons"] = persons
     orgs = _get_organizations(g)
     if orgs:
-        res['organizations'] = orgs
+        res["organizations"] = orgs
     grants = _get_grants(g)
     if grants:
-        res['grants'] = grants
+        res["grants"] = grants
 
     validate(res)
     return json.dumps(res, indent=4, ensure_ascii=False)
@@ -139,9 +141,9 @@ def _get_dmp(g: Graph):
     for _, p, o in g.triples((dmp, None, None)):
         obj = str(o)
         if p == dsp.hasURL:
-            res['url'] = _get_url(g, o)
+            res["url"] = _get_url(g, o)
         elif p == dsp.isAvailable:
-            res['available'] = obj == "true"
+            res["available"] = obj == "true"
         # default cases
         elif p == RDF.type:
             pass
@@ -154,6 +156,7 @@ def _get_dmp(g: Graph):
 # Grant
 # -----
 
+
 def _get_grants(g: Graph):
     """Get grants from graph"""
     grants = g.subjects(RDF.type, dsp.Grant)
@@ -162,22 +165,22 @@ def _get_grants(g: Graph):
 
 def _get_grant(g: Graph, grant_iri) -> Dict[str, Any]:
     """Get grant from graph"""
-    res = {"__id": grant_iri,
-           "__type": "Grant",
-           "__createdAt": str(time.time_ns()),
-           "__createdBy": "dsp-metadata-gui", }
+    res = {
+        "__id": grant_iri,
+        "__type": "Grant",
+    }
 
     for _, p, o in g.triples((grant_iri, None, None)):
         obj = str(o).strip()
         if p == dsp.hasFunder:
-            res.setdefault('funders', [])
-            res['funders'].append(obj)
+            res.setdefault("funders", [])
+            res["funders"].append(obj)
         elif p == dsp.hasNumber:
-            res['number'] = obj
+            res["number"] = obj
         elif p == dsp.hasName:
-            res['name'] = obj
+            res["name"] = obj
         elif p == dsp.hasURL:
-            res['url'] = _get_url(g, o)
+            res["url"] = _get_url(g, o)
         # default cases
         elif p == RDF.type:
             pass
@@ -190,6 +193,7 @@ def _get_grant(g: Graph, grant_iri) -> Dict[str, Any]:
 # Organizations
 # -------------
 
+
 def _get_organizations(g: Graph):
     """Get organizations from graph"""
     orgs = g.subjects(RDF.type, dsp.Organization)
@@ -198,21 +202,21 @@ def _get_organizations(g: Graph):
 
 def _get_organization(g: Graph, org_iri):
     """Get organization from graph"""
-    res = {"__id": org_iri,
-           "__type": "Organization",
-           "__createdAt": str(time.time_ns()),
-           "__createdBy": "dsp-metadata-gui", }
+    res = {
+        "__id": org_iri,
+        "__type": "Organization",
+    }
 
     for _, p, o in g.triples((org_iri, None, None)):
         obj = str(o).strip()
         if p == dsp.hasName:
-            res['name'] = obj
+            res["name"] = obj
         elif p == dsp.hasURL:
-            res['url'] = _get_url(g, o)
+            res["url"] = _get_url(g, o)
         elif p == dsp.hasEmail:
-            res['email'] = obj
+            res["email"] = obj
         elif p == dsp.hasAddress:
-            res['address'] = _get_address(g, o)
+            res["address"] = _get_address(g, o)
         # default cases
         elif p == RDF.type:
             pass
@@ -225,6 +229,7 @@ def _get_organization(g: Graph, org_iri):
 # Person
 # ------
 
+
 def _get_persons(g: Graph):
     """Get persons from graph"""
     persons = g.subjects(RDF.type, dsp.Person)
@@ -233,33 +238,33 @@ def _get_persons(g: Graph):
 
 def _get_person(g: Graph, person_iri):
     """Get person from graph"""
-    res = {"__id": person_iri,
-           "__type": "Person",
-           "__createdAt": str(time.time_ns()),
-           "__createdBy": "dsp-metadata-gui", }
+    res = {
+        "__id": person_iri,
+        "__type": "Person",
+    }
 
     for _, p, o in g.triples((person_iri, None, None)):
         obj = str(o).strip()
         if p == dsp.hasJobTitle:
-            res.setdefault('jobTitles', [])
-            res['jobTitles'].append(obj)
+            res.setdefault("jobTitles", [])
+            res["jobTitles"].append(obj)
         elif p == dsp.hasGivenName:
-            res['givenNames'] = obj.split(';')
+            res["givenNames"] = obj.split(";")
         elif p == dsp.hasFamilyName:
-            res['familyNames'] = obj.split(';')
+            res["familyNames"] = obj.split(";")
         elif p == dsp.isMemberOf:
-            res.setdefault('affiliation', [])
-            res['affiliation'].append(obj)
+            res.setdefault("affiliation", [])
+            res["affiliation"].append(obj)
         elif p == dsp.hasAddress:
-            res['address'] = _get_address(g, o)
+            res["address"] = _get_address(g, o)
         elif p == dsp.hasEmail:
-            if res.get('email'):
-                res['secondaryEmail'] = obj
+            if res.get("email"):
+                res["secondaryEmail"] = obj
             else:
-                res['email'] = obj
+                res["email"] = obj
         elif p == dsp.sameAs:
-            res.setdefault('authorityRefs', [])
-            res['authorityRefs'].append(_get_url(g, o))
+            res.setdefault("authorityRefs", [])
+            res["authorityRefs"].append(_get_url(g, o))
         # default cases
         elif p == RDF.type:
             pass
@@ -272,6 +277,7 @@ def _get_person(g: Graph, person_iri):
 # Dataset
 # -------
 
+
 def _get_datasets(g: Graph):
     """Get datasets from graph"""
     datasets = g.subjects(RDF.type, dsp.Dataset)
@@ -280,66 +286,66 @@ def _get_datasets(g: Graph):
 
 def _get_dataset(g: Graph, dataset_iri):
     """Get dataset from graph"""
-    res = {"__id": dataset_iri,
-           "__type": "Dataset",
-           "__createdAt": str(time.time_ns()),
-           "__createdBy": "dsp-metadata-gui", }
+    res = {
+        "__id": dataset_iri,
+        "__type": "Dataset",
+    }
 
     for _, p, o in g.triples((dataset_iri, None, None)):
         obj = str(o).strip()
         if p == dsp.hasTitle:
-            res['title'] = obj
+            res["title"] = obj
         elif p == dsp.hasConditionsOfAccess:
             obj = obj.lower()
-            if obj not in ['open', 'restricted', 'closed']:
+            if obj not in ["open", "restricted", "closed"]:
                 obj = f"XX - Access Conditions should be one of 'open', 'restricted' or 'closed', but found: {obj}"
-            res['accessConditions'] = obj
+            res["accessConditions"] = obj
         elif p == dsp.hasHowToCite:
-            res['howToCite'] = obj
+            res["howToCite"] = obj
         elif p == dsp.hasStatus:
-            res['status'] = obj
+            res["status"] = obj
         elif p == dsp.hasAbstract:
             res.setdefault("abstracts", [])
             if isinstance(o, BNode):
-                res['abstracts'].append(_get_url(g, o))
+                res["abstracts"].append(_get_url(g, o))
             else:
-                res['abstracts'].append(_guess_language_of_text(obj))
+                res["abstracts"].append(_guess_language_of_text(obj))
         elif p == dsp.hasTypeOfData:
             res.setdefault("typeOfData", [])
             if obj == "Movie":
                 obj = "Video"
-            res['typeOfData'].append(obj)
+            res["typeOfData"].append(obj)
         elif p == dsp.hasLicense:
             res.setdefault("licenses", [])
-            res['licenses'].append({"__type": "License",
-                                    "date": str(datetime.date(datetime.now())),
-                                    "license": _get_url(g, o)})
+            res["licenses"].append(
+                {"__type": "License", "date": str(datetime.date(datetime.now())), "license": _get_url(g, o)}
+            )
         elif p == dsp.hasLanguage:
             res.setdefault("languages", [])
-            res['languages'].append(_get_language(obj))
+            res["languages"].append(_get_language(obj))
         elif p == dsp.hasQualifiedAttribution:
             res.setdefault("attributions", [])
-            res['attributions'] = (_add_attribution(g, o, res['attributions']))
+            res["attributions"] = _add_attribution(g, o, res["attributions"])
         elif p == dsp.hasAlternativeTitle:
             res.setdefault("alternativeTitles", [])
-            res['alternativeTitles'].append(_guess_language_of_text(obj))
+            res["alternativeTitles"].append(_guess_language_of_text(obj))
         elif p == dsp.hasDateCreated:
-            res['dateCreated'] = obj
+            res["dateCreated"] = obj
         elif p == dsp.hasDatePublished:
-            res['datePublished'] = obj
+            res["datePublished"] = obj
         elif p == dsp.hasDateModified:
-            res['dateModified'] = obj
+            res["dateModified"] = obj
         elif p == dsp.hasDistribution:
-            res['distribution'] = _get_url(g, o)
+            res["distribution"] = _get_url(g, o)
         elif p == dsp.sameAs:
-            res.setdefault('urls', [])
-            res['urls'].append(_get_url(g, o))
+            res.setdefault("urls", [])
+            res["urls"].append(_get_url(g, o))
         elif p == dsp.hasDocumentation:
             res.setdefault("additional", [])
             if isinstance(o, BNode):
-                res['additional'].append(_get_url(g, o))
+                res["additional"].append(_get_url(g, o))
             else:
-                res['additional'].append(_guess_language_of_text(obj))
+                res["additional"].append(_guess_language_of_text(obj))
         elif p == dsp.isPartOf:
             pass
         # default cases
@@ -354,68 +360,68 @@ def _get_dataset(g: Graph, dataset_iri):
 # Project
 # -------
 
+
 def _get_project(g: Graph):
     """Get project from graph"""
     project_iri = next(g.triples((None, RDF.type, dsp.Project)))[0]
-    res = {"__id": project_iri,
-           "__type": "Project",
-           "__createdAt": str(time.time_ns()),
-           "__createdBy": "dsp-metadata-gui",
-           "howToCite": "XX - new property on project level",
-           "teaserText": "XX - new property",
-           "datasets": []}
+    res = {
+        "__type": "Project",
+        "howToCite": "XX - new property on project level",
+        "teaserText": "XX - new property",
+        "datasets": [],
+    }
 
     for _, p, o in g.triples((project_iri, None, None)):
         obj = str(o).strip()
         if p == dsp.hasShortcode:
-            res['shortcode'] = obj
+            res["shortcode"] = obj
         elif p == dsp.hasName:
-            res['name'] = obj
+            res["name"] = obj
         elif p == dsp.hasDescription:
-            res['description'] = _guess_language_of_text(obj)
+            res["description"] = _guess_language_of_text(obj)
         elif p == dsp.hasStartDate:
-            res['startDate'] = obj
+            res["startDate"] = obj
         elif p == dsp.hasEndDate:
-            res['endDate'] = obj
+            res["endDate"] = obj
         elif p == dsp.hasKeywords:
-            res.setdefault('keywords', [])
-            res['keywords'].append(_guess_language_of_text(obj))
+            res.setdefault("keywords", [])
+            res["keywords"].append(_guess_language_of_text(obj))
         elif p == dsp.hasDiscipline:
-            res.setdefault('disciplines', [])
+            res.setdefault("disciplines", [])
             if isinstance(o, BNode):
-                res['disciplines'].append(_get_url(g, o))
+                res["disciplines"].append(_get_url(g, o))
             else:
-                res['disciplines'].append(_guess_language_of_text(obj))
+                res["disciplines"].append(_guess_language_of_text(obj))
         elif p == dsp.hasTemporalCoverage:
-            res.setdefault('temporalCoverage', [])
+            res.setdefault("temporalCoverage", [])
             if isinstance(o, BNode):
-                res['temporalCoverage'].append(_get_url(g, o))
+                res["temporalCoverage"].append(_get_url(g, o))
             else:
-                res['temporalCoverage'].append(_guess_language_of_text(obj))
+                res["temporalCoverage"].append(_guess_language_of_text(obj))
         elif p == dsp.hasSpatialCoverage:
-            res.setdefault('spatialCoverage', [])
-            res['spatialCoverage'].append(_get_place(g, o))
+            res.setdefault("spatialCoverage", [])
+            res["spatialCoverage"].append(_get_place(g, o))
         elif p == dsp.hasURL:
-            if res.get('url'):
-                res['secondaryURL'] = _get_url(g, o)
+            if res.get("url"):
+                res["secondaryURL"] = _get_url(g, o)
             else:
-                res['url'] = _get_url(g, o)
+                res["url"] = _get_url(g, o)
         elif p == dsp.hasDataManagementPlan:
-            res['dataManagementPlan'] = _get_dmp(g)
+            res["dataManagementPlan"] = _get_dmp(g)
         elif p == dsp.hasPublication:
-            res.setdefault('publications', [])
-            res['publications'].append(obj)
+            res.setdefault("publications", [])
+            res["publications"].append(_update_publication(obj))
         elif p == dsp.hasGrant:
-            res.setdefault('grants', [])
-            res['grants'].append(obj)
+            res.setdefault("grants", [])
+            res["grants"].append(obj)
         elif p == dsp.hasAlternateName:
-            res.setdefault('alternativeNames', [])
-            res['alternativeNames'].append(_guess_language_of_text(obj))
+            res.setdefault("alternativeNames", [])
+            res["alternativeNames"].append(_guess_language_of_text(obj))
         elif p == dsp.hasFunder:
-            res.setdefault('funders', [])
-            res['funders'].append(obj)
+            res.setdefault("funders", [])
+            res["funders"].append(obj)
         elif p == dsp.hasContactPoint:
-            res['contactPoint'] = obj
+            res["contactPoint"] = obj
         # default cases
         elif p == RDF.type:
             pass
@@ -428,26 +434,86 @@ def _get_project(g: Graph):
 # Utils
 # -----
 
+
+@dataclass
+class Url:
+    __type: str
+    type: str
+    url: str
+    text: str
+
+    def to_json(self):
+        res = {
+            "__type": self.__type,
+            "type": self.type,
+            "url": self.url,
+            "text": self.text,
+        }
+        return res
+
+
+def _update_publication(pub: str):
+    pub_links: list[Url] = []
+    pub_text = ""
+    if "DOI: " in pub and "https://" not in pub:
+        pub = pub.replace("DOI: ", "ADOI:")
+    pub = pub.replace("DOI: ", "DOI:")
+    words = pub.split()
+    for w in words:
+        # if it is a link, check if its doi and format it, else just use the link
+        if w.__contains__("https://"):
+            # remove possible ',' and '.' at the end
+            if w.endswith((",", ".")):
+                w = w[:-1]
+            if "doi" in w:
+                link_text = w
+                if w.startswith("https://doi.org/"):
+                    link_text = f'DOI: {link_text.replace("https://doi.org/", "")}'
+                if w.startswith("https://www."):
+                    link_text = link_text.replace("https://www.", "")
+                if w.startswith("https://"):
+                    link_text = link_text.replace("https://", "")
+                url = Url("URL", "DOI", w, link_text)
+            else:
+                url = Url("URL", "URL", w, w)
+            pub_links.append(url)
+
+        # case where there is just a DOI string, generate the link
+        elif w.startswith("ADOI:"):
+            link = f'https://doi.org/{w.split(":")[1]}'
+            link_text = f'{w.split(":")[0][1:]}: {w.split(":")[1]}'
+            url = Url("URL", "DOI", link, link_text)
+            pub_links.append(url)
+
+        # add word to text string
+        else:
+            if "DOI:" not in w:
+                pub_text = pub_text + f" {w}"
+    publication = {"text": pub_text}
+    links_converted = [url.to_json() for url in pub_links]
+    if links_converted:
+        publication["url"] = links_converted
+    return publication
+
+
 def _add_attribution(g: Graph, iri: BNode, attributions: List):
     """From a graph g, add an attribution defined by a blank node (i.e. all tripples that have the iri as subject), to a list."""
     role = str(next(g.objects(iri, dsp.hasRole)))
     agent = str(next(g.objects(iri, PROV.agent)))
     for att in attributions:
-        p = att.get('agent')
-        r = att.get('roles')
+        p = att.get("agent")
+        r = att.get("roles")
         if r and p and p == agent:
             r.append(role)
             return attributions
-    attributions.append({"__type": "Attribution",
-                         "agent": agent,
-                         "roles": [role]})
+    attributions.append({"__type": "Attribution", "agent": agent, "roles": [role]})
     return attributions
 
 
 def _get_language(language):
     """Get the correct language representation according to a string describing a language (i.e. the language itself or a language shortcode)"""
     language = str(language)
-    if re.match('^[a-z]{2}$', language):
+    if re.match("^[a-z]{2}$", language):
         return _get_language_from_shortcode(language)
     else:
         return _guess_language_of_text(language)
@@ -456,22 +522,18 @@ def _get_language(language):
 def _get_language_from_shortcode(code):
     """Get language representation from a language shortcode"""
     code = str(code)
-    langs = {'en': {'en': 'English',
-                    'de': 'Englisch',
-                    'fr': 'anglais'},
-             'de': {'en': 'German',
-                    'de': 'Deutsch',
-                    'fr': 'allemand'},
-             'fr': {'en': 'French',
-                    'de': 'Französisch',
-                    'fr': 'français'}}
-    default = {code: 'XX - ' + code}
+    langs = {
+        "en": {"en": "English", "de": "Englisch", "fr": "anglais"},
+        "de": {"en": "German", "de": "Deutsch", "fr": "allemand"},
+        "fr": {"en": "French", "de": "Französisch", "fr": "français"},
+    }
+    default = {code: "XX - " + code}
     lang = langs.get(code)
     return lang if lang else default
 
 
 def _guess_language_of_text(text):
-    """ Guess the language of a string.
+    """Guess the language of a string.
 
     Returns a dict of type multilanguage text, if possible with the correct language attribution to the text.
     """
@@ -510,11 +572,7 @@ def _get_address(g: Graph, iri: BNode):
     code = str(next(g.objects(iri, SDO.postalCode)))
     street = str(next(g.objects(iri, SDO.streetAddress)))
     country = _get_country(locality)
-    return {'__type': 'Address',
-            'street': street,
-            'postalCode': code,
-            'locality': locality,
-            'country': country}
+    return {"__type": "Address", "street": street, "postalCode": code, "locality": locality, "country": country}
 
 
 def _get_country(locality):
@@ -525,7 +583,7 @@ def _get_country(locality):
     q = f"http://api.geonames.org/searchJSON?username=blandolt&name_equals={locality}&country=ch"
     r = requests.get(q)
     js = r.json()
-    gn = js.get('geonames')
+    gn = js.get("geonames")
     return "Switzerland" if len(gn) > 0 else "XX - Switzerland?"
 
 
@@ -537,10 +595,10 @@ def _get_place(g: Graph, iri: BNode):
 
 def _ensure_protocol_in_url(url: str):
     """Tries to ensure that a url starts with a valid protocol."""
-    if url.startswith('https://') or url.startswith('http://'):
+    if url.startswith("https://") or url.startswith("http://"):
         return url
     else:
-        return f'http://{url}'
+        return f"http://{url}"
 
 
 def _get_url(g: Graph, iri: BNode):
@@ -554,61 +612,48 @@ def _get_url(g: Graph, iri: BNode):
     type_ = _get_url_type(propID)
     txt = _get_url_text(url, type_)
     url = _ensure_protocol_in_url(url)
-    res = {"__type": "URL",
-           "type": type_,
-           "url": url
-           }
+    res = {"__type": "URL", "type": type_, "url": url}
     if txt:
-        res['text'] = txt
+        res["text"] = txt
     return res
 
 
 def _get_predefined_multilanguage_string(text: str):
-    knowns: Dict[str, Dict] = {'German': {'de': 'Deutsch',
-                                          'en': 'German',
-                                          'fr': 'allemand'},
-                               'English': {'en': 'English',
-                                           'de': 'Englisch',
-                                           'fr': 'anglais'},
-                               'Latin': {'en': 'Latin',
-                                         'de': 'Latein',
-                                         'fr': 'latin'},
-                               'French': {'en': 'French',
-                                          'de': 'Französisch',
-                                          'fr': 'français'},
-                               'Italian': {'en': 'Italian',
-                                           'de': 'Italienisch',
-                                           'fr': 'italien'}}
+    knowns: Dict[str, Dict] = {
+        "German": {"de": "Deutsch", "en": "German", "fr": "allemand"},
+        "English": {"en": "English", "de": "Englisch", "fr": "anglais"},
+        "Latin": {"en": "Latin", "de": "Latein", "fr": "latin"},
+        "French": {"en": "French", "de": "Französisch", "fr": "français"},
+        "Italian": {"en": "Italian", "de": "Italienisch", "fr": "italien"},
+    }
     known = knowns.get(text)
     if known:
         return known
-    if re.search('^\d{4}( ?- ?\d{4})?$', text):  # date
-        return {'de': text,
-                'en': text,
-                'fr': text}
+    if re.search("^\d{4}( ?- ?\d{4})?$", text):  # date
+        return {"de": text, "en": text, "fr": text}
 
 
 def _get_url_text(url, t):
     """Get a reasonable display text for a URL of a defined type."""
-    if t == 'URL':
+    if t == "URL":
         return url
-    if t == 'Skos':
+    if t == "Skos":
         return _get_skos_name(url)
-    if t == 'Geonames':
+    if t == "Geonames":
         return _get_geonames_name(url)
-    if t == 'Pleiades':
+    if t == "Pleiades":
         return f"XX: Pleiades URL: {url}"
-    if t == 'ORCID':
+    if t == "ORCID":
         return f"ORCID URL: {url}"
-    if t == 'Periodo':
+    if t == "Periodo":
         return _get_periodo_name(url)
-    if t == 'GND':
+    if t == "GND":
         return f"GND URL: {url}"
-    if t == 'VIAF':
+    if t == "VIAF":
         return f"VIAF URL: {url}"
-    if t == 'Creative Commons':
+    if t == "Creative Commons":
         return _get_cc_name(url)
-    if t == 'Chronontology':
+    if t == "Chronontology":
         return _get_chronontology_name(url)
     f"XX: Unknown Type for URL: {url}"
 
@@ -616,85 +661,84 @@ def _get_url_text(url, t):
 def _get_periodo_name(url: str):
     """Get display text for a Periodo URL"""
     try:
-        r = requests.get(url + '.json')
+        r = requests.get(url + ".json")
         data = r.json()
-        res = data.get('label')
+        res = data.get("label")
         return res
     except Exception:
-        return f'XX: Periodo URL: {url}'
+        return f"XX: Periodo URL: {url}"
 
 
 def _get_chronontology_name(url: str):
     """Get display text for a ChronOntology URL"""
     try:
-        id_ = url.rsplit('/', maxsplit=1)[-1]
-        r = requests.get(f'https://chronontology.dainst.org/data/period/{id_}')
+        id_ = url.rsplit("/", maxsplit=1)[-1]
+        r = requests.get(f"https://chronontology.dainst.org/data/period/{id_}")
         data = r.json()
-        names = data.get('resource').get('names').get('en')
+        names = data.get("resource").get("names").get("en")
         return names[0]
     except Exception:
-        return f'XX: Chronontology URL: {url}'
+        return f"XX: Chronontology URL: {url}"
 
 
 # LATER: this should not be called "SKOS"
 def _get_skos_name(url: str):
     """Get display text for a SKOS URL"""
-    url = url.removesuffix('/')
-    url = url.removesuffix('/html')
+    url = url.removesuffix("/")
+    url = url.removesuffix("/html")
     try:
-        url += '/n-triples'
+        url += "/n-triples"
         r = requests.get(url)
         data = r.text
         g = Graph()
-        g.parse(data=data, format='n3')
+        g.parse(data=data, format="n3")
         labels = g.objects(predicate=SKOS.prefLabel)
         for label in labels:
             l: Literal = label
-            if l.language == 'en':
+            if l.language == "en":
                 return str(l)
     except Exception:
-        return f'XX: Skos URL: {url}'
+        return f"XX: Skos URL: {url}"
 
 
 def _get_cc_name(url: str):
     """Get display text for a Creative Commons URL"""
     try:
         r = requests.get(url.strip())
-        soup = BeautifulSoup(r.content, 'html.parser')
-        ident = soup.select_one('span.cc-license-identifier')
+        soup = BeautifulSoup(r.content, "html.parser")
+        ident = soup.select_one("span.cc-license-identifier")
         res: str = ident.get_text()
-        res = res.strip().removeprefix('(').removesuffix(')')
+        res = res.strip().removeprefix("(").removesuffix(")")
         return res
     except Exception:
-        return f'XX: CC URL: {url}'
+        return f"XX: CC URL: {url}"
 
 
 def _get_geonames_name(url: str):
     """Get display text for a geonames URL"""
-    if url.endswith('/'):
-        url = url.removesuffix('/')
+    if url.endswith("/"):
+        url = url.removesuffix("/")
     try:
-        if re.search('\/countries\/', url):
+        if re.search("\/countries\/", url):
             r = requests.get(url)
-            soup = BeautifulSoup(r.content, 'html.parser')
-            tables = soup.select('table')
+            soup = BeautifulSoup(r.content, "html.parser")
+            tables = soup.select("table")
             table = tables[1]
-            link = table.select_one('a')
-            url = link['href']
+            link = table.select_one("a")
+            url = link["href"]
         if url.endswith(".html"):
             url = url.rsplit("/", 1)[0]
         gn_id = url.rsplit("/")[-1]
-        base = f'http://api.geonames.org/getJSON'
-        payload = {'geonameId': gn_id,
-                   'username': 'blandolt'}
+        base = f"http://api.geonames.org/getJSON"
+        payload = {"geonameId": gn_id, "username": "blandolt"}
         r = requests.get(base, params=payload)
         resp = r.json()
-        name = resp.get('name')
+        name = resp.get("name")
         if not name:
             raise Exception()
         return name
     except Exception:
-        return f'XX: Geonames URL: {url}'
+        return f"XX: Geonames URL: {url}"
 
 
 def _get_url_type(propID):
@@ -724,7 +768,7 @@ def _get_url_type(propID):
 def validate(data, verbose=False):
     """Validates JSON
 
-    Validates json serialized data against the schema of the API specification.  
+    Validates json serialized data against the schema of the API specification.
 
     [Schema](https://raw.githubusercontent.com/dasch-swiss/dasch-service-platform/main/docs/services/metadata/schema-metadata.json)
 
@@ -740,7 +784,7 @@ def validate(data, verbose=False):
         valid = True
         for e in validator.iter_errors(data):
             if verbose:
-                print(f'Validation Error: {e.message}')
+                print(f"Validation Error: {e.message}")
             valid = False
         if valid and verbose:
             print("JSON is valid.")
@@ -752,27 +796,21 @@ def validate(data, verbose=False):
 
 
 if __name__ == "__main__":
-    files = ['maximal.ttl',
-             'rosetta.ttl',
-             'limc.ttl',
-             'awg.ttl',
-             'hdm.ttl',
-             'drawings-gods.ttl'
-             ]
+    files = ["maximal.ttl", "rosetta.ttl", "limc.ttl", "awg.ttl", "hdm.ttl", "drawings-gods.ttl"]
     results = {}
-    os.makedirs('out', exist_ok=True)
+    os.makedirs("out", exist_ok=True)
     for filename in files:
-        print(f'Converting: {filename}...')
-        s = convert_file(f'test/test-data/{filename}')
+        print(f"Converting: {filename}...")
+        s = convert_file(f"test/test-data/{filename}")
         issues = s.count("XX")
         results[filename] = {
-            'isValid': validate(s),
-            'numberOfIssues': issues,
-            'toResolve': [l.strip().replace('"', "'") for l in s.splitlines() if 'XX' in l]
+            "isValid": validate(s),
+            "numberOfIssues": issues,
+            "toResolve": [l.strip().replace('"', "'") for l in s.splitlines() if "XX" in l],
         }
-        print(f'Number of issues encountered: {issues}')
-        out = filename.replace('.ttl', '.json')
-        with open(f'out/{out}', mode='w+', encoding='utf-8') as f:
+        print(f"Number of issues encountered: {issues}")
+        out = filename.replace(".ttl", ".json")
+        with open(f"out/{out}", mode="w+", encoding="utf-8") as f:
             f.write(s)
-        print(f'Saved as: {out}\nDone.\n\n----\n')
+        print(f"Saved as: {out}\nDone.\n\n----\n")
     print(json.dumps(results, indent=4))
