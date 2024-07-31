@@ -6,9 +6,9 @@ import re
 from glob import glob
 from typing import Optional, Tuple, Union
 
-import wx
-import wx.adv
-import wx.lib.scrolledpanel as scrolledPanel
+import wx  # type: ignore
+import wx.adv  # type: ignore
+import wx.lib.scrolledpanel as scrolledPanel  # type: ignore
 from util import converter, rdfConverter
 from util.dataHandling import DataHandling
 from util.metaDataSet import DataClass, MetaDataSet, Property
@@ -55,7 +55,7 @@ class ProjectFrame(wx.Frame):
         menu_bar = wx.MenuBar()
         file_menu = wx.Menu()
         open_folder_menu_item = file_menu.Append(wx.ID_NEW, "Add new Project", "Open a folder with project files")
-        self.Bind(event=wx.EVT_MENU, handler=self.panel.__on_add_new_project, source=open_folder_menu_item)
+        self.Bind(event=wx.EVT_MENU, handler=self.panel.on_add_new_project, source=open_folder_menu_item)
         save_menu_item = file_menu.Append(wx.ID_SAVE, "&Save")
         self.Bind(wx.EVT_MENU, self.__on_save, source=save_menu_item)
         menu_bar.Append(file_menu, "&File")
@@ -119,7 +119,7 @@ class ProjectPanel(wx.Panel):
         # Create Buttons
         button_sizer = wx.BoxSizer(wx.VERTICAL)
         new_folder_button = wx.Button(self, label="Add new Project")
-        new_folder_button.Bind(wx.EVT_BUTTON, self.__on_add_new_project)
+        new_folder_button.Bind(wx.EVT_BUTTON, self.on_add_new_project)
         button_sizer.Add(new_folder_button, 0, wx.ALL | wx.EXPAND, 7)
 
         remove_folder_button = wx.Button(self, label="Remove selected Project")
@@ -156,7 +156,7 @@ class ProjectPanel(wx.Panel):
                 data_handler.export_as_json(self.__get_selected_project(), path)
         print("Export as JSON... done.")
 
-    def __on_add_new_project(self, event):
+    def on_add_new_project(self, event):
         """
         Open a new folder and add it to projects.
         """
