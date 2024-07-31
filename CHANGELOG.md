@@ -1,5 +1,23 @@
 # Changelog
 
+## [8.5.0](https://github.com/dasch-swiss/dsp-metadata-gui/compare/v8.4.3...v8.5.0) (2024-07-31)
+
+
+### Enhancements
+
+* simplify UI ([#49](https://github.com/dasch-swiss/dsp-metadata-gui/issues/49)) ([9499f2e](https://github.com/dasch-swiss/dsp-metadata-gui/commit/9499f2e5e4bdb4b7d667c27720ef18f075c1a4d2))
+* simplify UI in main window ([#48](https://github.com/dasch-swiss/dsp-metadata-gui/issues/48)) ([aed9d2c](https://github.com/dasch-swiss/dsp-metadata-gui/commit/aed9d2c7036a58f346906d8de46d3d37a994b030))
+
+
+### Maintenance
+
+* enable manually dispatching release ([#45](https://github.com/dasch-swiss/dsp-metadata-gui/issues/45)) ([a6503aa](https://github.com/dasch-swiss/dsp-metadata-gui/commit/a6503aa85dc8227f78822683f5cb872b7f4fb47f))
+
+
+### Documentation
+
+* update documentation ([#47](https://github.com/dasch-swiss/dsp-metadata-gui/issues/47)) ([30d6537](https://github.com/dasch-swiss/dsp-metadata-gui/commit/30d6537b851b31f194168c818a21df6b5e9d9fd8))
+
 ## [8.4.3](https://github.com/dasch-swiss/dsp-metadata-gui/compare/v8.4.2...v8.4.3) (2024-07-31)
 
 
